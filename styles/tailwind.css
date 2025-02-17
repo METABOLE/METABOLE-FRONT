@@ -1,0 +1,80 @@
+@import 'tailwindcss';
+
+:root {
+  --x-default: clamp(20px, 8vw, 100px);
+  --y-default: clamp(20px, 8vh, 100px);
+}
+
+@theme {
+  /* COLORS (primary) */
+  --color-red: #ff0000; /* DEBUG COLOR */
+  --color-green: #00ff00; /* DEBUG COLOR */
+  --color-blue: #1b17ee;
+  --color-white: #f1f2ff;
+  --color-black: #141418;
+  --color-yellow: #caee17;
+  /* COLORS (secondary) */
+  --color-blue-70: #1b17eeb3;
+  --color-blue-30: #1b17ee59;
+  --color-white-70: #f1f2ffb3;
+  --color-white-30: #f1f2ff59;
+  --color-black-70: #141418b3;
+  --color-black-30: #14141859;
+  --color-yellow-70: #caee17b3;
+  --color-yellow-30: #caee1759;
+
+  /* FONTS */
+  --font-safiro-bold: 'Safiro Bold', sans-serif;
+  --font-safiro-bold-italic: 'Safiro Bold Italic', sans-serif;
+  --font-safiro-medium: 'Safiro Medium', sans-serif;
+  --font-safiro-medium-italic: 'Safiro Medium Italic', sans-serif;
+  --font-safiro-regular: 'Safiro Regular', sans-serif;
+  --font-safiro-regular-italic: 'Safiro Regular Italic', sans-serif;
+  --font-safiro-semibold: 'Safiro SemiBold', sans-serif;
+  --font-safiro-semibold-italic: 'Safiro SemiBold Italic', sans-serif;
+
+  /* PADDING */
+  --padding-x-default: var(--x-default);
+  --padding-y-default: var(--y-default);
+
+  /* MARGIN */
+  --margin-x-default: var(--x-default);
+  --margin-y-default: var(--y-default);
+
+  /* INSET */
+  --inset-x-default: var(--x-default);
+  --inset-y-default: var(--y-default);
+
+  /* GAP */
+  --gap-x-default: var(--x-default);
+  --gap-y-default: var(--y-default);
+
+  /* WIDTH */
+  --width-x-default: var(--x-default);
+  --width-screen-padded: calc(100vw - (var(--x-default) * 4));
+
+  /* HEIGHT */
+  --height-y-default: var(--y-default);
+  --height-screen-padded: calc(100vh - (var(--y-default) * 4));
+
+  /* GRID TEMPLATE COLUMNS */
+  --grid-template-columns-menu: var(--x-default) 1fr var(--x-default);
+
+  /* GRID TEMPLATE ROWS */
+  --grid-template-rows-menu: var(--y-default) 1fr var(--y-default);
+
+  /* INSET */
+  --inset-x-default: var(--x-default);
+  --inset-y-default: var(--y-default);
+
+  /* BREAKPOINTS */
+  --breakpoint-xs: 380px;
+}
+
+/* SAFELIST */
+.origin-left {
+  @apply origin-left;
+}
+.origin-right {
+  @apply origin-right;
+}

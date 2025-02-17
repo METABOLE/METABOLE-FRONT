@@ -1,0 +1,44 @@
+body {
+  background-color: var(--color-blue);
+  color: var(--color-black);
+  font-size: 16px;
+  font-family: var(--font-safiro-medium);
+  scrollbar-width: thin;
+}
+
+html {
+  ::-moz-selection {
+    background: var(--color-blue);
+    color: var(--color-white);
+  }
+  ::selection {
+    background: var(--color-blue);
+    color: var(--color-white);
+  }
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.animated-text span {
+  display: inline-block;
+}
+
+.cube {
+  perspective: 1000px;
+  perspective-origin: center;
+  transform-style: preserve-3d;
+}
+
+.front {
+  transform: translateZ(-8px);
+}
+
+.bottom {
+  transform: rotateX(90deg) translateZ(-8px);
+}
