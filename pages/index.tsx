@@ -1,10 +1,15 @@
-import { LogoTypo } from "@/components/Icons";
-import { COLORS } from "@/types";
+import { usePathname } from 'next/navigation';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 export default function Home() {
-  return (
-    <div className="flex items-center justify-center h-screen">
-      <LogoTypo color={COLORS.WHITE} />
-    </div>
-  );
+  const pathname = usePathname();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (pathname === '/')
+      router.push(navigator.language.includes('fr') ? 'fr' : 'en', undefined, { shallow: true });
+  }, []);
+
+  return <></>;
 }

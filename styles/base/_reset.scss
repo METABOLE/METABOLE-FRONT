@@ -1,9 +1,10 @@
 body {
-  background-color: var(--color-blue);
+  background-color: var(--color-white);
   color: var(--color-black);
   font-size: 16px;
   font-family: var(--font-safiro-medium);
   scrollbar-width: thin;
+  height: 100vh;
 }
 
 html {

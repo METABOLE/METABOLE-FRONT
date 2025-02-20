@@ -3,6 +3,8 @@
 :root {
   --x-default: clamp(20px, 8vw, 100px);
   --y-default: clamp(20px, 8vh, 100px);
+  --x-half-default: calc(var(--x-default) / 2);
+  --y-half-default: calc(var(--y-default) / 2);
 }
 
 @theme {
@@ -36,6 +38,8 @@
   /* PADDING */
   --padding-x-default: var(--x-default);
   --padding-y-default: var(--y-default);
+  --padding-x-half-default: var(--x-half-default);
+  --padding-y-half-default: var(--y-half-default);
 
   /* MARGIN */
   --margin-x-default: var(--x-default);
