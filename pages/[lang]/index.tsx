@@ -8,7 +8,7 @@ export default function Home() {
   const { isFrench } = useLanguage();
 
   return (
-    <div className="flex h-screen flex-col">
+    <div className="fixed flex h-screen w-screen flex-col">
       <Head>
         <title>METABOLE STUDIO</title>
         {/* <script src="https://unpkg.com/react-scan/dist/auto.global.js"></script> */}
@@ -28,7 +28,7 @@ export default function Home() {
               <>
                 Creative studio that builds{' '}
                 <strong className="text-blue font-normal">unique and immersive</strong> web
-                experiences for
+                experiences for{' '}
                 <strong className="text-blue font-normal">forward-thinking companies</strong>.
               </>
             )}

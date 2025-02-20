@@ -1,9 +1,9 @@
 import { useMousePosition } from '@/hooks/useMousePosition';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { useRef } from 'react';
 import FloatingHalo from './FloatingHalo';
 import Time from './Time';
-import { useGSAP } from '@gsap/react';
-import { useRef } from 'react';
-import gsap from 'gsap';
 
 const Footer = () => {
   const wrapperRef = useRef(null);
@@ -27,22 +27,25 @@ const Footer = () => {
       duration: 2,
     });
   });
+
   return (
-    <footer ref={wrapperRef} className="px-x-half-default">
+    <footer ref={wrapperRef} className="px-x-half-default fixed bottom-0 h-32 w-screen">
       <div
-        className="px-x-half-default relative grid grid-cols-6 items-center gap-5 overflow-hidden rounded-t-3xl bg-black py-8 text-white"
+        className="px-x-half-default relative h-full overflow-hidden rounded-t-3xl bg-black text-white"
         onMouseLeave={resetHaloPosition}
         onMouseMove={moveHalo}
       >
         <FloatingHalo
           ref={floatingHaloRef}
-          className="-z-10 h-[100vw] w-[100vw] opacity-30"
-          color="#3449FF"
+          className="h-[100vw] w-[100vw] opacity-30"
+          from="#3449FF"
           to="#141418"
         />
-        <p>Paris</p>
-        <Time isDark={true} />
-        <p></p>
+        <div className="relative grid h-full grid-cols-6 items-center gap-5">
+          <p>Paris</p>
+          <Time isDark={true} />
+          <a href="mailto:contact@metabole.studio">contact@metabole.studio</a>
+        </div>
       </div>
     </footer>
   );
