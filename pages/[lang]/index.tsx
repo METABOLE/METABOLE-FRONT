@@ -1,3 +1,4 @@
+import FloatingHalo from '@/components/FloatingHalo';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import InstancedField from '@/components/InstancedField';
@@ -47,8 +48,13 @@ export default function Home() {
       </main>
       <Footer />
       <InstancedField />
+      <FloatingHalo
+        className="!fixed top-1/2 -left-full -z-10 h-[250vw] w-[250vw]"
+        from="#1b17ee"
+        to="#f1f2ff00"
+      />
       {/* <Analytics />
-        <SpeedInsights /> */}
+      <SpeedInsights /> */}
     </div>
   );
 }
