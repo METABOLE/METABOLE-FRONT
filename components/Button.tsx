@@ -17,6 +17,7 @@ interface BaseButtonProps {
   children: ReactNode;
   className?: string;
   transformOrigin?: 'left' | 'right' | 'center';
+  color?: 'primary' | 'secondary';
 }
 
 type DivButtonProps = BaseButtonProps &
@@ -50,7 +51,10 @@ export interface AnimatedButtonRef {
 }
 
 const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
-  ({ children, href, transformOrigin = 'left', target, className, ...props }, ref) => {
+  (
+    { children, href, transformOrigin = 'left', color = 'primary', target, className, ...props },
+    ref,
+  ) => {
     const wrapperButtonRef = useRef(null);
     const backgroudButtonRef = useRef(null);
     const buttonRef = useRef(null);
@@ -183,7 +187,8 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
       <DynamicElement
         ref={wrapperButtonRef}
         className={clsx(
-          'label group/button inline-block h-11 w-fit cursor-pointer overflow-hidden rounded-full bg-[#C5C4FF]/30 text-black backdrop-blur-xl',
+          'label group/button inline-block h-11 w-fit cursor-pointer overflow-hidden rounded-full text-black backdrop-blur-xl',
+          color === 'primary' ? 'bg-[#C5C4FF]/30' : 'bg-[#8887B0]/30',
           `origin-${transformOrigin}`,
           className,
         )}
@@ -197,7 +202,9 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
       >
         <div
           ref={backgroudButtonRef}
-          className="bg-blue absolute top-full h-22 w-[150%] -translate-x-1/8 rounded-[100%]"
+          className={clsx(
+            'bg-blue absolute top-full h-22 w-[150%] -translate-x-1/8 rounded-[100%]',
+          )}
         />
         <div
           className="h-full w-full"

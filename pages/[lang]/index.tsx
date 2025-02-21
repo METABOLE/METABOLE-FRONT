@@ -36,12 +36,30 @@ export default function Home() {
           </h1>
           <p className="mt-10">
             {isFrench ? 'Par ' : 'By '}
-            <a className="text-blue" href="https://www.matteocourquin.com/" target="_blank">
+            <a
+              className="text-blue group relative"
+              href="https://www.matteocourquin.com/"
+              target="_blank"
+            >
               Matteo Courquin
+              <img
+                alt=""
+                className="animation-float absolute bottom-6 left-1/2 origin-bottom -translate-x-1/2 scale-0 rotate-0 transition-transform duration-300 group-hover:scale-100 group-hover:-rotate-6"
+                src="/images/matteo.png"
+              />
             </a>{' '}
             {isFrench ? ' et  ' : ' and  '}
-            <a className="text-blue" href="https://www.jeromebezeau.com/" target="_blank">
+            <a
+              className="text-blue group relative"
+              href="https://www.jeromebezeau.com/"
+              target="_blank"
+            >
               Jérôme Bezeau
+              <img
+                alt=""
+                className="animation-float absolute bottom-6 left-1/2 origin-bottom -translate-x-1/2 scale-0 rotate-0 transition-transform duration-300 group-hover:scale-100 group-hover:rotate-6"
+                src="/images/jerome.png"
+              />
             </a>
           </p>
         </section>
