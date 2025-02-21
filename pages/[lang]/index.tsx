@@ -15,9 +15,9 @@ export default function Home() {
         {/* <script src="https://unpkg.com/react-scan/dist/auto.global.js"></script> */}
       </Head>
       <Header />
-      <main className="grow">
+      <main className="grow pt-[108px] pb-[192px]">
         <section className="px-x-default flex h-full flex-col justify-center">
-          <h1>
+          <h1 className="w-full md:w-2/3">
             {isFrench ? (
               <>
                 Studio créatif qui concoit des{' '}

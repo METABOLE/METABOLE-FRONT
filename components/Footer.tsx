@@ -3,6 +3,7 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { useRef } from 'react';
 import FloatingHalo from './FloatingHalo';
+import LeadForm from './LeadForm';
 import Time from './Time';
 
 const Footer = () => {
@@ -29,7 +30,7 @@ const Footer = () => {
   });
 
   return (
-    <footer ref={wrapperRef} className="px-x-half-default fixed bottom-0 h-32 w-screen">
+    <footer ref={wrapperRef} className="px-x-half-default fixed bottom-0 h-48 w-screen">
       <div
         className="px-x-half-default relative h-full overflow-hidden rounded-t-3xl bg-black text-white"
         onMouseLeave={resetHaloPosition}
@@ -41,10 +42,13 @@ const Footer = () => {
           from="#3449FF"
           to="#141418"
         />
-        <div className="relative grid h-full grid-cols-6 items-center gap-5">
+        <div className="relative grid h-full grid-cols-12 items-center gap-5">
           <p>Paris</p>
           <Time isDark={true} />
           <a href="mailto:contact@metabole.studio">contact@metabole.studio</a>
+          <div className="col-span-4 -col-end-1 text-white">
+            <LeadForm />
+          </div>
         </div>
       </div>
     </footer>

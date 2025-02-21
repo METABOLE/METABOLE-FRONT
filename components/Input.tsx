@@ -8,6 +8,8 @@ type InputProps = {
   label?: string;
   errorMessage?: string;
   children?: ReactNode;
+  animate?: boolean;
+  isDark?: boolean;
 } & React.InputHTMLAttributes<HTMLInputElement> &
   React.TextareaHTMLAttributes<HTMLTextAreaElement> &
   React.SelectHTMLAttributes<HTMLSelectElement>;
@@ -29,6 +31,8 @@ const Input = forwardRef<AnimatedIputRef, InputProps>(
       value,
       errorMessage,
       children,
+      animate = false,
+      isDark = false,
       ...props
     },
     ref,
@@ -39,9 +43,8 @@ const Input = forwardRef<AnimatedIputRef, InputProps>(
     const errorMessageRef = useRef(null);
     const timelineRef = useRef<gsap.core.Timeline | null>(null);
 
-    const [error, setError] = useState<string | undefined>(undefined);
-
     const { contextSafe } = useGSAP();
+    const [error, setError] = useState<string | undefined>(undefined);
 
     const play = contextSafe(() => {
       gsap
@@ -96,8 +99,10 @@ const Input = forwardRef<AnimatedIputRef, InputProps>(
       createErrorTimeline();
     }, [errorMessage]);
 
-    const baseClasses =
-      'text2 w-full rounded-b-none rounded-t-md appearance-none bg-transparent py-2 placeholder:text-white-40 focus:pl-2 focus:outline-none !text-white-80';
+    const baseClasses = [
+      'p3 apparence-none w-full rounded-t-md rounded-b-none bg-transparent py-2  focus:pl-2 focus:outline-none',
+      isDark ? 'text-white placeholder:text-white/40' : 'text-black placeholder:text-black/40',
+    ];
 
     const renderInputField = () => {
       switch (type) {
@@ -146,16 +151,23 @@ const Input = forwardRef<AnimatedIputRef, InputProps>(
           </label>
         )}
         <div className="h-fit overflow-hidden pb-px">
-          <div ref={inputRef} className="translate-y-24">
+          <div ref={inputRef} className={clsx(animate && 'translate-y-24')}>
             {renderInputField()}
           </div>
           <div
             ref={lineRef}
-            className="absolute bottom-0 left-0 h-px w-full origin-left scale-x-0 bg-black"
+            className={clsx(
+              'absolute bottom-0 left-0 h-px w-full origin-left',
+              isDark ? 'bg-white' : 'bg-black',
+              animate && 'scale-x-0',
+            )}
           />
           <div
             ref={errorLineRef}
-            className="absolute bottom-0 left-0 h-px w-full origin-right scale-x-0 bg-red-500"
+            className={clsx(
+              'absolute bottom-0 left-0 h-px w-full origin-right bg-red-500',
+              animate && 'scale-x-0',
+            )}
           />
         </div>
         <div className="absolute -bottom-5 h-fit overflow-hidden">

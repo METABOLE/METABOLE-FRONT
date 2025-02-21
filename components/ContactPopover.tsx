@@ -127,11 +127,30 @@ const ContactPopover = () => {
         <Typography ref={titleRef} animate={true} className="p3 pt-4" variant="h3">
           Entrez votre e-mail et nous vous recontactons pour vous donner plus d'informations:
         </Typography>
-        <Input ref={inputsRefs.name} name="name" placeholder="John Doe" type="text" />
-        <Input ref={inputsRefs.email} name="email" placeholder="johndoe@company.com" type="email" />
-        <Input ref={inputsRefs.phone} name="phone" placeholder="+33 6 12 34 56 78" type="tel" />
+        <Input
+          ref={inputsRefs.name}
+          animate={true}
+          name="name"
+          placeholder="John Doe"
+          type="text"
+        />
+        <Input
+          ref={inputsRefs.email}
+          animate={true}
+          name="email"
+          placeholder="johndoe@company.com"
+          type="email"
+        />
+        <Input
+          ref={inputsRefs.phone}
+          animate={true}
+          name="phone"
+          placeholder="+33 6 12 34 56 78"
+          type="tel"
+        />
         <Input
           ref={inputsRefs.message}
+          animate={true}
           name="message"
           placeholder="Un message à nous transmettre ?"
           type="textarea"
