@@ -1,10 +1,15 @@
 body {
+  height: 100vh;
   background-color: var(--color-white);
   color: var(--color-black);
   font-size: 16px;
   font-family: var(--font-safiro-medium);
   scrollbar-width: thin;
-  height: 100vh;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 html {
@@ -18,22 +23,14 @@ html {
   }
 }
 
-.no-scrollbar {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-}
-
 .animated-text span {
   display: inline-block;
 }
 
 .cube {
+  transform-style: preserve-3d;
   perspective: 1000px;
   perspective-origin: center;
-  transform-style: preserve-3d;
 }
 
 .front {
