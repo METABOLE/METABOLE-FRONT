@@ -29,8 +29,21 @@ const Footer = () => {
     });
   });
 
+  useGSAP(() => {
+    gsap.to(wrapperRef.current, {
+      scrollTrigger: {
+        scrub: 1,
+      },
+      y: 0,
+      ease: 'power1.inOut',
+    });
+  }, []);
+
   return (
-    <footer ref={wrapperRef} className="px-x-half-default fixed bottom-0 h-48 w-screen">
+    <footer
+      ref={wrapperRef}
+      className="px-x-half-default fixed bottom-0 h-48 w-screen translate-y-36"
+    >
       <div
         className="px-x-half-default relative h-full overflow-hidden rounded-t-3xl bg-black text-white"
         onMouseLeave={resetHaloPosition}

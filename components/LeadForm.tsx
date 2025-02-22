@@ -4,7 +4,7 @@ import { useGSAP } from '@gsap/react';
 import clsx from 'clsx';
 import gsap from 'gsap';
 import { forwardRef, useImperativeHandle, useRef, useState } from 'react';
-import { IconArrow } from './Icons';
+import { IconArrow, IconQuestionMark } from './Icons';
 import Typography, { AnimatedTypoRef } from './Typography';
 
 interface LeadFormProps {
@@ -134,13 +134,16 @@ const LeadForm = forwardRef<AnimatedLeadFormRef, LeadFormProps>(({ className, is
 
   return (
     <div ref={wrapperRef} className={className}>
-      <Typography
-        ref={ref ? typographyRef : null}
-        className={clsx('p3 mb-3', isDark ? 'text-black' : 'text-white')}
-        variant="h3"
-      >
-        {isFrench ? 'Rejoignez notre newsletter ' : 'Join our newsletter '}
-      </Typography>
+      <div className="flex items-center gap-5 pb-3">
+        <Typography
+          ref={ref ? typographyRef : null}
+          className={clsx('p3', isDark ? 'text-black' : 'text-white')}
+          variant="h3"
+        >
+          {isFrench ? 'Rejoignez notre newsletter ' : 'Join our newsletter '}
+        </Typography>
+        <IconQuestionMark color={COLORS.YELLOW} />
+      </div>
 
       <form onSubmit={handleSubmit}>
         <div className="relative flex items-center overflow-hidden">

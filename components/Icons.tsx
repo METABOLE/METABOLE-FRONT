@@ -144,3 +144,23 @@ export const IconCross = forwardRef<SVGSVGElement, IconProps>(
     </svg>
   ),
 );
+
+export const IconQuestionMark = forwardRef<SVGSVGElement, IconProps>(
+  ({ color = COLORS.WHITE, ...props }, ref) => (
+    <svg
+      ref={ref}
+      {...props}
+      fill="none"
+      height="19"
+      viewBox="0 0 19 19"
+      width="19"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect height="18" rx="9" stroke={color} width="18" x="0.5" y="0.5" />
+      <path
+        d="M8.45656 11.514C8.45656 10.618 8.86256 10.128 9.28256 9.75L10.1646 8.98C10.5286 8.658 10.8086 8.378 10.8086 7.804C10.8086 7.132 10.2766 6.6 9.43656 6.6C8.63856 6.6 8.06456 7.132 8.06456 7.888C8.06456 8.14 8.12056 8.322 8.19056 8.49L6.48256 8.182C6.45456 8.042 6.42656 7.888 6.42656 7.734C6.42656 6.138 7.71456 5.018 9.43656 5.018C11.4666 5.018 12.5726 6.376 12.5726 7.804C12.5726 8.812 12.0266 9.428 11.4386 9.932L10.6966 10.562C10.4026 10.828 10.1646 11.08 10.1646 11.57V11.948H8.45656V11.514ZM8.28856 15V12.9H10.2906V15H8.28856Z"
+        fill={color}
+      />
+    </svg>
+  ),
+);
