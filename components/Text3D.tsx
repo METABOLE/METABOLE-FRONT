@@ -9,7 +9,7 @@ interface Text3DProps {
   intensity?: number;
 }
 
-const Text3D = ({ children, className, intensity = 20 }: Text3DProps) => {
+const Div3D = ({ children, className, intensity = 20 }: Text3DProps) => {
   const textRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
@@ -17,7 +17,7 @@ const Text3D = ({ children, className, intensity = 20 }: Text3DProps) => {
 
     const handleMouseMove = (e: MouseEvent) => {
       gsap.to(textRef.current, {
-        duration: 0.5,
+        duration: 0.8,
         rotateY: (e.clientX / window.innerWidth - 0.5) * 2 * intensity,
         rotateX: -(e.clientY / window.innerHeight - 0.5) * 2 * intensity,
         transformPerspective: 500,
@@ -33,7 +33,7 @@ const Text3D = ({ children, className, intensity = 20 }: Text3DProps) => {
   }, [intensity]);
 
   return (
-    <span
+    <div
       ref={textRef}
       className={clsx('inline-block', className)}
       style={{
@@ -42,8 +42,8 @@ const Text3D = ({ children, className, intensity = 20 }: Text3DProps) => {
       }}
     >
       {children}
-    </span>
+    </div>
   );
 };
 
-export default Text3D;
+export default Div3D;

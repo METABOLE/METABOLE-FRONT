@@ -15,9 +15,19 @@ const ScreenLoader = () => {
       .to(children, {
         scaleY: 0,
         duration: 0.8,
-        stagger: 0.1,
+        stagger: 0,
         ease: 'power2.inOut',
       })
+      .to(
+        children,
+        {
+          opacity: 0,
+          duration: 0.3,
+          stagger: 0,
+          ease: 'power2.inOut',
+        },
+        '-=0.3',
+      )
       .set(wrapperRef.current, {
         display: 'none',
       });
