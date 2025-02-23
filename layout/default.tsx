@@ -1,7 +1,7 @@
+import InstancedField from '@/components/CrossBackground/Scene';
 import FloatingHalo from '@/components/FloatingHalo';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
-import InstancedField from '@/components/InstancedField';
 import ScreenLoader from '@/components/ScreenLoader';
 import { AppProvider } from '@/providers/root';
 import gsap from 'gsap';
