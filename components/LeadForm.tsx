@@ -6,6 +6,7 @@ import gsap from 'gsap';
 import { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import { IconArrow, IconQuestionMark } from './Icons';
 import Typography, { AnimatedTypoRef } from './Typography';
+import Hint from './Hint';
 
 interface LeadFormProps {
   className?: string;
@@ -21,6 +22,7 @@ export interface AnimatedLeadFormRef {
 const LeadForm = forwardRef<AnimatedLeadFormRef, LeadFormProps>(({ className, isDark }, ref) => {
   const typographyRef = useRef<AnimatedTypoRef>(null);
   const wrapperRef = useRef(null);
+  const containerRef = useRef(null);
   const inputRef = useRef(null);
   const lineRef = useRef(null);
   const arrowRef = useRef(null);
@@ -134,7 +136,7 @@ const LeadForm = forwardRef<AnimatedLeadFormRef, LeadFormProps>(({ className, is
 
   return (
     <div ref={wrapperRef} className={className}>
-      <div className="flex items-center gap-5 pb-3">
+      <div ref={containerRef} className="flex items-center gap-5 pb-3">
         <Typography
           ref={ref ? typographyRef : null}
           className={clsx('p3', isDark ? 'text-black' : 'text-white')}
@@ -142,7 +144,13 @@ const LeadForm = forwardRef<AnimatedLeadFormRef, LeadFormProps>(({ className, is
         >
           {isFrench ? 'Rejoignez notre newsletter ' : 'Join our newsletter '}
         </Typography>
-        <IconQuestionMark color={COLORS.YELLOW} />
+        <button>
+          <IconQuestionMark color={COLORS.YELLOW} />
+        </button>
+        <Hint container={containerRef}>
+          On spamme pas ! Un mail par trimestre, pour vous transmettre des news et du contenu
+          intéressant !
+        </Hint>
       </div>
 
       <form onSubmit={handleSubmit}>

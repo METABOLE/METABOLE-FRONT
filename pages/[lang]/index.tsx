@@ -19,8 +19,11 @@ export default function Home() {
 
   return (
     <div className="fixed inset-0 flex h-screen w-screen flex-col">
-      <section ref={textRef} className="px-x-default flex h-full flex-col justify-center">
-        <Div3D className="w-full md:w-2/3" intensity={3}>
+      <section
+        ref={textRef}
+        className="px-x-default flex h-full w-full flex-col justify-center text-center"
+      >
+        <Div3D className="text-center" intensity={3}>
           {isFrench ? (
             <h1>
               Studio créatif qui concoit des{' '}
@@ -70,8 +73,6 @@ export default function Home() {
           </p>
         </Div3D>
       </section>
-      {/* <Analytics />
-      <SpeedInsights /> */}
     </div>
   );
 }

@@ -3,6 +3,7 @@ import FloatingHalo from '@/components/FloatingHalo';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import ScreenLoader from '@/components/ScreenLoader';
+import { useEnvironment } from '@/hooks/useEnvironment';
 import { AppProvider } from '@/providers/root';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -12,6 +13,8 @@ import { ReactNode } from 'react';
 gsap.registerPlugin(ScrollTrigger);
 
 const Layout = ({ children }: { children: ReactNode }) => {
+  const { isProd } = useEnvironment();
+
   return (
     <AppProvider>
       <Head>
@@ -19,7 +22,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
         {/* <script src="https://unpkg.com/react-scan/dist/auto.global.js"></script> */}
       </Head>
       <Header />
-      <ScreenLoader />
+      {isProd && <ScreenLoader />}
       <main className="h-[140vh]">{children}</main>
       <Footer />
       <InstancedField />
@@ -28,7 +31,6 @@ const Layout = ({ children }: { children: ReactNode }) => {
         from="#1b17ee"
         to="#f1f2ff00"
       />
-      {/* <InstancedField /> */}
       {/* <Analytics />
       <SpeedInsights /> */}
     </AppProvider>

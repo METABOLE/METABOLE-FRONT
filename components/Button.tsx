@@ -172,7 +172,7 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
         .to(
           textRef.current,
           {
-            color: COLORS.BLACK,
+            color: color === 'primary' ? COLORS.BLACK : COLORS.WHITE,
           },
           '<',
         );
@@ -187,8 +187,8 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
       <DynamicElement
         ref={wrapperButtonRef}
         className={clsx(
-          'label group/button inline-block h-11 w-fit cursor-pointer overflow-hidden rounded-full text-black backdrop-blur-xl',
-          color === 'primary' ? 'bg-[#C5C4FF]/30' : 'bg-[#8887B0]/30',
+          'label group/button inline-block h-11 w-fit cursor-pointer overflow-hidden rounded-full backdrop-blur-xl',
+          color === 'primary' ? 'bg-blur-glass text-black' : 'bg-blue text-white',
           `origin-${transformOrigin}`,
           className,
         )}
@@ -203,7 +203,8 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
         <div
           ref={backgroudButtonRef}
           className={clsx(
-            'bg-blue absolute top-full h-22 w-[150%] -translate-x-1/8 rounded-[100%]',
+            'absolute top-full h-22 w-[150%] -translate-x-1/8 rounded-[100%]',
+            color === 'primary' ? 'bg-blue' : 'bg-black',
           )}
         />
         <div

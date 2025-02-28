@@ -117,7 +117,7 @@ const ContactPopover = () => {
   return (
     <div
       ref={wrapperRef}
-      className="border-red relative h-11 w-fit overflow-hidden rounded-3xl bg-[#C5C4FF]/30 text-black backdrop-blur-xl"
+      className="border-red bg-blur-glass relative h-11 w-fit overflow-hidden rounded-3xl text-black backdrop-blur-xl"
       onMouseEnter={() => !isOpen && playAnim()}
     >
       <button ref={buttonOpenRef} className="label h-11 w-full px-6 text-left">
