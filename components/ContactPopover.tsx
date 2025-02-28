@@ -5,9 +5,12 @@ import { useRef, useState } from 'react';
 import Button, { AnimatedButtonRef } from './Button';
 import Input, { AnimatedIputRef } from './Input';
 import Typography, { AnimatedTypoRef } from './Typography';
+import { IconCross } from './Icons';
+import { COLORS } from '@/types';
 
 const ContactPopover = () => {
   const buttonOpenRef = useRef(null);
+  const buttonCloseRef = useRef(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<AnimatedTypoRef>(null);
   const inputsRefs = {
@@ -56,6 +59,15 @@ const ContactPopover = () => {
         },
         '<',
       )
+      .to(
+        buttonCloseRef.current,
+        {
+          scale: 1,
+          ease: 'elastic.out',
+          duration: 1.2,
+        },
+        '<',
+      )
       .set(containerRef.current, {
         width: '100%',
         height: '100%',
@@ -81,6 +93,10 @@ const ContactPopover = () => {
       .add(() => inputsRefs.email.current?.reverse(), '+=0.1')
       .add(() => inputsRefs.name.current?.reverse(), '+=0.1')
       .add(textAnimationTitle)
+      .to(buttonCloseRef.current, {
+        scale: 0,
+        duration: 0.3,
+      })
       .to(
         containerRef.current,
         {
@@ -117,12 +133,19 @@ const ContactPopover = () => {
   return (
     <div
       ref={wrapperRef}
-      className="border-red bg-blur-glass relative h-11 w-fit overflow-hidden rounded-3xl text-black backdrop-blur-xl"
-      onMouseEnter={() => !isOpen && playAnim()}
+      className="border-red bg-blur-glass relative h-11 w-[117px] overflow-hidden rounded-3xl text-black backdrop-blur-xl"
+      onClick={() => !isOpen && playAnim()}
     >
-      <button ref={buttonOpenRef} className="label h-11 w-full px-6 text-left">
-        CONTACT
-      </button>
+      <div ref={buttonOpenRef} className="flex h-11 items-center justify-between px-6">
+        <button className="label w-full text-left">CONTACT</button>
+        <button
+          ref={buttonCloseRef}
+          className="scale-0 rotate-45 cursor-pointer"
+          onClick={closeAnim}
+        >
+          <IconCross color={COLORS.BLUE} />
+        </button>
+      </div>
       <div ref={containerRef} className="flex h-fit w-0 flex-col gap-8 overflow-hidden px-8">
         <Typography ref={titleRef} animate={true} className="p3 pt-4" variant="h3">
           Entrez votre e-mail et nous vous recontactons pour vous donner plus d'informations:

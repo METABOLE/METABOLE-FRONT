@@ -4,9 +4,9 @@ import { useGSAP } from '@gsap/react';
 import clsx from 'clsx';
 import gsap from 'gsap';
 import { forwardRef, useImperativeHandle, useRef, useState } from 'react';
+import Hint from './Hint';
 import { IconArrow, IconQuestionMark } from './Icons';
 import Typography, { AnimatedTypoRef } from './Typography';
-import Hint from './Hint';
 
 interface LeadFormProps {
   className?: string;
@@ -136,7 +136,7 @@ const LeadForm = forwardRef<AnimatedLeadFormRef, LeadFormProps>(({ className, is
 
   return (
     <div ref={wrapperRef} className={className}>
-      <div ref={containerRef} className="flex items-center gap-5 pb-3">
+      <div className="flex items-center gap-5 pb-3">
         <Typography
           ref={ref ? typographyRef : null}
           className={clsx('p3', isDark ? 'text-black' : 'text-white')}
@@ -144,13 +144,22 @@ const LeadForm = forwardRef<AnimatedLeadFormRef, LeadFormProps>(({ className, is
         >
           {isFrench ? 'Rejoignez notre newsletter ' : 'Join our newsletter '}
         </Typography>
-        <button>
+        <button ref={containerRef} className="cursor-help">
           <IconQuestionMark color={COLORS.YELLOW} />
+          <Hint container={containerRef} isLeft={true}>
+            {isFrench ? (
+              <p>
+                On ne spamme pas : <strong>1 mail tous les 3 mois</strong>, avec des news et du
+                contenu utile !
+              </p>
+            ) : (
+              <p>
+                We don’t spam: <strong>1 email every 3 months</strong>, with news and useful
+                content!
+              </p>
+            )}
+          </Hint>
         </button>
-        <Hint container={containerRef}>
-          On spamme pas ! Un mail par trimestre, pour vous transmettre des news et du contenu
-          intéressant !
-        </Hint>
       </div>
 
       <form onSubmit={handleSubmit}>

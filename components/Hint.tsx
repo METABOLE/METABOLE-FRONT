@@ -1,13 +1,16 @@
 import { useGSAP } from '@gsap/react';
-import { ReactNode, RefObject, useEffect, useRef } from 'react';
+import clsx from 'clsx';
 import gsap from 'gsap';
+import { ReactNode, RefObject, useEffect, useRef } from 'react';
 
 const Hint = ({
   children,
   container,
+  isLeft,
 }: {
   children: ReactNode;
   container: RefObject<HTMLElement | null>;
+  isLeft?: boolean;
 }) => {
   const containerHintRef = useRef(null);
   const wrapperHintRef = useRef<HTMLDivElement>(null);
@@ -66,8 +69,8 @@ const Hint = ({
     const wrapperRect = wrapperHintRef.current.getBoundingClientRect();
 
     gsap.to(containerHintRef.current, {
-      x: x + 10,
-      y: y - wrapperRect.height + 10,
+      x: x + (isLeft ? -10 : 10),
+      y: y - wrapperRect.height - 40,
       duration: 0.3,
       ease: 'power2.out',
     });
@@ -91,14 +94,28 @@ const Hint = ({
   }, [container]);
 
   return (
-    <div ref={containerHintRef} className="pointer-events-none fixed z-50 h-fit -translate-y-full">
+    <div
+      ref={containerHintRef}
+      className={clsx(
+        'pointer-events-none fixed z-50 h-fit',
+        isLeft ? '-translate-x-full' : 'translate-x-full',
+      )}
+    >
       <div
         ref={wrapperHintRef}
-        className="bg-blur-glass flex w-[250px] shrink origin-bottom-left -translate-y-full scale-0 items-center overflow-hidden rounded-3xl rounded-bl-none p-5 backdrop-blur-xl"
+        className={clsx(
+          'bg-blur-glass flex w-[250px] shrink scale-0 overflow-hidden rounded-3xl p-5 backdrop-blur-xl',
+          isLeft
+            ? 'origin-bottom-right -translate-x-full rounded-br-none'
+            : 'origin-bottom-left rounded-bl-none',
+        )}
       >
         <div
           ref={textHintRef}
-          className="p3 inline w-fit shrink -translate-x-3 pt-0.5 !text-black opacity-0"
+          className={clsx(
+            'p3 inline w-fit shrink pt-0.5 text-left !text-black opacity-0',
+            isLeft ? 'translate-x-3' : '-translate-x-3',
+          )}
         >
           {children}
         </div>
