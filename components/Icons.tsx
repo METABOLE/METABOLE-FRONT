@@ -139,8 +139,8 @@ export const IconCross = forwardRef<SVGSVGElement, IconProps>(
       width="14"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <line stroke={color} stroke-width="2" x1="14" y1="7.5" y2="7.5" />
-      <line stroke={color} stroke-width="2" x1="7" x2="7" y1="14.5" y2="0.5" />
+      <line stroke={color} strokeWidth="2" x1="14" y1="7.5" y2="7.5" />
+      <line stroke={color} strokeWidth="2" x1="7" x2="7" y1="14.5" y2="0.5" />
     </svg>
   ),
 );
