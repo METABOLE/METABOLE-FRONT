@@ -1,9 +1,9 @@
-import { ContactData } from '@/types/contact.type';
+import { ContactFormData } from '@/types/contact.type';
 import { instance } from './config';
 
-export const postContactForm = async (formData: ContactData) => {
+export const postContactForm = async (formData: ContactFormData) => {
   try {
-    const response = await instance.post<ContactData>('/contact/send', formData);
+    const response = await instance.post<ContactFormData>('/contact/send', formData);
     return response.data;
   } catch (error) {
     if (error instanceof Error) {

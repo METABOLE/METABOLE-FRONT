@@ -1,7 +1,8 @@
-export interface ContactData {
-  firstName?: string;
+export interface ContactFormData {
+  name?: string;
+  email: string;
   phone?: string;
   message?: string;
-  email: string;
+  consentMarketing: boolean;
   language: 'fr' | 'en';
 }

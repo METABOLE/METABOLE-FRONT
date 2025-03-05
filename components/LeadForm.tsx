@@ -193,7 +193,7 @@ const LeadForm = forwardRef<AnimatedLeadFormRef, LeadFormProps>(({ className, is
             )}
             onChange={(e) => setEmail(e.target.value)}
           />
-          <button ref={arrowRef} aria-label="Send" className="ml-4" type="submit">
+          <button ref={arrowRef} aria-label="Send" className="ml-4 cursor-pointer" type="submit">
             <IconArrow className="rotate-45" color={isDark ? COLORS.BLACK : COLORS.WHITE} />
           </button>
           <div

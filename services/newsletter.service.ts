@@ -1,6 +1,5 @@
-import { ContactData } from '@/types/contact.type';
-import { instance } from './config';
 import { NewsletterSubscribeData, NewsletterUnsubscribeData } from '@/types/newsletter.type';
+import { instance } from './config';
 
 export const postUnsubscribeNewsletter = async (formData: NewsletterUnsubscribeData) => {
   try {
@@ -17,7 +16,7 @@ export const postUnsubscribeNewsletter = async (formData: NewsletterUnsubscribeD
   }
 };
 
-export const postSubscribeNewsletter = async (formData: ContactData) => {
+export const postSubscribeNewsletter = async (formData: NewsletterSubscribeData) => {
   try {
     const response = await instance.post<NewsletterSubscribeData>(
       '/newsletter/subscribe',

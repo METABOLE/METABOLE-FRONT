@@ -1,17 +1,21 @@
 import { useClickOutside } from '@/hooks/useClickOutside';
+import { postContactForm } from '@/services/contact.service';
+import { COLORS } from '@/types';
+import { ContactFormData } from '@/types/contact.type';
 import { useGSAP } from '@gsap/react';
+import { useMutation } from '@tanstack/react-query';
 import gsap from 'gsap';
 import { useRef, useState } from 'react';
 import Button, { AnimatedButtonRef } from './Button';
+import { IconCross } from './Icons';
 import Input, { AnimatedIputRef } from './Input';
 import Typography, { AnimatedTypoRef } from './Typography';
-import { IconCross } from './Icons';
-import { COLORS } from '@/types';
+import { useLanguage } from '@/providers/language.provider';
 
 const ContactPopover = () => {
   const buttonOpenRef = useRef(null);
   const buttonCloseRef = useRef(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLFormElement>(null);
   const titleRef = useRef<AnimatedTypoRef>(null);
   const inputsRefs = {
     name: useRef<AnimatedIputRef>(null),
@@ -22,8 +26,16 @@ const ContactPopover = () => {
   const buttonSubmitRef = useRef<AnimatedButtonRef>(null);
 
   const [isOpen, setIsOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    message: '',
+    consentMarketing: false,
+  });
 
   const { contextSafe } = useGSAP();
+  const { isFrench } = useLanguage();
 
   const playAnim = contextSafe(() => {
     if (!containerRef.current || !titleRef.current) return;
@@ -45,7 +57,7 @@ const ContactPopover = () => {
       .to(
         wrapperRef.current,
         {
-          height: 564,
+          height: 604,
           duration: 0.4,
           ease: 'power3.inOut',
         },
@@ -64,6 +76,7 @@ const ContactPopover = () => {
         {
           scale: 1,
           ease: 'elastic.out',
+          rotate: 45,
           duration: 1.2,
         },
         '<',
@@ -95,6 +108,7 @@ const ContactPopover = () => {
       .add(textAnimationTitle)
       .to(buttonCloseRef.current, {
         scale: 0,
+        rotate: 0,
         duration: 0.3,
       })
       .to(
@@ -130,6 +144,25 @@ const ContactPopover = () => {
 
   const wrapperRef = useClickOutside<HTMLDivElement>(closeAnim);
 
+  const sendContact = useMutation({
+    mutationFn: ({ name, email, phone, message, consentMarketing, language }: ContactFormData) =>
+      postContactForm({ name, email, phone, message, consentMarketing, language }),
+    onSuccess: (data) => {
+      console.log('Inscription réussie', data);
+    },
+    onError: (error) => {
+      console.error("Erreur d'inscription", error);
+    },
+  });
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    sendContact.mutate({
+      ...formData,
+      language: isFrench ? 'fr' : 'en',
+    });
+  };
+
   return (
     <div
       ref={wrapperRef}
@@ -146,7 +179,11 @@ const ContactPopover = () => {
           <IconCross color={COLORS.BLUE} />
         </button>
       </div>
-      <div ref={containerRef} className="flex h-fit w-0 flex-col gap-8 overflow-hidden px-8">
+      <form
+        ref={containerRef}
+        className="flex h-fit w-0 flex-col gap-8 overflow-hidden px-8"
+        onSubmit={handleSubmit}
+      >
         <Typography ref={titleRef} animate={true} className="p3 pt-4" variant="h3">
           Entrez votre e-mail et nous vous recontactons pour vous donner plus d'informations:
         </Typography>
@@ -156,6 +193,8 @@ const ContactPopover = () => {
           name="name"
           placeholder="John Doe"
           type="text"
+          value={formData.name}
+          onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))}
         />
         <Input
           ref={inputsRefs.email}
@@ -163,6 +202,8 @@ const ContactPopover = () => {
           name="email"
           placeholder="johndoe@company.com"
           type="email"
+          value={formData.email}
+          onChange={(e) => setFormData((prev) => ({ ...prev, email: e.target.value }))}
         />
         <Input
           ref={inputsRefs.phone}
@@ -170,6 +211,8 @@ const ContactPopover = () => {
           name="phone"
           placeholder="+33 6 12 34 56 78"
           type="tel"
+          value={formData.phone}
+          onChange={(e) => setFormData((prev) => ({ ...prev, phone: e.target.value }))}
         />
         <Input
           ref={inputsRefs.message}
@@ -177,13 +220,32 @@ const ContactPopover = () => {
           name="message"
           placeholder="Un message à nous transmettre ?"
           type="textarea"
+          value={formData.message}
+          onChange={(e) => setFormData((prev) => ({ ...prev, message: e.target.value }))}
         />
+        <div className="flex items-center gap-2">
+          <input
+            checked={formData.consentMarketing}
+            className="h-4 w-4 rounded-md"
+            id="consentMarketing"
+            name="consentMarketing"
+            type="checkbox"
+            onChange={(e) =>
+              setFormData((prev) => ({ ...prev, consentMarketing: e.target.checked }))
+            }
+          />
+          <label className="label text-black-70" htmlFor="consentMarketing">
+            {isFrench
+              ? "Je souhaite m'inscrire à la newsletter et je consens à recevoir des communications marketing"
+              : 'I want to subscribe to the newsletter and I consent to receiving marketing communications'}
+          </label>
+        </div>
         <div className="w-fit pt-4">
           <Button ref={buttonSubmitRef} className="" color="secondary">
             Contact
           </Button>
         </div>
-      </div>
+      </form>
     </div>
   );
 };
