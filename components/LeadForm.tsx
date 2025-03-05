@@ -1,6 +1,9 @@
 import { useLanguage } from '@/providers/language.provider';
+import { postSubscribeNewsletter } from '@/services/newsletter.service';
 import { COLORS } from '@/types';
+import { NewsletterSubscribeData } from '@/types/newsletter.type';
 import { useGSAP } from '@gsap/react';
+import { useMutation } from '@tanstack/react-query';
 import clsx from 'clsx';
 import gsap from 'gsap';
 import { forwardRef, useImperativeHandle, useRef, useState } from 'react';
@@ -128,10 +131,24 @@ const LeadForm = forwardRef<AnimatedLeadFormRef, LeadFormProps>(({ className, is
     reverse,
   }));
 
+  const subscribeNewsletter = useMutation({
+    mutationFn: ({ email, language }: NewsletterSubscribeData) =>
+      postSubscribeNewsletter({ email, language }),
+    onSuccess: (data) => {
+      console.log('Inscription réussie', data);
+      setEmail('');
+    },
+    onError: (error) => {
+      console.error("Erreur d'inscription", error);
+    },
+  });
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // TODO: Handle form submission
-    console.log(email);
+    subscribeNewsletter.mutate({
+      email: email,
+      language: isFrench ? 'fr' : 'en',
+    });
   };
 
   return (
