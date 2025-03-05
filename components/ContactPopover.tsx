@@ -11,6 +11,7 @@ import { IconCross } from './Icons';
 import Input, { AnimatedIputRef } from './Input';
 import Typography, { AnimatedTypoRef } from './Typography';
 import { useLanguage } from '@/providers/language.provider';
+import { useMagnet, useResetMagnet } from '@/hooks/useMagnet';
 
 const ContactPopover = () => {
   const buttonOpenRef = useRef(null);
@@ -22,6 +23,7 @@ const ContactPopover = () => {
     email: useRef<AnimatedIputRef>(null),
     phone: useRef<AnimatedIputRef>(null),
     message: useRef<AnimatedIputRef>(null),
+    consentMarketing: useRef<HTMLDivElement>(null),
   };
   const buttonSubmitRef = useRef<AnimatedButtonRef>(null);
 
@@ -34,16 +36,26 @@ const ContactPopover = () => {
     consentMarketing: false,
   });
 
+  // État pour suivre si une animation est en cours
+  const [isAnimating, setIsAnimating] = useState(false);
+
   const { contextSafe } = useGSAP();
   const { isFrench } = useLanguage();
 
   const playAnim = contextSafe(() => {
-    if (!containerRef.current || !titleRef.current) return;
+    // Ne pas démarrer une nouvelle animation si une autre est en cours
+    if (isAnimating || !containerRef.current || !titleRef.current) return;
+
+    // Marquer le début de l'animation
+    setIsAnimating(true);
 
     const textAnimationTitle = titleRef.current.play();
 
     gsap
-      .timeline()
+      .timeline({
+        // Lorsque l'animation est terminée, on peut à nouveau déclencher des animations
+        onComplete: () => setIsAnimating(false),
+      })
       .add(() => setIsOpen(true))
       .to(
         wrapperRef.current,
@@ -90,17 +102,38 @@ const ContactPopover = () => {
       .add(() => inputsRefs.email.current?.play(), '-=1.1')
       .add(() => inputsRefs.phone.current?.play(), '-=1')
       .add(() => inputsRefs.message.current?.play(), '-=0.9')
+      .to(
+        inputsRefs.consentMarketing.current,
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.3,
+        },
+        '-=0.5',
+      )
       .add(() => buttonSubmitRef.current?.play(), '-=0.4');
   });
 
   const closeAnim = contextSafe(() => {
-    if (!containerRef.current || !titleRef.current) return;
+    // Ne pas démarrer une nouvelle animation si une autre est en cours
+    if (isAnimating || !containerRef.current || !titleRef.current) return;
+
+    // Marquer le début de l'animation
+    setIsAnimating(true);
 
     const textAnimationTitle = titleRef.current.reverse();
 
     gsap
-      .timeline()
+      .timeline({
+        // Lorsque l'animation est terminée, on peut à nouveau déclencher des animations
+        onComplete: () => setIsAnimating(false),
+      })
       .add(() => buttonSubmitRef.current?.reverse())
+      .to(inputsRefs.consentMarketing.current, {
+        opacity: 0,
+        y: -20,
+        duration: 0.3,
+      })
       .add(() => inputsRefs.message.current?.reverse(), '+=0.1')
       .add(() => inputsRefs.phone.current?.reverse(), '+=0.1')
       .add(() => inputsRefs.email.current?.reverse(), '+=0.1')
@@ -142,18 +175,35 @@ const ContactPopover = () => {
       .add(() => setIsOpen(false));
   });
 
-  const wrapperRef = useClickOutside<HTMLDivElement>(closeAnim);
+  // Utilisons useClickOutside mais en veillant à ne pas déclencher si une animation est en cours
+  const handleClickOutside = contextSafe(() => {
+    if (!isAnimating && isOpen) {
+      closeAnim();
+    }
+  });
+
+  const wrapperRef = useClickOutside<HTMLDivElement>(handleClickOutside);
 
   const sendContact = useMutation({
     mutationFn: ({ name, email, phone, message, consentMarketing, language }: ContactFormData) =>
       postContactForm({ name, email, phone, message, consentMarketing, language }),
-    onSuccess: (data) => {
-      console.log('Inscription réussie', data);
+    onSuccess: () => {
+      resetForm();
     },
     onError: (error) => {
       console.error("Erreur d'inscription", error);
     },
   });
+
+  const resetForm = () => {
+    setFormData({
+      name: '',
+      email: '',
+      phone: '',
+      message: '',
+      consentMarketing: false,
+    });
+  };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -167,16 +217,26 @@ const ContactPopover = () => {
     <div
       ref={wrapperRef}
       className="border-red bg-blur-glass relative h-11 w-[117px] overflow-hidden rounded-3xl text-black backdrop-blur-xl"
-      onClick={() => !isOpen && playAnim()}
+      onClick={() => !isOpen && !isAnimating && playAnim()}
+      onMouseMove={(e) => useMagnet(e, 0.8)}
+      onMouseOut={(e) => useResetMagnet(e)}
     >
-      <div ref={buttonOpenRef} className="flex h-11 items-center justify-between px-6">
-        <button className="label w-full text-left">CONTACT</button>
+      <div
+        ref={buttonOpenRef}
+        className="flex h-11 cursor-pointer items-center justify-between px-6"
+        onMouseMove={(e) => !isOpen && useMagnet(e, 0.4)}
+        onMouseOut={(e) => useResetMagnet(e)}
+      >
+        <button className="label w-full cursor-pointer text-left">CONTACT</button>
         <button
           ref={buttonCloseRef}
           className="scale-0 rotate-45 cursor-pointer"
-          onClick={closeAnim}
+          onClick={(e) => {
+            e.stopPropagation();
+            if (!isAnimating) closeAnim();
+          }}
         >
-          <IconCross color={COLORS.BLUE} />
+          <IconCross className="transition-transform hover:rotate-90" color={COLORS.BLUE} />
         </button>
       </div>
       <form
@@ -185,7 +245,9 @@ const ContactPopover = () => {
         onSubmit={handleSubmit}
       >
         <Typography ref={titleRef} animate={true} className="p3 pt-4" variant="h3">
-          Entrez votre e-mail et nous vous recontactons pour vous donner plus d'informations:
+          {isFrench
+            ? "Entrez votre e-mail et nous vous recontactons pour vous donner plus d'informations:"
+            : "Enter your email and we'll get back to you with more information:"}
         </Typography>
         <Input
           ref={inputsRefs.name}
@@ -218,12 +280,15 @@ const ContactPopover = () => {
           ref={inputsRefs.message}
           animate={true}
           name="message"
-          placeholder="Un message à nous transmettre ?"
+          placeholder={isFrench ? 'Un message à nous transmettre ?' : 'A message to send us?'}
           type="textarea"
           value={formData.message}
           onChange={(e) => setFormData((prev) => ({ ...prev, message: e.target.value }))}
         />
-        <div className="flex items-center gap-2">
+        <div
+          ref={inputsRefs.consentMarketing}
+          className="flex -translate-y-5 items-center gap-2 opacity-0"
+        >
           <input
             checked={formData.consentMarketing}
             className="h-4 w-4 rounded-md"

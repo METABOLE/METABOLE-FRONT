@@ -55,7 +55,7 @@ export default function Home() {
                 />
               </span>
             </a>{' '}
-            {isFrench ? ' et  ' : ' and  '}
+            &{' '}
             <a
               className="text-blue group relative"
               href="https://www.jeromebezeau.com/"
