@@ -56,7 +56,10 @@ const ScreenLoader = () => {
 
   return (
     <div ref={wrapperRef} className="fixed inset-0 z-[990] grid h-screen w-screen grid-rows-4">
-      <LogoIcon ref={logoRef} className="absolute top-1/2 left-1/2 -translate-1/2 scale-0" />
+      <LogoIcon
+        ref={logoRef}
+        className="absolute top-1/2 left-1/2 h-20 w-20 -translate-1/2 scale-0"
+      />
       {Array.from({ length: 4 }).map((_, i) => (
         <div
           key={i}

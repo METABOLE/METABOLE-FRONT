@@ -6,21 +6,21 @@ body {
   font-family: var(--font-safiro-medium);
 }
 
-// html {
-//   scrollbar-width: none;
-//   -ms-overflow-style: none;
-//   ::-moz-selection {
-//     background: var(--color-blue);
-//     color: var(--color-white);
-//   }
-//   ::selection {
-//     background: var(--color-blue);
-//     color: var(--color-white);
-//   }
-//   &::-webkit-scrollbar {
-//     display: none;
-//   }
-// }
+html {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  ::-moz-selection {
+    background: var(--color-blue);
+    color: var(--color-white);
+  }
+  ::selection {
+    background: var(--color-blue);
+    color: var(--color-white);
+  }
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
 
 .animated-text * {
   display: inline-block;

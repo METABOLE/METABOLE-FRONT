@@ -76,35 +76,11 @@ export const LogoTypo = forwardRef<SVGSVGElement, IconProps>(
 );
 export const LogoIcon = forwardRef<SVGSVGElement, IconProps>(
   ({ color = COLORS.BLUE, ...props }, ref) => (
-    <svg
-      ref={ref}
-      fill="none"
-      height="57"
-      viewBox="0 0 61 57"
-      width="61"
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}
-    >
-      <g clipPath="url(#clip0_365_37585)">
-        <path
-          d="M20.6545 55.7604L10.0466 1.20558V55.7604H-0.00292969V-0.0705566H20.0165L30.5446 54.4843L41.2322 -0.0705566H61.2516V55.7604H51.202V1.20558L40.5942 55.7604H20.6545Z"
-          fill={color}
-        />
-      </g>
-      <g clipPath="url(#clip1_365_37585)">
-        <path
-          d="M-9.84547 55.7604L-20.4534 1.20558V55.7604H-30.5029V-0.0705566H-10.4835L0.0445865 54.4843L10.7322 -0.0705566H30.7516V55.7604H20.702V1.20558L10.0942 55.7604H-9.84547Z"
-          fill={color}
-        />
-      </g>
-      <defs>
-        <clipPath id="clip0_365_37585">
-          <rect fill="white" height="56.4944" transform="translate(30.5)" width="30.5001" />
-        </clipPath>
-        <clipPath id="clip1_365_37585">
-          <rect fill="white" height="56.4944" width="30.5001" />
-        </clipPath>
-      </defs>
+    <svg {...props} ref={ref} fill="none" viewBox="0 0 525 477" xmlns="http://www.w3.org/2000/svg">
+      <rect fill={color} height="476.392" width="85.5793" x="439.305" />
+      <rect fill={color} height="476.392" width="85.5793" x="176.861" />
+      <path d="M355.154 0H440.734L348.023 476.392H262.443L355.154 0Z" fill={color} />
+      <path d="M92.7109 0H178.29L85.5793 476.392H0L92.7109 0Z" fill={color} />
     </svg>
   ),
 );

@@ -1,4 +1,5 @@
 import Div3D from '@/components/Text3D';
+import { useEnvironment } from '@/hooks/useEnvironment';
 import { useMousePosition } from '@/hooks/useMousePosition';
 import { useLanguage } from '@/providers/language.provider';
 import { useGSAP } from '@gsap/react';
@@ -7,6 +8,7 @@ import { useRef } from 'react';
 
 export default function Home() {
   const { isFrench } = useLanguage();
+  const { isProd } = useEnvironment();
   const { x, y } = useMousePosition();
 
   const textRef = useRef(null);
@@ -23,80 +25,56 @@ export default function Home() {
   useGSAP(() => {
     if (!titleRef.current || !createdByRef.current) return;
 
-    const { children } = titleRef.current;
+    const allAnimElements = titleRef.current.querySelectorAll('span');
 
-    gsap.set([children[0], children[1], children[3]], {
-      x: 100,
-      opacity: 0,
+    allAnimElements.forEach((element) => {
+      if (element.classList.contains('anim-x')) {
+        gsap.set(element, {
+          x: 100,
+          opacity: 0,
+        });
+      } else if (element.classList.contains('anim-y')) {
+        gsap.set(element, {
+          y: 100,
+          opacity: 0,
+        });
+      }
     });
-    gsap.set([children[2], children[4]], {
-      y: 100,
-      opacity: 0,
-    });
+
     gsap.set(createdByRef.current.children, {
       y: 50,
+      opacity: 0,
     });
 
     gsap
       .timeline({
-        delay: 1,
+        delay: isProd ? 4 : 0.4,
         defaults: {
           ease: 'power2.out',
+          duration: 0.8,
           opacity: 1,
         },
       })
-      .to(children[0], {
+      .to(allAnimElements, {
         x: 0,
         y: 0,
-        duration: 0.4,
+        stagger: 0.1,
       })
-      .to(
-        children[1],
-        {
-          x: 0,
-          y: 0,
-          duration: 0.6,
-        },
-        '-=0.2',
-      )
-      .to(
-        children[2],
-        {
-          x: 0,
-          y: 0,
-          duration: 0.8,
-        },
-        '-=0.4',
-      )
-      .to(
-        children[3],
-        {
-          x: 0,
-          y: 0,
-          duration: 1,
-        },
-        '-=0.6',
-      )
-      .to(
-        children[4],
-        {
-          x: 0,
-          y: 0,
-          duration: 1.2,
-        },
-        '-=0.8',
-      )
       .to(
         createdByRef.current.children,
         {
           y: 0,
-          duration: 1.2,
+          opacity: 1,
+          duration: 1,
           stagger: 0.05,
         },
-        '-=1',
+        '+=0.4',
       )
+      .set(createdByRef.current, {
+        overflow: 'visible',
+      })
       .play();
-  }, [isFrench]);
+  }, []);
 
   return (
     <div className="fixed inset-0 flex h-screen w-screen flex-col">
@@ -107,19 +85,37 @@ export default function Home() {
         <Div3D className="text-left whitespace-pre-wrap md:text-center" intensity={3}>
           {isFrench ? (
             <h1 ref={titleRef} className="animated-text">
-              <span>Studio créatif</span>
-              <span> qui concoit des</span>
-              <strong className="text-blue font-normal">expériences web</strong>
-              <span> uniques et immersives pour les </span>
-              <strong className="text-blue font-normal">entreprises avant-gardistes.</strong>
+              <span className="anim-x">Studio </span>
+              <span className="anim-x">créatif </span>
+              <span className="anim-x">qui </span>
+              <span className="anim-x">concoit </span>
+              <span className="anim-x">des </span>
+              <span className="anim-y text-blue">expériences </span>
+              <span className="anim-y text-blue">web </span>
+              <span className="anim-x">uniques </span>
+              <span className="anim-x">et </span>
+              <span className="anim-x">immersives </span>
+              <span className="anim-x">pour </span>
+              <span className="anim-x">les </span>
+              <span className="anim-y text-blue">entreprises </span>
+              <span className="anim-y text-blue">avant-</span>
+              <span className="anim-y text-blue">gardistes.</span>
             </h1>
           ) : (
             <h1 ref={titleRef} className="animated-text">
-              <span>Creative studio </span>
-              <span>that builds </span>
-              <strong className="text-blue font-normal">unique and immersive</strong>
-              <span> web experiences for </span>
-              <strong className="text-blue font-normal">forward-thinking companies.</strong>
+              <span className="anim-x">Creative </span>
+              <span className="anim-x">studio </span>
+              <span className="anim-x">that </span>
+              <span className="anim-x">builds </span>
+              <span className="anim-y text-blue">unique </span>
+              <span className="anim-y text-blue">and </span>
+              <span className="anim-y text-blue">immersive </span>
+              <span className="anim-x">web </span>
+              <span className="anim-x">experiences </span>
+              <span className="anim-x">for </span>
+              <span className="anim-y text-blue">forward-</span>
+              <span className="anim-y text-blue">thinking </span>
+              <span className="anim-y text-blue">companies. </span>
             </h1>
           )}
           <p ref={createdByRef} className="animated-text mt-10 overflow-hidden whitespace-pre-wrap">
@@ -158,4 +154,17 @@ export default function Home() {
       </section>
     </div>
   );
+}
+
+export async function getStaticPaths() {
+  return {
+    paths: [{ params: { lang: 'en' } }, { params: { lang: 'fr' } }],
+    fallback: false,
+  };
+}
+
+export async function getStaticProps() {
+  return {
+    props: {},
+  };
 }

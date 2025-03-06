@@ -18,10 +18,10 @@ const Layout = ({ children }: { children: ReactNode }) => {
   const { isFrench } = useLanguage();
 
   useEffect(() => {
-    const defaultTitle = 'Metabole Studio';
+    const defaultTitle = 'Metabole STUDIO';
     const alternateTitles = isFrench
-      ? ['🔥 Revenez-nous voir !', '✨ Metabole vous attend...']
-      : ['🔥 Come back to see us!', '✨ Metabole is waiting for you...'];
+      ? ['Expériences web uniques', 'Un studio créatif']
+      : ['Unique web experiences', 'A creative studio'];
 
     let titleIndex = 0;
     let intervalId: number | null = null;
@@ -48,8 +48,8 @@ const Layout = ({ children }: { children: ReactNode }) => {
   return (
     <AppProvider>
       <Head>
-        <title>METABOLE STUDIO</title>
-        {/* <script src="https://unpkg.com/react-scan/dist/auto.global.js"></script> */}
+        <title>Metabole STUDIO</title>
+        {/* <script src="https://unpkg.com/react-scan/dist/auto.global.js" /> */}
       </Head>
       <Header />
       {isProd && <ScreenLoader />}

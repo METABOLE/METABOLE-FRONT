@@ -57,7 +57,7 @@ const Footer = () => {
         />
         <div className="relative flex h-full flex-col gap-11 lg:flex-row lg:items-center lg:justify-between lg:gap-5">
           <div className="flex w-full flex-col gap-3 lg:flex-row lg:items-center lg:gap-10">
-            <p className="xl:w-[100px]">Paris</p>
+            <p className="xl:w-[165px]">Paris | Rotterdam</p>
             <div className="xl:w-[100px]">
               <Time isDark={true} />
             </div>
