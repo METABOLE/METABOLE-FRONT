@@ -6,36 +6,22 @@ body {
   font-family: var(--font-safiro-medium);
 }
 
-html {
-  ::-moz-selection {
-    background: var(--color-blue);
-    color: var(--color-white);
-  }
-  ::selection {
-    background: var(--color-blue);
-    color: var(--color-white);
-  }
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-}
+// html {
+//   scrollbar-width: none;
+//   -ms-overflow-style: none;
+//   ::-moz-selection {
+//     background: var(--color-blue);
+//     color: var(--color-white);
+//   }
+//   ::selection {
+//     background: var(--color-blue);
+//     color: var(--color-white);
+//   }
+//   &::-webkit-scrollbar {
+//     display: none;
+//   }
+// }
 
 .animated-text span {
   display: inline-block;
-}
-
-.cube {
-  transform-style: preserve-3d;
-  perspective: 1000px;
-  perspective-origin: center;
-}
-
-.front {
-  transform: translateZ(-8px);
-}
-
-.bottom {
-  transform: rotateX(90deg) translateZ(-8px);
 }

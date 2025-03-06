@@ -1,10 +1,21 @@
 @import 'tailwindcss';
 
 :root {
+  /* SPACINGS */
   --x-default: clamp(20px, 8vw, 100px);
   --y-default: clamp(20px, 8vh, 100px);
   --x-half-default: calc(var(--x-default) / 2);
   --y-half-default: calc(var(--y-default) / 2);
+
+  /* FONTS */
+  --font-safiro-bold: 'Safiro Bold', sans-serif;
+  --font-safiro-bold-italic: 'Safiro Bold Italic', sans-serif;
+  --font-safiro-medium: 'Safiro Medium', sans-serif;
+  --font-safiro-medium-italic: 'Safiro Medium Italic', sans-serif;
+  --font-safiro-regular: 'Safiro Regular', sans-serif;
+  --font-safiro-regular-italic: 'Safiro Regular Italic', sans-serif;
+  --font-safiro-semibold: 'Safiro SemiBold', sans-serif;
+  --font-safiro-semibold-italic: 'Safiro SemiBold Italic', sans-serif;
 }
 
 @theme {
@@ -25,17 +36,17 @@
   --color-yellow-70: #caee17b3;
   --color-yellow-30: #caee1759;
   /* COLORS (tertiary) */
-  --color-blur-glass: #C5C4FF4d;
+  --color-blur-glass: #c5c4ff4d;
 
   /* FONTS */
-  --font-safiro-bold: 'Safiro Bold', sans-serif;
-  --font-safiro-bold-italic: 'Safiro Bold Italic', sans-serif;
-  --font-safiro-medium: 'Safiro Medium', sans-serif;
-  --font-safiro-medium-italic: 'Safiro Medium Italic', sans-serif;
-  --font-safiro-regular: 'Safiro Regular', sans-serif;
-  --font-safiro-regular-italic: 'Safiro Regular Italic', sans-serif;
-  --font-safiro-semibold: 'Safiro SemiBold', sans-serif;
-  --font-safiro-semibold-italic: 'Safiro SemiBold Italic', sans-serif;
+  --font-safiro-bold: var(--font-safiro-bold);
+  --font-safiro-bold-italic: var(--font-safiro-bold-italic);
+  --font-safiro-medium: var(--font-safiro-medium);
+  --font-safiro-medium-italic: var(--font-safiro-medium-italic);
+  --font-safiro-regular: var(--font-safiro-regular);
+  --font-safiro-regular-italic: var(--font-safiro-regular-italic);
+  --font-safiro-semibold: var(--font-safiro-semibold);
+  --font-safiro-semibold-italic: var(--font-safiro-semibold-italic);
 
   /* PADDING */
   --padding-x-default: var(--x-default);

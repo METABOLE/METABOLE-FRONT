@@ -21,9 +21,9 @@ export default function Home() {
     <div className="fixed inset-0 flex h-screen w-screen flex-col">
       <section
         ref={textRef}
-        className="px-x-default flex h-full w-full flex-col justify-center text-center"
+        className="px-x-default flex h-full w-full flex-col justify-center text-left md:text-center"
       >
-        <Div3D className="text-center" intensity={3}>
+        <Div3D className="text-left md:text-center" intensity={3}>
           {isFrench ? (
             <h1>
               Studio créatif qui concoit des{' '}

@@ -1,7 +1,10 @@
 import { useClickOutside } from '@/hooks/useClickOutside';
+import { useMagnet, useResetMagnet } from '@/hooks/useMagnet';
+import { useLanguage } from '@/providers/language.provider';
 import { postContactForm } from '@/services/contact.service';
 import { COLORS } from '@/types';
 import { ContactFormData } from '@/types/contact.type';
+import { clampVw } from '@/utils/clamp.utils';
 import { useGSAP } from '@gsap/react';
 import { useMutation } from '@tanstack/react-query';
 import gsap from 'gsap';
@@ -10,8 +13,6 @@ import Button, { AnimatedButtonRef } from './Button';
 import { IconCross } from './Icons';
 import Input, { AnimatedIputRef } from './Input';
 import Typography, { AnimatedTypoRef } from './Typography';
-import { useLanguage } from '@/providers/language.provider';
-import { useMagnet, useResetMagnet } from '@/hooks/useMagnet';
 
 const ContactPopover = () => {
   const buttonOpenRef = useRef(null);
@@ -36,31 +37,27 @@ const ContactPopover = () => {
     consentMarketing: false,
   });
 
-  // État pour suivre si une animation est en cours
   const [isAnimating, setIsAnimating] = useState(false);
 
   const { contextSafe } = useGSAP();
   const { isFrench } = useLanguage();
 
   const playAnim = contextSafe(() => {
-    // Ne pas démarrer une nouvelle animation si une autre est en cours
     if (isAnimating || !containerRef.current || !titleRef.current) return;
 
-    // Marquer le début de l'animation
     setIsAnimating(true);
 
     const textAnimationTitle = titleRef.current.play();
 
     gsap
       .timeline({
-        // Lorsque l'animation est terminée, on peut à nouveau déclencher des animations
         onComplete: () => setIsAnimating(false),
       })
       .add(() => setIsOpen(true))
       .to(
         wrapperRef.current,
         {
-          width: 430,
+          width: window.innerWidth - clampVw(20, 8, 100) * 2,
           duration: 0.3,
           ease: 'power3.inOut',
         },
@@ -115,17 +112,14 @@ const ContactPopover = () => {
   });
 
   const closeAnim = contextSafe(() => {
-    // Ne pas démarrer une nouvelle animation si une autre est en cours
     if (isAnimating || !containerRef.current || !titleRef.current) return;
 
-    // Marquer le début de l'animation
     setIsAnimating(true);
 
     const textAnimationTitle = titleRef.current.reverse();
 
     gsap
       .timeline({
-        // Lorsque l'animation est terminée, on peut à nouveau déclencher des animations
         onComplete: () => setIsAnimating(false),
       })
       .add(() => buttonSubmitRef.current?.reverse())
@@ -175,7 +169,6 @@ const ContactPopover = () => {
       .add(() => setIsOpen(false));
   });
 
-  // Utilisons useClickOutside mais en veillant à ne pas déclencher si une animation est en cours
   const handleClickOutside = contextSafe(() => {
     if (!isAnimating && isOpen) {
       closeAnim();
@@ -216,7 +209,7 @@ const ContactPopover = () => {
   return (
     <div
       ref={wrapperRef}
-      className="border-red bg-blur-glass relative h-11 w-[117px] overflow-hidden rounded-3xl text-black backdrop-blur-xl"
+      className="border-red bg-blur-glass absolute right-0 h-11 w-[117px] max-w-[430px] overflow-hidden rounded-3xl text-black backdrop-blur-xl md:relative"
       onClick={() => !isOpen && !isAnimating && playAnim()}
       onMouseMove={(e) => useMagnet(e, 0.8)}
       onMouseOut={(e) => useResetMagnet(e)}
@@ -299,7 +292,7 @@ const ContactPopover = () => {
               setFormData((prev) => ({ ...prev, consentMarketing: e.target.checked }))
             }
           />
-          <label className="label text-black-70" htmlFor="consentMarketing">
+          <label className="disclaimer text-black-70" htmlFor="consentMarketing">
             {isFrench
               ? "Je souhaite m'inscrire à la newsletter et je consens à recevoir des communications marketing"
               : 'I want to subscribe to the newsletter and I consent to receiving marketing communications'}

@@ -2,14 +2,12 @@ import { useLanguage } from '@/providers/language.provider';
 import { postSubscribeNewsletter } from '@/services/newsletter.service';
 import { COLORS } from '@/types';
 import { NewsletterSubscribeData } from '@/types/newsletter.type';
-import { useGSAP } from '@gsap/react';
 import { useMutation } from '@tanstack/react-query';
 import clsx from 'clsx';
-import gsap from 'gsap';
-import { forwardRef, useImperativeHandle, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import Hint from './Hint';
 import { IconArrow, IconQuestionMark } from './Icons';
-import Typography, { AnimatedTypoRef } from './Typography';
+import Typography from './Typography';
 
 interface LeadFormProps {
   className?: string;
@@ -17,13 +15,7 @@ interface LeadFormProps {
   animate?: boolean;
 }
 
-export interface AnimatedLeadFormRef {
-  play: () => gsap.core.TimelineChild;
-  reverse: () => gsap.core.TimelineChild;
-}
-
-const LeadForm = forwardRef<AnimatedLeadFormRef, LeadFormProps>(({ className, isDark }, ref) => {
-  const typographyRef = useRef<AnimatedTypoRef>(null);
+const LeadForm = ({ className, isDark }: LeadFormProps) => {
   const wrapperRef = useRef(null);
   const containerRef = useRef(null);
   const inputRef = useRef(null);
@@ -32,110 +24,13 @@ const LeadForm = forwardRef<AnimatedLeadFormRef, LeadFormProps>(({ className, is
 
   const [email, setEmail] = useState('');
 
-  const { contextSafe } = useGSAP();
   const { isFrench } = useLanguage();
-
-  useGSAP(() => {
-    if (!ref) return;
-    gsap.set(lineRef.current, { scaleX: 0, transformOrigin: 'left' });
-    gsap.set(inputRef.current, { yPercent: 100 });
-    gsap.set(arrowRef.current, { x: -50, y: 50 });
-    gsap.set(wrapperRef.current, { opacity: 1 });
-  }, []);
-
-  const play = contextSafe(() => {
-    if (!typographyRef.current) return gsap.timeline();
-
-    gsap.killTweensOf([typographyRef.current, lineRef.current, inputRef.current, arrowRef.current]);
-
-    return gsap
-      .timeline()
-      .set(lineRef.current, { scaleX: 0, transformOrigin: 'left' })
-      .set(inputRef.current, { yPercent: 100 })
-      .set(arrowRef.current, { x: -50, y: 50 })
-      .set(wrapperRef.current, { opacity: 1 })
-      .add(typographyRef.current.play())
-      .to(
-        lineRef.current,
-        {
-          transformOrigin: 'left',
-          scaleX: 1,
-          duration: 0.8,
-          ease: 'power2.out',
-        },
-        '<',
-      )
-      .to(
-        inputRef.current,
-        {
-          yPercent: 0,
-          duration: 0.8,
-          ease: 'power2.out',
-        },
-        '<',
-      )
-      .to(
-        arrowRef.current,
-        {
-          x: 0,
-          y: 0,
-          duration: 0.4,
-          ease: 'power2.in',
-        },
-        '<',
-      );
-  });
-
-  const reverse = contextSafe(() => {
-    if (!typographyRef.current) return gsap.timeline();
-
-    gsap.killTweensOf([typographyRef.current, lineRef.current, inputRef.current, arrowRef.current]);
-
-    return gsap
-      .timeline()
-      .add(typographyRef.current.reverse())
-      .to(
-        arrowRef.current,
-        {
-          x: 50,
-          y: -50,
-          duration: 0.4,
-          ease: 'power2.in',
-        },
-        '<',
-      )
-      .to(
-        lineRef.current,
-        {
-          scaleX: 0,
-          transformOrigin: 'right',
-          duration: 0.6,
-          ease: 'power2.in',
-        },
-        '<',
-      )
-      .to(
-        inputRef.current,
-        {
-          yPercent: 100,
-          duration: 0.6,
-          ease: 'power2.in',
-        },
-        '<',
-      )
-      .set(wrapperRef.current, { opacity: 0 });
-  });
-
-  useImperativeHandle(ref, () => ({
-    play,
-    reverse,
-  }));
 
   const subscribeNewsletter = useMutation({
     mutationFn: ({ email, language }: NewsletterSubscribeData) =>
       postSubscribeNewsletter({ email, language }),
     onSuccess: (data) => {
-      console.log('Inscription réussie', data);
+      console.info('Inscription réussie', data);
       setEmail('');
     },
     onError: (error) => {
@@ -152,13 +47,9 @@ const LeadForm = forwardRef<AnimatedLeadFormRef, LeadFormProps>(({ className, is
   };
 
   return (
-    <div ref={wrapperRef} className={className}>
+    <div ref={wrapperRef} className={clsx(className, 'relative')}>
       <div className="flex items-center gap-5 pb-3">
-        <Typography
-          ref={ref ? typographyRef : null}
-          className={clsx('p3', isDark ? 'text-black' : 'text-white')}
-          variant="h3"
-        >
+        <Typography className={clsx('p3', isDark ? 'text-black' : 'text-white')} variant="h3">
           {isFrench ? 'Rejoignez notre newsletter ' : 'Join our newsletter '}
         </Typography>
         <button ref={containerRef} className="cursor-help">
@@ -205,8 +96,14 @@ const LeadForm = forwardRef<AnimatedLeadFormRef, LeadFormProps>(({ className, is
           />
         </div>
       </form>
+
+      <p className="text-white-30 disclaimer w-full pt-2">
+        {isFrench
+          ? 'En vous inscrivant, vous consentez à recevoir notre newsletter. Désinscription possible à tout moment.'
+          : 'By signing up, you consent to receive our newsletter. Unsubscribe at any time.'}
+      </p>
     </div>
   );
-});
+};
 
 export default LeadForm;
