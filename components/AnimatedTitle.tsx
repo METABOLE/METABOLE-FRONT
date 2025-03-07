@@ -7,7 +7,7 @@ interface AnimatedTitleProps {
 }
 
 const AnimatedWord = ({ text, isBlue }: AnimatedTitleProps) => (
-  <span className={clsx(isBlue ? 'overflow-hidden' : '')}>
+  <span className="overflow-hidden">
     <span className={clsx(isBlue ? 'anim-y text-blue' : 'anim-x', 'inline-block pb-2')}>
       {text}
     </span>

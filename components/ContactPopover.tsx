@@ -5,6 +5,7 @@ import { postContactForm } from '@/services/contact.service';
 import { COLORS } from '@/types';
 import { ContactFormData } from '@/types/contact.type';
 import { clampVw } from '@/utils/clamp.utils';
+import { isEmail } from '@/utils/validation.utils';
 import { useGSAP } from '@gsap/react';
 import { useMutation } from '@tanstack/react-query';
 import gsap from 'gsap';
@@ -35,6 +36,10 @@ const ContactPopover = () => {
     phone: '',
     message: '',
     consentMarketing: false,
+  });
+  const [errors, setErrors] = useState({
+    name: '',
+    email: '',
   });
 
   const [isAnimating, setIsAnimating] = useState(false);
@@ -115,6 +120,7 @@ const ContactPopover = () => {
     if (isAnimating || !containerRef.current || !titleRef.current) return;
 
     setIsAnimating(true);
+    resetErrors();
 
     const textAnimationTitle = titleRef.current.reverse();
 
@@ -182,6 +188,7 @@ const ContactPopover = () => {
       postContactForm({ name, email, phone, message, consentMarketing, language }),
     onSuccess: () => {
       resetForm();
+      resetErrors();
     },
     onError: (error) => {
       console.error("Erreur d'inscription", error);
@@ -198,8 +205,36 @@ const ContactPopover = () => {
     });
   };
 
+  const resetErrors = () => {
+    setErrors({
+      name: '',
+      email: '',
+    });
+  };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!formData.name)
+      setErrors((prev) => ({
+        ...prev,
+        name: isFrench ? 'Veuillez entrer un nom' : 'Please enter a name',
+      }));
+
+    if (!formData.email)
+      setErrors((prev) => ({
+        ...prev,
+        email: isFrench ? 'Veuillez entrer votre email' : 'Please enter your email',
+      }));
+
+    if (!isEmail(formData.email))
+      setErrors((prev) => ({
+        ...prev,
+        email: isFrench ? 'Veuillez entrer un email valide' : 'Please enter a valid email',
+      }));
+
+    if (errors.name || errors.email || !isEmail(formData.email))
+      throw new Error('Formulaire invalide');
+
     sendContact.mutate({
       ...formData,
       language: isFrench ? 'fr' : 'en',
@@ -245,24 +280,58 @@ const ContactPopover = () => {
         <Input
           ref={inputsRefs.name}
           animate={true}
+          errorMessage={errors.name}
+          isDark={true}
           name="name"
           placeholder="John Doe"
           type="text"
           value={formData.name}
-          onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))}
+          onBlur={() => {
+            !formData.name &&
+              setErrors((prev) => ({
+                ...prev,
+                name: isFrench ? 'Veuillez entrer un nom' : 'Please enter a name',
+              }));
+          }}
+          onChange={(e) => {
+            setFormData((prev) => ({ ...prev, name: e.target.value }));
+            e.target.value &&
+              setErrors((prev) => ({
+                ...prev,
+                name: '',
+              }));
+          }}
         />
         <Input
           ref={inputsRefs.email}
           animate={true}
+          errorMessage={errors.email}
+          isDark={true}
           name="email"
           placeholder="johndoe@company.com"
           type="email"
           value={formData.email}
-          onChange={(e) => setFormData((prev) => ({ ...prev, email: e.target.value }))}
+          onBlur={() => {
+            isEmail(formData.email) ||
+              setErrors((prev) => ({
+                ...prev,
+                email: isFrench ? 'Veuillez entrer un email valide' : 'Please enter a valid email',
+              }));
+            !formData.email &&
+              setErrors((prev) => ({
+                ...prev,
+                email: isFrench ? 'Veuillez entrer votre email' : 'Please enter your email',
+              }));
+          }}
+          onChange={(e) => {
+            isEmail(e.target.value) && setErrors((prev) => ({ ...prev, email: '' }));
+            setFormData((prev) => ({ ...prev, email: e.target.value }));
+          }}
         />
         <Input
           ref={inputsRefs.phone}
           animate={true}
+          isDark={true}
           name="phone"
           placeholder="+33 6 12 34 56 78"
           type="tel"
@@ -272,6 +341,7 @@ const ContactPopover = () => {
         <Input
           ref={inputsRefs.message}
           animate={true}
+          isDark={true}
           name="message"
           placeholder={isFrench ? 'Un message à nous transmettre ?' : 'A message to send us?'}
           type="textarea"

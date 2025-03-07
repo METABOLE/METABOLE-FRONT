@@ -78,7 +78,7 @@ export default function Home() {
 
     gsap
       .timeline({
-        delay: isProd ? 4 : 0.4,
+        delay: isProd ? 4 : 0.5,
         defaults: {
           ease: 'power2.out',
           duration: 0.8,
@@ -88,7 +88,7 @@ export default function Home() {
       .to(allAnimElements, {
         y: 0,
         x: 0,
-        stagger: 0.1,
+        stagger: 0.05,
       })
       .to(
         createdByRef.current.children,
@@ -98,7 +98,7 @@ export default function Home() {
           duration: 1,
           stagger: 0.05,
         },
-        '+=0.4',
+        '-=0.8',
       )
       .set(createdByRef.current, {
         overflow: 'visible',
@@ -126,7 +126,7 @@ export default function Home() {
                 <img
                   alt=""
                   className="animation-float h-full w-full object-contain"
-                  src="/images/matteo.png"
+                  src="/images/matteo.jpg"
                 />
               </span>
             </a>
@@ -141,7 +141,7 @@ export default function Home() {
                 <img
                   alt=""
                   className="animation-float h-full w-full object-contain"
-                  src="/images/jerome.png"
+                  src="/images/jerome.jpg"
                 />
               </span>
             </a>

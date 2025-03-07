@@ -102,7 +102,10 @@ const LeadForm = ({ className, isDark }: LeadFormProps) => {
             type="email"
             value={email}
             onBlur={() => {
-              isEmail(email) || setError(isFrench ? 'Email invalide' : 'Invalid email');
+              isEmail(email) ||
+                setError(
+                  isFrench ? 'Veuillez entrer un email valide' : 'Please enter a valid email',
+                );
               !email &&
                 setError(isFrench ? 'Veuillez entrer votre email' : 'Please enter your email');
             }}
