@@ -1,7 +1,7 @@
 import { useGSAP } from '@gsap/react';
 import clsx from 'clsx';
 import gsap from 'gsap';
-import { forwardRef, ReactNode, useImperativeHandle, useRef, useState } from 'react';
+import { forwardRef, ReactNode, Ref, useImperativeHandle, useRef, useState } from 'react';
 
 type InputProps = {
   name: string;
@@ -21,6 +21,7 @@ export interface AnimatedIputRef {
   play: () => void;
   reverse: () => void;
   reset: () => void;
+  blur: () => void;
 }
 
 const Input = forwardRef<AnimatedIputRef, InputProps>(
@@ -43,7 +44,10 @@ const Input = forwardRef<AnimatedIputRef, InputProps>(
     },
     ref,
   ) => {
-    const inputRef = useRef(null);
+    const wrapperInputRef = useRef(null);
+    const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | null>(
+      null,
+    );
     const lineRef = useRef(null);
     const errorLineRef = useRef(null);
     const errorMessageRef = useRef(null);
@@ -62,18 +66,18 @@ const Input = forwardRef<AnimatedIputRef, InputProps>(
       gsap
         .timeline()
         .fromTo(lineRef.current, { scaleX: 0 }, { scaleX: 1, duration: 1, ease: 'power2.out' })
-        .fromTo(inputRef.current, { y: 96 }, { y: 0, duration: 1, ease: 'power2.out' }, '<');
+        .fromTo(wrapperInputRef.current, { y: 96 }, { y: 0, duration: 1, ease: 'power2.out' }, '<');
     });
 
     const reverse = contextSafe(() => {
       gsap
         .timeline()
         .to(lineRef.current, { scaleX: 0, duration: 1, ease: 'power2.out' })
-        .to(inputRef.current, { y: 96, duration: 1, ease: 'power2.out' }, '-=0.8');
+        .to(wrapperInputRef.current, { y: 96, duration: 1, ease: 'power2.out' }, '-=0.8');
     });
 
     const reset = contextSafe(() => {
-      gsap.set(inputRef.current, { y: 96 });
+      gsap.set(wrapperInputRef.current, { y: 96 });
       gsap.set(lineRef.current, { scaleX: 0 });
     });
 
@@ -81,6 +85,10 @@ const Input = forwardRef<AnimatedIputRef, InputProps>(
       play,
       reverse,
       reset,
+      blur: () => {
+        if (!inputRef.current) return;
+        inputRef.current.blur();
+      },
     }));
 
     const createErrorTimeline = contextSafe(() => {
@@ -174,6 +182,7 @@ const Input = forwardRef<AnimatedIputRef, InputProps>(
         case 'textarea':
           return (
             <textarea
+              ref={inputRef as Ref<HTMLTextAreaElement>}
               id={name}
               placeholder={placeholder}
               value={value}
@@ -190,6 +199,7 @@ const Input = forwardRef<AnimatedIputRef, InputProps>(
         case 'select':
           return (
             <select
+              ref={inputRef as Ref<HTMLSelectElement>}
               id={name}
               value={value}
               className={clsx(
@@ -205,6 +215,7 @@ const Input = forwardRef<AnimatedIputRef, InputProps>(
         default:
           return (
             <input
+              ref={inputRef as Ref<HTMLInputElement>}
               id={name}
               placeholder={placeholder}
               type={type}
@@ -228,7 +239,7 @@ const Input = forwardRef<AnimatedIputRef, InputProps>(
           </label>
         )}
         <div className="h-fit overflow-hidden pb-px">
-          <div ref={inputRef} className={clsx(animate && 'translate-y-24')}>
+          <div ref={wrapperInputRef} className={clsx(animate && 'translate-y-24')}>
             {renderInputField()}
           </div>
           <div

@@ -8,7 +8,7 @@ import clsx from 'clsx';
 import { useRef, useState } from 'react';
 import Hint from './Hint';
 import { IconArrow, IconQuestionMark } from './Icons';
-import Input from './Input';
+import Input, { AnimatedIputRef } from './Input';
 import Typography from './Typography';
 
 interface LeadFormProps {
@@ -20,7 +20,7 @@ interface LeadFormProps {
 const LeadForm = ({ className, isDark }: LeadFormProps) => {
   const wrapperRef = useRef(null);
   const containerRef = useRef(null);
-  const inputRef = useRef(null);
+  const inputRef = useRef<AnimatedIputRef>(null);
   const arrowRef = useRef(null);
 
   const [email, setEmail] = useState('');
@@ -35,6 +35,7 @@ const LeadForm = ({ className, isDark }: LeadFormProps) => {
       postSubscribeNewsletter({ email, language }),
     onSuccess: (data) => {
       console.info('Inscription réussie', data);
+      inputRef.current?.blur();
       setIsLoading(false);
       setSuccess(isFrench ? 'Inscription réussie' : 'Subscription successful');
       setEmail('');
