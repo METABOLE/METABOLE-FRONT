@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { forwardRef } from 'react';
 
 interface AnimatedTitleProps {
@@ -6,8 +7,10 @@ interface AnimatedTitleProps {
 }
 
 const AnimatedWord = ({ text, isBlue }: AnimatedTitleProps) => (
-  <span className={isBlue ? 'overflow-hidden' : ''}>
-    <span className={`${isBlue ? 'anim-y text-blue' : 'anim-x'} inline-block pb-2`}>{text}</span>
+  <span className={clsx(isBlue ? 'overflow-hidden' : '')}>
+    <span className={clsx(isBlue ? 'anim-y text-blue' : 'anim-x', 'inline-block pb-2')}>
+      {text}
+    </span>
   </span>
 );
 

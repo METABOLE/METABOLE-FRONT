@@ -7,6 +7,9 @@ type InputProps = {
   name: string;
   label?: string;
   errorMessage?: string;
+  successMessage?: string;
+  isLoading?: boolean;
+  loadingDuration?: number;
   children?: ReactNode;
   animate?: boolean;
   isDark?: boolean;
@@ -30,6 +33,9 @@ const Input = forwardRef<AnimatedIputRef, InputProps>(
       required = false,
       value,
       errorMessage,
+      successMessage,
+      isLoading = false,
+      className,
       children,
       animate = false,
       isDark = false,
@@ -41,10 +47,16 @@ const Input = forwardRef<AnimatedIputRef, InputProps>(
     const lineRef = useRef(null);
     const errorLineRef = useRef(null);
     const errorMessageRef = useRef(null);
-    const timelineRef = useRef<gsap.core.Timeline | null>(null);
+    const successLineRef = useRef(null);
+    const successMessageRef = useRef(null);
+    const loaderLineRef = useRef(null);
+    const errorTimelineRef = useRef<gsap.core.Timeline | null>(null);
+    const successTimelineRef = useRef<gsap.core.Timeline | null>(null);
+    const loaderTimelineRef = useRef<gsap.core.Timeline | null>(null);
 
     const { contextSafe } = useGSAP();
     const [error, setError] = useState<string | undefined>(undefined);
+    const [success, setSuccess] = useState<string | undefined>(undefined);
 
     const play = contextSafe(() => {
       gsap
@@ -72,21 +84,21 @@ const Input = forwardRef<AnimatedIputRef, InputProps>(
     }));
 
     const createErrorTimeline = contextSafe(() => {
-      if (timelineRef.current) {
-        timelineRef.current.kill();
+      if (errorTimelineRef.current) {
+        errorTimelineRef.current.kill();
       }
 
-      timelineRef.current = gsap.timeline();
+      errorTimelineRef.current = gsap.timeline();
 
       if (errorMessage) {
-        timelineRef.current
+        errorTimelineRef.current
           .add(() => {
             setError(errorMessage);
           })
           .to(errorMessageRef.current, { y: 0, opacity: 1, duration: 0.5, ease: 'power2.out' })
           .to(errorLineRef.current, { scaleX: 1, duration: 0.5, ease: 'power2.out' }, '<');
       } else {
-        timelineRef.current
+        errorTimelineRef.current
           .to(errorMessageRef.current, { y: -16, opacity: 0, duration: 0.5, ease: 'power2.in' })
           .to(errorLineRef.current, { scaleX: 0, duration: 0.5, ease: 'power2.out' }, '<')
           .add(() => {
@@ -95,24 +107,81 @@ const Input = forwardRef<AnimatedIputRef, InputProps>(
       }
     });
 
+    const createSuccessTimeline = contextSafe(() => {
+      if (successTimelineRef.current) {
+        successTimelineRef.current.kill();
+      }
+
+      successTimelineRef.current = gsap.timeline();
+
+      if (successMessage) {
+        successTimelineRef.current
+          .add(() => {
+            setSuccess(successMessage);
+          })
+          .to(successMessageRef.current, { y: 0, opacity: 1, duration: 0.5, ease: 'power2.out' })
+          .to(successLineRef.current, { scaleX: 1, duration: 0.5, ease: 'power2.out' }, '<');
+      } else {
+        successTimelineRef.current
+          .to(successMessageRef.current, { y: -16, opacity: 0, duration: 0.5, ease: 'power2.in' })
+          .to(successLineRef.current, { scaleX: 0, duration: 0.5, ease: 'power2.out' }, '<')
+          .add(() => {
+            setSuccess(undefined);
+          });
+      }
+    });
+
     useGSAP(() => {
       createErrorTimeline();
     }, [errorMessage]);
 
-    const baseClasses = [
-      'p3 apparence-none w-full rounded-t-md rounded-b-none bg-transparent py-2  focus:pl-2 focus:outline-none',
-      isDark ? 'text-white placeholder:text-white/40' : 'text-black placeholder:text-black/40',
-    ];
+    useGSAP(() => {
+      createSuccessTimeline();
+    }, [successMessage]);
+
+    const createLoaderTimeline = contextSafe(() => {
+      if (loaderTimelineRef.current) {
+        loaderTimelineRef.current.kill();
+      }
+
+      loaderTimelineRef.current = gsap.timeline();
+
+      if (isLoading) {
+        loaderTimelineRef.current
+          .set(loaderLineRef.current, { scaleX: 0, opacity: 1, transformOrigin: 'left center' })
+          .to(loaderLineRef.current, { scaleX: 1, duration: 1.2, ease: 'power3.inOut' })
+          .to(loaderLineRef.current, {
+            scaleX: 0,
+            transformOrigin: 'right center',
+            duration: 1.2,
+            ease: 'power3.inOut',
+          })
+          .repeatDelay(0)
+          .repeat(-1);
+      } else {
+        loaderTimelineRef.current
+          .to(loaderLineRef.current, { opacity: 0, duration: 0.3, ease: 'power2.out' })
+          .set(loaderLineRef.current, { scaleX: 0 });
+      }
+    });
+
+    useGSAP(() => {
+      createLoaderTimeline();
+    }, [isLoading]);
 
     const renderInputField = () => {
       switch (type) {
         case 'textarea':
           return (
             <textarea
-              className={clsx(baseClasses, 'h-16 resize-none !transition-[padding,height]')}
               id={name}
               placeholder={placeholder}
               value={value}
+              className={clsx(
+                'p3 apparence-none w-full rounded-t-md rounded-b-none bg-transparent py-2 focus:pl-2 focus:outline-none',
+                isDark ? 'placeholder-black-30 !text-black' : 'placeholder-white-30 !text-white',
+                'h-16 resize-none !transition-[padding,height]',
+              )}
               data-lenis-prevent
               onChange={(e) => props.onChange?.(e)}
               {...props}
@@ -121,9 +190,13 @@ const Input = forwardRef<AnimatedIputRef, InputProps>(
         case 'select':
           return (
             <select
-              className={clsx(baseClasses, '!transition-[padding]')}
               id={name}
               value={value}
+              className={clsx(
+                'p3 apparence-none w-full rounded-t-md rounded-b-none bg-transparent py-2 focus:pl-2 focus:outline-none',
+                isDark ? 'placeholder-black-30 !text-black' : 'placeholder-white-30 !text-white',
+                '!transition-[padding]',
+              )}
               {...props}
             >
               {children}
@@ -132,11 +205,15 @@ const Input = forwardRef<AnimatedIputRef, InputProps>(
         default:
           return (
             <input
-              className={clsx(baseClasses, '!transition-[padding]')}
               id={name}
               placeholder={placeholder}
               type={type}
               value={value}
+              className={clsx(
+                'p3 apparence-none w-full rounded-t-md rounded-b-none bg-transparent py-2 focus:pl-2 focus:outline-none',
+                isDark ? 'placeholder-black-30 !text-black' : 'placeholder-white-30 !text-white',
+                '!transition-[padding]',
+              )}
               {...props}
             />
           );
@@ -144,7 +221,7 @@ const Input = forwardRef<AnimatedIputRef, InputProps>(
     };
 
     return (
-      <div className="relative flex flex-col gap-4">
+      <div className={clsx('relative flex flex-col gap-4', className)}>
         {label && (
           <label className="text2 cursor-pointer" htmlFor={name}>
             {label} {required && <span className="text-red-500">*</span>}
@@ -158,7 +235,7 @@ const Input = forwardRef<AnimatedIputRef, InputProps>(
             ref={lineRef}
             className={clsx(
               'absolute bottom-0 left-0 h-px w-full origin-left',
-              isDark ? 'bg-white' : 'bg-black',
+              isDark ? 'bg-black' : 'bg-white',
               animate && 'scale-x-0',
             )}
           />
@@ -169,10 +246,33 @@ const Input = forwardRef<AnimatedIputRef, InputProps>(
               animate && 'scale-x-0',
             )}
           />
+          <div
+            ref={successLineRef}
+            className={clsx(
+              'absolute bottom-0 left-0 h-px w-full origin-right bg-green-500',
+              animate && 'scale-x-0',
+            )}
+          />
+          <div
+            ref={loaderLineRef}
+            className={clsx(
+              'bg-blue absolute bottom-0 left-0 h-px w-full origin-left scale-x-0',
+              animate && 'scale-x-0',
+            )}
+          />
         </div>
-        <div className="absolute -bottom-5 h-fit overflow-hidden">
-          <p ref={errorMessageRef} className={clsx('-translate-y-4 text-xs text-red-500')}>
+        <div className="absolute -bottom-5 left-0 h-5 w-full overflow-hidden">
+          <p
+            ref={errorMessageRef}
+            className={clsx('absolute -translate-y-4 !text-xs text-red-500 opacity-0')}
+          >
             {error}
+          </p>
+          <p
+            ref={successMessageRef}
+            className={clsx('absolute -translate-y-4 !text-xs text-green-500 opacity-0')}
+          >
+            {success}
           </p>
         </div>
       </div>

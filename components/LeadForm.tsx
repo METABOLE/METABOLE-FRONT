@@ -2,11 +2,13 @@ import { useLanguage } from '@/providers/language.provider';
 import { postSubscribeNewsletter } from '@/services/newsletter.service';
 import { COLORS } from '@/types';
 import { NewsletterSubscribeData } from '@/types/newsletter.type';
+import { isEmail } from '@/utils/validation.utils';
 import { useMutation } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { useRef, useState } from 'react';
 import Hint from './Hint';
 import { IconArrow, IconQuestionMark } from './Icons';
+import Input from './Input';
 import Typography from './Typography';
 
 interface LeadFormProps {
@@ -19,10 +21,12 @@ const LeadForm = ({ className, isDark }: LeadFormProps) => {
   const wrapperRef = useRef(null);
   const containerRef = useRef(null);
   const inputRef = useRef(null);
-  const lineRef = useRef(null);
   const arrowRef = useRef(null);
 
   const [email, setEmail] = useState('');
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const { isFrench } = useLanguage();
 
@@ -31,15 +35,28 @@ const LeadForm = ({ className, isDark }: LeadFormProps) => {
       postSubscribeNewsletter({ email, language }),
     onSuccess: (data) => {
       console.info('Inscription réussie', data);
+      setIsLoading(false);
+      setSuccess(isFrench ? 'Inscription réussie' : 'Subscription successful');
       setEmail('');
+      setTimeout(() => setSuccess(''), 3000);
     },
     onError: (error) => {
       console.error("Erreur d'inscription", error);
+    },
+    onMutate: () => {
+      setIsLoading(true);
     },
   });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!email)
+      return setError(isFrench ? 'Veuillez entrer votre email' : 'Please enter your email');
+    if (!isEmail(email)) return setError(isFrench ? 'Email invalide' : 'Invalid email');
+
+    setError('');
+
     subscribeNewsletter.mutate({
       email: email,
       language: isFrench ? 'fr' : 'en',
@@ -71,33 +88,40 @@ const LeadForm = ({ className, isDark }: LeadFormProps) => {
       </div>
 
       <form onSubmit={handleSubmit}>
-        <div className="relative flex items-center overflow-hidden">
-          <input
+        <div className="relative flex items-center">
+          <Input
             ref={inputRef}
+            className={clsx('p3 w-full py-4')}
+            errorMessage={error}
+            isDark={isDark}
+            isLoading={isLoading}
             name="email"
             placeholder="johndoe@company.com"
+            successMessage={success}
             type="email"
             value={email}
-            className={clsx(
-              'p3 w-full py-4',
-              isDark ? 'placeholder-black-30 text-black' : 'placeholder-white-30 text-white',
-            )}
-            onChange={(e) => setEmail(e.target.value)}
+            onBlur={() => {
+              isEmail(email) || setError(isFrench ? 'Email invalide' : 'Invalid email');
+              !email &&
+                setError(isFrench ? 'Veuillez entrer votre email' : 'Please enter your email');
+            }}
+            onChange={(e) => {
+              isEmail(e.target.value) && setError('');
+              setEmail(e.target.value);
+            }}
           />
-          <button ref={arrowRef} aria-label="Send" className="ml-4 cursor-pointer" type="submit">
+          <button
+            ref={arrowRef}
+            aria-label="Send"
+            className="absolute right-0 ml-4 cursor-pointer"
+            type="submit"
+          >
             <IconArrow className="rotate-45" color={isDark ? COLORS.BLACK : COLORS.WHITE} />
           </button>
-          <div
-            ref={lineRef}
-            className={clsx(
-              'absolute bottom-0 left-0 h-px w-full origin-left',
-              isDark ? 'bg-black' : 'bg-white',
-            )}
-          />
         </div>
       </form>
 
-      <p className="text-white-30 disclaimer w-full pt-2">
+      <p className="text-white-30 disclaimer w-full pt-6">
         {isFrench
           ? 'En vous inscrivant, vous consentez à recevoir notre newsletter. Désinscription possible à tout moment.'
           : 'By signing up, you consent to receive our newsletter. Unsubscribe at any time.'}

@@ -35,7 +35,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
       if (document.hidden) {
         const [firstTitle] = alternateTitles;
         document.title = firstTitle;
-        intervalId = window.setInterval(changeTitle, 1500);
+        intervalId = window.setInterval(changeTitle, 3000);
       } else {
         document.title = defaultTitle;
         if (intervalId) {
