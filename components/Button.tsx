@@ -11,6 +11,7 @@ import {
   ReactNode,
   useImperativeHandle,
   useRef,
+  useState,
 } from 'react';
 
 interface BaseButtonProps {
@@ -61,6 +62,32 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
     const textRef = useRef(null);
 
     const { contextSafe } = useGSAP();
+
+    const [currentChild, setCurrentChild] = useState(children);
+
+    useGSAP(() => {
+      gsap
+        .timeline()
+        .to(textRef.current, {
+          y: -50,
+          opacity: 0,
+          duration: 0.15,
+          ease: 'power2.in',
+        })
+        .add(() => {
+          setCurrentChild(children);
+        })
+        .set(textRef.current, {
+          y: 50,
+          opacity: 0,
+        })
+        .to(textRef.current, {
+          y: 0,
+          opacity: 1,
+          duration: 0.15,
+          ease: 'power2.out',
+        });
+    }, [children]);
 
     useGSAP(() => {
       if (!ref) return;
@@ -216,7 +243,7 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
             ref={textRef}
             className="relative flex h-full w-full items-center justify-center px-6 whitespace-nowrap"
           >
-            {children}
+            {currentChild}
           </div>
         </div>
       </DynamicElement>

@@ -15,6 +15,13 @@ import { IconCross } from './Icons';
 import Input, { AnimatedIputRef } from './Input';
 import Typography, { AnimatedTypoRef } from './Typography';
 
+enum FORM_STATUS {
+  DEFAULT = 'DEFAULT',
+  SUCCESS = 'SUCCESS',
+  ERROR = 'ERROR',
+  PENDING = 'PENDING',
+}
+
 const ContactPopover = () => {
   const buttonOpenRef = useRef(null);
   const buttonCloseRef = useRef(null);
@@ -41,7 +48,7 @@ const ContactPopover = () => {
     name: '',
     email: '',
   });
-
+  const [formStatus, setFormStatus] = useState(FORM_STATUS.DEFAULT);
   const [isAnimating, setIsAnimating] = useState(false);
 
   const { contextSafe } = useGSAP();
@@ -189,8 +196,17 @@ const ContactPopover = () => {
     onSuccess: () => {
       resetForm();
       resetErrors();
+      setFormStatus(FORM_STATUS.SUCCESS);
+      setTimeout(() => {
+        setFormStatus(FORM_STATUS.DEFAULT);
+        if (!isAnimating) closeAnim();
+      }, 2000);
+    },
+    onMutate: () => {
+      setFormStatus(FORM_STATUS.PENDING);
     },
     onError: (error) => {
+      setFormStatus(FORM_STATUS.ERROR);
       console.error("Erreur d'inscription", error);
     },
   });
@@ -370,7 +386,13 @@ const ContactPopover = () => {
         </div>
         <div className="w-fit pt-4">
           <Button ref={buttonSubmitRef} className="" color="secondary">
-            Contact
+            {formStatus === FORM_STATUS.PENDING
+              ? 'Envoi en cours...'
+              : formStatus === FORM_STATUS.SUCCESS
+                ? 'Message envoyé'
+                : formStatus === FORM_STATUS.ERROR
+                  ? 'Erreur'
+                  : 'Envoyer'}
           </Button>
         </div>
       </form>

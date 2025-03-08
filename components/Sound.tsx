@@ -14,6 +14,8 @@ const Sound = ({ className }: { className: string }) => {
   const gainNodeRef = useRef<GainNode | null>(null);
   const sourceNodeRef = useRef<MediaElementAudioSourceNode | null>(null);
   const [isAudioSetup, setIsAudioSetup] = useState(false);
+  const hasAddedPageClickListenerRef = useRef(false);
+  const firstClickHandledRef = useRef(false);
 
   const setupAudio = () => {
     if (isAudioSetup) return;
@@ -63,6 +65,27 @@ const Sound = ({ className }: { className: string }) => {
       }, FADE_DURATION * 1000);
     }
   }, [isSoundOn, isAudioSetup]);
+
+  useEffect(() => {
+    if (hasAddedPageClickListenerRef.current) return;
+
+    const handleFirstPageClick = () => {
+      if (firstClickHandledRef.current) return;
+
+      setupAudio();
+      setIsSoundOn(true);
+      firstClickHandledRef.current = true;
+
+      document.removeEventListener('click', handleFirstPageClick);
+    };
+
+    document.addEventListener('click', handleFirstPageClick);
+    hasAddedPageClickListenerRef.current = true;
+
+    return () => {
+      document.removeEventListener('click', handleFirstPageClick);
+    };
+  }, []);
 
   const handleClick = () => {
     if (!isAudioSetup) {
