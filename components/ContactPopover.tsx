@@ -179,7 +179,10 @@ const ContactPopover = () => {
         },
         '-=0.15',
       )
-      .add(() => setIsOpen(false));
+      .add(() => {
+        setFormStatus(FORM_STATUS.DEFAULT);
+        setIsOpen(false);
+      });
   });
 
   const handleClickOutside = contextSafe(() => {
@@ -197,10 +200,6 @@ const ContactPopover = () => {
       resetForm();
       resetErrors();
       setFormStatus(FORM_STATUS.SUCCESS);
-      setTimeout(() => {
-        setFormStatus(FORM_STATUS.DEFAULT);
-        if (!isAnimating) closeAnim();
-      }, 2000);
     },
     onMutate: () => {
       setFormStatus(FORM_STATUS.PENDING);
@@ -255,6 +254,17 @@ const ContactPopover = () => {
       ...formData,
       language: isFrench ? 'fr' : 'en',
     });
+  };
+
+  const getButtonText = () => {
+    const texts = {
+      SUCCESS: isFrench ? 'Envoyé' : 'Sent',
+      ERROR: isFrench ? 'Erreur' : 'Error',
+      DEFAULT: isFrench ? 'Contactez-nous' : 'Contact us',
+      PENDING: isFrench ? 'Envoi...' : 'Sending...',
+    };
+
+    return texts[formStatus] || texts.DEFAULT;
   };
 
   return (
@@ -386,13 +396,7 @@ const ContactPopover = () => {
         </div>
         <div className="w-fit pt-4">
           <Button ref={buttonSubmitRef} className="" color="secondary">
-            {formStatus === FORM_STATUS.PENDING
-              ? 'Envoi en cours...'
-              : formStatus === FORM_STATUS.SUCCESS
-                ? 'Message envoyé'
-                : formStatus === FORM_STATUS.ERROR
-                  ? 'Erreur'
-                  : 'Envoyer'}
+            {getButtonText()}
           </Button>
         </div>
       </form>

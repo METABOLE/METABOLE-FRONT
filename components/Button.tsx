@@ -59,6 +59,7 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
     const wrapperButtonRef = useRef(null);
     const backgroudButtonRef = useRef(null);
     const buttonRef = useRef(null);
+    const hiddenButtonRef = useRef<HTMLDivElement>(null);
     const textRef = useRef(null);
 
     const { contextSafe } = useGSAP();
@@ -66,14 +67,25 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
     const [currentChild, setCurrentChild] = useState(children);
 
     useGSAP(() => {
+      const widthHiddenButton = hiddenButtonRef.current?.getBoundingClientRect();
+
       gsap
         .timeline()
         .to(textRef.current, {
-          y: -50,
-          opacity: 0,
-          duration: 0.15,
-          ease: 'power2.in',
+          width: widthHiddenButton?.width,
+          duration: 0.3,
+          ease: 'power2.inOut',
         })
+        .to(
+          textRef.current,
+          {
+            y: -50,
+            opacity: 0,
+            duration: 0.15,
+            ease: 'power2.in',
+          },
+          '<',
+        )
         .add(() => {
           setCurrentChild(children);
         })
@@ -81,12 +93,16 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
           y: 50,
           opacity: 0,
         })
-        .to(textRef.current, {
-          y: 0,
-          opacity: 1,
-          duration: 0.15,
-          ease: 'power2.out',
-        });
+        .to(
+          textRef.current,
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.15,
+            ease: 'power2.out',
+          },
+          '<',
+        );
     }, [children]);
 
     useGSAP(() => {
@@ -211,42 +227,50 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
     }));
 
     return (
-      <DynamicElement
-        ref={wrapperButtonRef}
-        className={clsx(
-          'label group/button inline-block h-11 w-fit cursor-pointer overflow-hidden rounded-full backdrop-blur-xl',
-          color === 'primary' ? 'bg-blur-glass text-black' : 'bg-blue text-white',
-          `origin-${transformOrigin}`,
-          className,
-        )}
-        {...props}
-        href={href}
-        target={target}
-        onMouseEnter={showBackground}
-        onMouseLeave={hideBackground}
-        onMouseMove={(e) => useMagnet(e, 0.8)}
-        onMouseOut={(e) => useResetMagnet(e)}
-      >
-        <div
-          ref={backgroudButtonRef}
+      <>
+        <DynamicElement
+          ref={wrapperButtonRef}
           className={clsx(
-            'absolute top-full h-22 w-[150%] -translate-x-1/8 rounded-[100%]',
-            color === 'primary' ? 'bg-blue' : 'bg-black',
+            'label group/button inline-block h-11 w-fit cursor-pointer overflow-hidden rounded-full backdrop-blur-xl',
+            color === 'primary' ? 'bg-blur-glass text-black' : 'bg-blue text-white',
+            `origin-${transformOrigin}`,
+            className,
           )}
-        />
-        <div
-          className="h-full w-full"
-          onMouseMove={(e) => useMagnet(e, 0.4)}
+          {...props}
+          href={href}
+          target={target}
+          onMouseEnter={showBackground}
+          onMouseLeave={hideBackground}
+          onMouseMove={(e) => useMagnet(e, 0.8)}
           onMouseOut={(e) => useResetMagnet(e)}
         >
           <div
-            ref={textRef}
-            className="relative flex h-full w-full items-center justify-center px-6 whitespace-nowrap"
+            ref={backgroudButtonRef}
+            className={clsx(
+              'absolute top-full -left-1/4 h-22 w-[150%] rounded-[100%]',
+              color === 'primary' ? 'bg-blue' : 'bg-black',
+            )}
+          />
+          <div
+            className="h-full w-full"
+            onMouseMove={(e) => useMagnet(e, 0.4)}
+            onMouseOut={(e) => useResetMagnet(e)}
           >
-            {currentChild}
+            <div
+              ref={textRef}
+              className="relative flex h-full w-fit items-center justify-center px-6 whitespace-nowrap"
+            >
+              {currentChild}
+            </div>
           </div>
+        </DynamicElement>
+        <div
+          ref={hiddenButtonRef}
+          className="label pointer-events-none invisible fixed top-0 left-0 -z-10 h-full w-fit items-center justify-center px-6 whitespace-nowrap opacity-0"
+        >
+          {children}
         </div>
-      </DynamicElement>
+      </>
     );
   },
 );
