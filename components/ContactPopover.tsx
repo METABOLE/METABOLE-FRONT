@@ -61,12 +61,24 @@ const ContactPopover = () => {
 
     const textAnimationTitle = titleRef.current.play();
 
-    gsap
-      .timeline({
-        onComplete: () => setIsAnimating(false),
-      })
-      .add(() => setIsOpen(true))
-      .to(
+    const timeline = gsap.timeline();
+    const mm = gsap.matchMedia();
+    timeline.add(() => setIsOpen(true));
+
+    mm.add('(min-width: 768px)', () => {
+      timeline.to(
+        wrapperRef.current,
+        {
+          width: 430,
+          duration: 0.3,
+          ease: 'power3.inOut',
+        },
+        '<',
+      );
+    });
+
+    mm.add('(max-width: 767px)', () => {
+      timeline.to(
         wrapperRef.current,
         {
           width: window.innerWidth - clampVw(20, 8, 100) * 2,
@@ -74,12 +86,15 @@ const ContactPopover = () => {
           ease: 'power3.inOut',
         },
         '<',
-      )
+      );
+    });
+
+    timeline
       .to(
         wrapperRef.current,
         {
           height: 604,
-          duration: 0.4,
+          duration: 0.6,
           ease: 'power3.inOut',
         },
         '-=0.15',
@@ -102,11 +117,15 @@ const ContactPopover = () => {
         },
         '<',
       )
-      .set(containerRef.current, {
-        width: '100%',
-        height: '100%',
-      })
-      .add(textAnimationTitle, '<')
+      .set(
+        containerRef.current,
+        {
+          width: '100%',
+          height: '100%',
+        },
+        '<',
+      )
+      .add(textAnimationTitle, '-=1')
       .add(() => inputsRefs.name.current?.play(), '-=1.2')
       .add(() => inputsRefs.email.current?.play(), '-=1.1')
       .add(() => inputsRefs.phone.current?.play(), '-=1')
@@ -120,7 +139,8 @@ const ContactPopover = () => {
         },
         '-=0.5',
       )
-      .add(() => buttonSubmitRef.current?.play(), '-=0.4');
+      .add(() => buttonSubmitRef.current?.play(), '-=0.4')
+      .add(() => setIsAnimating(false));
   });
 
   const closeAnim = contextSafe(() => {
@@ -146,16 +166,20 @@ const ContactPopover = () => {
       .add(() => inputsRefs.email.current?.reverse(), '+=0.1')
       .add(() => inputsRefs.name.current?.reverse(), '+=0.1')
       .add(textAnimationTitle)
-      .to(buttonCloseRef.current, {
-        scale: 0,
-        rotate: 0,
-        duration: 0.3,
-      })
+      .to(
+        buttonCloseRef.current,
+        {
+          scale: 0,
+          rotate: 0,
+          duration: 0.3,
+        },
+        '<',
+      )
       .to(
         containerRef.current,
         {
-          width: '0',
-          height: '0',
+          width: 0,
+          height: 0,
           duration: 0.3,
           ease: 'power2.inOut',
         },
