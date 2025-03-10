@@ -3,5 +3,5 @@ export interface NewsletterUnsubscribeData {
 }
 export interface NewsletterSubscribeData {
   email: string;
-  language: 'fr' | 'en';
+  lang: 'fr' | 'en';
 }

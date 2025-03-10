@@ -4,5 +4,5 @@ export interface ContactFormData {
   phone?: string;
   message?: string;
   consentMarketing: boolean;
-  language: 'fr' | 'en';
+  lang: 'fr' | 'en';
 }

@@ -3,6 +3,7 @@ import Input from '@/components/Input';
 import Typography from '@/components/Typography';
 import { useLanguage } from '@/providers/language.provider';
 import { postUnsubscribeNewsletter } from '@/services/newsletter.service';
+import { NewsletterUnsubscribeData } from '@/types/newsletter.type';
 import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
@@ -16,19 +17,16 @@ const UnsubscribePage = () => {
   const [status, setStatus] = useState<UnsubscribeStatus>('idle');
   const searchParams = useSearchParams();
 
-  // Extraction de l'email des paramètres d'URL au chargement de la page
   useEffect(() => {
     const emailParam = searchParams.get('email');
     if (emailParam) {
-      // Décoder l'email s'il est encodé pour l'URL
       const decodedEmail = decodeURIComponent(emailParam);
       setEmail(decodedEmail);
     }
   }, [searchParams]);
 
-  // Mutation pour la désinscription
   const unsubscribeMutation = useMutation({
-    mutationFn: (email: string) => postUnsubscribeNewsletter({ email }),
+    mutationFn: ({ email }: NewsletterUnsubscribeData) => postUnsubscribeNewsletter({ email }),
     onMutate: () => {
       setStatus('loading');
     },
@@ -40,11 +38,10 @@ const UnsubscribePage = () => {
     },
   });
 
-  // Gérer la soumission du formulaire
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (email && status !== 'loading') {
-      unsubscribeMutation.mutate(email);
+      unsubscribeMutation.mutate({ email });
     }
   };
 

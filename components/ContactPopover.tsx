@@ -218,8 +218,8 @@ const ContactPopover = () => {
   const wrapperRef = useClickOutside<HTMLDivElement>(handleClickOutside);
 
   const sendContact = useMutation({
-    mutationFn: ({ name, email, phone, message, consentMarketing, language }: ContactFormData) =>
-      postContactForm({ name, email, phone, message, consentMarketing, language }),
+    mutationFn: ({ name, email, phone, message, consentMarketing, lang }: ContactFormData) =>
+      postContactForm({ name, email, phone, message, consentMarketing, lang }),
     onSuccess: () => {
       resetForm();
       resetErrors();
@@ -276,7 +276,7 @@ const ContactPopover = () => {
 
     sendContact.mutate({
       ...formData,
-      language: isFrench ? 'fr' : 'en',
+      lang: isFrench ? 'fr' : 'en',
     });
   };
 

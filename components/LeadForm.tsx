@@ -31,8 +31,8 @@ const LeadForm = ({ className, isDark }: LeadFormProps) => {
   const { isFrench } = useLanguage();
 
   const subscribeNewsletter = useMutation({
-    mutationFn: ({ email, language }: NewsletterSubscribeData) =>
-      postSubscribeNewsletter({ email, language }),
+    mutationFn: ({ email, lang }: NewsletterSubscribeData) =>
+      postSubscribeNewsletter({ email, lang }),
     onSuccess: (data) => {
       console.info('Inscription réussie', data);
       inputRef.current?.blur();
@@ -42,7 +42,9 @@ const LeadForm = ({ className, isDark }: LeadFormProps) => {
       setTimeout(() => setSuccess(''), 3000);
     },
     onError: (error) => {
-      console.error("Erreur d'inscription", error);
+      setIsLoading(false);
+      setError(isFrench ? "Erreur d'inscription" : 'Subscription error');
+      console.error('ERROR : ', error);
     },
     onMutate: () => {
       setIsLoading(true);
@@ -60,7 +62,7 @@ const LeadForm = ({ className, isDark }: LeadFormProps) => {
 
     subscribeNewsletter.mutate({
       email: email,
-      language: isFrench ? 'fr' : 'en',
+      lang: isFrench ? 'fr' : 'en',
     });
   };
 
