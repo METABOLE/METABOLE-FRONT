@@ -1,18 +1,23 @@
 import FloatingHalo from '@/components/FloatingHalo';
-import { LogoFull } from '@/components/Icons';
-import { COLORS } from '@/types';
+import Lottie from '@/components/Lottie';
 import Image from 'next/image';
+import Link from 'next/link';
 import { ReactNode } from 'react';
+import metaboleFull from '../public/lotties/metabole-full-yellow.json';
+import { useLanguage } from '@/providers/language.provider';
 
 interface NewsletterLayoutProps {
   children: ReactNode;
 }
 
 export default function NewsletterLayout({ children }: NewsletterLayoutProps) {
+  const { getInternalPath } = useLanguage();
   return (
     <div className="fixed flex h-screen w-screen flex-col bg-black">
       <header className="px-x-default flex w-screen justify-center py-6">
-        <LogoFull className="h-10" color={COLORS.YELLOW} />
+        <Link href={getInternalPath('/')} scroll={false}>
+          <Lottie animationData={metaboleFull} className="h-10" />
+        </Link>
       </header>
 
       <main className="flex-grow">{children}</main>

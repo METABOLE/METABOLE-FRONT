@@ -54,14 +54,12 @@ export default function Home() {
 
   const [isAnimEnded, setIsAnimEnded] = useState(false);
 
-  useGSAP(() => {
-    gsap.to(textRef.current, {
-      duration: 0.8,
-      y: -y / 90,
-      x: -x / 90,
-      ease: 'power2.out',
-    });
-  }, [x, y]);
+  gsap.to(textRef.current, {
+    duration: 0.8,
+    y: -y / 90,
+    x: -x / 90,
+    ease: 'power2.out',
+  });
 
   useGSAP(() => {
     if (!titleRef.current || !createdByRef.current) return;
@@ -81,7 +79,7 @@ export default function Home() {
 
     gsap
       .timeline({
-        delay: isProd ? 4 : 8,
+        delay: 4.5,
         defaults: {
           ease: 'power2.out',
           duration: 0.8,

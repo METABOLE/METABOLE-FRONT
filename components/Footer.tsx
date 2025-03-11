@@ -35,10 +35,11 @@ const Footer = () => {
 
   useGSAP(() => {
     gsap.to(footerRef.current, {
-      delay: isProd ? 5.5 : 8,
+      delay: 4,
       duration: 2,
-      ease: 'power3.out',
+      ease: 'power4.out',
       y: 0,
+      scale: 1,
     });
     gsap.to(wrapperRef.current, {
       scrollTrigger: {

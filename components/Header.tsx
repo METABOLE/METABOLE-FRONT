@@ -1,6 +1,6 @@
 import { useLanguage } from '@/providers/language.provider';
 import Link from 'next/link';
-import metaboleFull from '../public/lotties/metabole-full.json';
+import metaboleFull from '../public/lotties/metabole-full-blue.json';
 import metaboleSmall from '../public/lotties/metabole-small.json';
 import ContactPopover from './ContactPopover';
 import Lottie from './Lottie';
@@ -18,17 +18,18 @@ const Header = () => {
 
   useGSAP(() => {
     gsap.to(headerRef.current, {
-      delay: isProd ? 5.5 : 8,
+      delay: 4,
       duration: 2,
-      ease: 'power3.out',
+      ease: 'power4.out',
       y: 0,
+      scale: 1,
     });
   }, [isProd]);
 
   return (
     <header
       ref={headerRef}
-      className="px-x-default fixed z-[900] h-[108px] w-full -translate-y-full"
+      className="px-x-default fixed z-[900] h-[108px] w-full -translate-y-full scale-125"
     >
       <div className="flex h-[108px] items-center justify-between py-8">
         <Link href={getInternalPath('/')} scroll={false}>
