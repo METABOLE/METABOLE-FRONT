@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export function useEnvironment() {
+export const useEnvironment = () => {
   const [isProd, setIsProd] = useState(true);
   const [environment, setEnvironment] = useState('production');
 
@@ -16,4 +16,4 @@ export function useEnvironment() {
     isProd,
     environment,
   };
-}
+};

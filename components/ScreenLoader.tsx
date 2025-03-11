@@ -1,31 +1,32 @@
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { useRef } from 'react';
-import { LogoIcon } from './Icons';
+import metaboleFull from '../public/lotties/metabole-full.json';
+import Lottie from './Lottie';
 
 const ScreenLoader = () => {
-  const wrapperRef = useRef(null);
-  const logoRef = useRef(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const logoContainerRef = useRef<HTMLDivElement>(null);
+  const logoRef = useRef<HTMLDivElement>(null);
   const shuttersRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useGSAP(() => {
-    if (!wrapperRef.current || !shuttersRefs) return;
+    if (!wrapperRef.current || !shuttersRefs.current.length) return;
 
     gsap
       .timeline({
-        delay: 0.5,
+        delay: 0.9,
       })
       .to(logoRef.current, {
-        scale: 1,
-        duration: 1.2,
-        ease: 'elastic.out',
+        x: 0,
+        duration: 1.3,
+        ease: 'power3.out',
       })
       .to(
-        logoRef.current,
+        logoContainerRef.current,
         {
-          scale: 0,
-          duration: 0.6,
-          ease: 'power2.inOut',
+          height: 0,
+          duration: 0.3,
         },
         '+=1',
       )
@@ -37,17 +38,7 @@ const ScreenLoader = () => {
           stagger: 0.1,
           ease: 'power2.inOut',
         },
-        '-=0.2',
-      )
-      .to(
-        shuttersRefs.current,
-        {
-          opacity: 0,
-          duration: 0.3,
-          stagger: 0,
-          ease: 'power2.inOut',
-        },
-        '-=0.3',
+        '-=0.6',
       )
       .set(wrapperRef.current, {
         display: 'none',
@@ -56,10 +47,14 @@ const ScreenLoader = () => {
 
   return (
     <div ref={wrapperRef} className="fixed inset-0 z-[990] grid h-screen w-screen grid-rows-4">
-      <LogoIcon
-        ref={logoRef}
-        className="absolute top-1/2 left-1/2 h-20 w-20 -translate-1/2 scale-0"
-      />
+      <div
+        ref={logoContainerRef}
+        className="absolute top-1/3 left-0 z-20 flex h-16 w-screen justify-center overflow-hidden"
+      >
+        <div ref={logoRef} className="translate-x-[169px]">
+          <Lottie animationData={metaboleFull} className="h-16" />
+        </div>
+      </div>
       {Array.from({ length: 4 }).map((_, i) => (
         <div
           key={i}

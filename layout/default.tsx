@@ -52,7 +52,8 @@ const Layout = ({ children }: { children: ReactNode }) => {
         {/* <script src="https://unpkg.com/react-scan/dist/auto.global.js" /> */}
       </Head>
       <Header />
-      {isProd && <ScreenLoader />}
+      {/* {isProd && <ScreenLoader />} */}
+      <ScreenLoader />
       <main className="h-[140vh]">{children}</main>
       <Footer />
       <InstancedField />
