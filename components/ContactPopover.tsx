@@ -14,6 +14,7 @@ import Button, { AnimatedButtonRef } from './Button';
 import { IconCross } from './Icons';
 import Input, { AnimatedIputRef } from './Input';
 import Typography, { AnimatedTypoRef } from './Typography';
+import Checkbox from './Checkbox';
 
 enum FORM_STATUS {
   DEFAULT = 'DEFAULT',
@@ -336,6 +337,7 @@ const ContactPopover = () => {
           placeholder="John Doe"
           type="text"
           value={formData.name}
+          required
           onBlur={() => {
             !formData.name &&
               setErrors((prev) => ({
@@ -361,6 +363,7 @@ const ContactPopover = () => {
           placeholder="johndoe@company.com"
           type="email"
           value={formData.email}
+          required
           onBlur={() => {
             isEmail(formData.email) ||
               setErrors((prev) => ({
@@ -402,15 +405,11 @@ const ContactPopover = () => {
           ref={inputsRefs.consentMarketing}
           className="flex -translate-y-5 items-center gap-2 opacity-0"
         >
-          <input
+          <Checkbox
             checked={formData.consentMarketing}
-            className="h-4 w-4 rounded-md"
             id="consentMarketing"
             name="consentMarketing"
-            type="checkbox"
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, consentMarketing: e.target.checked }))
-            }
+            onChange={(checked) => setFormData((prev) => ({ ...prev, consentMarketing: checked }))}
           />
           <label className="disclaimer text-black-70" htmlFor="consentMarketing">
             {isFrench

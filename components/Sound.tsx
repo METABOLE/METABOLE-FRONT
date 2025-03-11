@@ -79,21 +79,11 @@ const Sound = ({ className }: { className: string }) => {
       document.removeEventListener('click', handleFirstPageClick);
     };
 
-    const toggleSoundWithFocusWindow = () => {
-      if (document.hidden) {
-        setIsSoundOn(false);
-      } else {
-        setIsSoundOn(true);
-      }
-    };
-
     document.addEventListener('click', handleFirstPageClick);
-    document.addEventListener('visibilitychange', toggleSoundWithFocusWindow);
     hasAddedPageClickListenerRef.current = true;
 
     return () => {
       document.removeEventListener('click', handleFirstPageClick);
-      document.removeEventListener('visibilitychange', toggleSoundWithFocusWindow);
     };
   }, []);
 

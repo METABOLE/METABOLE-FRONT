@@ -4,8 +4,9 @@ import { useEnvironment } from '@/hooks/useEnvironment';
 import { useMousePosition } from '@/hooks/useMousePosition';
 import { useLanguage } from '@/providers/language.provider';
 import { useGSAP } from '@gsap/react';
+import clsx from 'clsx';
 import gsap from 'gsap';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 
 const TITLE = {
   FR: [
@@ -51,6 +52,8 @@ export default function Home() {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const createdByRef = useRef<HTMLHeadingElement>(null);
 
+  const [isAnimEnded, setIsAnimEnded] = useState(false);
+
   useGSAP(() => {
     gsap.to(textRef.current, {
       duration: 0.8,
@@ -78,7 +81,7 @@ export default function Home() {
 
     gsap
       .timeline({
-        delay: isProd ? 4 : 0.5,
+        delay: isProd ? 4 : 8,
         defaults: {
           ease: 'power2.out',
           duration: 0.8,
@@ -103,8 +106,8 @@ export default function Home() {
       .set(createdByRef.current, {
         overflow: 'visible',
       })
-      .play();
-  }, [isFrench, isProd]);
+      .add(() => setIsAnimEnded(true));
+  }, [isProd]);
 
   return (
     <div className="fixed inset-0 flex h-screen w-screen flex-col">
@@ -117,12 +120,12 @@ export default function Home() {
           <p ref={createdByRef} className="animated-text mt-10 overflow-hidden whitespace-pre-wrap">
             <span>{isFrench ? 'Par ' : 'By '}</span>
             <a
-              className="text-blue group relative"
-              href="https://www.matteocourquin.com/"
+              className={clsx('text-blue relative', isAnimEnded && 'group/photo')}
+              href="https://matteocourquin.com/"
               target="_blank"
             >
               Matteo Courquin
-              <span className="absolute bottom-8 left-1/2 h-auto w-36 origin-bottom -translate-x-1/2 scale-0 rotate-0 transition-transform duration-300 group-hover:scale-100 group-hover:-rotate-6">
+              <span className="absolute bottom-8 left-1/2 h-auto w-56 origin-bottom -translate-x-1/2 scale-0 rotate-0 transition-transform duration-300 group-hover/photo:scale-100 group-hover/photo:-rotate-6">
                 <img
                   alt=""
                   className="animation-float h-full w-full object-contain"
@@ -132,12 +135,12 @@ export default function Home() {
             </a>
             <span> & </span>
             <a
-              className="text-blue group relative"
-              href="https://www.jeromebezeau.com/"
+              className={clsx('text-blue relative', isAnimEnded && 'group/photo')}
+              href="https://jeromebezeau.com/"
               target="_blank"
             >
               Jérôme Bezeau
-              <span className="absolute bottom-8 left-1/2 h-auto w-36 origin-bottom -translate-x-1/2 scale-0 rotate-0 transition-transform duration-300 group-hover:scale-100 group-hover:rotate-6">
+              <span className="absolute bottom-8 left-1/2 h-auto w-56 origin-bottom -translate-x-1/2 scale-0 rotate-0 transition-transform duration-300 group-hover/photo:scale-100 group-hover/photo:rotate-6">
                 <img
                   alt=""
                   className="animation-float h-full w-full object-contain"

@@ -18,7 +18,7 @@ interface BaseButtonProps {
   children: ReactNode;
   className?: string;
   transformOrigin?: 'left' | 'right' | 'center';
-  color?: 'primary' | 'secondary';
+  color?: 'primary' | 'secondary' | 'tertiary';
 }
 
 type DivButtonProps = BaseButtonProps &
@@ -215,7 +215,7 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
         .to(
           textRef.current,
           {
-            color: color === 'primary' ? COLORS.BLACK : COLORS.WHITE,
+            color: color === 'secondary' ? COLORS.WHITE : COLORS.BLACK,
           },
           '<',
         );
@@ -231,8 +231,10 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
         <DynamicElement
           ref={wrapperButtonRef}
           className={clsx(
-            'label group/button inline-block h-11 w-fit cursor-pointer overflow-hidden rounded-full backdrop-blur-xl',
-            color === 'primary' ? 'bg-blur-glass text-black' : 'bg-blue text-white',
+            'label group/button inline-block h-11 w-fit cursor-pointer overflow-hidden rounded-full uppercase backdrop-blur-xl',
+            color === 'primary' && 'bg-blur-glass text-black',
+            color === 'secondary' && 'bg-blue text-white',
+            color === 'tertiary' && 'bg-yellow text-black',
             `origin-${transformOrigin}`,
             className,
           )}

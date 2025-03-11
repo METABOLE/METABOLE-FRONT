@@ -5,12 +5,31 @@ import metaboleSmall from '../public/lotties/metabole-small.json';
 import ContactPopover from './ContactPopover';
 import Lottie from './Lottie';
 import Sound from './Sound';
+import { useGSAP } from '@gsap/react';
+import { useRef } from 'react';
+import { useEnvironment } from '@/hooks/useEnvironment';
+import gsap from 'gsap';
 
 const Header = () => {
+  const headerRef = useRef(null);
+
+  const { isProd } = useEnvironment();
   const { getInternalPath } = useLanguage();
 
+  useGSAP(() => {
+    gsap.to(headerRef.current, {
+      delay: isProd ? 5.5 : 8,
+      duration: 2,
+      ease: 'power3.out',
+      y: 0,
+    });
+  }, [isProd]);
+
   return (
-    <header className="px-x-default fixed z-[900] h-[108px] w-full">
+    <header
+      ref={headerRef}
+      className="px-x-default fixed z-[900] h-[108px] w-full -translate-y-full"
+    >
       <div className="flex h-[108px] items-center justify-between py-8">
         <Link href={getInternalPath('/')} scroll={false}>
           <Lottie animationData={metaboleFull} className="hidden h-10 md:block" />

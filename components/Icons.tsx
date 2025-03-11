@@ -5,7 +5,7 @@ interface IconProps extends SVGProps<SVGSVGElement> {
   color?: COLORS;
 }
 
-export const LogoTypo = forwardRef<SVGSVGElement, IconProps>(
+export const LogoFull = forwardRef<SVGSVGElement, IconProps>(
   ({ color = COLORS.BLUE, ...props }, ref) => (
     <svg
       {...props}
@@ -74,7 +74,7 @@ export const LogoTypo = forwardRef<SVGSVGElement, IconProps>(
     </svg>
   ),
 );
-export const LogoIcon = forwardRef<SVGSVGElement, IconProps>(
+export const LogoSmall = forwardRef<SVGSVGElement, IconProps>(
   ({ color = COLORS.BLUE, ...props }, ref) => (
     <svg {...props} ref={ref} fill="none" viewBox="0 0 525 477" xmlns="http://www.w3.org/2000/svg">
       <rect fill={color} height="476.392" width="85.5793" x="439.305" />

@@ -1,21 +1,35 @@
 import Button from '@/components/Button';
+import { IconArrow } from '@/components/Icons';
 import Input from '@/components/Input';
 import Typography from '@/components/Typography';
+import NewsletterLayout from '@/layout/newsletter';
+import { NextPageWithLayout } from '@/pages/_app';
 import { useLanguage } from '@/providers/language.provider';
 import { postUnsubscribeNewsletter } from '@/services/newsletter.service';
+import { COLORS } from '@/types';
 import { NewsletterUnsubscribeData } from '@/types/newsletter.type';
+import { isEmail } from '@/utils/validation.utils';
 import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import React, { ReactElement, useEffect, useRef, useState } from 'react';
 
-type UnsubscribeStatus = 'idle' | 'loading' | 'success' | 'error';
+enum FORM_STATUS {
+  DEFAULT = 'DEFAULT',
+  SUCCESS = 'SUCCESS',
+  ERROR = 'ERROR',
+  PENDING = 'PENDING',
+}
 
-const UnsubscribePage = () => {
-  const { isFrench } = useLanguage();
+const UnsubscribePage: NextPageWithLayout = () => {
+  const { isFrench, getInternalPath } = useLanguage();
   const [email, setEmail] = useState('');
-  const [status, setStatus] = useState<UnsubscribeStatus>('idle');
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [formStatus, setFormStatus] = useState<FORM_STATUS>(FORM_STATUS.DEFAULT);
   const searchParams = useSearchParams();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const emailParam = searchParams.get('email');
@@ -25,107 +39,116 @@ const UnsubscribePage = () => {
     }
   }, [searchParams]);
 
+  const getButtonText = () => {
+    const texts = {
+      [FORM_STATUS.SUCCESS]: isFrench ? 'Désinscrit' : 'Unsubscribed',
+      [FORM_STATUS.ERROR]: isFrench ? 'Erreur' : 'Error',
+      [FORM_STATUS.DEFAULT]: isFrench ? 'Se désinscrire' : 'Unsubscribe',
+      [FORM_STATUS.PENDING]: isFrench ? 'Chargement...' : 'Loading...',
+    };
+
+    return texts[formStatus];
+  };
+
   const unsubscribeMutation = useMutation({
     mutationFn: ({ email }: NewsletterUnsubscribeData) => postUnsubscribeNewsletter({ email }),
+    onSuccess: (data) => {
+      console.info('Désinscription réussie', data);
+      inputRef.current?.blur();
+      setIsLoading(false);
+      setFormStatus(FORM_STATUS.SUCCESS);
+      setSuccess(isFrench ? 'Désinscription réussie' : 'Unsubscription successful');
+      setEmail('');
+      setTimeout(() => {
+        setSuccess('');
+        setFormStatus(FORM_STATUS.DEFAULT);
+      }, 3000);
+    },
+    onError: (error) => {
+      setIsLoading(false);
+      setFormStatus(FORM_STATUS.ERROR);
+      setError(isFrench ? 'Erreur de désinscription' : 'Unsubscription error');
+      console.error('ERROR : ', error);
+      setTimeout(() => {
+        setFormStatus(FORM_STATUS.DEFAULT);
+      }, 3000);
+    },
     onMutate: () => {
-      setStatus('loading');
-    },
-    onSuccess: () => {
-      setStatus('success');
-    },
-    onError: () => {
-      setStatus('error');
+      setIsLoading(true);
+      setFormStatus(FORM_STATUS.PENDING);
     },
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (email && status !== 'loading') {
-      unsubscribeMutation.mutate({ email });
+
+    if (!email) {
+      return setError(isFrench ? 'Veuillez entrer votre email' : 'Please enter your email');
     }
+
+    if (!isEmail(email)) {
+      return setError(isFrench ? 'Email invalide' : 'Invalid email');
+    }
+
+    setError('');
+    unsubscribeMutation.mutate({ email });
   };
 
   return (
-    <div className="flex min-h-screen w-full items-center justify-center px-4 py-12">
-      <div className="bg-blur-glass relative mx-auto w-full max-w-lg overflow-hidden rounded-3xl p-8 text-black backdrop-blur-xl">
-        <div className="mb-8 flex flex-col space-y-6">
-          <Typography className="text-center" variant="h2">
-            {isFrench ? 'Se désinscrire' : 'Unsubscribe'}
-          </Typography>
-          <Typography className="text-black-70 text-center" variant="p">
-            {isFrench
-              ? 'Entrez votre adresse e-mail pour vous désinscrire de notre newsletter.'
-              : 'Enter your email address to unsubscribe from our newsletter.'}
-          </Typography>
-        </div>
+    <div className="px-x-default py-y-default flex h-3/4 items-center justify-center">
+      <div className="relative mx-auto flex w-full max-w-96 flex-col gap-12 overflow-hidden rounded-3xl bg-[#C5C4FF]/7 p-6 text-white">
+        <Typography className="p3 uppercase" variant="p">
+          {isFrench ? 'Se désinscrire' : 'Unsubscribe'}
+        </Typography>
 
-        {status !== 'success' ? (
-          <form className="flex flex-col space-y-6">
-            <Input
-              name="email"
-              placeholder={isFrench ? 'Votre adresse e-mail' : 'Your email address'}
-              type="email"
-              value={email}
-              required
-              onChange={(e) => setEmail(e.target.value)}
-            />
+        <form className="" onSubmit={handleSubmit}>
+          <Input
+            errorMessage={error}
+            isLoading={isLoading}
+            name="email"
+            placeholder="johndoe@company.com"
+            successMessage={success}
+            type="email"
+            value={email}
+            label={
+              isFrench
+                ? 'Entrez votre adresse e-mail pour vous désinscrire de notre newsletter.'
+                : 'Enter your email address to unsubscribe from our newsletter.'
+            }
+            required
+            onBlur={() => {
+              isEmail(email) ||
+                setError(
+                  isFrench ? 'Veuillez entrer un email valide' : 'Please enter a valid email',
+                );
+              !email &&
+                setError(isFrench ? 'Veuillez entrer votre email' : 'Please enter your email');
+            }}
+            onChange={(e) => {
+              isEmail(e.target.value) && setError('');
+              setEmail(e.target.value);
+            }}
+          />
 
-            <div className="mx-auto w-fit">
-              <Button color="secondary" onClick={handleSubmit}>
-                {isFrench ? 'Se désinscrire' : 'Unsubscribe'}
-              </Button>
-            </div>
+          <Button className="mt-12" color="tertiary">
+            {getButtonText()}
+          </Button>
+        </form>
 
-            {status === 'error' && (
-              <div className="rounded-lg bg-red-50 p-4 text-center text-red-800">
-                {isFrench
-                  ? 'Une erreur est survenue. Veuillez réessayer plus tard.'
-                  : 'An error occurred. Please try again later.'}
-              </div>
-            )}
-          </form>
-        ) : (
-          <div className="rounded-lg bg-green-50 p-6 text-center">
-            <div className="mb-4 flex justify-center">
-              <svg
-                fill="none"
-                height="48"
-                viewBox="0 0 48 48"
-                width="48"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <circle cx="24" cy="24" fill="#3B82F6" fillOpacity="0.1" r="24" />
-                <path
-                  d="M32 18L22 28L16 22"
-                  stroke="#3B82F6"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                />
-              </svg>
-            </div>
-            <Typography className="mb-2" variant="h4">
-              {isFrench ? 'Désinscription réussie' : 'Successfully unsubscribed'}
-            </Typography>
-            <Typography className="text-black-70" variant="p">
-              {isFrench
-                ? 'Vous ne recevrez plus nos communications marketing.'
-                : 'You will no longer receive our marketing communications.'}
-            </Typography>
-          </div>
-        )}
-
-        <div className="mt-8 text-center">
-          <Link
-            className="text-blue-600 transition-colors hover:underline focus:outline-none"
-            href="/"
-          >
-            {isFrench ? "Retour à l'accueil" : 'Back to home'}
-          </Link>
-        </div>
+        <Link
+          className="flex items-center gap-3 text-white transition hover:opacity-80"
+          href={getInternalPath('/')}
+        >
+          <IconArrow className="rotate-45" color={COLORS.WHITE} />
+          {isFrench ? "Retour à l'accueil" : 'Back to home'}
+        </Link>
       </div>
     </div>
   );
+};
+
+UnsubscribePage.getLayout = function getLayout(page: ReactElement) {
+  return <NewsletterLayout>{page}</NewsletterLayout>;
 };
 
 export default UnsubscribePage;

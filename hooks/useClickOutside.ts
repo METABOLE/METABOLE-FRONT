@@ -1,7 +1,9 @@
 import { useEffect, useRef } from 'react';
 
-export const useClickOutside = (handler: (event: MouseEvent | TouchEvent) => void) => {
-  const ref = useRef<HTMLElement>(null);
+type Handler = (event: MouseEvent | TouchEvent) => void;
+
+export const useClickOutside = <T extends HTMLElement = HTMLElement>(handler: Handler) => {
+  const ref = useRef<T | null>(null);
 
   useEffect(() => {
     const listener = (event: MouseEvent | TouchEvent) => {

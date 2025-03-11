@@ -6,6 +6,7 @@ import FloatingHalo from './FloatingHalo';
 import LeadForm from './LeadForm';
 import Time from './Time';
 import { useEnvironment } from '@/hooks/useEnvironment';
+import Language from './Language';
 
 const Footer = () => {
   const wrapperRef = useRef(null);
@@ -34,7 +35,7 @@ const Footer = () => {
 
   useGSAP(() => {
     gsap.to(footerRef.current, {
-      delay: isProd ? 5.5 : 2,
+      delay: isProd ? 5.5 : 8,
       duration: 2,
       ease: 'power3.out',
       y: 0,
@@ -72,18 +73,19 @@ const Footer = () => {
             from="#3449FF"
             to="#141418"
           />
-          <div className="relative flex h-full flex-col gap-11 lg:flex-row lg:items-center lg:justify-between lg:gap-5">
-            <div className="flex w-full flex-col gap-3 lg:flex-row lg:items-center lg:gap-10">
-              <p className="xl:w-[165px]">Paris | Rotterdam</p>
-              <div className="xl:w-[100px]">
+          <div className="relative flex h-full flex-col gap-11 sm:flex-row sm:items-center sm:justify-between sm:gap-5">
+            <div className="flex w-full flex-col gap-3 xl:flex-row xl:items-center xl:gap-10">
+              <p className="">Paris | Rotterdam</p>
+              <div className="">
                 <Time isDark={true} />
               </div>
-              <a className="xl:w-[100px]" href="mailto:contact@metabole.studio">
+              <a className="" href="mailto:contact@metabole.studio">
                 contact@metabole.studio
               </a>
+              <Language isDark={true} />
             </div>
-            <div className="bg-yellow-30 h-px w-1/4 lg:hidden" />
-            <LeadForm className="w-full max-w-sm text-white lg:w-1/3 lg:min-w-sm" />
+            <div className="bg-yellow-30 h-px w-10 sm:hidden" />
+            <LeadForm className="w-full text-white lg:w-1/3 lg:min-w-sm" />
           </div>
         </div>
       </div>
