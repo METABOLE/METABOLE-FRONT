@@ -94,7 +94,7 @@ const LeadForm = ({ className, isDark }: LeadFormProps) => {
         <div className="relative flex items-center">
           <Input
             ref={inputRef}
-            className={clsx('p3 w-full py-4')}
+            className={clsx('p3 w-full py-4 pr-5')}
             errorMessage={error}
             isDark={isDark}
             isLoading={isLoading}

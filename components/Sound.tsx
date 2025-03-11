@@ -79,15 +79,25 @@ const Sound = ({ className }: { className: string }) => {
       document.removeEventListener('click', handleFirstPageClick);
     };
 
+    const toggleSoundWithFocusWindow = () => {
+      if (document.hidden) {
+        setIsSoundOn(false);
+      } else {
+        setIsSoundOn(true);
+      }
+    };
+
     document.addEventListener('click', handleFirstPageClick);
+    document.addEventListener('visibilitychange', toggleSoundWithFocusWindow);
     hasAddedPageClickListenerRef.current = true;
 
     return () => {
       document.removeEventListener('click', handleFirstPageClick);
+      document.removeEventListener('visibilitychange', toggleSoundWithFocusWindow);
     };
   }, []);
 
-  const handleClick = () => {
+  const toggleSound = () => {
     if (!isAudioSetup) {
       setupAudio();
     }
@@ -100,7 +110,7 @@ const Sound = ({ className }: { className: string }) => {
         'bg-blue flex h-11 w-11 cursor-pointer items-center justify-center rounded-full',
         className,
       )}
-      onClick={handleClick}
+      onClick={toggleSound}
       onMouseMove={(e) => useMagnet(e, 0.8)}
       onMouseOut={(e) => useResetMagnet(e)}
     >
