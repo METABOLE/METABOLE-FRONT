@@ -33,7 +33,7 @@ const Header = () => {
     >
       <div className="flex h-[108px] items-center justify-between py-8">
         <Link href={getInternalPath('/')} scroll={false}>
-          <Lottie animationData={metaboleFull} className="hidden h-10 md:block" />
+          <Lottie animationData={metaboleFull} className="hidden h-10 w-[216px] md:block" />
           <Lottie animationData={metaboleSmall} className="block h-10 w-10 md:hidden" />
         </Link>
         <div className="relative flex h-[108px] gap-4 py-8">
