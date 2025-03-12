@@ -225,6 +225,9 @@ const ContactPopover = () => {
       resetForm();
       resetErrors();
       setFormStatus(FORM_STATUS.SUCCESS);
+      setTimeout(() => {
+        if (!isAnimating) closeAnim();
+      }, 1000);
     },
     onMutate: () => {
       setFormStatus(FORM_STATUS.PENDING);

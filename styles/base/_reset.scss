@@ -25,3 +25,10 @@ html {
 .animated-text * {
   display: inline-block;
 }
+
+.transform-reset {
+  transform: none !important;
+  translate: none !important;
+  rotate: none !important;
+  scale: none !important;
+}

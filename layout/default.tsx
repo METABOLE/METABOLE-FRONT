@@ -22,6 +22,10 @@ const Layout = ({ children }: { children: ReactNode }) => {
   const backgroundRef = useRef(null);
 
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+    });
+
     const defaultTitle = 'Metabole STUDIO';
     const alternateTitles = isFrench
       ? ['Expériences web uniques', 'Un studio créatif']

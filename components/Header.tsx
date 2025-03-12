@@ -1,7 +1,7 @@
 import { useLanguage } from '@/providers/language.provider';
 import Link from 'next/link';
 import metaboleFull from '../public/lotties/metabole-full-blue.json';
-import metaboleSmall from '../public/lotties/metabole-small.json';
+import metaboleSmall from '../public/lotties/metabole-small-blue.json';
 import ContactPopover from './ContactPopover';
 import Lottie from './Lottie';
 import Sound from './Sound';

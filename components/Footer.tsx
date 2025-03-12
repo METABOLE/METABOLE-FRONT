@@ -3,18 +3,16 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { useRef } from 'react';
 import FloatingHalo from './FloatingHalo';
+import Language from './Language';
 import LeadForm from './LeadForm';
 import Time from './Time';
-import { useEnvironment } from '@/hooks/useEnvironment';
-import Language from './Language';
 
 const Footer = () => {
   const wrapperRef = useRef(null);
-  const footerRef = useRef(null);
+  const footerRef = useRef<HTMLDivElement>(null);
   const floatingHaloRef = useRef<HTMLDivElement>(null);
 
   const { x, y } = useMousePosition(wrapperRef);
-  const { isProd } = useEnvironment();
   const { contextSafe } = useGSAP();
 
   const resetHaloPosition = contextSafe(() => {
@@ -35,11 +33,17 @@ const Footer = () => {
 
   useGSAP(() => {
     gsap.to(footerRef.current, {
-      delay: 4,
+      delay: 3.1,
       duration: 2,
       ease: 'power4.out',
       y: 0,
-      scale: 1,
+      onComplete: () => {
+        if (!footerRef.current) return;
+        footerRef.current.style.transform = 'none';
+        footerRef.current.style.translate = 'none';
+        footerRef.current.style.rotate = 'none';
+        footerRef.current.style.scale = 'none';
+      },
     });
     gsap.to(wrapperRef.current, {
       scrollTrigger: {
@@ -48,17 +52,19 @@ const Footer = () => {
       y: 40,
       ease: 'power1.inOut',
     });
-  }, [isProd]);
+  }, []);
 
   return (
     <footer
       ref={wrapperRef}
       className="px-x-half-default fixed bottom-[40px] w-screen translate-y-[100%]"
     >
-      <div className="overflow-hidden rounded-t-3xl">
+      <div
+        ref={footerRef}
+        className="translate-y-full overflow-hidden rounded-t-3xl duration-[2s] ease-in-out"
+      >
         <div
-          ref={footerRef}
-          className="relative h-full translate-y-full overflow-hidden rounded-t-3xl bg-black px-[52px] py-11 text-white"
+          className="relative h-full overflow-hidden rounded-t-3xl bg-black px-[52px] py-11 text-white"
           onMouseLeave={resetHaloPosition}
           onMouseMove={moveHalo}
           onMouseEnter={() => {
