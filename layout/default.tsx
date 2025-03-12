@@ -127,8 +127,6 @@ const Layout = ({ children }: { children: ReactNode }) => {
         src="/images/background.png"
         width={3840}
       />
-      {/* <Analytics />
-      <SpeedInsights /> */}
     </>
   );
 };
