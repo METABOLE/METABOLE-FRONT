@@ -10,7 +10,15 @@
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
+    "@number-flow/react": "^0.5.5",
+    "@tanstack/react-query": "^5.66.7",
+    "@vercel/analytics": "^1.5.0",
+    "@vercel/speed-insights": "^1.2.0",
+    "axios": "^1.8.1",
+    "clsx": "^2.1.1",
     "gsap": "^3.12.7",
+    "lenis": "^1.1.20",
+    "lottie-react": "^2.4.1",
     "next": "15.1.7",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
@@ -33,6 +41,8 @@
     "postcss": "^8",
     "prettier": "^3.1.0",
     "prettier-eslint": "^16.1.2",
+    "prettier-plugin-css-order": "^2.1.2",
+    "prettier-plugin-tailwindcss": "^0.6.9",
     "sass": "^1.85.0",
     "tailwindcss": "^4.0.0",
     "typescript": "^5.3.3"

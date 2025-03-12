@@ -5,7 +5,7 @@ interface IconProps extends SVGProps<SVGSVGElement> {
   color?: COLORS;
 }
 
-export const LogoTypo = forwardRef<SVGSVGElement, IconProps>(
+export const LogoFull = forwardRef<SVGSVGElement, IconProps>(
   ({ color = COLORS.BLUE, ...props }, ref) => (
     <svg
       {...props}
@@ -74,37 +74,13 @@ export const LogoTypo = forwardRef<SVGSVGElement, IconProps>(
     </svg>
   ),
 );
-export const LogoIcon = forwardRef<SVGSVGElement, IconProps>(
+export const LogoSmall = forwardRef<SVGSVGElement, IconProps>(
   ({ color = COLORS.BLUE, ...props }, ref) => (
-    <svg
-      ref={ref}
-      fill="none"
-      height="57"
-      viewBox="0 0 61 57"
-      width="61"
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}
-    >
-      <g clipPath="url(#clip0_365_37585)">
-        <path
-          d="M20.6545 55.7604L10.0466 1.20558V55.7604H-0.00292969V-0.0705566H20.0165L30.5446 54.4843L41.2322 -0.0705566H61.2516V55.7604H51.202V1.20558L40.5942 55.7604H20.6545Z"
-          fill={color}
-        />
-      </g>
-      <g clipPath="url(#clip1_365_37585)">
-        <path
-          d="M-9.84547 55.7604L-20.4534 1.20558V55.7604H-30.5029V-0.0705566H-10.4835L0.0445865 54.4843L10.7322 -0.0705566H30.7516V55.7604H20.702V1.20558L10.0942 55.7604H-9.84547Z"
-          fill={color}
-        />
-      </g>
-      <defs>
-        <clipPath id="clip0_365_37585">
-          <rect fill="white" height="56.4944" transform="translate(30.5)" width="30.5001" />
-        </clipPath>
-        <clipPath id="clip1_365_37585">
-          <rect fill="white" height="56.4944" width="30.5001" />
-        </clipPath>
-      </defs>
+    <svg {...props} ref={ref} fill="none" viewBox="0 0 525 477" xmlns="http://www.w3.org/2000/svg">
+      <rect fill={color} height="476.392" width="85.5793" x="439.305" />
+      <rect fill={color} height="476.392" width="85.5793" x="176.861" />
+      <path d="M355.154 0H440.734L348.023 476.392H262.443L355.154 0Z" fill={color} />
+      <path d="M92.7109 0H178.29L85.5793 476.392H0L92.7109 0Z" fill={color} />
     </svg>
   ),
 );
@@ -122,6 +98,43 @@ export const IconArrow = forwardRef<SVGSVGElement, IconProps>(
     >
       <path
         d="M7 16C7 16.5523 7.44772 17 8 17C8.55228 17 9 16.5523 9 16L7 16ZM8.70711 0.292893C8.31658 -0.0976311 7.68342 -0.0976311 7.29289 0.292893L0.928932 6.65685C0.538408 7.04738 0.538408 7.68054 0.928932 8.07107C1.31946 8.46159 1.95262 8.46159 2.34315 8.07107L8 2.41421L13.6569 8.07107C14.0474 8.46159 14.6805 8.46159 15.0711 8.07107C15.4616 7.68054 15.4616 7.04738 15.0711 6.65685L8.70711 0.292893ZM9 16L9 1L7 1L7 16L9 16Z"
+        fill={color}
+      />
+    </svg>
+  ),
+);
+
+export const IconCross = forwardRef<SVGSVGElement, IconProps>(
+  ({ color = COLORS.WHITE, ...props }, ref) => (
+    <svg
+      ref={ref}
+      {...props}
+      fill="none"
+      height="15"
+      viewBox="0 0 14 15"
+      width="14"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <line stroke={color} strokeWidth="2" x1="14" y1="7.5" y2="7.5" />
+      <line stroke={color} strokeWidth="2" x1="7" x2="7" y1="14.5" y2="0.5" />
+    </svg>
+  ),
+);
+
+export const IconQuestionMark = forwardRef<SVGSVGElement, IconProps>(
+  ({ color = COLORS.WHITE, ...props }, ref) => (
+    <svg
+      ref={ref}
+      {...props}
+      fill="none"
+      height="19"
+      viewBox="0 0 19 19"
+      width="19"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect height="18" rx="9" stroke={color} width="18" x="0.5" y="0.5" />
+      <path
+        d="M8.45656 11.514C8.45656 10.618 8.86256 10.128 9.28256 9.75L10.1646 8.98C10.5286 8.658 10.8086 8.378 10.8086 7.804C10.8086 7.132 10.2766 6.6 9.43656 6.6C8.63856 6.6 8.06456 7.132 8.06456 7.888C8.06456 8.14 8.12056 8.322 8.19056 8.49L6.48256 8.182C6.45456 8.042 6.42656 7.888 6.42656 7.734C6.42656 6.138 7.71456 5.018 9.43656 5.018C11.4666 5.018 12.5726 6.376 12.5726 7.804C12.5726 8.812 12.0266 9.428 11.4386 9.932L10.6966 10.562C10.4026 10.828 10.1646 11.08 10.1646 11.57V11.948H8.45656V11.514ZM8.28856 15V12.9H10.2906V15H8.28856Z"
         fill={color}
       />
     </svg>
