@@ -19,6 +19,7 @@ interface BaseButtonProps {
   className?: string;
   transformOrigin?: 'left' | 'right' | 'center';
   color?: 'primary' | 'secondary' | 'tertiary';
+  disabled?: boolean;
 }
 
 type DivButtonProps = BaseButtonProps &
@@ -39,11 +40,12 @@ type DynamicElementProps = {
   target?: string;
   className?: string;
   children: ReactNode;
+  disabled?: boolean;
 } & ComponentProps<'div'>;
 
-const DynamicElement = ({ href, ...props }: DynamicElementProps) => {
-  const Component = href ? Link : 'button';
-  return <Component {...(props as LinkButtonProps)} {...(href && { href })} />;
+const DynamicElement = ({ href, disabled, ...props }: DynamicElementProps) => {
+  const Component = href && !disabled ? Link : 'button';
+  return <Component {...(props as LinkButtonProps)} {...(href && !disabled && { href })} />;
 };
 
 export interface AnimatedButtonRef {
@@ -53,7 +55,16 @@ export interface AnimatedButtonRef {
 
 const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
   (
-    { children, href, transformOrigin = 'left', color = 'primary', target, className, ...props },
+    {
+      children,
+      href,
+      transformOrigin = 'left',
+      color = 'primary',
+      target,
+      className,
+      disabled = false,
+      ...props
+    },
     ref,
   ) => {
     const wrapperButtonRef = useRef(null);
@@ -179,6 +190,8 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
     });
 
     const showBackground = contextSafe(() => {
+      if (disabled) return;
+
       gsap
         .timeline({
           defaults: {
@@ -202,6 +215,8 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
     });
 
     const hideBackground = contextSafe(() => {
+      if (disabled) return;
+
       gsap
         .timeline({
           defaults: {
@@ -231,20 +246,22 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
         <DynamicElement
           ref={wrapperButtonRef}
           className={clsx(
-            'label group/button inline-block h-11 w-fit cursor-pointer overflow-hidden rounded-full uppercase backdrop-blur-xl',
+            'label group/button inline-block h-11 w-fit overflow-hidden rounded-full uppercase backdrop-blur-xl',
             color === 'primary' && 'bg-blur-glass text-black',
             color === 'secondary' && 'bg-blue text-white',
             color === 'tertiary' && 'bg-yellow text-black',
             `origin-${transformOrigin}`,
+            disabled ? 'pointer-events-none cursor-not-allowed opacity-70' : 'cursor-pointer',
             className,
           )}
           {...props}
+          disabled={disabled}
           href={href}
           target={target}
           onMouseEnter={showBackground}
           onMouseLeave={hideBackground}
-          onMouseMove={(e) => useMagnet(e, 0.8)}
-          onMouseOut={(e) => useResetMagnet(e)}
+          onMouseMove={(e) => !disabled && useMagnet(e, 0.8)}
+          onMouseOut={(e) => !disabled && useResetMagnet(e)}
         >
           <div
             ref={backgroudButtonRef}
@@ -255,8 +272,8 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
           />
           <div
             className="h-full w-full"
-            onMouseMove={(e) => useMagnet(e, 0.4)}
-            onMouseOut={(e) => useResetMagnet(e)}
+            onMouseMove={(e) => !disabled && useMagnet(e, 0.4)}
+            onMouseOut={(e) => !disabled && useResetMagnet(e)}
           >
             <div
               ref={textRef}

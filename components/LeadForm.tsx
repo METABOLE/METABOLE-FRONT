@@ -1,6 +1,6 @@
 import { useLanguage } from '@/providers/language.provider';
 import { postSubscribeNewsletter } from '@/services/newsletter.service';
-import { COLORS } from '@/types';
+import { COLORS, FORM_STATUS } from '@/types';
 import { NewsletterSubscribeData } from '@/types/newsletter.type';
 import { isEmail } from '@/utils/validation.utils';
 import { useMutation } from '@tanstack/react-query';
@@ -17,6 +17,11 @@ interface LeadFormProps {
   animate?: boolean;
 }
 
+const SUCCESS_MESSAGES = {
+  fr: 'Inscription réussie',
+  en: 'Subscription successful',
+};
+
 const LeadForm = ({ className, isDark }: LeadFormProps) => {
   const wrapperRef = useRef(null);
   const containerRef = useRef(null);
@@ -25,8 +30,7 @@ const LeadForm = ({ className, isDark }: LeadFormProps) => {
 
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [formStatus, setFormStatus] = useState(FORM_STATUS.DEFAULT);
 
   const { isFrench } = useLanguage();
 
@@ -36,18 +40,19 @@ const LeadForm = ({ className, isDark }: LeadFormProps) => {
     onSuccess: (data) => {
       console.info('Inscription réussie', data);
       inputRef.current?.blur();
-      setIsLoading(false);
-      setSuccess(isFrench ? 'Inscription réussie' : 'Subscription successful');
+      setFormStatus(FORM_STATUS.SUCCESS);
       setEmail('');
-      setTimeout(() => setSuccess(''), 3000);
+      setTimeout(() => {
+        setFormStatus(FORM_STATUS.DEFAULT);
+      }, 3000);
     },
     onError: (error) => {
-      setIsLoading(false);
+      setFormStatus(FORM_STATUS.ERROR);
       setError(isFrench ? "Erreur d'inscription" : 'Subscription error');
       console.error('ERROR : ', error);
     },
     onMutate: () => {
-      setIsLoading(true);
+      setFormStatus(FORM_STATUS.PENDING);
     },
   });
 
@@ -97,12 +102,14 @@ const LeadForm = ({ className, isDark }: LeadFormProps) => {
             className={clsx('p3 w-full py-4 pr-5')}
             errorMessage={error}
             isDark={isDark}
-            isLoading={isLoading}
+            isLoading={formStatus === FORM_STATUS.PENDING}
             name="email"
             placeholder="johndoe@company.com"
-            successMessage={success}
             type="email"
             value={email}
+            successMessage={
+              formStatus === FORM_STATUS.SUCCESS ? SUCCESS_MESSAGES[isFrench ? 'fr' : 'en'] : ''
+            }
             onBlur={() => {
               isEmail(email) ||
                 setError(
@@ -119,7 +126,8 @@ const LeadForm = ({ className, isDark }: LeadFormProps) => {
           <button
             ref={arrowRef}
             aria-label="Send"
-            className="absolute right-0 ml-4 cursor-pointer"
+            className="absolute right-0 ml-4 cursor-pointer disabled:opacity-50"
+            disabled={formStatus === FORM_STATUS.PENDING || formStatus === FORM_STATUS.SUCCESS}
             type="submit"
           >
             <IconArrow className="rotate-45" color={isDark ? COLORS.BLACK : COLORS.WHITE} />

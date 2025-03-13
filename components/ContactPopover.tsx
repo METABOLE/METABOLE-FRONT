@@ -2,7 +2,7 @@ import { useClickOutside } from '@/hooks/useClickOutside';
 import { useMagnet, useResetMagnet } from '@/hooks/useMagnet';
 import { useLanguage } from '@/providers/language.provider';
 import { postContactForm } from '@/services/contact.service';
-import { COLORS } from '@/types';
+import { COLORS, FORM_STATUS } from '@/types';
 import { ContactFormData } from '@/types/contact.type';
 import { clampVw } from '@/utils/clamp.utils';
 import { isEmail } from '@/utils/validation.utils';
@@ -15,13 +15,6 @@ import { IconCross } from './Icons';
 import Input, { AnimatedIputRef } from './Input';
 import Typography, { AnimatedTypoRef } from './Typography';
 import Checkbox from './Checkbox';
-
-enum FORM_STATUS {
-  DEFAULT = 'DEFAULT',
-  SUCCESS = 'SUCCESS',
-  ERROR = 'ERROR',
-  PENDING = 'PENDING',
-}
 
 const ContactPopover = () => {
   const buttonOpenRef = useRef(null);
@@ -156,6 +149,15 @@ const ContactPopover = () => {
       .timeline({
         onComplete: () => setIsAnimating(false),
       })
+      .to(
+        buttonCloseRef.current,
+        {
+          scale: 0,
+          rotate: 0,
+          duration: 0.3,
+        },
+        '<',
+      )
       .add(() => buttonSubmitRef.current?.reverse())
       .to(inputsRefs.consentMarketing.current, {
         opacity: 0,
@@ -167,15 +169,6 @@ const ContactPopover = () => {
       .add(() => inputsRefs.email.current?.reverse(), '+=0.1')
       .add(() => inputsRefs.name.current?.reverse(), '+=0.1')
       .add(textAnimationTitle)
-      .to(
-        buttonCloseRef.current,
-        {
-          scale: 0,
-          rotate: 0,
-          duration: 0.3,
-        },
-        '<',
-      )
       .to(
         containerRef.current,
         {
@@ -309,10 +302,13 @@ const ContactPopover = () => {
         onMouseMove={(e) => !isOpen && useMagnet(e, 0.4)}
         onMouseOut={(e) => useResetMagnet(e)}
       >
-        <button className="label w-full cursor-pointer text-left">CONTACT</button>
+        <button className="label w-full cursor-pointer text-left" type="button">
+          CONTACT
+        </button>
         <button
           ref={buttonCloseRef}
           className="scale-0 rotate-45 cursor-pointer"
+          type="button"
           onClick={(e) => {
             e.stopPropagation();
             if (!isAnimating) closeAnim();
@@ -421,7 +417,12 @@ const ContactPopover = () => {
           </label>
         </div>
         <div className="w-fit pt-4">
-          <Button ref={buttonSubmitRef} className="" color="secondary">
+          <Button
+            ref={buttonSubmitRef}
+            className=""
+            color="secondary"
+            disabled={formStatus === FORM_STATUS.SUCCESS || formStatus === FORM_STATUS.PENDING}
+          >
             {getButtonText()}
           </Button>
         </div>
