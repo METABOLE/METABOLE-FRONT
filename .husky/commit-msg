@@ -1,0 +1,28 @@
+message="$(cat $1)"
+
+if [[ "${message}" =~ ^[:a-zA-Z0-9\[\s-] ]]; then
+    echo "🌀 Metabole Studio: Commit sans gitmoji détecté!
+
+👉 Utilisez un de ces emoji pour clarifier vos changements:
+    ✨ (:sparkles:) Nouvelle fonctionnalité
+    🎨 (:art:) Amélioration UI/UX
+    💄 (:lipstick:) CSS/Styles
+    🐛 (:bug:) Correction de bug
+    🔍 (:mag:) Refactoring/amélioration du code
+    🚀 (:rocket:) Performance
+    🔧 (:wrench:) Configuration
+    📱 (:iphone:) Responsive/adaptation mobile
+    🧩 (:puzzle_piece:) Nouveaux composants
+    🌐 (:globe_with_meridians:) Intégration Sanity CMS
+    🎭 (:performing_arts:) Animation GSAP
+    🔮 (:crystal_ball:) 3D avec Three.js
+    🍱 (:bento:) Assets (images, fonts, etc.)
+    📝 (:memo:) Documentation
+    🧪 (:test_tube:) Tests
+    ⬆️ (:arrow_up:) Mise à jour des dépendances
+
+💫 Metabole = changement constant. Vos commits aussi!
+"
+
+    exit 101
+fi

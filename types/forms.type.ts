@@ -1,0 +1,6 @@
+export enum FORM_STATUS {
+  DEFAULT = 'DEFAULT',
+  SUCCESS = 'SUCCESS',
+  ERROR = 'ERROR',
+  PENDING = 'PENDING',
+}

@@ -6,7 +6,7 @@ import NewsletterLayout from '@/layout/newsletter';
 import { NextPageWithLayout } from '@/pages/_app';
 import { useLanguage } from '@/providers/language.provider';
 import { postUnsubscribeNewsletter } from '@/services/newsletter.service';
-import { COLORS } from '@/types';
+import { COLORS, FORM_STATUS } from '@/types';
 import { NewsletterUnsubscribeData } from '@/types/newsletter.type';
 import { isEmail } from '@/utils/validation.utils';
 import { useMutation } from '@tanstack/react-query';
@@ -14,20 +14,13 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import React, { ReactElement, useEffect, useRef, useState } from 'react';
 
-enum FORM_STATUS {
-  DEFAULT = 'DEFAULT',
-  SUCCESS = 'SUCCESS',
-  ERROR = 'ERROR',
-  PENDING = 'PENDING',
-}
-
 const UnsubscribePage: NextPageWithLayout = () => {
   const { isFrench, getInternalPath } = useLanguage();
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [formStatus, setFormStatus] = useState<FORM_STATUS>(FORM_STATUS.DEFAULT);
+  const [formStatus, setFormStatus] = useState(FORM_STATUS.DEFAULT);
   const searchParams = useSearchParams();
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -130,7 +123,11 @@ const UnsubscribePage: NextPageWithLayout = () => {
             }}
           />
 
-          <Button className="mt-12" color="tertiary">
+          <Button
+            className="mt-12"
+            color="tertiary"
+            disabled={formStatus === FORM_STATUS.PENDING || formStatus === FORM_STATUS.SUCCESS}
+          >
             {getButtonText()}
           </Button>
         </form>
@@ -152,3 +149,16 @@ UnsubscribePage.getLayout = function getLayout(page: ReactElement) {
 };
 
 export default UnsubscribePage;
+
+export async function getStaticPaths() {
+  return {
+    paths: [{ params: { lang: 'en' } }, { params: { lang: 'fr' } }],
+    fallback: false,
+  };
+}
+
+export async function getStaticProps() {
+  return {
+    props: {},
+  };
+}
