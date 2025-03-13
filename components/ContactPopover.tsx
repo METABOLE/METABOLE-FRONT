@@ -149,6 +149,15 @@ const ContactPopover = () => {
       .timeline({
         onComplete: () => setIsAnimating(false),
       })
+      .to(
+        buttonCloseRef.current,
+        {
+          scale: 0,
+          rotate: 0,
+          duration: 0.3,
+        },
+        '<',
+      )
       .add(() => buttonSubmitRef.current?.reverse())
       .to(inputsRefs.consentMarketing.current, {
         opacity: 0,
@@ -160,15 +169,6 @@ const ContactPopover = () => {
       .add(() => inputsRefs.email.current?.reverse(), '+=0.1')
       .add(() => inputsRefs.name.current?.reverse(), '+=0.1')
       .add(textAnimationTitle)
-      .to(
-        buttonCloseRef.current,
-        {
-          scale: 0,
-          rotate: 0,
-          duration: 0.3,
-        },
-        '<',
-      )
       .to(
         containerRef.current,
         {

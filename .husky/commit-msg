@@ -1,6 +1,8 @@
 message="$(cat $1)"
 
-if [[ "${message}" =~ ^[:a-zA-Z0-9\[\s-] ]]; then
+valid_emoji_codes=":(sparkles|art|lipstick|bug|mag|rocket|wrench|iphone|puzzle_piece|globe_with_meridians|performing_arts|crystal_ball|bento|memo|test_tube|arrow_up):"
+
+if ! [[ "${message}" =~ ^${valid_emoji_codes}[[:space:]] ]]; then
     echo "🌀 Metabole Studio: Commit sans gitmoji détecté!
 
 👉 Utilisez un de ces emoji pour clarifier vos changements:
@@ -23,6 +25,7 @@ if [[ "${message}" =~ ^[:a-zA-Z0-9\[\s-] ]]; then
 
 💫 Metabole = changement constant. Vos commits aussi!
 "
-
     exit 101
 fi
+
+exit 0 
