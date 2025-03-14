@@ -4,7 +4,7 @@ import { useGSAP } from '@gsap/react';
 import clsx from 'clsx';
 import gsap from 'gsap';
 import { usePathname } from 'next/navigation';
-import { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { IconCross } from './Icons';
 
 enum CURSOR_STATE {
@@ -13,8 +13,10 @@ enum CURSOR_STATE {
   SEE_MORE = 'SEE_MORE',
 }
 
-const Cursor = memo(() => {
-  if (useTouchDevice()) return null;
+const Cursor = () => {
+  const isTouchDevice = useTouchDevice();
+
+  if (isTouchDevice) return null;
 
   const { contextSafe } = useGSAP();
   const pathname = usePathname();
@@ -63,8 +65,9 @@ const Cursor = memo(() => {
 
   const cursorHandlers = {
     moveCursor: contextSafe((e: MouseEvent) => {
-      if (!pointerRef.current) return;
+      if (!pointerRef.current || !wrapperPointerRef.current) return;
       pointerRef.current.style.opacity = '1';
+      wrapperPointerRef.current.style.opacity = '1';
       gsap.to(pointerRef.current, {
         duration: 0.3,
         x: e.clientX,
@@ -146,7 +149,7 @@ const Cursor = memo(() => {
       <div
         ref={wrapperPointerRef}
         className={clsx(
-          'pointer-events-none fixed top-0 left-0 z-[9999] flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center mix-blend-difference',
+          'pointer-events-none fixed top-0 left-0 z-[9999] flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center opacity-0 mix-blend-difference',
         )}
       >
         <div
@@ -159,7 +162,7 @@ const Cursor = memo(() => {
       </div>
       <div
         ref={pointerRef}
-        className="pointer-events-none fixed top-0 left-0 z-[9999] -translate-x-1/2 -translate-y-1/2 mix-blend-difference"
+        className="pointer-events-none fixed top-0 left-0 z-[9999] -translate-x-1/2 -translate-y-1/2 opacity-0 mix-blend-difference"
       >
         <IconCross
           color={COLORS.YELLOW}
@@ -171,6 +174,6 @@ const Cursor = memo(() => {
       </div>
     </>
   );
-});
+};
 
 export default Cursor;

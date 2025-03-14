@@ -1,5 +1,3 @@
-import Cursor from '@/components/Cursor';
-import useTouchDevice from '@/hooks/useTouchDevice';
 import Layout from '@/layout/default';
 import { AppProvider } from '@/providers/root';
 import '@/styles/main.scss';
@@ -18,12 +16,6 @@ type AppPropsWithLayout = AppProps & {
 
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout || ((page) => <Layout>{page}</Layout>);
-  const isTouchDevice = useTouchDevice();
 
-  return (
-    <AppProvider>
-      {!isTouchDevice && <Cursor />}
-      {getLayout(<Component {...pageProps} />)}
-    </AppProvider>
-  );
+  return <AppProvider>{getLayout(<Component {...pageProps} />)}</AppProvider>;
 }
