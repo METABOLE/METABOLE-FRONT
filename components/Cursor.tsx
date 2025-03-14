@@ -21,21 +21,20 @@ const Cursor = memo(() => {
   const wrapperPointerRef = useRef<HTMLDivElement>(null);
   const pointerRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<MutationObserver | null>(null);
-  const clickSoundRef = useRef<HTMLAudioElement | null>(null);
   const hoverSoundRef = useRef<HTMLAudioElement | null>(null);
+  const clickDownRef = useRef<HTMLAudioElement | null>(null);
+  const clickUpSoundRef = useRef<HTMLAudioElement | null>(null);
 
   const [cursorState, setCursorState] = useState(CURSOR_STATE.DEFAULT);
   const [isActive, setIsActive] = useState(false);
 
-  const mouseUpSoundRef = useRef<HTMLAudioElement | null>(null);
-
   useEffect(() => {
-    clickSoundRef.current = new Audio('/sounds/clickDown.mp3');
+    clickDownRef.current = new Audio('/sounds/clickDown.mp3');
+    clickUpSoundRef.current = new Audio('/sounds/clickDown.mp3');
     // hoverSoundRef.current = new Audio('/sounds/hover.mp3');
-    mouseUpSoundRef.current = new Audio('/sounds/clickDown.mp3');
-    clickSoundRef.current.volume = 0.5;
-    // hoverSoundRef.current.volume = 0.1;
-    mouseUpSoundRef.current.volume = 0.4;
+    clickDownRef.current.volume = 0.6;
+    clickUpSoundRef.current.volume = 0.4;
+    // hoverSoundRef.current.volume = 0.2;
   }, []);
 
   const cursorStateHandlers = {
@@ -45,15 +44,15 @@ const Cursor = memo(() => {
   };
 
   const playClickDownSound = () => {
-    if (!clickSoundRef.current) return;
-    clickSoundRef.current.currentTime = 0;
-    clickSoundRef.current.play();
+    if (!clickDownRef.current) return;
+    clickDownRef.current.currentTime = 0;
+    clickDownRef.current.play();
   };
 
   const playClickUpSound = () => {
-    if (!mouseUpSoundRef.current) return;
-    mouseUpSoundRef.current.currentTime = 0;
-    mouseUpSoundRef.current.play();
+    if (!clickUpSoundRef.current) return;
+    clickUpSoundRef.current.currentTime = 0;
+    clickUpSoundRef.current.play();
   };
 
   const playHoverSound = () => {
@@ -93,7 +92,7 @@ const Cursor = memo(() => {
     (event: 'addEventListener' | 'removeEventListener') => {
       const elements = {
         seeMore: document.querySelectorAll('.custom-cursor-see-more'),
-        button: document.querySelectorAll('.custom-cursor-pointer'),
+        button: document.querySelectorAll('.cursor-pointer'),
       };
 
       Object.entries({
@@ -139,7 +138,7 @@ const Cursor = memo(() => {
   useEffect(() => {
     setTimeout(() => {
       setCursorState(CURSOR_STATE.DEFAULT);
-    }, 1400);
+    }, 500);
   }, [pathname]);
 
   return (

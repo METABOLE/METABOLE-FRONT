@@ -15,7 +15,7 @@ export default function NewsletterLayout({ children }: NewsletterLayoutProps) {
   return (
     <div className="fixed flex h-screen w-screen flex-col bg-black">
       <header className="px-x-default flex w-screen justify-center py-6">
-        <Link className="custom-cursor-pointer" href={getInternalPath('/')}>
+        <Link className="cursor-pointer" href={getInternalPath('/')}>
           <Lottie animationData={metaboleFull} className="h-10" />
         </Link>
       </header>

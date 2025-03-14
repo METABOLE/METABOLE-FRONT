@@ -97,7 +97,7 @@ const Sound = ({ className }: { className: string }) => {
   return (
     <div
       className={clsx(
-        'bg-blue custom-cursor-pointer flex h-11 w-11 cursor-pointer items-center justify-center rounded-full',
+        'bg-blue flex h-11 w-11 cursor-pointer items-center justify-center rounded-full',
         className,
       )}
       onClick={toggleSound}

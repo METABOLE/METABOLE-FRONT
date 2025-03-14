@@ -298,7 +298,7 @@ const ContactPopover = () => {
     >
       <div
         ref={buttonOpenRef}
-        className="custom-cursor-pointer flex h-11 cursor-pointer items-center justify-between px-6"
+        className="flex h-11 cursor-pointer items-center justify-between px-6"
         onMouseMove={(e) => !isOpen && useMagnet(e, 0.4)}
         onMouseOut={(e) => useResetMagnet(e)}
       >
@@ -307,7 +307,7 @@ const ContactPopover = () => {
         </button>
         <button
           ref={buttonCloseRef}
-          className="custom-cursor-pointer scale-0 rotate-45 cursor-pointer"
+          className="scale-0 rotate-45 cursor-pointer"
           type="button"
           onClick={(e) => {
             e.stopPropagation();

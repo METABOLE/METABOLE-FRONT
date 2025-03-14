@@ -133,7 +133,7 @@ const UnsubscribePage: NextPageWithLayout = () => {
         </form>
 
         <Link
-          className="custom-cursor-pointer flex items-center gap-3 text-white"
+          className="flex cursor-pointer items-center gap-3 text-white"
           href={getInternalPath('/')}
         >
           <IconArrow className="rotate-45" color={COLORS.WHITE} />
