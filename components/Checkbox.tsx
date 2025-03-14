@@ -21,7 +21,7 @@ const Checkbox = forwardRef<HTMLLabelElement, CheckboxProps>(
     return (
       <label
         ref={ref}
-        className={clsx('custom-cursor-pointer flex cursor-pointer items-center', className)}
+        className={clsx('flex cursor-pointer items-center', className)}
         htmlFor={props.name}
       >
         <div className="relative">
@@ -41,11 +41,7 @@ const Checkbox = forwardRef<HTMLLabelElement, CheckboxProps>(
             />
           </div>
         </div>
-        {label && (
-          <span className="custom-cursor-pointer text-black-70 disclaimer ml-2 cursor-pointer">
-            {label}
-          </span>
-        )}
+        {label && <span className="text-black-70 disclaimer ml-2 cursor-pointer">{label}</span>}
       </label>
     );
   },

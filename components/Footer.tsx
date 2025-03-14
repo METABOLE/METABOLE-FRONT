@@ -87,7 +87,7 @@ const Footer = () => {
               <div className="">
                 <Time isDark={true} />
               </div>
-              <Link className="custom-cursor-pointer" href="mailto:contact@metabole.studio">
+              <Link className="cursor-pointer" href="mailto:contact@metabole.studio">
                 contact@metabole.studio
               </Link>
               <Language isDark={true} />
