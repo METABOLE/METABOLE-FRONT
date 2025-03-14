@@ -6,6 +6,7 @@ import FloatingHalo from './FloatingHalo';
 import Language from './Language';
 import LeadForm from './LeadForm';
 import Time from './Time';
+import Link from 'next/link';
 
 const Footer = () => {
   const wrapperRef = useRef(null);
@@ -86,9 +87,9 @@ const Footer = () => {
               <div className="">
                 <Time isDark={true} />
               </div>
-              <a className="" href="mailto:contact@metabole.studio">
+              <Link className="custom-cursor-pointer" href="mailto:contact@metabole.studio">
                 contact@metabole.studio
-              </a>
+              </Link>
               <Language isDark={true} />
             </div>
             <div className="bg-yellow-30 h-px w-10 sm:hidden" />

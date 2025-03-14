@@ -8,7 +8,7 @@ interface CheckboxProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>
   className?: string;
 }
 
-const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
+const Checkbox = forwardRef<HTMLLabelElement, CheckboxProps>(
   ({ checked = false, onChange, label, className, ...props }, ref) => {
     const [isChecked, setIsChecked] = useState(checked);
 
@@ -19,10 +19,13 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
     };
 
     return (
-      <label className={clsx('flex cursor-pointer items-center', className)}>
+      <label
+        ref={ref}
+        className={clsx('custom-cursor-pointer flex cursor-pointer items-center', className)}
+        htmlFor={props.name}
+      >
         <div className="relative">
           <input
-            ref={ref}
             checked={isChecked}
             className="sr-only"
             type="checkbox"
@@ -38,7 +41,11 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
             />
           </div>
         </div>
-        {label && <span className="ml-2">{label}</span>}
+        {label && (
+          <span className="custom-cursor-pointer text-black-70 disclaimer ml-2 cursor-pointer">
+            {label}
+          </span>
+        )}
       </label>
     );
   },

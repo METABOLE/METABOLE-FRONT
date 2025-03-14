@@ -126,7 +126,7 @@ const LeadForm = ({ className, isDark }: LeadFormProps) => {
           <button
             ref={arrowRef}
             aria-label="Send"
-            className="absolute right-0 ml-4 cursor-pointer disabled:opacity-50"
+            className="custom-cursor-pointer absolute right-0 ml-4 cursor-pointer disabled:opacity-50"
             disabled={formStatus === FORM_STATUS.PENDING || formStatus === FORM_STATUS.SUCCESS}
             type="submit"
           >

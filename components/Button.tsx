@@ -246,7 +246,7 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
         <DynamicElement
           ref={wrapperButtonRef}
           className={clsx(
-            'label group/button inline-block h-11 w-fit overflow-hidden rounded-full uppercase backdrop-blur-xl',
+            'label group/button custom-cursor-pointer inline-block h-11 w-fit overflow-hidden rounded-full uppercase backdrop-blur-xl',
             color === 'primary' && 'bg-blur-glass text-black',
             color === 'secondary' && 'bg-blue text-white',
             color === 'tertiary' && 'bg-yellow text-black',

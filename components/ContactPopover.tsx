@@ -26,7 +26,7 @@ const ContactPopover = () => {
     email: useRef<AnimatedIputRef>(null),
     phone: useRef<AnimatedIputRef>(null),
     message: useRef<AnimatedIputRef>(null),
-    consentMarketing: useRef<HTMLDivElement>(null),
+    consentMarketing: useRef<HTMLLabelElement>(null),
   };
   const buttonSubmitRef = useRef<AnimatedButtonRef>(null);
 
@@ -298,7 +298,7 @@ const ContactPopover = () => {
     >
       <div
         ref={buttonOpenRef}
-        className="flex h-11 cursor-pointer items-center justify-between px-6"
+        className="custom-cursor-pointer flex h-11 cursor-pointer items-center justify-between px-6"
         onMouseMove={(e) => !isOpen && useMagnet(e, 0.4)}
         onMouseOut={(e) => useResetMagnet(e)}
       >
@@ -307,7 +307,7 @@ const ContactPopover = () => {
         </button>
         <button
           ref={buttonCloseRef}
-          className="scale-0 rotate-45 cursor-pointer"
+          className="custom-cursor-pointer scale-0 rotate-45 cursor-pointer"
           type="button"
           onClick={(e) => {
             e.stopPropagation();
@@ -400,22 +400,19 @@ const ContactPopover = () => {
           value={formData.message}
           onChange={(e) => setFormData((prev) => ({ ...prev, message: e.target.value }))}
         />
-        <div
+        <Checkbox
           ref={inputsRefs.consentMarketing}
-          className="flex -translate-y-5 items-center gap-2 opacity-0"
-        >
-          <Checkbox
-            checked={formData.consentMarketing}
-            id="consentMarketing"
-            name="consentMarketing"
-            onChange={(checked) => setFormData((prev) => ({ ...prev, consentMarketing: checked }))}
-          />
-          <label className="disclaimer text-black-70" htmlFor="consentMarketing">
-            {isFrench
+          checked={formData.consentMarketing}
+          className="-translate-y-5 opacity-0"
+          id="consentMarketing"
+          name="consentMarketing"
+          label={
+            isFrench
               ? "Je souhaite m'inscrire à la newsletter et je consens à recevoir des communications marketing"
-              : 'I want to subscribe to the newsletter and I consent to receiving marketing communications'}
-          </label>
-        </div>
+              : 'I want to subscribe to the newsletter and I consent to receiving marketing communications'
+          }
+          onChange={(checked) => setFormData((prev) => ({ ...prev, consentMarketing: checked }))}
+        />
         <div className="w-fit pt-4">
           <Button
             ref={buttonSubmitRef}

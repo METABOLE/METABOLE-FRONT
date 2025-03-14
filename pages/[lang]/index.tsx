@@ -118,9 +118,12 @@ export default function Home() {
           <p ref={createdByRef} className="animated-text mt-10 overflow-hidden whitespace-pre-wrap">
             <span>{isFrench ? 'Par ' : 'By '}</span>
             <a
-              className={clsx('text-blue relative', isAnimEnded && 'group/photo')}
               href="https://matteocourquin.com/"
               target="_blank"
+              className={clsx(
+                'text-blue custom-cursor-pointer relative',
+                isAnimEnded && 'group/photo',
+              )}
             >
               Matteo Courquin
               <span className="absolute bottom-8 left-1/2 h-auto w-56 origin-bottom -translate-x-1/2 scale-0 rotate-0 transition-transform duration-300 group-hover/photo:scale-100 group-hover/photo:-rotate-6">
@@ -133,9 +136,12 @@ export default function Home() {
             </a>
             <span> & </span>
             <a
-              className={clsx('text-blue relative', isAnimEnded && 'group/photo')}
               href="https://jeromebezeau.com/"
               target="_blank"
+              className={clsx(
+                'text-blue custom-cursor-pointer relative',
+                isAnimEnded && 'group/photo',
+              )}
             >
               Jérôme Bezeau
               <span className="absolute bottom-8 left-1/2 h-auto w-56 origin-bottom -translate-x-1/2 scale-0 rotate-0 transition-transform duration-300 group-hover/photo:scale-100 group-hover/photo:rotate-6">
