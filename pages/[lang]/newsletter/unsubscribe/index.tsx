@@ -89,7 +89,7 @@ const UnsubscribePage: NextPageWithLayout = () => {
 
   return (
     <div className="px-x-default py-y-default flex h-3/4 items-center justify-center">
-      <div className="relative mx-auto flex w-full max-w-96 flex-col gap-12 overflow-hidden rounded-3xl bg-[#C5C4FF]/7 p-6 text-white">
+      <div className="relative mx-auto flex w-full max-w-96 flex-col gap-12 overflow-hidden rounded-3xl bg-[#C5C4FF]/7 p-6 text-white backdrop-blur-xl">
         <Typography className="p3 uppercase" variant="p">
           {isFrench ? 'Se désinscrire' : 'Unsubscribe'}
         </Typography>
@@ -133,7 +133,7 @@ const UnsubscribePage: NextPageWithLayout = () => {
         </form>
 
         <Link
-          className="flex items-center gap-3 text-white transition hover:opacity-80"
+          className="custom-cursor-pointer flex items-center gap-3 text-white"
           href={getInternalPath('/')}
         >
           <IconArrow className="rotate-45" color={COLORS.WHITE} />
