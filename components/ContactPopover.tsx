@@ -302,11 +302,16 @@ const ContactPopover = () => {
         onMouseMove={(e) => !isOpen && useMagnet(e, 0.4)}
         onMouseOut={(e) => useResetMagnet(e)}
       >
-        <button className="label w-full cursor-pointer text-left" type="button">
+        <button
+          aria-label={isFrench ? 'Ouvrir le formulaire de Contact' : 'Open the Contact form'}
+          className="label w-full cursor-pointer text-left"
+          type="button"
+        >
           CONTACT
         </button>
         <button
           ref={buttonCloseRef}
+          aria-label={isFrench ? 'Fermer le formulaire de Contact' : 'Close the Contact form'}
           className="scale-0 rotate-45 cursor-pointer"
           type="button"
           onClick={(e) => {
