@@ -7,6 +7,7 @@ if ! [[ "${message}" =~ ^${valid_emoji_codes}[[:space:]] ]]; then
 
 👉 Utilisez un de ces emoji pour clarifier vos changements:
     ✨ (:sparkles:) Nouvelle fonctionnalité
+    🗑️ (:wastebasket:) Suppression de code
     🎨 (:art:) Amélioration UI/UX
     💄 (:lipstick:) CSS/Styles
     🐛 (:bug:) Correction de bug
