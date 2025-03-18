@@ -69,12 +69,19 @@ export const createFallingCross = (
   const mouseVectorX = x - previousMouseX;
   const mouseVectorY = y - previousMouseY;
 
+  const mouseMagnitude = Math.sqrt(mouseVectorX * mouseVectorX + mouseVectorY * mouseVectorY);
+
   const crossProduct = mouseVectorX * velocityY - mouseVectorY * velocityX;
   const rotationDirection = Math.sign(crossProduct);
 
-  const angularVelocity = rotationDirection * (velocityFactor * 0.05) * Math.random();
+  const rotationCoefficient = 0.45;
 
-  const randomFactor = (Math.random() - 0.5) * 0.03;
+  const mouseInfluence = Math.max(1.0, mouseMagnitude / 10);
+
+  const angularVelocity =
+    rotationDirection * (velocityFactor * rotationCoefficient) * mouseInfluence;
+
+  const randomFactor = (Math.random() - 0.5) * 0.1;
 
   Body.setVelocity(cross, {
     x: directionX * velocityFactor,

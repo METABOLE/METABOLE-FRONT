@@ -1,4 +1,3 @@
-// components/FallingCrosses.tsx
 import { useTouchDevice } from '@/hooks/useTouchDevice';
 import { useRef } from 'react';
 import clsx from 'clsx';
@@ -14,13 +13,11 @@ const FallingCrosses = ({
 }: FallingCrossesProps) => {
   const isTouchDevice = useTouchDevice();
 
-  // Ne pas rendre le composant sur les appareils tactiles
   if (isTouchDevice) return null;
 
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  // Utiliser notre hook personnalisé pour toute la logique
   useFallingCrosses(canvasRef, footerSelector, footerOffset, crossColors);
 
   return (
