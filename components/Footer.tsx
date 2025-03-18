@@ -1,12 +1,12 @@
 import { useMousePosition } from '@/hooks/useMousePosition';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
+import Link from 'next/link';
 import { useRef } from 'react';
 import FloatingHalo from './FloatingHalo';
 import Language from './Language';
 import LeadForm from './LeadForm';
 import Time from './Time';
-import Link from 'next/link';
 
 const Footer = () => {
   const wrapperRef = useRef(null);
@@ -63,6 +63,7 @@ const Footer = () => {
       <div
         ref={footerRef}
         className="translate-y-full overflow-hidden rounded-t-3xl duration-[2s] ease-in-out"
+        id="footer"
       >
         <div
           className="relative h-full overflow-hidden rounded-t-3xl bg-black px-[52px] py-11 text-white"

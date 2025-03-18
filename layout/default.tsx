@@ -1,16 +1,17 @@
+import FallingCrosses from '@/components/FallingCrosses';
 import FloatingHalo from '@/components/FloatingHalo';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import Lottie from '@/components/Lottie';
+import SEO from '@/components/SEO';
+import { useMousePosition } from '@/hooks/useMousePosition';
 import { useLanguage } from '@/providers/language.provider';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Head from 'next/head';
 import Image from 'next/image';
-import { ReactNode, useEffect, useRef } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 import metaboleFull from '../public/lotties/metabole-full-loader.json';
-import { useMousePosition } from '@/hooks/useMousePosition';
 gsap.registerPlugin(ScrollTrigger);
 
 const Layout = ({ children }: { children: ReactNode }) => {
@@ -20,6 +21,8 @@ const Layout = ({ children }: { children: ReactNode }) => {
   const lottieRef = useRef(null);
   const haloRef = useRef(null);
   const backgroundRef = useRef(null);
+
+  const [showFallenCrosses, setShowFallenCrosses] = useState(false);
 
   useEffect(() => {
     window.scrollTo({
@@ -79,6 +82,9 @@ const Layout = ({ children }: { children: ReactNode }) => {
         },
         '-=1.5',
       )
+      .add(() => {
+        setShowFallenCrosses(true);
+      })
       .to(
         haloRef.current,
         {
@@ -101,9 +107,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
 
   return (
     <>
-      <Head>
-        <title>Metabole STUDIO</title>
-      </Head>
+      <SEO isFrench={isFrench} />
       <Header />
       <div
         ref={lottieRef}
@@ -115,18 +119,19 @@ const Layout = ({ children }: { children: ReactNode }) => {
       <Footer />
       <FloatingHalo
         ref={haloRef}
-        className="!fixed top-[120%] -left-[90%] -z-10 h-[250vw] w-[250vw] -translate-x-full scale-50 opacity-0"
+        className="!fixed top-[120%] -left-[90%] -z-30 h-[250vw] w-[250vw] -translate-x-full scale-50 opacity-0"
         from="#1b17ee"
         to="#f1f2ff00"
       />
       <Image
         ref={backgroundRef}
         alt="background"
-        className="fixed inset-0 -z-50 h-screen w-screen scale-500 object-cover opacity-0"
+        className="fixed inset-0 -z-20 h-screen w-screen scale-500 object-cover opacity-0"
         height={2160}
         src="/images/background.png"
         width={3840}
       />
+      {showFallenCrosses && <FallingCrosses className="fixed -z-10" footerSelector="#footer" />}
     </>
   );
 };

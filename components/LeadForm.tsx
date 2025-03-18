@@ -74,7 +74,7 @@ const LeadForm = ({ className, isDark }: LeadFormProps) => {
   return (
     <div ref={wrapperRef} className={clsx(className, 'relative')}>
       <div className="flex items-center gap-5 pb-3">
-        <Typography className={clsx('p3', isDark ? 'text-black' : 'text-white')} variant="h3">
+        <Typography className={clsx('p3', isDark ? 'text-black' : 'text-white')} variant="h2">
           {isFrench ? 'Rejoignez notre newsletter ' : 'Join our newsletter '}
         </Typography>
         <button ref={containerRef} className="cursor-help">

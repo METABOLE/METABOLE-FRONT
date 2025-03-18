@@ -14,7 +14,7 @@ const Header = () => {
   const headerRef = useRef(null);
 
   const { isProd } = useEnvironment();
-  const { getInternalPath } = useLanguage();
+  const { getInternalPath, isFrench } = useLanguage();
 
   useGSAP(() => {
     gsap.to(headerRef.current, {
@@ -32,7 +32,12 @@ const Header = () => {
       className="px-x-default fixed z-[900] h-[108px] w-full -translate-y-full scale-125"
     >
       <div className="flex h-[108px] items-center justify-between py-8">
-        <Link className="cursor-pointer" href={getInternalPath('/')} scroll={false}>
+        <Link
+          aria-label={isFrench ? 'Accueil' : 'Home'}
+          className="cursor-pointer"
+          href={getInternalPath('/')}
+          scroll={false}
+        >
           <Lottie animationData={metaboleFull} className="hidden h-10 w-[216px] md:block" />
           <Lottie animationData={metaboleSmall} className="block h-10 w-10 md:hidden" />
         </Link>
