@@ -8,6 +8,7 @@ interface SEOProps {
   image?: string;
   url?: string;
   type?: string;
+  noIndex?: boolean;
 }
 
 const SEO = ({
@@ -18,6 +19,7 @@ const SEO = ({
   image = '/og-image.png',
   url = 'https://metabole.studio',
   type = 'website',
+  noIndex = false,
 }: SEOProps) => {
   const description = isFrench ? descriptionFr : descriptionEn;
   const lang = isFrench ? 'fr' : 'en';
@@ -33,6 +35,9 @@ const SEO = ({
       <meta content="telephone=no" name="format-detection" />
       <meta content="default" name="referrer" />
       <meta content="index, follow" name="robots" />
+
+      {/* Indexation contrôlée */}
+      <meta content={noIndex ? 'noindex, nofollow' : 'index, follow'} name="robots" />
 
       {/* Canonical link */}
       <link href={url} rel="canonical" />
@@ -53,7 +58,7 @@ const SEO = ({
       <meta content={`${url}${image}`} name="twitter:image" />
 
       {/* Google verification - Uncomment when ready */}
-      {/* <meta content="XyGSPQ3t1FMXH4Xl-yEoWbFEElAi0d2FaE5MN8t4UhU" name="google-site-verification" /> */}
+      <meta content="XyGSPQ3t1FMXH4Xl-yEoWbFEElAi0d2FaE5MN8t4UhU" name="google-site-verification" />
 
       {/* Keywords */}
       <meta
