@@ -3,12 +3,12 @@ import FloatingHalo from '@/components/FloatingHalo';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import Lottie from '@/components/Lottie';
+import SEO from '@/components/SEO';
 import { useMousePosition } from '@/hooks/useMousePosition';
 import { useLanguage } from '@/providers/language.provider';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Head from 'next/head';
 import Image from 'next/image';
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import metaboleFull from '../public/lotties/metabole-full-loader.json';
@@ -107,9 +107,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
 
   return (
     <>
-      <Head>
-        <title>Metabole STUDIO</title>
-      </Head>
+      <SEO isFrench={isFrench} />
       <Header />
       <div
         ref={lottieRef}
