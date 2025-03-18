@@ -1,0 +1,19 @@
+# robots.txt pour Metabole STUDIO
+User-agent: *
+Allow: /en
+Allow: /fr
+
+# Pages à ne pas indexer
+Disallow: /unsubscribe
+Disallow: /api/
+Disallow: /_next/
+Disallow: /static/
+Disallow: /studio
+Disallow: /admin
+Disallow: /preview
+
+# Paramètres de crawling
+Crawl-delay: 1
+
+# Sitemap
+Sitemap: https://metabole.studio/sitemap.xml
