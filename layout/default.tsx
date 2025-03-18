@@ -12,9 +12,12 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Image from 'next/image';
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import metaboleFull from '../public/lotties/metabole-full-loader.json';
+import useWindowResizeReload from '@/hooks/useReloadResize';
 gsap.registerPlugin(ScrollTrigger);
 
 const Layout = ({ children }: { children: ReactNode }) => {
+  useWindowResizeReload();
+
   const { isFrench } = useLanguage();
   const { x, y } = useMousePosition();
 

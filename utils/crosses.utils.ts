@@ -55,7 +55,7 @@ export const createFallingCross = (
 
   const cross = Body.create({
     parts: [horizontal, vertical],
-    restitution: 0.5,
+    restitution: 0.1,
     friction: 0.1,
     angle: Math.random() * Math.PI,
   });
@@ -97,8 +97,6 @@ export const createFallingCross = (
 
 export const setupPhysicsEngine = (
   canvas: HTMLCanvasElement,
-  footerSelector = 'footer',
-  footerOffset = 0,
 ): {
   engine: Matter.Engine;
   render: Matter.Render;
@@ -122,18 +120,22 @@ export const setupPhysicsEngine = (
     },
   });
 
-  const footer = document.querySelector(footerSelector);
-  const footerTop = footer
-    ? footer.getBoundingClientRect().top + footerOffset
+  const footer = document.querySelector('#footer');
+  const wrapperFooter = document.querySelector('#wrapper-footer');
+  const footerTop = wrapperFooter
+    ? wrapperFooter.getBoundingClientRect().top
     : window.innerHeight - 100;
+  const footerWidth = footer ? footer.getBoundingClientRect().width : window.innerWidth;
+  const footerHeight = footer ? footer.getBoundingClientRect().height : 100;
 
   const ground = Bodies.rectangle(
     window.innerWidth / 2,
-    footerTop,
-    window.innerWidth - clampVw(20, 8, 100),
-    20,
+    footerTop + footerHeight / 2,
+    footerWidth,
+    footerHeight,
     {
       isStatic: true,
+      chamfer: { radius: 24 },
       render: { visible: false },
     },
   );
@@ -178,57 +180,18 @@ export const setupPhysicsEngine = (
   };
 };
 
-export const clampVw = (minPx: number, maxPx: number, defaultPx: number): number => {
-  return Math.min(Math.max(minPx, defaultPx), maxPx);
-};
+export const handleScroll = (ground: Matter.Body): void => {
+  const wrapperFooter = document.querySelector('#wrapper-footer');
+  const footer = document.querySelector('#wrapper-footer');
+  if (!wrapperFooter || !footer) return;
 
-export const handleResize = (
-  render: Matter.Render,
-  ground: Matter.Body,
-  rightWall: Matter.Body,
-  footerSelector = 'footer',
-  footerOffset = 0,
-): void => {
-  render.options.width = window.innerWidth;
-  render.options.height = window.innerHeight;
-  render.canvas.width = window.innerWidth;
-  render.canvas.height = window.innerHeight;
-
-  const footer = document.querySelector(footerSelector);
-  const footerTop = footer
-    ? footer.getBoundingClientRect().top + footerOffset
-    : window.innerHeight - 100;
-
-  Matter.Body.setPosition(ground, {
-    x: window.innerWidth / 2,
-    y: footerTop,
-  });
-
-  Matter.Body.scale(
-    ground,
-    window.innerWidth - clampVw(20, 8, 100) / ground.bounds.max.x - ground.bounds.min.x,
-    1,
-  );
-
-  Matter.Body.setPosition(rightWall, {
-    x: window.innerWidth + 50,
-    y: window.innerHeight / 2,
-  });
-};
-
-export const handleScroll = (
-  ground: Matter.Body,
-  footerSelector = 'footer',
-  footerOffset = 0,
-): void => {
-  const footer = document.querySelector(footerSelector);
-  if (!footer) return;
-
+  const wrapperFooterRect = wrapperFooter.getBoundingClientRect();
   const footerRect = footer.getBoundingClientRect();
-  const footerTop = footerRect.top + footerOffset;
+  const footerHeight = footerRect.height;
+  const footerTop = wrapperFooterRect.top;
 
   Matter.Body.setPosition(ground, {
     x: window.innerWidth / 2,
-    y: footerTop,
+    y: footerTop + footerHeight / 2,
   });
 };

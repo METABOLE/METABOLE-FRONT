@@ -6,15 +6,15 @@ import {
   calculateSpeed,
   createFallingCross,
   setupPhysicsEngine,
-  handleResize,
   handleScroll,
   DEFAULT_CROSS_COLORS,
 } from '../utils/crosses.utils';
 
+const EXPLOSION_FORCE = 0.5;
+const EXPLOSION_RADIUS = 200;
+
 export const useFallingCrosses = (
   canvasRef: React.RefObject<HTMLCanvasElement | null>,
-  footerSelector = 'footer',
-  footerOffset = 0,
   crossColors: string[] = DEFAULT_CROSS_COLORS,
 ) => {
   const [isInitialized, setIsInitialized] = useState(false);
@@ -34,11 +34,7 @@ export const useFallingCrosses = (
     if (!canvasRef.current || physicsRef.current.engine) return;
 
     try {
-      const { engine, render, ground, walls } = setupPhysicsEngine(
-        canvasRef.current,
-        footerSelector,
-        footerOffset,
-      );
+      const { engine, render, ground, walls } = setupPhysicsEngine(canvasRef.current);
 
       physicsRef.current = {
         engine,
@@ -51,28 +47,7 @@ export const useFallingCrosses = (
 
       setIsInitialized(true);
 
-      const resizeHandler = () => {
-        if (
-          !physicsRef.current.render ||
-          !physicsRef.current.ground ||
-          !physicsRef.current.rightWall
-        )
-          return;
-
-        handleResize(
-          physicsRef.current.render,
-          physicsRef.current.ground,
-          physicsRef.current.rightWall,
-          footerSelector,
-          footerOffset,
-        );
-      };
-
-      window.addEventListener('resize', resizeHandler);
-
       return () => {
-        window.removeEventListener('resize', resizeHandler);
-
         if (physicsRef.current.render) {
           Matter.Render.stop(physicsRef.current.render);
         }
@@ -102,7 +77,7 @@ export const useFallingCrosses = (
     const scrollHandler = () => {
       if (!physicsRef.current.ground) return;
 
-      handleScroll(physicsRef.current.ground, footerSelector, footerOffset);
+      handleScroll(physicsRef.current.ground);
     };
 
     window.addEventListener('scroll', scrollHandler);
@@ -171,10 +146,34 @@ export const useFallingCrosses = (
       };
     };
 
+    const handleClick = (event: MouseEvent) => {
+      const { clientX, clientY } = event;
+
+      physicsRef.current.crosses.forEach((crossBody) => {
+        const crossPosition = crossBody.parts[0].position;
+
+        const dx = crossPosition.x - clientX;
+        const dy = crossPosition.y - clientY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < EXPLOSION_RADIUS) {
+          const forceMagnitude =
+            (EXPLOSION_FORCE * (EXPLOSION_RADIUS - distance)) / EXPLOSION_RADIUS;
+
+          Matter.Body.applyForce(crossBody, crossPosition, {
+            x: (dx / distance) * forceMagnitude,
+            y: (dy / distance) * forceMagnitude,
+          });
+        }
+      });
+    };
+
     document.body.addEventListener('mousemove', handleGlobalMouseMove);
+    document.body.addEventListener('click', handleClick);
 
     return () => {
       document.body.removeEventListener('mousemove', handleGlobalMouseMove);
+      document.body.removeEventListener('click', handleClick);
     };
   }, [isInitialized]);
 

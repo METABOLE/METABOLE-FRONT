@@ -59,6 +59,7 @@ const Footer = () => {
     <footer
       ref={wrapperRef}
       className="px-x-half-default fixed bottom-[40px] w-screen translate-y-[100%]"
+      id="wrapper-footer"
     >
       <div
         ref={footerRef}
