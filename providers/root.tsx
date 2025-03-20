@@ -7,11 +7,7 @@ import { QueryProvider } from './query.provider';
 import { SmoothScrollProvider } from './smooth-scroll.provider';
 import { SoundProvider } from './sound.provider';
 
-type AppProviderProps = {
-  children: ReactNode;
-};
-
-export const AppProvider = ({ children }: AppProviderProps) => {
+export const AppProvider = ({ children }: { children: ReactNode }) => {
   return (
     <QueryProvider>
       <Cursor />
