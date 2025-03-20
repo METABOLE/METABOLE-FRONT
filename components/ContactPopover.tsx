@@ -60,39 +60,50 @@ const ContactPopover = () => {
     timeline.add(() => setIsOpen(true));
 
     mm.add('(min-width: 768px)', () => {
-      timeline.to(
-        wrapperRef.current,
-        {
-          width: 430,
-          duration: 0.3,
-          ease: 'power3.inOut',
-        },
-        '<',
-      );
+      timeline
+        .to(
+          wrapperRef.current,
+          {
+            width: 430,
+            duration: 0.3,
+            ease: 'power3.inOut',
+          },
+          '<',
+        )
+        .to(
+          wrapperRef.current,
+          {
+            height: 604,
+            duration: 0.6,
+            ease: 'power3.inOut',
+          },
+          '-=0.15',
+        );
     });
 
     mm.add('(max-width: 767px)', () => {
-      timeline.to(
-        wrapperRef.current,
-        {
-          width: window.innerWidth - clampVw(20, 8, 100) * 2,
-          duration: 0.3,
-          ease: 'power3.inOut',
-        },
-        '<',
-      );
+      timeline
+        .to(
+          wrapperRef.current,
+          {
+            width: window.innerWidth - clampVw(20, 8, 100) * 2,
+            duration: 0.3,
+            ease: 'power3.inOut',
+          },
+          '<',
+        )
+        .to(
+          wrapperRef.current,
+          {
+            height: 634,
+            duration: 0.6,
+            ease: 'power3.inOut',
+          },
+          '-=0.15',
+        );
     });
 
     timeline
-      .to(
-        wrapperRef.current,
-        {
-          height: 604,
-          duration: 0.6,
-          ease: 'power3.inOut',
-        },
-        '-=0.15',
-      )
       .to(
         buttonOpenRef.current,
         {
@@ -312,7 +323,7 @@ const ContactPopover = () => {
         <button
           ref={buttonCloseRef}
           aria-label={isFrench ? 'Fermer le formulaire de Contact' : 'Close the Contact form'}
-          className="scale-0 rotate-45 cursor-pointer"
+          className="absolute right-4 scale-0 rotate-45 cursor-pointer p-4"
           type="button"
           onClick={(e) => {
             e.stopPropagation();
