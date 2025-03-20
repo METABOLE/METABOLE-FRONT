@@ -1,21 +1,23 @@
-import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Lenis from 'lenis';
-import { ReactNode } from 'react';
+import ReactLenis, { LenisRef } from 'lenis/react';
+import { ReactNode, useEffect, useRef } from 'react';
 
 export const SmoothScrollProvider = ({ children }: { children: ReactNode }) => {
-  useGSAP(() => {
-    const lenis = new Lenis();
+  const lenisRef = useRef<LenisRef>(null);
 
-    lenis.on('scroll', ScrollTrigger.update);
+  useEffect(() => {
+    const update = (time: number) => {
+      lenisRef.current?.lenis?.raf(time * 1000);
+    };
 
-    gsap.ticker.add((time) => {
-      lenis.raf(time * 1000);
-    });
+    gsap.ticker.add(update);
 
-    gsap.ticker.lagSmoothing(0);
+    return () => gsap.ticker.remove(update);
   }, []);
 
-  return <>{children}</>;
+  return (
+    <ReactLenis ref={lenisRef} options={{ autoRaf: false }} root>
+      {children}
+    </ReactLenis>
+  );
 };

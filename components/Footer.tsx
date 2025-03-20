@@ -7,6 +7,7 @@ import FloatingHalo from './FloatingHalo';
 import Language from './Language';
 import LeadForm from './LeadForm';
 import Time from './Time';
+import { useLenis } from 'lenis/react';
 
 const Footer = () => {
   const wrapperRef = useRef(null);
@@ -15,6 +16,7 @@ const Footer = () => {
 
   const { x, y } = useMousePosition(wrapperRef);
   const { contextSafe } = useGSAP();
+  const lenis = useLenis();
 
   const resetHaloPosition = contextSafe(() => {
     gsap.to(floatingHaloRef.current, {
@@ -71,10 +73,7 @@ const Footer = () => {
           onMouseLeave={resetHaloPosition}
           onMouseMove={moveHalo}
           onMouseEnter={() => {
-            window.scrollTo({
-              top: document.documentElement.scrollHeight,
-              behavior: 'smooth',
-            });
+            lenis?.scrollTo(document.body.scrollHeight);
           }}
         >
           <FloatingHalo
