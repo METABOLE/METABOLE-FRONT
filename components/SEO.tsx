@@ -17,7 +17,7 @@ const SEO = ({
   descriptionEn = 'Metabole STUDIO is a creative studio based in Paris, France, founded by Matteo COURQUIN and Jérôme BEZEAU. We create unique web experiences for brands and agencies.',
   descriptionFr = 'Metabole STUDIO est un studio créatif basé à Paris, France, fondé par Matteo COURQUIN et Jérôme BEZEAU. Nous créons des expériences web uniques pour les marques et les agences.',
   image = '/og-image.png',
-  url = 'https://metabole.studio',
+  url,
   type = 'website',
   noIndex = false,
 }: SEOProps) => {
@@ -40,7 +40,7 @@ const SEO = ({
       <meta content={noIndex ? 'noindex, nofollow' : 'index, follow'} name="robots" />
 
       {/* Canonical link */}
-      <link href={url} rel="canonical" />
+      <link key="canonical" href="https://test.test" rel="canonical" />
 
       {/* OpenGraph Tags */}
       <meta content={title} property="og:title" />

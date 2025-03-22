@@ -5,14 +5,14 @@ import Header from '@/components/Header';
 import Lottie from '@/components/Lottie';
 import SEO from '@/components/SEO';
 import { useMousePosition } from '@/hooks/useMousePosition';
+import useWindowResizeReload from '@/hooks/useReloadResize';
 import { useLanguage } from '@/providers/language.provider';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Image from 'next/image';
-import { ReactNode, useEffect, useRef, useState } from 'react';
+import { ReactNode, useRef, useState } from 'react';
 import metaboleFull from '../public/lotties/metabole-full-loader.json';
-import useWindowResizeReload from '@/hooks/useReloadResize';
 gsap.registerPlugin(ScrollTrigger);
 
 const Layout = ({ children }: { children: ReactNode }) => {
@@ -27,37 +27,37 @@ const Layout = ({ children }: { children: ReactNode }) => {
 
   const [showFallenCrosses, setShowFallenCrosses] = useState(false);
 
-  useEffect(() => {
-    window.scrollTo({
-      top: 0,
-    });
+  // useEffect(() => {
+  //   window.scrollTo({
+  //     top: 0,
+  //   });
 
-    const defaultTitle = 'Metabole STUDIO';
-    const alternateTitles = isFrench
-      ? ['Expériences web uniques', 'Un studio créatif']
-      : ['Unique web experiences', 'A creative studio'];
+  //   const defaultTitle = 'Metabole STUDIO';
+  //   const alternateTitles = isFrench
+  //     ? ['Expériences web uniques', 'Un studio créatif']
+  //     : ['Unique web experiences', 'A creative studio'];
 
-    let titleIndex = 0;
-    let intervalId: number | null = null;
+  //   let titleIndex = 0;
+  //   let intervalId: number | null = null;
 
-    const changeTitle = () => {
-      titleIndex = titleIndex === 0 ? 1 : 0;
-      document.title = alternateTitles[titleIndex];
-    };
+  //   const changeTitle = () => {
+  //     titleIndex = titleIndex === 0 ? 1 : 0;
+  //     document.title = alternateTitles[titleIndex];
+  //   };
 
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) {
-        const [firstTitle] = alternateTitles;
-        document.title = firstTitle;
-        intervalId = window.setInterval(changeTitle, 3000);
-      } else {
-        document.title = defaultTitle;
-        if (intervalId) {
-          clearInterval(intervalId);
-        }
-      }
-    });
-  }, [isFrench]);
+  //   document.addEventListener('visibilitychange', () => {
+  //     if (document.hidden) {
+  //       const [firstTitle] = alternateTitles;
+  //       document.title = firstTitle;
+  //       intervalId = window.setInterval(changeTitle, 3000);
+  //     } else {
+  //       document.title = defaultTitle;
+  //       if (intervalId) {
+  //         clearInterval(intervalId);
+  //       }
+  //     }
+  //   });
+  // }, [isFrench]);
 
   gsap.to(backgroundRef.current, {
     duration: 0.8,
