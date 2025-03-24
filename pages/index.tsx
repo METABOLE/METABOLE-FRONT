@@ -11,5 +11,5 @@ export default function Home() {
       router.push(navigator.language.includes('fr') ? 'fr' : 'en', undefined, { shallow: true });
   }, []);
 
-  return <></>;
+  return null;
 }

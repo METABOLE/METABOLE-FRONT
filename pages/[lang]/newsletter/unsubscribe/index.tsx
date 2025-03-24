@@ -1,7 +1,6 @@
 import Button from '@/components/Button';
 import { IconArrow } from '@/components/Icons';
 import Input from '@/components/Input';
-import SEO from '@/components/SEO';
 import Typography from '@/components/Typography';
 import NewsletterLayout from '@/layout/newsletter';
 import { NextPageWithLayout } from '@/pages/_app';
@@ -89,59 +88,56 @@ const UnsubscribePage: NextPageWithLayout = () => {
   };
 
   return (
-    <>
-      <SEO isFrench={isFrench} noIndex={true} title="Unsubscribe - Metabole STUDIO" />
-      <div className="px-x-default py-y-default flex h-3/4 items-center justify-center">
-        <div className="relative mx-auto flex w-full max-w-96 flex-col gap-12 overflow-hidden rounded-3xl bg-[#C5C4FF]/7 p-6 text-white backdrop-blur-xl">
-          <Typography className="p3 uppercase" variant="p">
-            {isFrench ? 'Se désinscrire' : 'Unsubscribe'}
-          </Typography>
-          <form className="" onSubmit={handleSubmit}>
-            <Input
-              errorMessage={error}
-              isLoading={isLoading}
-              name="email"
-              placeholder="johndoe@company.com"
-              successMessage={success}
-              type="email"
-              value={email}
-              label={
-                isFrench
-                  ? 'Entrez votre adresse e-mail pour vous désinscrire de notre newsletter.'
-                  : 'Enter your email address to unsubscribe from our newsletter.'
-              }
-              required
-              onBlur={() => {
-                isEmail(email) ||
-                  setError(
-                    isFrench ? 'Veuillez entrer un email valide' : 'Please enter a valid email',
-                  );
-                !email &&
-                  setError(isFrench ? 'Veuillez entrer votre email' : 'Please enter your email');
-              }}
-              onChange={(e) => {
-                isEmail(e.target.value) && setError('');
-                setEmail(e.target.value);
-              }}
-            />
-            <Button
-              className="mt-12"
-              color="tertiary"
-              disabled={formStatus === FORM_STATUS.PENDING || formStatus === FORM_STATUS.SUCCESS}
-            >
-              {getButtonText()}
-            </Button>
-          </form>
-          <Link
-            className="flex cursor-pointer items-center gap-3 text-white"
-            href={getInternalPath('/')}
+    <div className="px-x-default py-y-default flex h-3/4 items-center justify-center">
+      <div className="relative mx-auto flex w-full max-w-96 flex-col gap-12 overflow-hidden rounded-3xl bg-[#C5C4FF]/7 p-6 text-white backdrop-blur-xl">
+        <Typography className="p3 uppercase" variant="p">
+          {isFrench ? 'Se désinscrire' : 'Unsubscribe'}
+        </Typography>
+        <form className="" onSubmit={handleSubmit}>
+          <Input
+            errorMessage={error}
+            isLoading={isLoading}
+            name="email"
+            placeholder="johndoe@company.com"
+            successMessage={success}
+            type="email"
+            value={email}
+            label={
+              isFrench
+                ? 'Entrez votre adresse e-mail pour vous désinscrire de notre newsletter.'
+                : 'Enter your email address to unsubscribe from our newsletter.'
+            }
+            required
+            onBlur={() => {
+              isEmail(email) ||
+                setError(
+                  isFrench ? 'Veuillez entrer un email valide' : 'Please enter a valid email',
+                );
+              !email &&
+                setError(isFrench ? 'Veuillez entrer votre email' : 'Please enter your email');
+            }}
+            onChange={(e) => {
+              isEmail(e.target.value) && setError('');
+              setEmail(e.target.value);
+            }}
+          />
+          <Button
+            className="mt-12"
+            color="tertiary"
+            disabled={formStatus === FORM_STATUS.PENDING || formStatus === FORM_STATUS.SUCCESS}
           >
-            <IconArrow className="rotate-45" color={COLORS.WHITE} />
-            {isFrench ? "Retour à l'accueil" : 'Back to home'}
-          </Link>
-        </div>
+            {getButtonText()}
+          </Button>
+        </form>
+        <Link
+          className="flex cursor-pointer items-center gap-3 text-white"
+          href={getInternalPath('/')}
+        >
+          <IconArrow className="rotate-45" color={COLORS.WHITE} />
+          {isFrench ? "Retour à l'accueil" : 'Back to home'}
+        </Link>
       </div>
-    </>
+    </div>
   );
 };
 

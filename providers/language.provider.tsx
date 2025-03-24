@@ -41,7 +41,7 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     _setIsFrench(router.query.lang === 'fr');
-  }, []);
+  }, [router.query.lang]);
 
   return (
     <LanguageContext.Provider value={{ isFrench, setIsFrench, getInternalPath }}>
