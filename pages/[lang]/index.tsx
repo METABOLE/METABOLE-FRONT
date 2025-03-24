@@ -109,7 +109,7 @@ export default function Home() {
         overflow: 'visible',
       })
       .add(() => setIsAnimEnded(true));
-  }, [isProd]);
+  }, [isProd, isFrench]);
 
   return (
     <>
