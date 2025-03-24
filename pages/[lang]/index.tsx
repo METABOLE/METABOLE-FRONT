@@ -52,6 +52,8 @@ export default function Home() {
   const { x, y } = useMousePosition();
   const { asPath } = useRouter();
 
+  console.log(isFrench);
+
   const textRef = useRef(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const createdByRef = useRef<HTMLHeadingElement>(null);

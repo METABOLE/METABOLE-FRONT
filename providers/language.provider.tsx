@@ -21,12 +21,13 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
 
   const setIsFrench = (isFrench: boolean) => {
     _setIsFrench(isFrench);
-    const newPath = isFrench ? '/fr' : '/en';
+    const newLocale = isFrench ? 'fr' : 'en';
 
-    const { pathname, asPath, query } = router;
-    router.push({ pathname, query }, asPath.replace(/^\/(fr|en)/, `${newPath}`), {
-      shallow: true,
-    });
+    // Récupère le chemin actuel sans le préfixe de langue
+    const currentPath = router.asPath.replace(/^\/(fr|en)/, '');
+    const newPath = `/${newLocale}${currentPath || ''}`;
+
+    router.push(newPath);
   };
 
   const getInternalPath = (path: string): string => {
@@ -40,7 +41,23 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    _setIsFrench(router.query.lang === 'fr');
+    // Détecter la langue à partir du chemin URL actuel
+    const pathSegments = router.asPath.split('/').filter(Boolean);
+    const isCurrentPathFrench = pathSegments[0] === 'fr';
+
+    _setIsFrench(isCurrentPathFrench);
+  }, [router.asPath]);
+
+  // Redirection initiale basée sur la langue du navigateur
+  useEffect(() => {
+    // Ne rediriger que si nous sommes sur la page racine
+    if (router.pathname === '/') {
+      const userLanguage = navigator.language || (navigator as any).userLanguage;
+      const shouldUseFrench = userLanguage.startsWith('fr');
+      const locale = shouldUseFrench ? 'fr' : 'en';
+
+      router.replace(`/${locale}`);
+    }
   }, []);
 
   return (
