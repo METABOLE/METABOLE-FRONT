@@ -6,7 +6,9 @@ import { useLanguage } from '@/providers/language.provider';
 import { useGSAP } from '@gsap/react';
 import clsx from 'clsx';
 import gsap from 'gsap';
+import Head from 'next/head';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useRef, useState } from 'react';
 
 const TITLE = {
@@ -48,6 +50,7 @@ export default function Home() {
   const { isFrench } = useLanguage();
   const { isProd } = useEnvironment();
   const { x, y } = useMousePosition();
+  const { asPath } = useRouter();
 
   const textRef = useRef(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -110,6 +113,9 @@ export default function Home() {
 
   return (
     <>
+      <Head>
+        <link key="canonical" href={'https://metabole.studio' + asPath} rel="canonical" />
+      </Head>
       <div className="fixed inset-0 flex h-screen w-screen flex-col">
         <section
           ref={textRef}
