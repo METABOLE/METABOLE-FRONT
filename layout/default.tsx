@@ -118,7 +118,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
       >
         <Lottie animationData={metaboleFull} className="h-48" loop={false} />
       </div>
-      <main className="h-[300vh]">{children}</main>
+      <main className="h-[280vh] sm:h-[230vh] md:h-[180vh]">{children}</main>
       <Footer />
       <FloatingHalo
         ref={haloRef}
