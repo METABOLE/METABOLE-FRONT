@@ -91,6 +91,7 @@ const Sound = ({ className }: { className: string }) => {
     if (!isAudioSetup) {
       setupAudio();
     }
+    firstClickHandledRef.current = true;
     setIsSoundOn(!isSoundOn);
   };
 
