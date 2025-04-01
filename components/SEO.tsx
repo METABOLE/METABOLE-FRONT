@@ -61,7 +61,7 @@ const SEO = ({
 
       {/* Keywords */}
       <meta
-        content="Metabole STUDIO, Matteo COURQUIN, Jérôme BEZEAU, creative studio, Paris, France, web experiences, design, development, animation, 3D, nextjs, gsap, threejs, unique, brands, agencies"
+        content="Metabole STUDIO, Matteo COURQUIN, Jérôme BEZEAU, creative studio, Paris, France, websites, sites, web, web experiences, design, development, animation, 3D, nextjs, gsap, threejs, unique, brands, agencies"
         name="keywords"
       />
 
