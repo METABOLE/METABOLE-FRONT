@@ -134,7 +134,7 @@ export default function Home() {
                 Matteo Courquin
                 <span className="absolute bottom-8 left-1/2 h-auto w-56 origin-bottom -translate-x-1/2 scale-0 rotate-0 transition-transform duration-300 group-hover/photo:scale-100 group-hover/photo:-rotate-6">
                   <Image
-                    alt=""
+                    alt="Matteo Courquin"
                     className="animation-float h-full w-full object-contain"
                     height={1080}
                     src="/images/matteo.jpg"
@@ -151,7 +151,7 @@ export default function Home() {
                 Jérôme Bezeau
                 <span className="absolute bottom-8 left-1/2 h-auto w-56 origin-bottom -translate-x-1/2 scale-0 rotate-0 transition-transform duration-300 group-hover/photo:scale-100 group-hover/photo:rotate-6">
                   <Image
-                    alt=""
+                    alt="Jérôme Bezeau"
                     className="animation-float h-full w-full object-contain"
                     height={1080}
                     src="/images/jerome.jpg"
