@@ -1,59 +1,44 @@
-const STEPS = [
-  {
-    title: 'Pages du site',
-    description: (
-      <p>
-        <span className="text-black">Combien de pages pour raconter votre histoire ?</span>
-        <br />
-        <span className="text-black-30">
-          Ajoutez et supprimez des pages en fonction de vos besoins. Vous pouvez nommer vos pages
-          pour vous repérer
-        </span>
-      </p>
-    ),
-  },
-  {
-    title: 'Type d’animations',
-    description:
-      'Combien de pages pour raconter votre histoire ? Ajoutez et supprimez des pages en fonction de vos besoins. Vous pouvez nommer vos pages pour vous repérer',
-  },
-  {
-    title: 'Options',
-    description: (
-      <p>
-        <span className="text-black">Fonctionnalités, modules, intégrations.</span>
-        <br />
-        <span className="text-black-30">
-          Blog, formulaire, multilingue, carte, CMS… cochez ce dont vous avez besoin. Tout est pensé
-          pour vous simplifier la vie sans compromettre l'esthétique.
-        </span>
-      </p>
-    ),
-  },
-];
+import { STEPS } from '@/constants/websiteBuilder.constant';
+import clsx from 'clsx';
+import { useState } from 'react';
+import Button from './Button';
 
 const WebsiteBuilder = () => {
+  const [activeStep, setActiveStep] = useState(0);
+
   return (
-    <div className="grid h-[70vh] w-full grid-cols-3 gap-5">
+    <div className="grid h-[80vh] w-full grid-cols-2 gap-5 lg:grid-cols-3">
       <div className="col-span-1 flex h-full w-full flex-col gap-5">
         {STEPS.map((step, index) => (
           <div
             key={index}
-            className="bg-menu-background border-blue-30 flex h-[78px] flex-col overflow-hidden rounded-3xl border-[1px] p-2.5 backdrop-blur-xl transition-all hover:h-auto hover:p-6"
+            className={clsx(
+              'border-blue-30 ease-power4-in-out flex h-[78px] flex-col overflow-hidden rounded-3xl border-[1px] bg-[#e9e9fd] p-2.5 backdrop-blur-xl transition-all duration-500',
+              activeStep === index ? 'flex-grow p-6' : 'bg-blue-10',
+            )}
+            onMouseEnter={() => setActiveStep(index)}
           >
-            <div className="flex items-center gap-2.5">
+            <h3 className="flex items-center gap-2.5">
               <span className="bg-blue p1 flex h-14 w-14 items-center justify-center rounded-[19px] text-white">
                 {index + 1}
               </span>
-              <h3 className="">{step.title}</h3>
+              <span>{step.title}</span>
+            </h3>
+            <div className="pt-6">{step.description}</div>
+            <div className="smoother-y-blue-menu-background shrink overflow-hidden">
+              <div className="no-scrollbar h-full shrink-0 overflow-scroll py-6" data-lenis-prevent>
+                {step.step}
+              </div>
             </div>
-            <div className="pt-6">
-              <div>{step.description}</div>
+            <div className="mt-auto ml-auto pt-6">
+              <Button className="shrink-0" color="secondary">
+                Suivant
+              </Button>
             </div>
           </div>
         ))}
       </div>
-      <div className="bg-menu-background border-blue-30 col-span-2 h-full w-full rounded-3xl border-[1px] backdrop-blur-xl"></div>
+      <div className="border-blue-30 col-span-1 h-full w-full shrink-0 rounded-3xl border-[1px] bg-[#e9e9fd] backdrop-blur-xl lg:col-span-2"></div>
     </div>
   );
 };

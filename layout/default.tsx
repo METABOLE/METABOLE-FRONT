@@ -1,4 +1,3 @@
-import FallingCrosses from '@/components/FallingCrosses';
 import FloatingHalo from '@/components/FloatingHalo';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
@@ -11,7 +10,7 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Image from 'next/image';
-import { ReactNode, useRef, useState } from 'react';
+import { ReactNode, useRef } from 'react';
 import metaboleFull from '../public/lotties/metabole-full-loader.json';
 gsap.registerPlugin(ScrollTrigger);
 
@@ -24,8 +23,6 @@ const Layout = ({ children }: { children: ReactNode }) => {
   const lottieRef = useRef(null);
   const haloRef = useRef(null);
   const backgroundRef = useRef(null);
-
-  const [showFallenCrosses, setShowFallenCrosses] = useState(false);
 
   // useEffect(() => {
   //   window.scrollTo({
@@ -85,9 +82,6 @@ const Layout = ({ children }: { children: ReactNode }) => {
         },
         '-=1.5',
       )
-      .add(() => {
-        setShowFallenCrosses(true);
-      })
       .to(
         haloRef.current,
         {
@@ -118,7 +112,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
       >
         <Lottie animationData={metaboleFull} className="h-48" loop={false} />
       </div>
-      <main className="h-[280vh] sm:h-[230vh] md:h-[180vh]">{children}</main>
+      <main className="min-h-screen pb-[300px]">{children}</main>
       <Footer />
       <FloatingHalo
         ref={haloRef}
@@ -134,7 +128,6 @@ const Layout = ({ children }: { children: ReactNode }) => {
         src="/images/background.png"
         width={3840}
       />
-      {showFallenCrosses && <FallingCrosses className="fixed -z-10" footerSelector="#footer" />}
     </>
   );
 };

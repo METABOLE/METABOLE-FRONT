@@ -421,6 +421,7 @@ const ContactPopover = () => {
           checked={formData.consentMarketing}
           className="-translate-y-5 opacity-0"
           id="consentMarketing"
+          isDisclaimer={true}
           name="consentMarketing"
           label={
             isFrench

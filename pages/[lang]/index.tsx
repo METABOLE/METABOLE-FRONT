@@ -1,4 +1,5 @@
 import { AnimatedTitle } from '@/components/AnimatedTitle';
+import FallingCrosses from '@/components/FallingCrosses';
 import Div3D from '@/components/Text3D';
 import { useEnvironment } from '@/hooks/useEnvironment';
 import { useMousePosition } from '@/hooks/useMousePosition';
@@ -55,6 +56,7 @@ export default function Home() {
   const createdByRef = useRef<HTMLHeadingElement>(null);
 
   const [isAnimEnded, setIsAnimEnded] = useState(false);
+  // const [showFallenCrosses, setShowFallenCrosses] = useState(false);
 
   gsap.to(textRef.current, {
     duration: 0.8,
@@ -114,7 +116,7 @@ export default function Home() {
       <Head>
         <link key="canonical" href={'https://metabole.studio' + asPath} rel="canonical" />
       </Head>
-      <div className="fixed inset-0 flex h-screen w-screen flex-col">
+      <div className="inset-0 flex h-screen w-screen flex-col">
         <section
           ref={textRef}
           className="px-x-default flex h-full w-full flex-col justify-center text-left md:text-center"
@@ -163,6 +165,7 @@ export default function Home() {
           </Div3D>
         </section>
       </div>
+      {isAnimEnded && <FallingCrosses className="fixed -z-10" footerSelector="#footer" />}
     </>
   );
 }
