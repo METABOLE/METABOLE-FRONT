@@ -10,11 +10,11 @@ import { useGSAP } from '@gsap/react';
 import { useMutation } from '@tanstack/react-query';
 import gsap from 'gsap';
 import { useRef, useState } from 'react';
-import Button, { AnimatedButtonRef } from './Button';
+import Button, { AnimatedButtonRef } from './atoms/Button';
 import { IconCross } from './Icons';
 import Input, { AnimatedIputRef } from './Input';
 import Typography, { AnimatedTypoRef } from './Typography';
-import Checkbox from './Checkbox';
+import Checkbox from './atoms/Checkbox';
 
 const ContactPopover = () => {
   const buttonOpenRef = useRef(null);

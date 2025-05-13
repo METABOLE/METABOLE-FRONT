@@ -1,4 +1,4 @@
-import Button from '@/components/Button';
+import Button from '@/components/atoms/Button';
 import { IconArrow } from '@/components/Icons';
 import Input from '@/components/Input';
 import Typography from '@/components/Typography';

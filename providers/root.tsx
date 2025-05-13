@@ -1,4 +1,4 @@
-import Cursor from '@/components/Cursor';
+import Cursor from '@/components/atoms/Cursor';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { ReactNode } from 'react';

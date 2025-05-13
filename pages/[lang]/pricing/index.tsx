@@ -1,4 +1,4 @@
-import WebsiteBuilder from '@/components/WebsiteBuilder';
+import WebsiteBuilder from '@/components/websiteBuilder/WebsiteBuilder';
 
 const Pricing = () => {
   return (

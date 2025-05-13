@@ -1,4 +1,4 @@
-import { StepAnimations, StepOptions, StepPages } from '@/components/Steps';
+import { WEBSITE_BUILDER_STEPS } from '@/types';
 
 export const STEPS = [
   {
@@ -13,7 +13,7 @@ export const STEPS = [
         </span>
       </p>
     ),
-    step: <StepPages />,
+    type: WEBSITE_BUILDER_STEPS.PAGES,
   },
   {
     title: 'Type d’animations',
@@ -27,7 +27,7 @@ export const STEPS = [
         </span>
       </p>
     ),
-    step: <StepAnimations />,
+    type: WEBSITE_BUILDER_STEPS.ANIMATIONS,
   },
   {
     title: 'Options',
@@ -41,7 +41,7 @@ export const STEPS = [
         </span>
       </p>
     ),
-    step: <StepOptions />,
+    type: WEBSITE_BUILDER_STEPS.OPTIONS,
   },
 ];
 

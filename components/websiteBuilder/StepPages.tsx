@@ -1,24 +1,29 @@
-import { ANIMATIONS, OPTIONS, PAGES } from '@/constants/websiteBuilder.constant';
-import { COLORS } from '@/types';
+import { PAGES } from '@/constants/websiteBuilder.constant';
+import { COLORS, Page } from '@/types';
 import clsx from 'clsx';
 import { useRef, useState } from 'react';
-import { IconCross } from './Icons';
-import Checkbox from './Checkbox';
+import { IconCross } from '../Icons';
 
-export const StepPages = () => {
+export const StepPages = ({ onPagesChange }: { onPagesChange?: (pages: Page[]) => void }) => {
   const newPageRef = useRef<HTMLInputElement>(null);
-
   const [newPageValue, setNewPageValue] = useState('');
-  const [pages, setPages] = useState([
-    ...PAGES.map((page) => ({
+  const [pages, setPages] = useState<Page[]>(
+    PAGES.map((page) => ({
       ...page,
       selected: false,
     })),
-  ]);
+  );
+
+  const updatePages = (newPages: Page[]) => {
+    setPages(newPages);
+    if (onPagesChange) {
+      onPagesChange(newPages);
+    }
+  };
 
   const handleAddPage = () => {
     if (!newPageValue.trim()) return;
-    setPages([
+    const newPages = [
       ...pages,
       {
         id: crypto.randomUUID(),
@@ -29,12 +34,16 @@ export const StepPages = () => {
         pricing: 700,
         selected: true,
       },
-    ]);
+    ];
+    updatePages(newPages);
     setNewPageValue('');
   };
 
   const handleTogglePage = (id: string) => {
-    setPages(pages.map((page) => (page.id === id ? { ...page, selected: !page.selected } : page)));
+    const newPages = pages.map((page) =>
+      page.id === id ? { ...page, selected: !page.selected } : page,
+    );
+    updatePages(newPages);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -44,7 +53,8 @@ export const StepPages = () => {
   };
 
   const handleDeletePage = (id: string) => {
-    setPages(pages.filter((page) => page.id !== id));
+    const newPages = pages.filter((page) => page.id !== id);
+    updatePages(newPages);
   };
 
   return (
@@ -97,57 +107,6 @@ export const StepPages = () => {
           onKeyDown={handleKeyDown}
         />
       </button>
-    </div>
-  );
-};
-
-export const StepAnimations = () => {
-  const [selectedAnimation, setSelectedAnimation] = useState(ANIMATIONS[1]);
-
-  const handleSelectAnimation = (animation: (typeof ANIMATIONS)[0]) => {
-    setSelectedAnimation(animation);
-  };
-
-  return (
-    <div className="flex w-full flex-col gap-6">
-      {ANIMATIONS.map((animation) => (
-        <button
-          key={animation.title.en}
-          className={clsx(
-            'group flex h-11 w-fit cursor-pointer items-center gap-2.5 overflow-hidden rounded-full bg-white px-6 text-black transition-colors duration-150 hover:text-white',
-            selectedAnimation.title.en === animation.title.en
-              ? 'bg-blue text-white'
-              : 'bg-white text-black',
-          )}
-          onClick={() => handleSelectAnimation(animation)}
-        >
-          <div className="relative z-0">
-            <div
-              className={clsx(
-                'ease-power2-in-out top-0 z-10 h-2.5 w-2.5 rounded-full transition-transform duration-300 group-hover:bg-white',
-                selectedAnimation.title.en === animation.title.en ? 'bg-white' : 'bg-blue',
-              )}
-            />
-            <div
-              className={clsx(
-                'bg-blue ease-power2-in-out absolute top-0 -z-10 h-2.5 w-2.5 rounded-full transition-transform duration-300 group-hover:scale-[50]',
-                selectedAnimation.title.en === animation.title.en ? 'scale-[50]' : 'scale-0',
-              )}
-            />
-          </div>
-          <span className="z-10">{animation.title.en}</span>
-        </button>
-      ))}
-    </div>
-  );
-};
-
-export const StepOptions = () => {
-  return (
-    <div className="grid w-full grid-cols-2 gap-6">
-      {OPTIONS.map((option) => (
-        <Checkbox key={option.title.en} label={option.title.en} />
-      ))}
     </div>
   );
 };
