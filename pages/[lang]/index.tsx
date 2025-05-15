@@ -1,5 +1,6 @@
 import { AnimatedTitle } from '@/components/AnimatedTitle';
 import FallingCrosses from '@/components/FallingCrosses';
+import FloatingHalo from '@/components/FloatingHalo';
 import Div3D from '@/components/Text3D';
 import { useEnvironment } from '@/hooks/useEnvironment';
 import { useMousePosition } from '@/hooks/useMousePosition';
@@ -51,6 +52,7 @@ export default function Home() {
   const { x, y } = useMousePosition();
   const { asPath } = useRouter();
 
+  const haloRef = useRef(null);
   const textRef = useRef(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const createdByRef = useRef<HTMLHeadingElement>(null);
@@ -105,14 +107,31 @@ export default function Home() {
         },
         '-=0.8',
       )
+      .add(() => setIsAnimEnded(true))
       .set(createdByRef.current, {
         overflow: 'visible',
       })
-      .add(() => setIsAnimEnded(true));
+      .to(
+        haloRef.current,
+        {
+          x: 0,
+          scale: 1,
+          opacity: 1,
+          duration: 4,
+          ease: 'power4.out',
+        },
+        '<',
+      );
   }, [isProd, isFrench]);
 
   return (
     <>
+      <FloatingHalo
+        ref={haloRef}
+        className="!fixed top-[120%] -left-[90%] -z-30 h-[250vw] w-[250vw] -translate-x-full scale-50 opacity-0"
+        from="#1b17ee"
+        to="#f1f2ff00"
+      />
       <Head>
         <link key="canonical" href={'https://metabole.studio' + asPath} rel="canonical" />
       </Head>
@@ -165,7 +184,7 @@ export default function Home() {
           </Div3D>
         </section>
       </div>
-      {isAnimEnded && <FallingCrosses className="fixed -z-10" footerSelector="#footer" />}
+      {isAnimEnded && <FallingCrosses className="fixed -z-10" />}
     </>
   );
 }

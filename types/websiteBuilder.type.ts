@@ -13,7 +13,7 @@ export type Page = {
 
 export type Animation = {
   title: { en: string; fr: string };
-  pricing: number;
+  percent: number;
 };
 
 export type Option = {

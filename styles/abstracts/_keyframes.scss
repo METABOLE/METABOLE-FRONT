@@ -4,16 +4,27 @@
 }
 
 @keyframes floating {
-  0%, 100% {
-      transform: translate(0, 0) rotate(0deg);
-      animation-timing-function: cubic-bezier(0.45, 0.05, 0.55, 0.95);
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+    animation-timing-function: cubic-bezier(0.45, 0.05, 0.55, 0.95);
   }
   33% {
-      transform: translate(-7px, -14px) rotate(2deg);
-      animation-timing-function: cubic-bezier(0.45, 0.05, 0.55, 0.95);
+    transform: translate(-7px, -14px) rotate(2deg);
+    animation-timing-function: cubic-bezier(0.45, 0.05, 0.55, 0.95);
   }
   66% {
-      transform: translate(7px, 8px) rotate(-2deg);
-      animation-timing-function: cubic-bezier(0.45, 0.05, 0.55, 0.95);
+    transform: translate(7px, 8px) rotate(-2deg);
+    animation-timing-function: cubic-bezier(0.45, 0.05, 0.55, 0.95);
+  }
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
   }
 }

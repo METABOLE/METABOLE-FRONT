@@ -1,5 +1,7 @@
 import { CONTACT, LINKS, SOCIALS } from '@/constants';
+import { useMagnet, useResetMagnet } from '@/hooks/useMagnet';
 import { useMousePosition } from '@/hooks/useMousePosition';
+import { useLanguage } from '@/providers/language.provider';
 import { COLORS } from '@/types';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
@@ -7,11 +9,9 @@ import Link from 'next/link';
 import { useRef } from 'react';
 import FloatingHalo from './FloatingHalo';
 import { IconArrow, LogoSmall } from './Icons';
-import LeadForm from './LeadForm';
-import Time from './Time';
-import { useLanguage } from '@/providers/language.provider';
-import { useMagnet, useResetMagnet } from '@/hooks/useMagnet';
 import Language from './Language';
+import NewsletterSubscription from './NewsletterSubscription';
+import Time from './Time';
 
 const Footer = () => {
   const animatedTitleRef = useRef<SVGSVGElement>(null);
@@ -151,7 +151,7 @@ const Footer = () => {
               </nav>
               <div />
               <div className="gap-y-default col-span-2 flex flex-col">
-                <LeadForm isDark={false} />
+                <NewsletterSubscription isDark={false} />
                 <Language isDark={true} />
               </div>
             </div>

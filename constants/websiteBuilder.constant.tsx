@@ -104,29 +104,30 @@ export const PAGES = [
   },
 ];
 
-export const ANIMATIONS = [
-  {
+export const ANIMATIONS = {
+  LIGHT: {
     title: {
       fr: 'Légères',
       en: 'Light',
     },
-    pricing: 100,
+    percent: 0.1,
   },
-  {
+  IMMERSIVES: {
     title: {
       fr: 'Immersives',
       en: 'Immersive',
     },
-    pricing: 200,
+    percent: 0.25,
   },
-  {
+
+  ADVANCED: {
     title: {
       fr: 'Intéractivité poussée',
       en: 'Advanced interactivity',
     },
-    pricing: 300,
+    percent: 0.5,
   },
-];
+};
 
 export const OPTIONS = [
   {

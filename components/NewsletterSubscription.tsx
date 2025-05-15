@@ -11,7 +11,7 @@ import { IconArrow, IconQuestionMark } from './Icons';
 import Input, { AnimatedIputRef } from './Input';
 import Typography from './Typography';
 
-interface LeadFormProps {
+interface NewsletterSubscriptionProps {
   className?: string;
   isDark?: boolean;
   animate?: boolean;
@@ -22,7 +22,7 @@ const SUCCESS_MESSAGES = {
   en: 'Subscription successful',
 };
 
-const LeadForm = ({ className, isDark }: LeadFormProps) => {
+const NewsletterSubscription = ({ className, isDark }: NewsletterSubscriptionProps) => {
   const wrapperRef = useRef(null);
   const containerRef = useRef(null);
   const inputRef = useRef<AnimatedIputRef>(null);
@@ -144,4 +144,4 @@ const LeadForm = ({ className, isDark }: LeadFormProps) => {
   );
 };
 
-export default LeadForm;
+export default NewsletterSubscription;

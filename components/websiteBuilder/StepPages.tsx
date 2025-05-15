@@ -1,12 +1,17 @@
 import { PAGES } from '@/constants/websiteBuilder.constant';
 import { COLORS, Page } from '@/types';
 import clsx from 'clsx';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { IconCross } from '../Icons';
+import ButtonCheckbox from '../atoms/ButtonCheckbox';
 
 export const StepPages = ({ onPagesChange }: { onPagesChange?: (pages: Page[]) => void }) => {
   const newPageRef = useRef<HTMLInputElement>(null);
+  const widthInputRef = useRef<HTMLParagraphElement>(null);
+
   const [newPageValue, setNewPageValue] = useState('');
+  const [inputWidth, setInputWidth] = useState('155px');
+  const [inputFocused, setInputFocused] = useState(false);
   const [pages, setPages] = useState<Page[]>(
     PAGES.map((page) => ({
       ...page,
@@ -20,6 +25,13 @@ export const StepPages = ({ onPagesChange }: { onPagesChange?: (pages: Page[]) =
       onPagesChange(newPages);
     }
   };
+
+  useEffect(() => {
+    if (widthInputRef.current) {
+      const width = newPageValue ? `${widthInputRef.current.offsetWidth}px` : '155px';
+      setInputWidth(width);
+    }
+  }, [newPageValue]);
 
   const handleAddPage = () => {
     if (!newPageValue.trim()) return;
@@ -60,52 +72,62 @@ export const StepPages = ({ onPagesChange }: { onPagesChange?: (pages: Page[]) =
   return (
     <div className="flex w-full flex-wrap gap-1.5 overflow-scroll">
       {pages.map((page) => (
-        <button
+        <ButtonCheckbox
           key={page.id}
-          className={clsx(
-            'flex h-11 w-fit cursor-pointer items-center gap-2.5 rounded-full px-6',
-            page.selected ? 'bg-blue text-white' : 'bg-white text-black',
-          )}
-          onClick={() => handleTogglePage(page.id)}
-        >
-          <IconCross
-            className={clsx('cursor-pointer transition-colors', page.selected ? 'rotate-45' : '')}
-            color={page.selected ? COLORS.WHITE : COLORS.BLACK}
-            onClick={(e) => {
-              e.stopPropagation();
-              handleDeletePage(page.id);
-            }}
-          />
-          <span className="max-w-20 overflow-hidden text-ellipsis whitespace-nowrap">
-            {page.title.en}
-          </span>
-        </button>
+          id={page.id}
+          selected={page.selected}
+          title={page.title.en}
+          onDelete={handleDeletePage}
+          onToggle={handleTogglePage}
+        />
       ))}
       <button
         className={clsx(
-          'flex h-11 w-fit cursor-pointer items-center gap-2.5 rounded-full border-[1px] border-dashed px-6 text-black',
-          newPageValue ? 'border-white bg-white' : 'border-blue-30 bg-transparent',
+          'flex h-11 w-fit cursor-pointer items-center gap-2.5 overflow-hidden rounded-full border-[1px] px-6 text-black transition-colors duration-150',
+          newPageValue ? 'border-solid border-white' : 'border-blue-30 border-dashed',
         )}
         onClick={() => newPageRef.current?.focus()}
       >
-        <IconCross
-          className="transition-colors"
-          color={newPageValue ? COLORS.BLACK : COLORS.BLUE}
-          onClick={(e) => {
-            e.stopPropagation();
-            handleAddPage();
-          }}
-        />
-        <input
-          ref={newPageRef}
-          className="placeholder:text-blue-30 w-[155px] bg-transparent outline-none"
-          placeholder="Nommez votre page"
-          type="text"
-          value={newPageValue}
-          onBlur={handleAddPage}
-          onChange={(e) => setNewPageValue(e.target.value)}
-          onKeyDown={handleKeyDown}
-        />
+        <div className="relative flex items-center justify-center">
+          <div
+            className={clsx(
+              'absolute -z-10 h-4 w-4 rounded-full bg-white transition-transform duration-300',
+              newPageValue ? 'scale-[50]' : 'scale-0',
+            )}
+          />
+          <IconCross
+            className="transition-colors"
+            color={newPageValue ? COLORS.BLACK : COLORS.BLUE}
+          />
+        </div>
+        <div className="relative">
+          <input
+            ref={newPageRef}
+            className="p3 placeholder:text-blue-30 w-full bg-transparent outline-none"
+            placeholder="Nommez votre page"
+            style={{ width: inputWidth }}
+            type="text"
+            value={newPageValue}
+            onFocus={() => setInputFocused(true)}
+            onKeyDown={handleKeyDown}
+            onBlur={() => {
+              setInputFocused(false);
+              handleAddPage();
+            }}
+            onChange={(e) => {
+              setNewPageValue(e.target.value);
+            }}
+          />
+          <p
+            ref={widthInputRef}
+            className={clsx(
+              'p3 blinker absolute top-0 left-0 -z-10 h-0 whitespace-pre opacity-0',
+              inputFocused ? 'active' : 'inactive',
+            )}
+          >
+            {newPageValue || 'Nommez votre page'}
+          </p>
+        </div>
       </button>
     </div>
   );

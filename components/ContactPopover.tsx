@@ -302,7 +302,7 @@ const ContactPopover = () => {
   return (
     <div
       ref={wrapperRef}
-      className="border-red bg-blur-glass absolute right-0 h-11 w-[117px] max-w-[430px] overflow-hidden rounded-3xl text-black backdrop-blur-xl md:relative"
+      className="bg-blur-glass absolute right-0 h-11 w-[117px] max-w-[430px] overflow-hidden rounded-3xl text-black backdrop-blur-xl md:relative"
       onClick={() => !isOpen && !isAnimating && playAnim()}
       onMouseMove={(e) => useMagnet(e, 0.8)}
       onMouseOut={(e) => useResetMagnet(e)}

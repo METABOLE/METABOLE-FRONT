@@ -5,11 +5,14 @@ import { useState } from 'react';
 
 export const StepAnimations = ({
   onAnimationChange,
+  initialAnimation,
 }: {
   onAnimationChange?: (animation: Animation) => void;
   initialAnimation?: Animation;
 }) => {
-  const [selectedAnimation, setSelectedAnimation] = useState<Animation | null>(null);
+  const [selectedAnimation, setSelectedAnimation] = useState<Animation>(
+    initialAnimation || ANIMATIONS.IMMERSIVES,
+  );
 
   const handleSelectAnimation = (animation: Animation) => {
     setSelectedAnimation(animation);
@@ -20,7 +23,7 @@ export const StepAnimations = ({
 
   return (
     <div className="flex w-full flex-col gap-6">
-      {ANIMATIONS.map((animation) => (
+      {Object.values(ANIMATIONS).map((animation) => (
         <button
           key={animation.title.en}
           className={clsx(

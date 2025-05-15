@@ -1,10 +1,9 @@
-import FloatingHalo from '@/components/FloatingHalo';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import Lottie from '@/components/Lottie';
 import SEO from '@/components/SEO';
+import useIsLocalhost from '@/hooks/useIsLocalhost';
 import { useMousePosition } from '@/hooks/useMousePosition';
-import useWindowResizeReload from '@/hooks/useReloadResize';
 import { useLanguage } from '@/providers/language.provider';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
@@ -15,13 +14,11 @@ import metaboleFull from '../public/lotties/metabole-full-loader.json';
 gsap.registerPlugin(ScrollTrigger);
 
 const Layout = ({ children }: { children: ReactNode }) => {
-  useWindowResizeReload();
-
+  const isLocalhost = useIsLocalhost();
   const { isFrench } = useLanguage();
   const { x, y } = useMousePosition();
 
   const lottieRef = useRef(null);
-  const haloRef = useRef(null);
   const backgroundRef = useRef(null);
 
   // useEffect(() => {
@@ -82,17 +79,6 @@ const Layout = ({ children }: { children: ReactNode }) => {
         },
         '-=1.5',
       )
-      .to(
-        haloRef.current,
-        {
-          x: 0,
-          scale: 1,
-          opacity: 1,
-          duration: 4,
-          ease: 'power4.out',
-        },
-        '<',
-      )
       .set(
         lottieRef.current,
         {
@@ -106,20 +92,16 @@ const Layout = ({ children }: { children: ReactNode }) => {
     <>
       <SEO isFrench={isFrench} />
       <Header />
-      <div
-        ref={lottieRef}
-        className="fixed top-1/2 left-1/2 z-20 -translate-x-1/2 -translate-y-1/2"
-      >
-        <Lottie animationData={metaboleFull} className="h-48" loop={false} />
-      </div>
+      {!isLocalhost && (
+        <div
+          ref={lottieRef}
+          className="fixed top-1/2 left-1/2 z-20 -translate-x-1/2 -translate-y-1/2"
+        >
+          <Lottie animationData={metaboleFull} className="h-48" loop={false} />
+        </div>
+      )}
       <main className="min-h-screen pb-[300px]">{children}</main>
       <Footer />
-      <FloatingHalo
-        ref={haloRef}
-        className="!fixed top-[120%] -left-[90%] -z-30 h-[250vw] w-[250vw] -translate-x-full scale-50 opacity-0"
-        from="#1b17ee"
-        to="#f1f2ff00"
-      />
       <Image
         ref={backgroundRef}
         alt="background"

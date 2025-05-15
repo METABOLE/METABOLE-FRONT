@@ -1,10 +1,10 @@
-'use client';
-
 import { useEffect } from 'react';
 import { useTouchDevice } from './useTouchDevice';
 
-const useWindowResizeReload = (delay = 100) => {
-  if (useTouchDevice()) return;
+const useWindowResize = (callback: () => void, delay = 100, skipOnTouchDevices = true) => {
+  const isTouchDevice = useTouchDevice();
+
+  if (skipOnTouchDevices && isTouchDevice) return;
 
   useEffect(() => {
     let timeoutId: NodeJS.Timeout | null = null;
@@ -15,7 +15,7 @@ const useWindowResizeReload = (delay = 100) => {
       }
 
       timeoutId = setTimeout(() => {
-        window.location.reload();
+        callback();
       }, delay);
     };
 
@@ -27,7 +27,7 @@ const useWindowResizeReload = (delay = 100) => {
         clearTimeout(timeoutId);
       }
     };
-  }, [delay]);
+  }, [callback, delay]);
 };
 
-export default useWindowResizeReload;
+export default useWindowResize;
