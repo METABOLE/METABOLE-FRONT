@@ -5,7 +5,11 @@ import { useEffect, useRef, useState } from 'react';
 import { IconCross } from '../Icons';
 import ButtonCheckbox from '../atoms/ButtonCheckbox';
 
-export const StepPages = ({ onPagesChange }: { onPagesChange?: (pages: Page[]) => void }) => {
+const StepPages = ({
+  onPagesChange,
+}: {
+  onPagesChange?: (pages: Page[], isValid: boolean) => void;
+}) => {
   const newPageRef = useRef<HTMLInputElement>(null);
   const widthInputRef = useRef<HTMLParagraphElement>(null);
 
@@ -19,12 +23,24 @@ export const StepPages = ({ onPagesChange }: { onPagesChange?: (pages: Page[]) =
     })),
   );
 
+  const validatePages = (pagesArray: Page[]): boolean => {
+    return pagesArray.some((page) => page.selected);
+  };
+
   const updatePages = (newPages: Page[]) => {
     setPages(newPages);
     if (onPagesChange) {
-      onPagesChange(newPages);
+      const isValid = validatePages(newPages);
+      onPagesChange(newPages, isValid);
     }
   };
+
+  useEffect(() => {
+    if (onPagesChange) {
+      const isValid = validatePages(pages);
+      onPagesChange(pages, isValid);
+    }
+  }, []);
 
   useEffect(() => {
     if (widthInputRef.current) {
@@ -76,7 +92,7 @@ export const StepPages = ({ onPagesChange }: { onPagesChange?: (pages: Page[]) =
           key={page.id}
           id={page.id}
           selected={page.selected}
-          title={page.title.en}
+          title={page.title.fr}
           onDelete={handleDeletePage}
           onToggle={handleTogglePage}
         />
@@ -132,3 +148,5 @@ export const StepPages = ({ onPagesChange }: { onPagesChange?: (pages: Page[]) =
     </div>
   );
 };
+
+export default StepPages;

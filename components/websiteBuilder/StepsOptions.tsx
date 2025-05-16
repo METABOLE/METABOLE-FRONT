@@ -1,12 +1,12 @@
 import { OPTIONS } from '@/constants/websiteBuilder.constant';
 import { Option } from '@/types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Checkbox from '../atoms/Checkbox';
 
-export const StepOptions = ({
+const StepOptions = ({
   onOptionsChange,
 }: {
-  onOptionsChange?: (options: Option[]) => void;
+  onOptionsChange?: (options: Option[], isValid: boolean) => void;
 }) => {
   const [options, setOptions] = useState<Option[]>(
     OPTIONS.map((option) => ({
@@ -16,13 +16,25 @@ export const StepOptions = ({
     })),
   );
 
+  const validateOptions = (): boolean => {
+    return true;
+  };
+
+  useEffect(() => {
+    if (onOptionsChange) {
+      const isValid = validateOptions();
+      onOptionsChange(options, isValid);
+    }
+  }, []);
+
   const handleToggleOption = (id: string) => {
     const newOptions = options.map((option) =>
       option.id === id ? { ...option, selected: !option.selected } : option,
     );
     setOptions(newOptions);
     if (onOptionsChange) {
-      onOptionsChange(newOptions);
+      const isValid = validateOptions();
+      onOptionsChange(newOptions, isValid);
     }
   };
 
@@ -32,10 +44,12 @@ export const StepOptions = ({
         <Checkbox
           key={option.id}
           checked={option.selected}
-          label={option.title.en}
+          label={option.title.fr}
           onChange={() => handleToggleOption(option.id)}
         />
       ))}
     </div>
   );
 };
+
+export default StepOptions;

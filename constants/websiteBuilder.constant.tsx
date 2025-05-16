@@ -2,46 +2,118 @@ import { WEBSITE_BUILDER_STEPS } from '@/types';
 
 export const STEPS = [
   {
-    title: 'Pages du site',
-    description: (
-      <p>
-        <span className="text-black">Combien de pages pour raconter votre histoire ?</span>
-        <br />
-        <span className="text-black-30">
-          Ajoutez et supprimez des pages en fonction de vos besoins. Vous pouvez nommer vos pages
-          pour vous repérer
-        </span>
-      </p>
-    ),
+    title: {
+      fr: 'Pages de votre site',
+      en: 'Pages of your site',
+    },
+    description: {
+      fr: (
+        <p>
+          <span className="text-black">Combien de pages pour raconter votre histoire ?</span>
+          <br />
+          <span className="text-black-30">
+            Ajoutez et supprimez des pages en fonction de vos besoins. Vous pouvez nommer vos pages
+            pour vous repérer
+          </span>
+        </p>
+      ),
+      en: (
+        <p>
+          <span className="text-black">How many pages to tell your story?</span>
+          <br />
+          <span className="text-black-30">
+            Add and remove pages as needed. You can name your pages to keep track of them.
+          </span>
+        </p>
+      ),
+    },
     type: WEBSITE_BUILDER_STEPS.PAGES,
   },
   {
-    title: 'Type d’animations',
-    description: (
-      <p>
-        <span className="text-black">Fonctionnalités, modules, intégrations.</span>
-        <br />
-        <span className="text-black-30">
-          Blog, formulaire, multilingue, carte, CMS… cochez ce dont vous avez besoin. Tout est pensé
-          pour vous simplifier la vie sans compromettre l'esthétique.
-        </span>
-      </p>
-    ),
+    title: {
+      fr: 'Type d’animation',
+      en: 'Type of animation',
+    },
+    description: {
+      fr: (
+        <p>
+          <span className="text-black">Fonctionnalités, modules, intégrations.</span>
+          <br />
+          <span className="text-black-30">
+            Blog, formulaire, multilingue, carte, CMS… cochez ce dont vous avez besoin. Tout est
+            pensé pour vous simplifier la vie sans compromettre l'esthétique.
+          </span>
+        </p>
+      ),
+      en: (
+        <p>
+          <span className="text-black">Animation type</span>
+          <br />
+          <span className="text-black-30">
+            Choose the animation type that best suits your needs. You can select from light,
+            immersive, or advanced interactivity animations.
+          </span>
+        </p>
+      ),
+    },
     type: WEBSITE_BUILDER_STEPS.ANIMATIONS,
   },
   {
-    title: 'Options',
-    description: (
-      <p>
-        <span className="text-black">Fonctionnalités, modules, intégrations.</span>
-        <br />
-        <span className="text-black-30">
-          Blog, formulaire, multilingue, carte, CMS… cochez ce dont vous avez besoin. Tout est pensé
-          pour vous simplifier la vie sans compromettre l'esthétique.
-        </span>
-      </p>
-    ),
+    title: {
+      fr: 'Options',
+      en: 'Options',
+    },
+    description: {
+      fr: (
+        <p>
+          <span className="text-black">Fonctionnalités, modules, intégrations.</span>
+          <br />
+          <span className="text-black-30">
+            Blog, formulaire, multilingue, carte, CMS… cochez ce dont vous avez besoin. Tout est
+            pensé pour vous simplifier la vie sans compromettre l'esthétique.
+          </span>
+        </p>
+      ),
+      en: (
+        <p>
+          <span className="text-black">Features, modules, integrations.</span>
+          <br />
+          <span className="text-black-30">
+            Blog, form, multilingual, map, CMS... check what you need. Everything is designed to
+            make your life easier without compromising aesthetics.
+          </span>
+        </p>
+      ),
+    },
     type: WEBSITE_BUILDER_STEPS.OPTIONS,
+  },
+  {
+    title: {
+      fr: 'Finalisation',
+      en: 'Finalisation',
+    },
+    description: {
+      fr: (
+        <p>
+          <span className="text-black">Finalisez votre devis.</span>
+          <br />
+          <span className="text-black-30">
+            Vous pouvez modifier vos choix à tout moment. Vous pouvez également demander un devis
+            personnalisé.
+          </span>
+        </p>
+      ),
+      en: (
+        <p>
+          <span className="text-black">Finalize your quote.</span>
+          <br />
+          <span className="text-black-30">
+            You can modify your choices at any time. You can also request a custom quote.
+          </span>
+        </p>
+      ),
+    },
+    type: WEBSITE_BUILDER_STEPS.FINAL,
   },
 ];
 

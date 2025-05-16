@@ -1,49 +1,59 @@
 import { ANIMATIONS, STEPS } from '@/constants/websiteBuilder.constant';
-import { Animation, Option, Page, WEBSITE_BUILDER_STEPS } from '@/types';
-import NumberFlow from '@number-flow/react';
+import { useLanguage } from '@/providers/language.provider';
+import { Animation, FormWebsiteBuilderData, Option, Page, WEBSITE_BUILDER_STEPS } from '@/types';
 import clsx from 'clsx';
 import { useState } from 'react';
 import Button from '../atoms/Button';
-import { StepPages } from './StepPages';
-import { StepAnimations } from './StepsAnimations';
-import { StepOptions } from './StepsOptions';
+import StepPages from './StepPages';
+import StepAnimations from './StepsAnimations';
+import StepFinalisation from './StepsFinalisation';
+import StepOptions from './StepsOptions';
+import ViewerBuilder from './ViewerBuilder';
 
 const WebsiteBuilder = () => {
-  const [activeStep, setActiveStep] = useState(0);
-  const [completedSteps, setCompletedSteps] = useState<number[]>([]);
+  const { isFrench } = useLanguage();
 
+  const [steps, setSteps] = useState(() =>
+    STEPS.map((step, index) => ({
+      ...step,
+      isActive: index === 0,
+      isCompleted: false,
+    })),
+  );
   const [selectedPages, setSelectedPages] = useState<Page[]>([]);
   const [selectedAnimation, setSelectedAnimation] = useState<Animation>(ANIMATIONS.IMMERSIVES);
   const [selectedOptions, setSelectedOptions] = useState<Option[]>([]);
+  const [formData, setFormData] = useState<FormWebsiteBuilderData>({
+    name: '',
+    email: '',
+    phone: '',
+    message: '',
+  });
 
-  const isCurrentStepCompleted = (): boolean => {
-    switch (STEPS[activeStep].type) {
-      case WEBSITE_BUILDER_STEPS.PAGES:
-        return selectedPages.length > 0;
-      case WEBSITE_BUILDER_STEPS.ANIMATIONS:
-        return !!selectedAnimation;
-      case WEBSITE_BUILDER_STEPS.OPTIONS:
-        return true;
-      default:
-        return false;
-    }
-  };
+  const [isPagesValid, setIsPagesValid] = useState(false);
+  const [isAnimationValid, setIsAnimationValid] = useState(true);
+  const [isOptionsValid, setIsOptionsValid] = useState(true);
+  const [isFormValid, setIsFormValid] = useState(false);
 
-  const isStepCompleted = (stepIndex: number): boolean => {
-    return completedSteps.includes(stepIndex);
-  };
-
-  const handlePagesChange = (pages: Page[]) => {
+  const handlePagesChange = (pages: Page[], isValid: boolean) => {
     const selected = pages.filter((page) => page.selected);
     setSelectedPages(selected);
+    setIsPagesValid(isValid);
   };
 
-  const handleAnimationChange = (animation: Animation) => {
+  const handleAnimationChange = (animation: Animation, isValid: boolean) => {
     setSelectedAnimation(animation);
+    setIsAnimationValid(isValid);
   };
 
-  const handleOptionsChange = (options: Option[]) => {
+  const handleOptionsChange = (options: Option[], isValid: boolean) => {
     setSelectedOptions(options.filter((option) => option.selected));
+    setIsOptionsValid(isValid);
+  };
+
+  const handleFormChange = (updatedFormData: FormWebsiteBuilderData, isValid: boolean) => {
+    setFormData(updatedFormData);
+    setIsFormValid(isValid);
   };
 
   const basePrice =
@@ -53,6 +63,38 @@ const WebsiteBuilder = () => {
   const totalPrice = selectedAnimation
     ? basePrice + basePrice * selectedAnimation.percent
     : basePrice;
+
+  const handleFormSubmit = () => {
+    console.log('Envoi du devis :', {
+      ...formData,
+      devis: {
+        pages: selectedPages,
+        animation: selectedAnimation,
+        options: selectedOptions,
+        totalPrice,
+      },
+    });
+
+    alert('Votre devis a été envoyé ! Nous vous contacterons rapidement.');
+  };
+
+  const isCurrentStepValid = () => {
+    const currentStep = steps.find((s) => s.isActive);
+    if (!currentStep) return false;
+
+    switch (currentStep.type) {
+      case WEBSITE_BUILDER_STEPS.PAGES:
+        return isPagesValid;
+      case WEBSITE_BUILDER_STEPS.ANIMATIONS:
+        return isAnimationValid;
+      case WEBSITE_BUILDER_STEPS.OPTIONS:
+        return isOptionsValid;
+      case WEBSITE_BUILDER_STEPS.FINAL:
+        return isFormValid;
+      default:
+        return false;
+    }
+  };
 
   const renderActiveStep = (type: WEBSITE_BUILDER_STEPS) => {
     switch (type) {
@@ -67,184 +109,140 @@ const WebsiteBuilder = () => {
         );
       case WEBSITE_BUILDER_STEPS.OPTIONS:
         return <StepOptions onOptionsChange={handleOptionsChange} />;
+      case WEBSITE_BUILDER_STEPS.FINAL:
+        return <StepFinalisation onFormChange={handleFormChange} />;
     }
   };
 
   const handleNextStep = () => {
-    if (!isStepCompleted(activeStep) && isCurrentStepCompleted()) {
-      setCompletedSteps((prev) => [...prev, activeStep]);
+    const currentActiveIndex = steps.findIndex((s) => s.isActive);
+
+    if (currentActiveIndex === steps.length - 1) {
+      handleFormSubmit();
+      return;
     }
 
-    if (activeStep < STEPS.length - 1) {
-      setActiveStep(activeStep + 1);
-    } else {
-      console.log('Données du devis:', {
-        pages: selectedPages,
-        animation: selectedAnimation,
-        options: selectedOptions,
-        totalPrice,
+    setSteps((prevSteps) => {
+      const currentActiveIndex = prevSteps.findIndex((s) => s.isActive);
+      const nextActiveIndex = currentActiveIndex + 1;
+
+      return prevSteps.map((step, index) => {
+        if (index === currentActiveIndex) {
+          return {
+            ...step,
+            isActive: false,
+            isCompleted: true,
+          };
+        } else if (index === nextActiveIndex) {
+          return {
+            ...step,
+            isActive: true,
+            isCompleted: false,
+          };
+        } else {
+          return step;
+        }
       });
-
-      const allStepsIndices = Array.from({ length: STEPS.length }, (_, i) => i);
-      setCompletedSteps(allStepsIndices);
-    }
+    });
   };
-
-  const handleStepClick = (index: number) => {
-    if (isStepCompleted(index)) {
-      setActiveStep(index);
-    }
-  };
-
-  const isNextButtonEnabled = isCurrentStepCompleted();
 
   return (
-    <div className="grid h-[80vh] w-full grid-cols-2 gap-5 lg:grid-cols-3">
-      <div className="col-span-1 flex h-full w-full flex-col gap-5">
-        {STEPS.map((step, index) => {
-          const isCompleted = isStepCompleted(index);
-          const isActive = activeStep === index;
-
-          return (
-            <div
-              key={index}
-              className={clsx(
-                'ease-power4-in-out flex h-[78px] flex-col overflow-hidden rounded-3xl border-[1px] bg-[#e9e9fd] backdrop-blur-xl transition-all duration-500',
-                isCompleted && !isActive ? 'border-blue' : 'border-blue-30',
-                isActive ? 'grow' : 'shrink',
-              )}
-              onClick={() => setActiveStep(index)}
-            >
-              <h3
+    <>
+      <div className="grid h-[80vh] min-h-[800px] w-full grid-cols-2 gap-5 lg:grid-cols-3">
+        <div className="col-span-1 flex h-full w-full flex-col gap-5">
+          {steps.map((step, index) => {
+            return (
+              <div
+                key={index}
                 className={clsx(
-                  'ease-power4-in-out flex items-center gap-2.5 whitespace-nowrap transition-[padding] duration-500',
-                  isActive ? 'p-6' : 'p-2.5',
+                  'ease-power4-in-out flex h-[78px] flex-col overflow-hidden rounded-3xl border-[1px] bg-[#e9e9fd] backdrop-blur-xl transition-all duration-500',
+                  step.isCompleted && !step.isActive ? 'border-blue' : 'border-blue-30',
+                  step.isActive ? 'grow' : 'shrink',
                 )}
               >
-                <span className="p1 bg-blue flex h-14 w-14 shrink-0 items-center justify-center rounded-[19px] text-white">
-                  {isCompleted ? (
-                    <svg
-                      fill="none"
-                      height="24"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
-                      width="24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                  ) : (
-                    index + 1
-                  )}
-                  <div
-                    className={clsx(
-                      'bg-blue absolute -z-10 h-4 w-4 rounded-full transition-transform duration-300',
-                      isCompleted && !isActive ? 'scale-[60]' : 'scale-0',
-                    )}
-                  />
-                </span>
-                <span
+                <h3
                   className={clsx(
-                    'overflow-hidden leading-14 text-ellipsis',
-                    isCompleted && !isActive ? 'text-white' : 'text-black',
+                    'ease-power4-in-out flex items-center gap-2.5 whitespace-nowrap transition-[padding] duration-500',
+                    step.isActive ? 'p-6' : 'p-2.5',
                   )}
+                  onClick={() =>
+                    setSteps((prevSteps) =>
+                      prevSteps.map((s, i) => ({
+                        ...s,
+                        isActive: i === index,
+                      })),
+                    )
+                  }
                 >
-                  {step.title}
-                </span>
-              </h3>
-              <div className="px-6">{step.description}</div>
-              <div className="smoother-y-blue-menu-background shrink grow-0 overflow-hidden px-6">
-                <div
-                  className="no-scrollbar h-full shrink-0 overflow-scroll py-6"
-                  data-lenis-prevent
-                >
-                  {renderActiveStep(step.type)}
+                  <span className="p1 bg-blue flex h-14 w-14 shrink-0 items-center justify-center rounded-[19px] text-white">
+                    {step.isCompleted ? (
+                      <svg
+                        fill="none"
+                        height="24"
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        viewBox="0 0 24 24"
+                        width="24"
+                      >
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                    ) : (
+                      index + 1
+                    )}
+                    <div
+                      className={clsx(
+                        'bg-blue absolute -z-10 h-4 w-4 rounded-full transition-transform duration-300',
+                        step.isCompleted && !step.isActive ? 'scale-[60]' : 'scale-0',
+                      )}
+                    />
+                  </span>
+                  <span
+                    className={clsx(
+                      'overflow-hidden leading-14 text-ellipsis',
+                      step.isCompleted && !step.isActive ? 'text-white' : 'text-black',
+                    )}
+                  >
+                    {isFrench ? step.title.fr : step.title.en}
+                  </span>
+                </h3>
+                <div className="px-6">{isFrench ? step.description.fr : step.description.en}</div>
+                <div className="smoother-y-blue-menu-background shrink grow-0 overflow-hidden px-6">
+                  <div
+                    className="no-scrollbar h-full shrink-0 overflow-scroll py-6"
+                    data-lenis-prevent
+                  >
+                    {step.isActive && renderActiveStep(step.type)}
+                  </div>
+                </div>
+                <div className="mt-auto ml-auto p-6">
+                  {step.isActive && (
+                    <Button
+                      className="shrink-0"
+                      color="secondary"
+                      disabled={!isCurrentStepValid()}
+                      onClick={handleNextStep}
+                    >
+                      {index === STEPS.length - 1 ? 'Finaliser' : 'Suivant'}
+                    </Button>
+                  )}
                 </div>
               </div>
-              <div className="mt-auto ml-auto p-6">
-                <Button
-                  className={clsx('shrink-0', !isNextButtonEnabled && 'opacity-50')}
-                  color="secondary"
-                  disabled={!isNextButtonEnabled}
-                  onClick={handleNextStep}
-                >
-                  {index === STEPS.length - 1 ? 'Finaliser' : 'Suivant'}
-                </Button>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-      <div className="border-blue-30 col-span-1 h-full w-full shrink-0 rounded-3xl border-[1px] bg-[#e9e9fd] p-6 backdrop-blur-xl lg:col-span-2">
-        <h2 className="mb-6 text-2xl font-bold">Récapitulatif du devis</h2>
-
-        <div className="mb-6 flex w-full">
-          {STEPS.map((step, index) => (
-            <div key={index} className="flex-1">
-              <div className="relative mx-auto h-2 w-full bg-gray-200">
-                <div
-                  className={clsx(
-                    'absolute top-0 left-0 h-full transition-all duration-500',
-                    isStepCompleted(index) ? 'w-full bg-green-600' : 'bg-blue w-0',
-                  )}
-                />
-              </div>
-              <div className="mt-2 text-center text-xs">{step.title}</div>
-            </div>
-          ))}
+            );
+          })}
         </div>
-
-        {selectedPages.length > 0 && (
-          <div className="mb-4">
-            <h3 className="mb-2 text-xl">Pages sélectionnées</h3>
-            <ul className="ml-4">
-              {selectedPages.map((page) => (
-                <li key={page.id} className="flex justify-between">
-                  <span>{page.title.fr}</span>
-                  <span>{page.pricing} €</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        {selectedAnimation && (
-          <div className="mb-4">
-            <h3 className="mb-2 text-xl">Animation</h3>
-            <div className="ml-4 flex justify-between">
-              <span>{selectedAnimation.title.fr}</span>
-              <span>{selectedAnimation.percent} %</span>
-            </div>
-          </div>
-        )}
-
-        {selectedOptions.length > 0 && (
-          <div className="mb-4">
-            <h3 className="mb-2 text-xl">Options</h3>
-            <ul className="ml-4">
-              {selectedOptions.map((option, index) => (
-                <li key={index} className="flex justify-between">
-                  <span>{option.title.fr}</span>
-                  <span>{option.pricing} €</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        <div className="border-blue-30 mt-8 border-t pt-4">
-          <div className="flex justify-between text-xl font-bold">
-            <span>Total</span>
-            <span>
-              <NumberFlow value={totalPrice} /> €
-            </span>
-          </div>
+        <div className="border-blue-30 col-span-1 h-full w-full shrink-0 rounded-3xl border-[1px] bg-[#e9e9fd] p-6 backdrop-blur-xl lg:col-span-2">
+          <ViewerBuilder
+            selectedAnimation={selectedAnimation}
+            selectedOptions={selectedOptions}
+            selectedPages={selectedPages}
+            steps={steps}
+            totalPrice={totalPrice}
+          />
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
