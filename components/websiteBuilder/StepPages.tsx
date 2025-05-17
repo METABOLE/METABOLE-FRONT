@@ -1,4 +1,5 @@
 import { PAGES } from '@/constants/websiteBuilder.constant';
+import { useLanguage } from '@/providers/language.provider';
 import { COLORS, Page } from '@/types';
 import clsx from 'clsx';
 import { useEffect, useRef, useState } from 'react';
@@ -10,6 +11,8 @@ const StepPages = ({
 }: {
   onPagesChange?: (pages: Page[], isValid: boolean) => void;
 }) => {
+  const { isFrench } = useLanguage();
+
   const newPageRef = useRef<HTMLInputElement>(null);
   const widthInputRef = useRef<HTMLParagraphElement>(null);
 
@@ -92,7 +95,7 @@ const StepPages = ({
           key={page.id}
           id={page.id}
           selected={page.selected}
-          title={page.title.fr}
+          title={isFrench ? page.title.fr : page.title.en}
           onDelete={handleDeletePage}
           onToggle={handleTogglePage}
         />
@@ -141,7 +144,7 @@ const StepPages = ({
               inputFocused ? 'active' : 'inactive',
             )}
           >
-            {newPageValue || 'Nommez votre page'}
+            {newPageValue || isFrench ? 'Nommez votre page' : 'Name your page'}
           </p>
         </div>
       </button>

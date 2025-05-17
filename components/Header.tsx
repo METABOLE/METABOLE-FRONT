@@ -9,6 +9,7 @@ import { useGSAP } from '@gsap/react';
 import { useRef } from 'react';
 import { useEnvironment } from '@/hooks/useEnvironment';
 import gsap from 'gsap';
+import Button from './atoms/Button';
 
 const Header = () => {
   const headerRef = useRef(null);
@@ -43,6 +44,9 @@ const Header = () => {
         </Link>
         <div className="relative flex h-[108px] gap-4 py-8">
           <Sound className="shrink-0" />
+          <Button className="hidden! md:inline-block!" href={getInternalPath('/pricing')}>
+            {isFrench ? 'Tarifs' : 'Pricing'}
+          </Button>
           <div className="relative w-[117px] md:w-auto">
             <ContactPopover />
           </div>

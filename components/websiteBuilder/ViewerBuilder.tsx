@@ -1,87 +1,81 @@
 import { useLanguage } from '@/providers/language.provider';
-import { Animation, Option, Page, Step } from '@/types';
+import { Animation, COLORS, Option, Page } from '@/types';
 import NumberFlow from '@number-flow/react';
-import clsx from 'clsx';
+import { useRef } from 'react';
+import Hint from '../Hint';
+import { IconQuestionMark } from '../Icons';
+import PageViewer from './PageViewer';
 
 const ViewerBuilder = ({
-  steps,
   selectedPages,
   selectedAnimation,
   selectedOptions,
   totalPrice,
+  handleDeletePage,
 }: {
-  steps: Step[];
   selectedPages: Page[];
   selectedAnimation: Animation;
   selectedOptions: Option[];
   totalPrice: number;
+  handleDeletePage: (id: string) => void;
 }) => {
   const { isFrench } = useLanguage();
+  const containerRef = useRef<HTMLButtonElement>(null);
 
   return (
-    <>
-      <h2 className="mb-6 text-2xl font-bold">Récapitulatif du devis</h2>
-      <div className="mb-6 flex w-full">
-        {steps.map((step, index) => (
-          <div key={index} className="flex-1">
-            <div className="relative mx-auto h-2 w-full bg-gray-200">
-              <div
-                className={clsx(
-                  'absolute top-0 left-0 h-full transition-all duration-500',
-                  step.isCompleted ? 'w-full bg-green-600' : 'bg-blue w-0',
-                )}
-              />
-            </div>
-            <div className="mt-2 text-center text-xs">
-              {isFrench ? step.title.fr : step.title.en}
-            </div>
-          </div>
-        ))}
-      </div>
-      {selectedPages.length > 0 && (
-        <div className="mb-4">
-          <h3 className="mb-2 text-xl">Pages sélectionnées</h3>
-          <ul className="ml-4">
-            {selectedPages.map((page) => (
-              <li key={page.id} className="flex justify-between">
-                <span>{page.title.fr}</span>
-                <span>{page.pricing} €</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-      {selectedAnimation && (
-        <div className="mb-4">
-          <h3 className="mb-2 text-xl">Animation</h3>
-          <div className="ml-4 flex justify-between">
-            <span>{selectedAnimation.title.fr}</span>
-            <span>{selectedAnimation.percent * 100} %</span>
-          </div>
-        </div>
-      )}
-      {selectedOptions.length > 0 && (
-        <div className="mb-4">
-          <h3 className="mb-2 text-xl">Options</h3>
-          <ul className="ml-4">
-            {selectedOptions.map((option, index) => (
-              <li key={index} className="flex justify-between">
-                <span>{option.title.fr}</span>
-                <span>{option.pricing} €</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-      <div className="border-blue-30 mt-8 border-t pt-4">
-        <div className="flex justify-between text-xl font-bold">
-          <span>Total</span>
-          <span>
-            <NumberFlow value={totalPrice} /> €
-          </span>
+    <div className="grid h-full w-full grid-rows-[1fr_123px_123px]">
+      <div className="border-blue-30 relative h-full w-full overflow-hidden border-b-[1px]">
+        <PageViewer handleDeletePage={handleDeletePage} pages={selectedPages} />
+        <div className="absolute bottom-4 left-4 flex gap-4">
+          {selectedOptions.map((option) => (
+            <p key={option.id} className="p3 bg-blue rounded-md px-3 py-1.5 text-white">
+              {isFrench ? option.title.fr : option.title.en}
+            </p>
+          ))}
         </div>
       </div>
-    </>
+      <div className="border-blue-30 grid h-full w-full grid-cols-[1fr_2fr_1fr] border-b-[1px]">
+        <div className="border-blue-30 grid grid-cols-2 items-center gap-2 border-r-[1px]">
+          <NumberFlow className="h1 text-blue ml-auto" value={selectedPages.length} />
+          <p className="h3 pt-7">page{selectedPages.length > 1 ? 's' : ''}</p>
+        </div>
+        <div className="flex flex-col items-center justify-center gap-2 text-center">
+          <p className="h3">Animations</p>
+          <p className="h3 text-blue">
+            {isFrench ? selectedAnimation.title.fr : selectedAnimation.title.en}
+          </p>
+        </div>
+        <div className="border-blue-30 grid grid-cols-2 items-center gap-2 border-l-[1px]">
+          <NumberFlow className="h1 text-blue ml-auto" value={selectedOptions.length} />
+          <p className="h3 pt-7">option{selectedOptions.length > 1 ? 's' : ''}</p>
+        </div>
+      </div>
+      <div className="flex h-full w-full items-end px-6 pt-6 pb-2">
+        <div className="flex gap-2.5 pb-4">
+          <button ref={containerRef} className="cursor-help">
+            <IconQuestionMark color={COLORS.BLUE} />
+            <Hint container={containerRef} isLeft={true}>
+              {isFrench ? (
+                <p>
+                  On ne spamme pas : <strong>1 mail tous les 3 mois</strong>, avec des news et du
+                  contenu utile !
+                </p>
+              ) : (
+                <p>
+                  We don’t spam: <strong>1 email every 3 months</strong>, with news and useful
+                  content!
+                </p>
+              )}
+            </Hint>
+          </button>
+          <p>Notre estimation</p>
+        </div>
+        <p className="h2 text-blue pl-2">
+          {/* <NumberFlow format={{}} prefix="~" suffix=" €" value={totalPrice} /> */}
+          <NumberFlow format={{}} suffix=" €" value={totalPrice} />
+        </p>
+      </div>
+    </div>
   );
 };
 

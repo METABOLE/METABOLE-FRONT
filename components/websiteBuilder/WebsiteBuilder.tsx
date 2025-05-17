@@ -37,7 +37,18 @@ const WebsiteBuilder = () => {
 
   const handlePagesChange = (pages: Page[], isValid: boolean) => {
     const selected = pages.filter((page) => page.selected);
-    setSelectedPages(selected);
+
+    const currentSelectedIds = selectedPages.map((page) => page.id);
+    const newSelectedIds = selected.map((page) => page.id);
+
+    const addedPages = selected.filter((page) => !currentSelectedIds.includes(page.id));
+
+    const updatedPages = [
+      ...selectedPages.filter((page) => newSelectedIds.includes(page.id)),
+      ...addedPages,
+    ];
+
+    setSelectedPages(updatedPages);
     setIsPagesValid(isValid);
   };
 
@@ -47,7 +58,19 @@ const WebsiteBuilder = () => {
   };
 
   const handleOptionsChange = (options: Option[], isValid: boolean) => {
-    setSelectedOptions(options.filter((option) => option.selected));
+    const selected = options.filter((option) => option.selected);
+
+    const currentSelectedIds = selectedOptions.map((option) => option.id);
+    const newSelectedIds = selected.map((option) => option.id);
+
+    const addedOptions = selected.filter((option) => !currentSelectedIds.includes(option.id));
+
+    const updatedOptions = [
+      ...selectedOptions.filter((option) => newSelectedIds.includes(option.id)),
+      ...addedOptions,
+    ];
+
+    setSelectedOptions(updatedOptions);
     setIsOptionsValid(isValid);
   };
 
@@ -93,6 +116,14 @@ const WebsiteBuilder = () => {
         return isFormValid;
       default:
         return false;
+    }
+  };
+
+  const handleDeletePage = (pageId: string | number) => {
+    setSelectedPages((prevPages) => prevPages.filter((page) => page.id !== pageId));
+
+    if (selectedPages.length <= 1) {
+      setIsPagesValid(false);
     }
   };
 
@@ -232,12 +263,12 @@ const WebsiteBuilder = () => {
             );
           })}
         </div>
-        <div className="border-blue-30 col-span-1 h-full w-full shrink-0 rounded-3xl border-[1px] bg-[#e9e9fd] p-6 backdrop-blur-xl lg:col-span-2">
+        <div className="border-blue-30 col-span-1 h-full w-full shrink-0 rounded-3xl border-[1px] bg-[#e9e9fd] backdrop-blur-xl lg:col-span-2">
           <ViewerBuilder
+            handleDeletePage={handleDeletePage}
             selectedAnimation={selectedAnimation}
             selectedOptions={selectedOptions}
             selectedPages={selectedPages}
-            steps={steps}
             totalPrice={totalPrice}
           />
         </div>

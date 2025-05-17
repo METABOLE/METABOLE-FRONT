@@ -2,12 +2,15 @@ import { OPTIONS } from '@/constants/websiteBuilder.constant';
 import { Option } from '@/types';
 import { useEffect, useState } from 'react';
 import Checkbox from '../atoms/Checkbox';
+import { useLanguage } from '@/providers/language.provider';
 
 const StepOptions = ({
   onOptionsChange,
 }: {
   onOptionsChange?: (options: Option[], isValid: boolean) => void;
 }) => {
+  const { isFrench } = useLanguage();
+
   const [options, setOptions] = useState<Option[]>(
     OPTIONS.map((option) => ({
       ...option,
@@ -44,7 +47,7 @@ const StepOptions = ({
         <Checkbox
           key={option.id}
           checked={option.selected}
-          label={option.title.fr}
+          label={isFrench ? option.title.fr : option.title.en}
           onChange={() => handleToggleOption(option.id)}
         />
       ))}
