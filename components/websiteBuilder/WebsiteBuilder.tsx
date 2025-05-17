@@ -1,8 +1,7 @@
-import { ANIMATIONS, STEPS } from '@/constants/websiteBuilder.constant';
+import { useWebsiteBuilder } from '@/hooks/useWebsiteBuilder';
 import { useLanguage } from '@/providers/language.provider';
-import { Animation, FormWebsiteBuilderData, Option, Page, WEBSITE_BUILDER_STEPS } from '@/types';
+import { WEBSITE_BUILDER_STEPS } from '@/types';
 import clsx from 'clsx';
-import { useState } from 'react';
 import Button from '../atoms/Button';
 import StepPages from './StepPages';
 import StepAnimations from './StepsAnimations';
@@ -12,169 +11,49 @@ import ViewerBuilder from './ViewerBuilder';
 
 const WebsiteBuilder = () => {
   const { isFrench } = useLanguage();
-
-  const [steps, setSteps] = useState(() =>
-    STEPS.map((step, index) => ({
-      ...step,
-      isActive: index === 0,
-      isCompleted: false,
-    })),
-  );
-  const [selectedPages, setSelectedPages] = useState<Page[]>([]);
-  const [selectedAnimation, setSelectedAnimation] = useState<Animation>(ANIMATIONS.IMMERSIVES);
-  const [selectedOptions, setSelectedOptions] = useState<Option[]>([]);
-  const [formData, setFormData] = useState<FormWebsiteBuilderData>({
-    name: '',
-    email: '',
-    phone: '',
-    message: '',
-  });
-
-  const [isPagesValid, setIsPagesValid] = useState(false);
-  const [isAnimationValid, setIsAnimationValid] = useState(true);
-  const [isOptionsValid, setIsOptionsValid] = useState(true);
-  const [isFormValid, setIsFormValid] = useState(false);
-
-  const handlePagesChange = (pages: Page[], isValid: boolean) => {
-    const selected = pages.filter((page) => page.selected);
-
-    const currentSelectedIds = selectedPages.map((page) => page.id);
-    const newSelectedIds = selected.map((page) => page.id);
-
-    const addedPages = selected.filter((page) => !currentSelectedIds.includes(page.id));
-
-    const updatedPages = [
-      ...selectedPages.filter((page) => newSelectedIds.includes(page.id)),
-      ...addedPages,
-    ];
-
-    setSelectedPages(updatedPages);
-    setIsPagesValid(isValid);
-  };
-
-  const handleAnimationChange = (animation: Animation, isValid: boolean) => {
-    setSelectedAnimation(animation);
-    setIsAnimationValid(isValid);
-  };
-
-  const handleOptionsChange = (options: Option[], isValid: boolean) => {
-    const selected = options.filter((option) => option.selected);
-
-    const currentSelectedIds = selectedOptions.map((option) => option.id);
-    const newSelectedIds = selected.map((option) => option.id);
-
-    const addedOptions = selected.filter((option) => !currentSelectedIds.includes(option.id));
-
-    const updatedOptions = [
-      ...selectedOptions.filter((option) => newSelectedIds.includes(option.id)),
-      ...addedOptions,
-    ];
-
-    setSelectedOptions(updatedOptions);
-    setIsOptionsValid(isValid);
-  };
-
-  const handleFormChange = (updatedFormData: FormWebsiteBuilderData, isValid: boolean) => {
-    setFormData(updatedFormData);
-    setIsFormValid(isValid);
-  };
-
-  const basePrice =
-    selectedPages.reduce((acc, page) => acc + page.pricing, 0) +
-    selectedOptions.reduce((acc, option) => acc + option.pricing, 0);
-
-  const totalPrice = selectedAnimation
-    ? basePrice + basePrice * selectedAnimation.percent
-    : basePrice;
-
-  const handleFormSubmit = () => {
-    console.log('Envoi du devis :', {
-      ...formData,
-      devis: {
-        pages: selectedPages,
-        animation: selectedAnimation,
-        options: selectedOptions,
-        totalPrice,
-      },
-    });
-
-    alert('Votre devis a été envoyé ! Nous vous contacterons rapidement.');
-  };
-
-  const isCurrentStepValid = () => {
-    const currentStep = steps.find((s) => s.isActive);
-    if (!currentStep) return false;
-
-    switch (currentStep.type) {
-      case WEBSITE_BUILDER_STEPS.PAGES:
-        return isPagesValid;
-      case WEBSITE_BUILDER_STEPS.ANIMATIONS:
-        return isAnimationValid;
-      case WEBSITE_BUILDER_STEPS.OPTIONS:
-        return isOptionsValid;
-      case WEBSITE_BUILDER_STEPS.FINAL:
-        return isFormValid;
-      default:
-        return false;
-    }
-  };
-
-  const handleDeletePage = (pageId: string | number) => {
-    setSelectedPages((prevPages) => prevPages.filter((page) => page.id !== pageId));
-
-    if (selectedPages.length <= 1) {
-      setIsPagesValid(false);
-    }
-  };
+  const {
+    steps,
+    pages,
+    animations,
+    selectedAnimation,
+    options,
+    selectedPages,
+    selectedOptions,
+    totalPrice,
+    isCurrentStepValid,
+    handlePagesChange,
+    handleDeletePage,
+    handleAnimationChange,
+    handleOptionsChange,
+    handleFormChange,
+    goToStep,
+    nextStep,
+  } = useWebsiteBuilder();
 
   const renderActiveStep = (type: WEBSITE_BUILDER_STEPS) => {
     switch (type) {
       case WEBSITE_BUILDER_STEPS.PAGES:
-        return <StepPages onPagesChange={handlePagesChange} />;
+        return (
+          <StepPages
+            pages={pages}
+            onAdd={handlePagesChange}
+            onDelete={handleDeletePage}
+            onToggle={handlePagesChange}
+          />
+        );
       case WEBSITE_BUILDER_STEPS.ANIMATIONS:
         return (
           <StepAnimations
-            initialAnimation={selectedAnimation}
+            animations={animations}
+            selectedAnimation={selectedAnimation}
             onAnimationChange={handleAnimationChange}
           />
         );
       case WEBSITE_BUILDER_STEPS.OPTIONS:
-        return <StepOptions onOptionsChange={handleOptionsChange} />;
+        return <StepOptions options={options} onToggle={handleOptionsChange} />;
       case WEBSITE_BUILDER_STEPS.FINAL:
         return <StepFinalisation onFormChange={handleFormChange} />;
     }
-  };
-
-  const handleNextStep = () => {
-    const currentActiveIndex = steps.findIndex((s) => s.isActive);
-
-    if (currentActiveIndex === steps.length - 1) {
-      handleFormSubmit();
-      return;
-    }
-
-    setSteps((prevSteps) => {
-      const currentActiveIndex = prevSteps.findIndex((s) => s.isActive);
-      const nextActiveIndex = currentActiveIndex + 1;
-
-      return prevSteps.map((step, index) => {
-        if (index === currentActiveIndex) {
-          return {
-            ...step,
-            isActive: false,
-            isCompleted: true,
-          };
-        } else if (index === nextActiveIndex) {
-          return {
-            ...step,
-            isActive: true,
-            isCompleted: false,
-          };
-        } else {
-          return step;
-        }
-      });
-    });
   };
 
   return (
@@ -196,14 +75,7 @@ const WebsiteBuilder = () => {
                     'ease-power4-in-out flex items-center gap-2.5 whitespace-nowrap transition-[padding] duration-500',
                     step.isActive ? 'p-6' : 'p-2.5',
                   )}
-                  onClick={() =>
-                    setSteps((prevSteps) =>
-                      prevSteps.map((s, i) => ({
-                        ...s,
-                        isActive: i === index,
-                      })),
-                    )
-                  }
+                  onClick={() => goToStep(index)}
                 >
                   <span className="p1 bg-blue flex h-14 w-14 shrink-0 items-center justify-center rounded-[19px] text-white">
                     {step.isCompleted ? (
@@ -253,9 +125,9 @@ const WebsiteBuilder = () => {
                       className="shrink-0"
                       color="secondary"
                       disabled={!isCurrentStepValid()}
-                      onClick={handleNextStep}
+                      onClick={nextStep}
                     >
-                      {index === STEPS.length - 1 ? 'Finaliser' : 'Suivant'}
+                      {index === steps.length - 1 ? 'Finaliser' : 'Suivant'}
                     </Button>
                   )}
                 </div>

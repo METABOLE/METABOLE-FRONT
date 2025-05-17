@@ -1,41 +1,20 @@
-import { ANIMATIONS } from '@/constants/websiteBuilder.constant';
 import { Animation } from '@/types';
 import clsx from 'clsx';
-import { useEffect, useState } from 'react';
+
+interface StepAnimationsProps {
+  animations: Animation[];
+  selectedAnimation: Animation;
+  onAnimationChange: (animation: Animation) => void;
+}
 
 const StepAnimations = ({
+  animations,
+  selectedAnimation,
   onAnimationChange,
-  initialAnimation,
-}: {
-  onAnimationChange?: (animation: Animation, isValid: boolean) => void;
-  initialAnimation?: Animation;
-}) => {
-  const [selectedAnimation, setSelectedAnimation] = useState<Animation>(
-    initialAnimation || ANIMATIONS.IMMERSIVES,
-  );
-
-  const validateAnimation = (animation: Animation): boolean => {
-    return !!animation;
-  };
-
-  useEffect(() => {
-    if (onAnimationChange) {
-      const isValid = validateAnimation(selectedAnimation);
-      onAnimationChange(selectedAnimation, isValid);
-    }
-  }, []);
-
-  const handleSelectAnimation = (animation: Animation) => {
-    setSelectedAnimation(animation);
-    if (onAnimationChange) {
-      const isValid = validateAnimation(animation);
-      onAnimationChange(animation, isValid);
-    }
-  };
-
+}: StepAnimationsProps) => {
   return (
     <div className="flex w-full flex-col gap-6">
-      {Object.values(ANIMATIONS).map((animation) => (
+      {animations.map((animation) => (
         <button
           key={animation.title.fr}
           className={clsx(
@@ -44,7 +23,7 @@ const StepAnimations = ({
               ? 'bg-blue text-white'
               : 'bg-white text-black',
           )}
-          onClick={() => handleSelectAnimation(animation)}
+          onClick={() => onAnimationChange(animation)}
         >
           <div className="relative z-0">
             <div

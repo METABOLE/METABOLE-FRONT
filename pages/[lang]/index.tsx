@@ -58,7 +58,6 @@ export default function Home() {
   const createdByRef = useRef<HTMLHeadingElement>(null);
 
   const [isAnimEnded, setIsAnimEnded] = useState(false);
-  // const [showFallenCrosses, setShowFallenCrosses] = useState(false);
 
   gsap.to(textRef.current, {
     duration: 0.8,

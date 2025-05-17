@@ -1,4 +1,3 @@
-import { PAGES } from '@/constants/websiteBuilder.constant';
 import { useLanguage } from '@/providers/language.provider';
 import { COLORS, Page } from '@/types';
 import clsx from 'clsx';
@@ -6,11 +5,14 @@ import { useEffect, useRef, useState } from 'react';
 import { IconCross } from '../Icons';
 import ButtonCheckbox from '../atoms/ButtonCheckbox';
 
-const StepPages = ({
-  onPagesChange,
-}: {
-  onPagesChange?: (pages: Page[], isValid: boolean) => void;
-}) => {
+interface StepPagesProps {
+  pages: Page[];
+  onToggle: (pageId: string) => void;
+  onDelete: (pageId: string) => void;
+  onAdd: (pageTitle: string) => void;
+}
+
+const StepPages = ({ pages, onToggle, onDelete, onAdd }: StepPagesProps) => {
   const { isFrench } = useLanguage();
 
   const newPageRef = useRef<HTMLInputElement>(null);
@@ -19,31 +21,6 @@ const StepPages = ({
   const [newPageValue, setNewPageValue] = useState('');
   const [inputWidth, setInputWidth] = useState('155px');
   const [inputFocused, setInputFocused] = useState(false);
-  const [pages, setPages] = useState<Page[]>(
-    PAGES.map((page) => ({
-      ...page,
-      selected: false,
-    })),
-  );
-
-  const validatePages = (pagesArray: Page[]): boolean => {
-    return pagesArray.some((page) => page.selected);
-  };
-
-  const updatePages = (newPages: Page[]) => {
-    setPages(newPages);
-    if (onPagesChange) {
-      const isValid = validatePages(newPages);
-      onPagesChange(newPages, isValid);
-    }
-  };
-
-  useEffect(() => {
-    if (onPagesChange) {
-      const isValid = validatePages(pages);
-      onPagesChange(pages, isValid);
-    }
-  }, []);
 
   useEffect(() => {
     if (widthInputRef.current) {
@@ -54,38 +31,14 @@ const StepPages = ({
 
   const handleAddPage = () => {
     if (!newPageValue.trim()) return;
-    const newPages = [
-      ...pages,
-      {
-        id: crypto.randomUUID(),
-        title: {
-          en: newPageValue.trim(),
-          fr: newPageValue.trim(),
-        },
-        pricing: 700,
-        selected: true,
-      },
-    ];
-    updatePages(newPages);
+    onAdd(newPageValue);
     setNewPageValue('');
-  };
-
-  const handleTogglePage = (id: string) => {
-    const newPages = pages.map((page) =>
-      page.id === id ? { ...page, selected: !page.selected } : page,
-    );
-    updatePages(newPages);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       handleAddPage();
     }
-  };
-
-  const handleDeletePage = (id: string) => {
-    const newPages = pages.filter((page) => page.id !== id);
-    updatePages(newPages);
   };
 
   return (
@@ -96,8 +49,8 @@ const StepPages = ({
           id={page.id}
           selected={page.selected}
           title={isFrench ? page.title.fr : page.title.en}
-          onDelete={handleDeletePage}
-          onToggle={handleTogglePage}
+          onDelete={onDelete}
+          onToggle={onToggle}
         />
       ))}
       <button

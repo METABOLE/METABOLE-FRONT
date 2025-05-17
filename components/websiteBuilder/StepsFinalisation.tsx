@@ -4,32 +4,40 @@ import { isEmail } from '@/utils/validation.utils';
 import { useEffect, useState } from 'react';
 import Input from '../Input';
 
-const StepFinalisation = ({
-  onFormChange,
-}: {
+interface StepFinalisationProps {
+  initialFormData?: FormWebsiteBuilderData;
   onFormChange?: (formData: FormWebsiteBuilderData, isValid: boolean) => void;
   errors?: Record<string, string>;
-}) => {
+}
+
+const StepFinalisation = ({ initialFormData, onFormChange }: StepFinalisationProps) => {
   const { isFrench } = useLanguage();
-  const [formData, setFormData] = useState<FormWebsiteBuilderData>({
-    name: '',
-    email: '',
-    phone: '',
-    message: '',
-  });
+
+  const [formData, setFormData] = useState<FormWebsiteBuilderData>(
+    initialFormData || {
+      name: '',
+      email: '',
+      phone: '',
+      message: '',
+    },
+  );
 
   const [errors, setErrors] = useState<Record<string, string>>({
     name: '',
     email: '',
-    phone: '',
   });
+
+  useEffect(() => {
+    if (initialFormData) {
+      setFormData(initialFormData);
+    }
+  }, [initialFormData]);
 
   const isFormValid = (): boolean => {
     return (
       formData.name.trim() !== '' &&
       formData.email.trim() !== '' &&
       isEmail(formData.email) &&
-      formData.phone.trim() !== '' &&
       Object.values(errors).every((error) => error === '')
     );
   };
@@ -39,7 +47,7 @@ const StepFinalisation = ({
       const isValid = isFormValid();
       onFormChange(formData, isValid);
     }
-  }, [formData, errors]);
+  }, [formData, errors, onFormChange]);
 
   return (
     <div className="flex w-full flex-col gap-8">
@@ -95,22 +103,12 @@ const StepFinalisation = ({
       />
 
       <Input
-        errorMessage={errors.phone}
         id="phone"
         isDark={true}
         name="phone"
         placeholder="+33 6 12 34 56 78"
         type="tel"
         value={formData.phone}
-        onBlur={() => {
-          !formData.phone &&
-            setErrors((prev) => ({
-              ...prev,
-              phone: isFrench
-                ? 'Veuillez entrer votre téléphone'
-                : 'Please enter your phone number',
-            }));
-        }}
         onChange={(e) => {
           setFormData((prev) => ({ ...prev, phone: e.target.value }));
           e.target.value &&
