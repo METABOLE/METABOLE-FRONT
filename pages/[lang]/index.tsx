@@ -1,3 +1,5 @@
+import Lottie from '@/components/Lottie';
+import metaboleFull from '../../public/lotties/metabole-full-loader.json';
 import { AnimatedTitle } from '@/components/AnimatedTitle';
 import FallingCrosses from '@/components/FallingCrosses';
 import FloatingHalo from '@/components/FloatingHalo';
@@ -52,6 +54,7 @@ export default function Home() {
   const { x, y } = useMousePosition();
   const { asPath } = useRouter();
 
+  const lottieRef = useRef(null);
   const haloRef = useRef(null);
   const textRef = useRef(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -91,6 +94,17 @@ export default function Home() {
           opacity: 1,
         },
       })
+      .to(
+        lottieRef.current,
+        {
+          scaleY: 0,
+          duration: 0.1,
+        },
+        '-=0.6',
+      )
+      .set(lottieRef.current, {
+        display: 'none',
+      })
       .to(allAnimElements, {
         y: 0,
         x: 0,
@@ -125,6 +139,14 @@ export default function Home() {
 
   return (
     <>
+      {isProd && (
+        <div
+          ref={lottieRef}
+          className="fixed top-1/2 left-1/2 z-20 -translate-x-1/2 -translate-y-1/2"
+        >
+          <Lottie animationData={metaboleFull} className="h-48" loop={false} />
+        </div>
+      )}
       <FloatingHalo
         ref={haloRef}
         className="!fixed top-[120%] -left-[90%] -z-30 h-[250vw] w-[250vw] -translate-x-full scale-50 opacity-0"

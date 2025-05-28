@@ -1,3 +1,4 @@
+import { AnimatePresence, motion } from 'framer-motion';
 import { useLanguage } from '@/providers/language.provider';
 import { Animation, COLORS, Option, Page } from '@/types';
 import NumberFlow from '@number-flow/react';
@@ -27,11 +28,27 @@ const ViewerBuilder = ({
       <div className="border-blue-30 relative h-full w-full overflow-hidden border-b-[1px]">
         <PageViewer handleDeletePage={handleDeletePage} pages={selectedPages} />
         <div className="absolute bottom-4 left-4 flex gap-4">
-          {selectedOptions.map((option) => (
-            <p key={option.id} className="p3 bg-blue rounded-md px-3 py-1.5 text-white">
-              {isFrench ? option.title.fr : option.title.en}
-            </p>
-          ))}
+          <AnimatePresence>
+            {selectedOptions.map((option, index) => (
+              <motion.div
+                key={option.id}
+                animate={{ scale: 1, transformOrigin: 'left' }}
+                className="h-fit"
+                exit={{ scale: 0, transformOrigin: 'left' }}
+                initial={{ scale: 0, transformOrigin: 'left' }}
+                transition={{
+                  duration: 0.3,
+                  ease: [0.76, 0, 0.24, 1],
+                  delay: index * 0.02,
+                }}
+                layout
+              >
+                <p key={option.id} className="p3 bg-blue rounded-md px-3 py-1.5 text-white">
+                  {isFrench ? option.title.fr : option.title.en}
+                </p>
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
       </div>
       <div className="border-blue-30 grid h-full w-full grid-cols-[1fr_2fr_1fr] border-b-[1px]">
@@ -71,8 +88,7 @@ const ViewerBuilder = ({
           <p>Notre estimation</p>
         </div>
         <p className="h2 text-blue pl-2">
-          {/* <NumberFlow format={{}} prefix="~" suffix=" €" value={totalPrice} /> */}
-          <NumberFlow format={{}} suffix=" €" value={totalPrice} />
+          <NumberFlow suffix=" €" value={totalPrice} />
         </p>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import { ANIMATIONS, OPTIONS, PAGES, STEPS } from '@/constants/websiteBuilder.constant';
 import { Animation, FormWebsiteBuilderData, Option, Page, WEBSITE_BUILDER_STEPS } from '@/types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export const useWebsiteBuilder = () => {
   const [steps, setSteps] = useState(
@@ -19,6 +19,26 @@ export const useWebsiteBuilder = () => {
   const [options, setOptions] = useState<Option[]>(
     OPTIONS.map((option) => ({ ...option, id: crypto.randomUUID(), selected: false })),
   );
+
+  useEffect(() => {
+    const storedPages = localStorage.getItem('metabole-website-builder-pages');
+    if (storedPages) {
+      const parsedPages: Page[] = JSON.parse(storedPages);
+      setPages(parsedPages);
+    }
+
+    const storedAnimation = localStorage.getItem('metabole-website-builder-animation');
+    if (storedAnimation) {
+      const parsedAnimation: Animation = JSON.parse(storedAnimation);
+      setSelectedAnimation(parsedAnimation);
+    }
+
+    const storedOptions = localStorage.getItem('metabole-website-builder-options');
+    if (storedOptions) {
+      const parsedOptions: Option[] = JSON.parse(storedOptions);
+      setOptions(parsedOptions);
+    }
+  }, []);
 
   const [formData, setFormData] = useState<FormWebsiteBuilderData>({
     name: '',
@@ -56,6 +76,7 @@ export const useWebsiteBuilder = () => {
       };
 
       const updatedPages = [...pages, newPage];
+      localStorage.setItem('metabole-website-builder-pages', JSON.stringify(updatedPages));
       setPages(updatedPages);
       setIsPagesValid(true);
     } else {
@@ -63,6 +84,7 @@ export const useWebsiteBuilder = () => {
         page.id === pageIdOrTitle ? { ...page, selected: !page.selected } : page,
       );
 
+      localStorage.setItem('metabole-website-builder-pages', JSON.stringify(updatedPages));
       setPages(updatedPages);
       const isValid = updatedPages.some((page) => page.selected);
       setIsPagesValid(isValid);
@@ -72,12 +94,15 @@ export const useWebsiteBuilder = () => {
   const handleDeletePage = (pageId: string) => {
     const updatedPages = pages.filter((page) => page.id !== pageId);
     const isValid = updatedPages.some((page) => page.selected);
+
+    localStorage.setItem('metabole-website-builder-pages', JSON.stringify(updatedPages));
     setPages(updatedPages);
     setIsPagesValid(isValid);
   };
 
   // ANIMATIONS
   const handleAnimationChange = (newAnimation: Animation) => {
+    localStorage.setItem('metabole-website-builder-animation', JSON.stringify(newAnimation));
     setSelectedAnimation(newAnimation);
     setIsAnimationValid(true);
   };
@@ -88,6 +113,7 @@ export const useWebsiteBuilder = () => {
       option.id === optionId ? { ...option, selected: !option.selected } : option,
     );
 
+    localStorage.setItem('metabole-website-builder-options', JSON.stringify(updatedOptions));
     setOptions(updatedOptions);
     setIsOptionsValid(true);
   };
@@ -112,7 +138,35 @@ export const useWebsiteBuilder = () => {
     const currentStepIndex = steps.findIndex((step) => step.isActive);
 
     if (currentStepIndex === steps.length - 1) {
+      if (selectedPages.length === 0) {
+        alert('Veuillez sélectionner au moins une page.');
+        return;
+      }
+      if (!isCurrentStepValid()) {
+        alert('Veuillez remplir les informations requises.');
+        return;
+      }
       submitForm();
+      setTimeout(() => {
+        setSteps(
+          STEPS.map((step, index) => ({
+            ...step,
+            isActive: index === 0,
+            isCompleted: false,
+          })),
+        );
+        localStorage.removeItem('metabole-website-builder-pages');
+        localStorage.removeItem('metabole-website-builder-animation');
+        localStorage.removeItem('metabole-website-builder-options');
+        setPages(PAGES.map((page) => ({ ...page, selected: false })));
+        setSelectedAnimation(ANIMATIONS.IMMERSIVES);
+        setOptions(
+          OPTIONS.map((option) => ({ ...option, id: crypto.randomUUID(), selected: false })),
+        );
+        setSteps((currentSteps) =>
+          currentSteps.map((step) => ({ ...step, isActive: false, isCompleted: true })),
+        );
+      }, 1000);
       return;
     }
 

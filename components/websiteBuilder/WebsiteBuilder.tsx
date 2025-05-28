@@ -65,14 +65,14 @@ const WebsiteBuilder = () => {
               <div
                 key={index}
                 className={clsx(
-                  'ease-power4-in-out flex h-[78px] flex-col overflow-hidden rounded-3xl border-[1px] bg-[#e9e9fd] backdrop-blur-xl transition-all duration-500',
+                  'ease-power4-in-out flex h-[78px] flex-col overflow-hidden rounded-3xl border-[1px] bg-[#e9e9fd] backdrop-blur-xl transition-all duration-700',
                   step.isCompleted && !step.isActive ? 'border-blue' : 'border-blue-30',
                   step.isActive ? 'grow' : 'shrink',
                 )}
               >
                 <h3
                   className={clsx(
-                    'ease-power4-in-out flex items-center gap-2.5 whitespace-nowrap transition-[padding] duration-500',
+                    'ease-power4-in-out flex items-center gap-2.5 whitespace-nowrap transition-[padding] duration-700',
                     step.isActive ? 'p-6' : 'p-2.5',
                   )}
                   onClick={() => goToStep(index)}
@@ -96,14 +96,14 @@ const WebsiteBuilder = () => {
                     )}
                     <div
                       className={clsx(
-                        'bg-blue absolute -z-10 h-4 w-4 rounded-full transition-transform duration-300',
+                        'bg-blue ease-power4-in-out absolute -z-10 h-4 w-4 rounded-full transition-transform duration-700',
                         step.isCompleted && !step.isActive ? 'scale-[60]' : 'scale-0',
                       )}
                     />
                   </span>
                   <span
                     className={clsx(
-                      'overflow-hidden leading-14 text-ellipsis',
+                      'overflow-hidden leading-14 text-ellipsis transition-colors duration-300',
                       step.isCompleted && !step.isActive ? 'text-white' : 'text-black',
                     )}
                   >
@@ -113,7 +113,7 @@ const WebsiteBuilder = () => {
                 <div className="px-6">{isFrench ? step.description.fr : step.description.en}</div>
                 <div
                   className={clsx(
-                    'shrink grow-0 overflow-hidden px-6',
+                    'grow overflow-hidden px-6',
                     step.isActive && 'smoother-y-blue-menu-background',
                   )}
                 >
@@ -121,7 +121,7 @@ const WebsiteBuilder = () => {
                     className="no-scrollbar h-full shrink-0 overflow-scroll py-6"
                     data-lenis-prevent
                   >
-                    {step.isActive && renderActiveStep(step.type)}
+                    {renderActiveStep(step.type)}
                   </div>
                 </div>
                 <div className="mt-auto ml-auto p-6">
