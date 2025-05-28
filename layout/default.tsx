@@ -2,7 +2,7 @@ import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import Lottie from '@/components/Lottie';
 import SEO from '@/components/SEO';
-import useIsLocalhost from '@/hooks/useIsLocalhost';
+import { useEnvironment } from '@/hooks/useEnvironment';
 import { useMousePosition } from '@/hooks/useMousePosition';
 import { useLanguage } from '@/providers/language.provider';
 import { useGSAP } from '@gsap/react';
@@ -14,7 +14,7 @@ import metaboleFull from '../public/lotties/metabole-full-loader.json';
 gsap.registerPlugin(ScrollTrigger);
 
 const Layout = ({ children }: { children: ReactNode }) => {
-  const isLocalhost = useIsLocalhost();
+  const { isProd } = useEnvironment();
   const { isFrench } = useLanguage();
   const { x, y } = useMousePosition();
 
@@ -63,7 +63,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
   useGSAP(() => {
     gsap
       .timeline({
-        delay: 3.35,
+        delay: isProd ? 3.35 : 0.2,
       })
       .to(backgroundRef.current, {
         opacity: 1,
@@ -86,13 +86,13 @@ const Layout = ({ children }: { children: ReactNode }) => {
         },
         '-=0.1',
       );
-  }, []);
+  }, [isProd]);
 
   return (
     <>
       <SEO isFrench={isFrench} />
       <Header />
-      {!isLocalhost && (
+      {isProd && (
         <div
           ref={lottieRef}
           className="fixed top-1/2 left-1/2 z-20 -translate-x-1/2 -translate-y-1/2"

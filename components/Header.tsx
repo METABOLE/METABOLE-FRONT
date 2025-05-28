@@ -1,15 +1,15 @@
+import { useEnvironment } from '@/hooks/useEnvironment';
 import { useLanguage } from '@/providers/language.provider';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
 import Link from 'next/link';
+import { useRef } from 'react';
 import metaboleFull from '../public/lotties/metabole-full-blue.json';
 import metaboleSmall from '../public/lotties/metabole-small-blue.json';
+import Button from './atoms/Button';
 import ContactPopover from './ContactPopover';
 import Lottie from './Lottie';
 import Sound from './Sound';
-import { useGSAP } from '@gsap/react';
-import { useRef } from 'react';
-import { useEnvironment } from '@/hooks/useEnvironment';
-import gsap from 'gsap';
-import Button from './atoms/Button';
 
 const Header = () => {
   const headerRef = useRef(null);
@@ -19,7 +19,7 @@ const Header = () => {
 
   useGSAP(() => {
     gsap.to(headerRef.current, {
-      delay: 4,
+      delay: isProd ? 4 : 0.4,
       duration: 2,
       ease: 'power4.out',
       y: 0,

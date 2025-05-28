@@ -20,6 +20,7 @@
     "@vercel/speed-insights": "^1.2.0",
     "axios": "^1.8.1",
     "clsx": "^2.1.1",
+    "framer-motion": "^12.15.0",
     "gsap": "^3.12.7",
     "lenis": "^1.1.20",
     "lottie-react": "^2.4.1",

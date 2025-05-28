@@ -34,7 +34,6 @@ export const useWebsiteBuilder = () => {
 
   const selectedPages = pages.filter((page) => page.selected);
   const selectedOptions = options.filter((option) => option.selected);
-
   const basePrice =
     selectedPages.reduce((acc, page) => acc + page.pricing, 0) +
     selectedOptions.reduce((acc, option) => acc + option.pricing, 0);

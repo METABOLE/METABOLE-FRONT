@@ -5,8 +5,8 @@ export const useEnvironment = () => {
   const [environment, setEnvironment] = useState('production');
 
   useEffect(() => {
-    const isLocalhost =
-      window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    const isLocalhost = false;
+    // window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 
     setIsProd(!isLocalhost);
     setEnvironment(isLocalhost ? 'development' : 'production');

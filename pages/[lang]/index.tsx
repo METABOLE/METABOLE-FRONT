@@ -84,7 +84,7 @@ export default function Home() {
 
     gsap
       .timeline({
-        delay: 4.5,
+        delay: isProd ? 4.5 : 0.8,
         defaults: {
           ease: 'power2.out',
           duration: 0.8,

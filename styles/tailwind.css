@@ -19,9 +19,10 @@
 }
 
 @theme {
+  /* COLORS (debug color) */
+  --color-red: #ff0000;
+  --color-green: #00ff00;
   /* COLORS (primary) */
-  --color-red: #ff0000; /* DEBUG COLOR */
-  --color-green: #00ff00; /* DEBUG COLOR */
   --color-blue: #1b17ee;
   --color-white: #f1f2ff;
   --color-black: #141418;
