@@ -111,7 +111,12 @@ const WebsiteBuilder = () => {
                   </span>
                 </h3>
                 <div className="px-6">{isFrench ? step.description.fr : step.description.en}</div>
-                <div className="smoother-y-blue-menu-background shrink grow-0 overflow-hidden px-6">
+                <div
+                  className={clsx(
+                    'shrink grow-0 overflow-hidden px-6',
+                    step.isActive && 'smoother-y-blue-menu-background',
+                  )}
+                >
                   <div
                     className="no-scrollbar h-full shrink-0 overflow-scroll py-6"
                     data-lenis-prevent
