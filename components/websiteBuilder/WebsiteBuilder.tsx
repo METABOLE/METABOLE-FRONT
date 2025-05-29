@@ -23,6 +23,7 @@ const WebsiteBuilder = () => {
     totalPrice,
     isCurrentStepValid,
     handlePagesChange,
+    handleUnselectPage,
     handleDeletePage,
     handleAnimationChange,
     handleOptionsChange,
@@ -151,6 +152,7 @@ const WebsiteBuilder = () => {
           <div className="border-blue-30 col-span-1 h-full w-full shrink-0 rounded-3xl border-[1px] bg-[#e9e9fd] lg:col-span-2">
             <ViewerBuilder
               handleDeletePage={handleDeletePage}
+              handleUnselectPage={handleUnselectPage}
               selectedAnimation={selectedAnimation}
               selectedOptions={selectedOptions}
               selectedPages={selectedPages}

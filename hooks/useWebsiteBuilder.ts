@@ -116,6 +116,14 @@ export const useWebsiteBuilder = () => {
     setPages(updatedPages);
   };
 
+  const handleUnselectPage = (pageId: string) => {
+    const updatedPages = pages.map((page) =>
+      page.id === pageId ? { ...page, selected: false } : page,
+    );
+    localStorage.setItem('metabole-website-builder-pages', JSON.stringify(updatedPages));
+    setPages(updatedPages);
+  };
+
   // ANIMATIONS
   const handleAnimationChange = (newAnimation: Animation) => {
     localStorage.setItem('metabole-website-builder-animation', JSON.stringify(newAnimation));
@@ -274,6 +282,7 @@ export const useWebsiteBuilder = () => {
 
     // Actions
     handlePagesChange,
+    handleUnselectPage,
     handleDeletePage,
     handleAnimationChange,
     handleOptionsChange,

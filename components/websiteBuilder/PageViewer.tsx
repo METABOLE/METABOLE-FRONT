@@ -1,17 +1,18 @@
+import { useMatchMedia } from '@/hooks/useCheckScreenSize';
 import { useLanguage } from '@/providers/language.provider';
 import { BREAKPOINTS, Page } from '@/types';
 import { AnimatePresence, motion } from 'framer-motion';
-import PageCard from './PageCard';
-import SafeNumberFlow from '../SafeNumberFlow';
-import { useMatchMedia } from '@/hooks/useCheckScreenSize';
 import { useEffect, useState } from 'react';
+import PageCard, { PageAndMoreCard } from './PageCard';
 
 const PageViewer = ({
   pages,
   handleDeletePage,
+  handleUnselectPage,
 }: {
   pages: Page[];
   handleDeletePage: (id: string) => void;
+  handleUnselectPage: (id: string) => void;
 }) => {
   const { isFrench } = useLanguage();
 
@@ -79,6 +80,7 @@ const PageViewer = ({
               <PageCard
                 title={isFrench ? page.title.fr : page.title.en}
                 onDelete={() => handleDeletePage(page.id)}
+                onUnSelect={() => handleUnselectPage(page.id)}
               />
             </motion.div>
           );
@@ -118,11 +120,7 @@ const PageViewer = ({
             }}
             layout
           >
-            <div className="border-gradient-white-to-b h-[451px] w-[263px] rounded-3xl bg-[#e9e9fd] bg-linear-to-b from-[#c3c2ff4d] to-[#C5C4FF00] px-4 py-3 backdrop-blur-xl">
-              <p className="border-blue-10 h2 text-blue flex h-full grow justify-center rounded-md border-[1px] px-2 pt-10">
-                <SafeNumberFlow prefix="+ " value={remainingCount} />
-              </p>
-            </div>
+            <PageAndMoreCard number={remainingCount} />
           </motion.div>
         )}
       </AnimatePresence>

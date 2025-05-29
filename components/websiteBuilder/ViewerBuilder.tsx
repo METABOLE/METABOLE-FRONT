@@ -12,12 +12,14 @@ const ViewerBuilder = ({
   selectedAnimation,
   selectedOptions,
   totalPrice,
+  handleUnselectPage,
   handleDeletePage,
 }: {
   selectedPages: Page[];
   selectedAnimation: Animation;
   selectedOptions: Option[];
   totalPrice: number;
+  handleUnselectPage: (id: string) => void;
   handleDeletePage: (id: string) => void;
 }) => {
   const { isFrench } = useLanguage();
@@ -26,7 +28,11 @@ const ViewerBuilder = ({
   return (
     <div className="grid h-full w-full grid-rows-[1fr_186px_93px] lg:grid-rows-[1fr_124px_124px]">
       <div className="border-blue-30 relative h-full w-full overflow-hidden border-b-[1px]">
-        <PageViewer handleDeletePage={handleDeletePage} pages={selectedPages} />
+        <PageViewer
+          handleDeletePage={handleDeletePage}
+          handleUnselectPage={handleUnselectPage}
+          pages={selectedPages}
+        />
         <div className="absolute bottom-0 left-0 flex w-full gap-4 overflow-scroll p-4">
           <AnimatePresence>
             {selectedOptions.map((option, index) => (
@@ -57,8 +63,12 @@ const ViewerBuilder = ({
       <div className="border-blue-30 grid h-full w-full grid-cols-2 border-b-[1px] lg:grid-cols-[1fr_2fr_1fr]">
         <div className="border-blue-30 flex h-[93px] items-center justify-center gap-2 md:h-auto lg:border-r-[1px]">
           <AnimatePresence>
-            <SafeNumberFlow className="h1 text-blue" value={selectedPages.length} />
-            <motion.p className="h3 pt-7" layout>
+            <SafeNumberFlow
+              key="number-pages"
+              className="h1 text-blue"
+              value={selectedPages.length}
+            />
+            <motion.p key="number-pages-text" className="h3 pt-7" layout>
               page{selectedPages.length > 1 ? 's' : ''}
             </motion.p>
           </AnimatePresence>
@@ -71,8 +81,12 @@ const ViewerBuilder = ({
         </div>
         <div className="border-blue-30 flex h-[93px] items-center justify-center gap-2 border-l-[1px] md:h-auto">
           <AnimatePresence>
-            <SafeNumberFlow className="h1 text-blue" value={selectedOptions.length} />
-            <motion.p className="h3 pt-7" layout>
+            <SafeNumberFlow
+              key="number-options"
+              className="h1 text-blue"
+              value={selectedOptions.length}
+            />
+            <motion.p key="number-options-text" className="h3 pt-7" layout>
               option{selectedOptions.length > 1 ? 's' : ''}
             </motion.p>
           </AnimatePresence>
