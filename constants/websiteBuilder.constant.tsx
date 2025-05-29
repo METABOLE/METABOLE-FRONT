@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 export const STEPS = [
   {
+    id: 'step-1-pages',
     title: {
       fr: 'Pages de votre site',
       en: 'Pages of your site',
@@ -31,6 +32,7 @@ export const STEPS = [
     type: WEBSITE_BUILDER_STEPS.PAGES,
   },
   {
+    id: 'step-2-animations',
     title: {
       fr: 'Type d’animation',
       en: 'Type of animation',
@@ -60,6 +62,7 @@ export const STEPS = [
     type: WEBSITE_BUILDER_STEPS.ANIMATIONS,
   },
   {
+    id: 'step-3-options',
     title: {
       fr: 'Options',
       en: 'Options',
@@ -89,6 +92,7 @@ export const STEPS = [
     type: WEBSITE_BUILDER_STEPS.OPTIONS,
   },
   {
+    id: 'step-4-finalisation',
     title: {
       fr: 'Finalisation',
       en: 'Finalisation',
@@ -118,138 +122,127 @@ export const STEPS = [
   },
 ];
 
+export const TJM = 500;
+
+// ----------------------
+// Pages disponibles
+// ----------------------
+
 export const PAGES = [
+  // Pages essentielles
   {
     id: uuidv4(),
-    title: {
-      fr: 'Accueil',
-      en: 'Home',
-    },
-    pricing: 1000,
+    title: { fr: 'Accueil', en: 'Home' },
+    days: 2.5,
   },
   {
     id: uuidv4(),
-    title: {
-      fr: 'Contact',
-      en: 'Contact',
-    },
-    pricing: 500,
+    title: { fr: 'Contact', en: 'Contact' },
+    days: 1,
   },
   {
     id: uuidv4(),
-    title: {
-      fr: 'À propos',
-      en: 'About',
-    },
-    pricing: 500,
+    title: { fr: 'Mentions légales', en: 'Legal notice' },
+    days: 0.3,
   },
   {
     id: uuidv4(),
-    title: {
-      fr: 'Blog',
-      en: 'Blog',
-    },
-    pricing: 1000,
+    title: { fr: 'Page 404', en: '404 Page' },
+    days: 0.5,
+  },
+
+  // Pages de contenu
+  {
+    id: uuidv4(),
+    title: { fr: 'À propos', en: 'About' },
+    days: 1,
   },
   {
     id: uuidv4(),
-    title: {
-      fr: 'Equipe',
-      en: 'Team',
-    },
-    pricing: 700,
+    title: { fr: 'Équipe', en: 'Team' },
+    days: 1.2,
   },
   {
     id: uuidv4(),
-    title: {
-      fr: 'Services',
-      en: 'Services',
-    },
-    pricing: 800,
+    title: { fr: 'Services', en: 'Services' },
+    days: 1.2,
   },
   {
     id: uuidv4(),
-    title: {
-      fr: 'Réalisations',
-      en: 'Projects',
-    },
-    pricing: 600,
+    title: { fr: 'Réalisations', en: 'Projects' },
+    days: 2,
+  },
+  {
+    id: uuidv4(),
+    title: { fr: 'Détail projet', en: 'Project detail' },
+    days: 1.5,
+  },
+  {
+    id: uuidv4(),
+    title: { fr: 'Blog', en: 'Blog' },
+    days: 1.2,
+  },
+  {
+    id: uuidv4(),
+    title: { fr: 'Article', en: 'Article' },
+    days: 1,
   },
 ];
 
+// ----------------------
+// Niveaux d'animation
+// ----------------------
+
 export const ANIMATIONS = {
   LIGHT: {
-    title: {
-      fr: 'Légères',
-      en: 'Light',
-    },
+    title: { fr: 'Légères', en: 'Light' },
     percent: 0.1,
   },
   IMMERSIVES: {
-    title: {
-      fr: 'Immersives',
-      en: 'Immersive',
-    },
+    title: { fr: 'Immersives', en: 'Immersive' },
     percent: 0.25,
   },
-
   ADVANCED: {
-    title: {
-      fr: 'Intéractivité poussée',
-      en: 'Advanced interactivity',
-    },
+    title: { fr: 'Interactivité poussée', en: 'Advanced interactivity' },
     percent: 0.5,
   },
 };
 
+// ----------------------
+// Options fonctionnelles
+// ----------------------
+
 export const OPTIONS = [
   {
-    title: {
-      fr: 'Blog',
-      en: 'Blog',
-    },
-    pricing: 100,
+    title: { fr: 'Multilingue', en: 'Multilingual' },
+    days: 1.5,
   },
   {
-    title: {
-      fr: 'Multilingue',
-      en: 'Multilingual',
-    },
-    pricing: 200,
+    title: { fr: 'CMS', en: 'CMS' },
+    days: 2,
   },
   {
-    title: {
-      fr: 'CMS',
-      en: 'CMS',
-    },
-    pricing: 300,
+    title: { fr: 'Formulaire personnalisé', en: 'Custom form' },
+    days: 1,
   },
   {
-    title: {
-      fr: 'Formulaire',
-      en: 'Form',
-    },
-    pricing: 400,
+    title: { fr: 'Carte interactive', en: 'Interactive map' },
+    days: 1.5,
   },
   {
-    title: {
-      fr: 'Carte',
-      en: 'Map',
-    },
-    pricing: 500,
+    title: { fr: 'SEO technique', en: 'Technical SEO' },
+    days: 1,
   },
   {
-    title: {
-      fr: 'SEO',
-      en: 'SEO',
-    },
-    pricing: 600,
+    title: { fr: 'Connexion API externe', en: 'External API connection' },
+    days: 2,
   },
   {
-    title: {
-      fr: 'Intégration API',
-      en: 'API integration',
-    },
-    pricing: 700,
+    title: { fr: 'Login / Espace membre', en: 'Login / Member area' },
+    days: 3,
+  },
+  {
+    title: { fr: 'Back-office personnalisé', en: 'Custom admin' },
+    days: 3.5,
   },
 ];

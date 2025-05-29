@@ -1,3 +1,6 @@
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { SplitText } from 'gsap/SplitText';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import SEO from '@/components/SEO';
@@ -5,11 +8,9 @@ import { useEnvironment } from '@/hooks/useEnvironment';
 import { useMousePosition } from '@/hooks/useMousePosition';
 import { useLanguage } from '@/providers/language.provider';
 import { useGSAP } from '@gsap/react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Image from 'next/image';
 import { ReactNode, useRef } from 'react';
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, SplitText);
 
 const Layout = ({ children }: { children: ReactNode }) => {
   const { isFrench } = useLanguage();

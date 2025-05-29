@@ -1,14 +1,19 @@
+import { useMatchMedia } from '@/hooks/useCheckScreenSize';
 import { useWebsiteBuilder } from '@/hooks/useWebsiteBuilder';
 import { useLanguage } from '@/providers/language.provider';
 import { BREAKPOINTS, WEBSITE_BUILDER_STEPS } from '@/types';
+import { useGSAP } from '@gsap/react';
 import clsx from 'clsx';
+import { AnimatePresence } from 'framer-motion';
+import gsap from 'gsap';
+import { SplitText } from 'gsap/SplitText';
+import { useEffect, useRef, useState } from 'react';
 import Button from '../atoms/Button';
 import StepPages from './StepPages';
 import StepAnimations from './StepsAnimations';
 import StepFinalisation from './StepsFinalisation';
 import StepOptions from './StepsOptions';
 import ViewerBuilder from './ViewerBuilder';
-import { useMatchMedia } from '@/hooks/useCheckScreenSize';
 
 const WebsiteBuilder = () => {
   const { isFrench } = useLanguage();
@@ -32,6 +37,35 @@ const WebsiteBuilder = () => {
     nextStep,
   } = useWebsiteBuilder();
   const isMobile = useMatchMedia(BREAKPOINTS.SM);
+
+  const [shouldRenderContent, setShouldRenderContent] = useState(false);
+  const [activeStepType, setActiveStepType] = useState<WEBSITE_BUILDER_STEPS | null>(null);
+  const previousActiveStepId = useRef<string | null>(null);
+
+  // Gérer le délai de rendu UNIQUEMENT quand l'étape change
+  useEffect(() => {
+    const activeStep = steps.find((step) => step.isActive);
+    const currentActiveStepId = activeStep?.id || null;
+
+    // Ne déclencher le re-render que si l'étape active a vraiment changé
+    if (currentActiveStepId !== previousActiveStepId.current) {
+      if (activeStep) {
+        setShouldRenderContent(false);
+        setActiveStepType(activeStep.type);
+
+        const timeout = setTimeout(() => {
+          setShouldRenderContent(true);
+        }, 300);
+
+        previousActiveStepId.current = currentActiveStepId;
+        return () => clearTimeout(timeout);
+      } else {
+        setShouldRenderContent(false);
+        setActiveStepType(null);
+        previousActiveStepId.current = null;
+      }
+    }
+  }, [steps.map((step) => `${step.id}-${step.isActive}`).join(',')]);
 
   const renderActiveStep = (type: WEBSITE_BUILDER_STEPS) => {
     switch (type) {
@@ -58,6 +92,22 @@ const WebsiteBuilder = () => {
         return <StepFinalisation onFormChange={handleFormChange} />;
     }
   };
+
+  useGSAP(() => {
+    const activeStep = steps.find((step) => step.isActive);
+    const descriptionElement = document.getElementById(`step-description-${activeStep?.id}`);
+    const split = SplitText.create(descriptionElement, { type: 'words, lines', mask: 'words' });
+
+    gsap
+      .timeline({
+        delay: 0.4,
+      })
+      .from(split.words, {
+        duration: 0.6,
+        yPercent: 130,
+        stagger: 0.01,
+      });
+  }, [steps.map((step) => `${step.id}-${step.isActive}`).join(',')]);
 
   return (
     <>
@@ -121,7 +171,9 @@ const WebsiteBuilder = () => {
                     {isFrench ? step.title.fr : step.title.en}
                   </span>
                 </h3>
-                <div className="px-6">{isFrench ? step.description.fr : step.description.en}</div>
+                <div className="px-6" id={`step-description-${step.id}`}>
+                  {isFrench ? step.description.fr : step.description.en}
+                </div>
                 <div
                   className={clsx(
                     'grow overflow-hidden',
@@ -129,7 +181,12 @@ const WebsiteBuilder = () => {
                   )}
                 >
                   <div className="no-scrollbar h-full shrink-0 overflow-scroll" data-lenis-prevent>
-                    {renderActiveStep(step.type)}
+                    <AnimatePresence>
+                      {step.isActive &&
+                        shouldRenderContent &&
+                        activeStepType &&
+                        renderActiveStep(activeStepType)}
+                    </AnimatePresence>
                   </div>
                 </div>
                 <div className="mt-auto ml-auto p-6">

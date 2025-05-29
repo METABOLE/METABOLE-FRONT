@@ -19,7 +19,7 @@ export type Step = {
 export type Page = {
   id: string;
   title: Language;
-  pricing: number;
+  days: number;
   selected: boolean;
 };
 
@@ -31,6 +31,6 @@ export type Animation = {
 export type Option = {
   id: string;
   title: Language;
-  pricing: number;
+  days: number;
   selected: boolean;
 };

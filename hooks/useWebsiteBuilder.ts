@@ -1,7 +1,8 @@
-import { v4 as uuidv4 } from 'uuid';
 import { ANIMATIONS, OPTIONS, PAGES, STEPS } from '@/constants/websiteBuilder.constant';
 import { Animation, FormWebsiteBuilderData, Option, Page, WEBSITE_BUILDER_STEPS } from '@/types';
-import { useEffect, useState, useMemo } from 'react';
+import { daysToPrice } from '@/utils/pricing.utils';
+import { useEffect, useMemo, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 export const useWebsiteBuilder = () => {
   const [steps, setSteps] = useState(
@@ -43,8 +44,8 @@ export const useWebsiteBuilder = () => {
 
   const basePrice = useMemo(
     () =>
-      selectedPages.reduce((acc, page) => acc + page.pricing, 0) +
-      selectedOptions.reduce((acc, option) => acc + option.pricing, 0),
+      selectedPages.reduce((acc, page) => acc + daysToPrice(page.days), 0) +
+      selectedOptions.reduce((acc, option) => acc + daysToPrice(option.days), 0),
     [selectedPages, selectedOptions],
   );
 
@@ -93,7 +94,7 @@ export const useWebsiteBuilder = () => {
           en: pageIdOrTitle.trim(),
           fr: pageIdOrTitle.trim(),
         },
-        pricing: 700,
+        days: 1.5,
         selected: true,
       };
 
