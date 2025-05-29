@@ -1,10 +1,10 @@
-import { AnimatePresence, motion } from 'framer-motion';
 import { useLanguage } from '@/providers/language.provider';
 import { Animation, COLORS, Option, Page } from '@/types';
-import NumberFlow from '@number-flow/react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useRef } from 'react';
 import Hint from '../Hint';
 import { IconQuestionMark } from '../Icons';
+import SafeNumberFlow from '../SafeNumberFlow';
 import PageViewer from './PageViewer';
 
 const ViewerBuilder = ({
@@ -53,7 +53,7 @@ const ViewerBuilder = ({
       </div>
       <div className="border-blue-30 grid h-full w-full grid-cols-[1fr_2fr_1fr] border-b-[1px]">
         <div className="border-blue-30 grid grid-cols-2 items-center gap-2 border-r-[1px]">
-          <NumberFlow className="h1 text-blue ml-auto" value={selectedPages.length} />
+          <SafeNumberFlow className="h1 text-blue ml-auto" value={selectedPages.length} />
           <p className="h3 pt-7">page{selectedPages.length > 1 ? 's' : ''}</p>
         </div>
         <div className="flex flex-col items-center justify-center gap-2 text-center">
@@ -63,7 +63,7 @@ const ViewerBuilder = ({
           </p>
         </div>
         <div className="border-blue-30 grid grid-cols-2 items-center gap-2 border-l-[1px]">
-          <NumberFlow className="h1 text-blue ml-auto" value={selectedOptions.length} />
+          <SafeNumberFlow className="h1 text-blue ml-auto" value={selectedOptions.length} />
           <p className="h3 pt-7">option{selectedOptions.length > 1 ? 's' : ''}</p>
         </div>
       </div>
@@ -88,7 +88,7 @@ const ViewerBuilder = ({
           <p>Notre estimation</p>
         </div>
         <p className="h2 text-blue pl-2">
-          <NumberFlow suffix=" €" value={totalPrice} />
+          <SafeNumberFlow suffix=" €" value={totalPrice} />
         </p>
       </div>
     </div>

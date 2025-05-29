@@ -1,4 +1,5 @@
 import { WEBSITE_BUILDER_STEPS } from '@/types';
+import { v4 as uuidv4 } from 'uuid';
 
 export const STEPS = [
   {
@@ -119,7 +120,7 @@ export const STEPS = [
 
 export const PAGES = [
   {
-    id: crypto.randomUUID(),
+    id: uuidv4(),
     title: {
       fr: 'Accueil',
       en: 'Home',
@@ -127,7 +128,7 @@ export const PAGES = [
     pricing: 1000,
   },
   {
-    id: crypto.randomUUID(),
+    id: uuidv4(),
     title: {
       fr: 'Contact',
       en: 'Contact',
@@ -135,7 +136,7 @@ export const PAGES = [
     pricing: 500,
   },
   {
-    id: crypto.randomUUID(),
+    id: uuidv4(),
     title: {
       fr: 'À propos',
       en: 'About',
@@ -143,7 +144,7 @@ export const PAGES = [
     pricing: 500,
   },
   {
-    id: crypto.randomUUID(),
+    id: uuidv4(),
     title: {
       fr: 'Blog',
       en: 'Blog',
@@ -151,7 +152,7 @@ export const PAGES = [
     pricing: 1000,
   },
   {
-    id: crypto.randomUUID(),
+    id: uuidv4(),
     title: {
       fr: 'Equipe',
       en: 'Team',
@@ -159,7 +160,7 @@ export const PAGES = [
     pricing: 700,
   },
   {
-    id: crypto.randomUUID(),
+    id: uuidv4(),
     title: {
       fr: 'Services',
       en: 'Services',
@@ -167,7 +168,7 @@ export const PAGES = [
     pricing: 800,
   },
   {
-    id: crypto.randomUUID(),
+    id: uuidv4(),
     title: {
       fr: 'Réalisations',
       en: 'Projects',

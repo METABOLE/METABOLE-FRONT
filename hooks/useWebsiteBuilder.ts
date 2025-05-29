@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import { ANIMATIONS, OPTIONS, PAGES, STEPS } from '@/constants/websiteBuilder.constant';
 import { Animation, FormWebsiteBuilderData, Option, Page, WEBSITE_BUILDER_STEPS } from '@/types';
 import { useEffect, useState } from 'react';
@@ -17,7 +18,7 @@ export const useWebsiteBuilder = () => {
   const [selectedAnimation, setSelectedAnimation] = useState<Animation>(ANIMATIONS.IMMERSIVES);
 
   const [options, setOptions] = useState<Option[]>(
-    OPTIONS.map((option) => ({ ...option, id: crypto.randomUUID(), selected: false })),
+    OPTIONS.map((option) => ({ ...option, id: uuidv4(), selected: false })),
   );
 
   useEffect(() => {
@@ -66,7 +67,7 @@ export const useWebsiteBuilder = () => {
   const handlePagesChange = (pageIdOrTitle: string) => {
     if (!pages.some((page) => page.id === pageIdOrTitle)) {
       const newPage: Page = {
-        id: crypto.randomUUID(),
+        id: uuidv4(),
         title: {
           en: pageIdOrTitle.trim(),
           fr: pageIdOrTitle.trim(),
@@ -160,9 +161,7 @@ export const useWebsiteBuilder = () => {
         localStorage.removeItem('metabole-website-builder-options');
         setPages(PAGES.map((page) => ({ ...page, selected: false })));
         setSelectedAnimation(ANIMATIONS.IMMERSIVES);
-        setOptions(
-          OPTIONS.map((option) => ({ ...option, id: crypto.randomUUID(), selected: false })),
-        );
+        setOptions(OPTIONS.map((option) => ({ ...option, id: uuidv4(), selected: false })));
         setSteps((currentSteps) =>
           currentSteps.map((step) => ({ ...step, isActive: false, isCompleted: true })),
         );
