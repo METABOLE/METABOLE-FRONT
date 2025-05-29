@@ -1,8 +1,10 @@
 import { useLanguage } from '@/providers/language.provider';
-import { Page } from '@/types';
+import { BREAKPOINTS, Page } from '@/types';
 import { AnimatePresence, motion } from 'framer-motion';
 import PageCard from './PageCard';
 import SafeNumberFlow from '../SafeNumberFlow';
+import { useMatchMedia } from '@/hooks/useCheckScreenSize';
+import { useEffect, useState } from 'react';
 
 const PageViewer = ({
   pages,
@@ -13,17 +15,31 @@ const PageViewer = ({
 }) => {
   const { isFrench } = useLanguage();
 
+  const [maxCards, setMaxCards] = useState(8);
+
+  const isTablet = useMatchMedia(BREAKPOINTS.MD);
+  const isDesktop = useMatchMedia(BREAKPOINTS.LG);
+
+  useEffect(() => {
+    if (isTablet) {
+      setMaxCards(2);
+    } else if (isDesktop) {
+      setMaxCards(4);
+    } else {
+      setMaxCards(8);
+    }
+  }, [isTablet, isDesktop]);
+
   const CARDS_PER_ROW = 4;
   const VERTICAL_SPACING = 150;
   const DIAGONAL_OFFSET_X = 50;
   const DIAGONAL_OFFSET_Y = 50;
   const ROW_OFFSET = 200;
-  const MAX_CARDS = 8;
 
-  const hasMoreCards = pages.length > MAX_CARDS;
-  const visiblePages = hasMoreCards ? pages.slice(0, MAX_CARDS - 1) : pages;
-  const remainingCount = pages.length - (MAX_CARDS - 1);
-  const totalCards = hasMoreCards ? MAX_CARDS : pages.length;
+  const hasMoreCards = pages.length > maxCards;
+  const visiblePages = hasMoreCards ? pages.slice(0, maxCards - 1) : pages;
+  const remainingCount = pages.length - (maxCards - 1);
+  const totalCards = hasMoreCards ? maxCards : pages.length;
   const totalRows = Math.ceil(totalCards / CARDS_PER_ROW);
 
   const totalRowOffset = (totalRows - 1) * ROW_OFFSET;
@@ -76,20 +92,20 @@ const PageViewer = ({
             initial={{ y: 300, opacity: 0 }}
             animate={{
               x:
-                -((MAX_CARDS - 1) % CARDS_PER_ROW) * DIAGONAL_OFFSET_X +
+                -((maxCards - 1) % CARDS_PER_ROW) * DIAGONAL_OFFSET_X +
                 ((Math.min(
                   CARDS_PER_ROW,
-                  totalCards - Math.floor((MAX_CARDS - 1) / CARDS_PER_ROW) * CARDS_PER_ROW,
+                  totalCards - Math.floor((maxCards - 1) / CARDS_PER_ROW) * CARDS_PER_ROW,
                 ) -
                   1) *
                   DIAGONAL_OFFSET_X) /
                   2 +
-                Math.floor((MAX_CARDS - 1) / CARDS_PER_ROW) * ROW_OFFSET -
+                Math.floor((maxCards - 1) / CARDS_PER_ROW) * ROW_OFFSET -
                 totalRowOffset / 2,
               y:
-                Math.floor((MAX_CARDS - 1) / CARDS_PER_ROW) * VERTICAL_SPACING -
+                Math.floor((maxCards - 1) / CARDS_PER_ROW) * VERTICAL_SPACING -
                 ((totalRows - 1) * VERTICAL_SPACING) / 2 +
-                ((MAX_CARDS - 1) % CARDS_PER_ROW) * DIAGONAL_OFFSET_Y,
+                ((maxCards - 1) % CARDS_PER_ROW) * DIAGONAL_OFFSET_Y,
               opacity: 1,
             }}
             style={{
@@ -98,7 +114,7 @@ const PageViewer = ({
             transition={{
               duration: 0.3,
               ease: [0.76, 0, 0.24, 1],
-              delay: (MAX_CARDS - 1) * 0.02,
+              delay: (maxCards - 1) * 0.02,
             }}
             layout
           >

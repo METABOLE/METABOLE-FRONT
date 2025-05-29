@@ -1,6 +1,6 @@
 import { useWebsiteBuilder } from '@/hooks/useWebsiteBuilder';
 import { useLanguage } from '@/providers/language.provider';
-import { WEBSITE_BUILDER_STEPS } from '@/types';
+import { BREAKPOINTS, WEBSITE_BUILDER_STEPS } from '@/types';
 import clsx from 'clsx';
 import Button from '../atoms/Button';
 import StepPages from './StepPages';
@@ -8,6 +8,7 @@ import StepAnimations from './StepsAnimations';
 import StepFinalisation from './StepsFinalisation';
 import StepOptions from './StepsOptions';
 import ViewerBuilder from './ViewerBuilder';
+import { useMatchMedia } from '@/hooks/useCheckScreenSize';
 
 const WebsiteBuilder = () => {
   const { isFrench } = useLanguage();
@@ -29,6 +30,7 @@ const WebsiteBuilder = () => {
     goToStep,
     nextStep,
   } = useWebsiteBuilder();
+  const isMobile = useMatchMedia(BREAKPOINTS.SM);
 
   const renderActiveStep = (type: WEBSITE_BUILDER_STEPS) => {
     switch (type) {
@@ -58,7 +60,7 @@ const WebsiteBuilder = () => {
 
   return (
     <>
-      <div className="grid h-[80vh] min-h-[800px] w-full grid-cols-2 gap-5 lg:grid-cols-3">
+      <div className="grid h-[80vh] min-h-[800px] w-full gap-5 sm:grid-cols-2 lg:grid-cols-3">
         <div className="col-span-1 flex h-full w-full flex-col gap-5">
           {steps.map((step, index) => {
             return (
@@ -145,15 +147,17 @@ const WebsiteBuilder = () => {
             );
           })}
         </div>
-        <div className="border-blue-30 col-span-1 h-full w-full shrink-0 rounded-3xl border-[1px] bg-[#e9e9fd] lg:col-span-2">
-          <ViewerBuilder
-            handleDeletePage={handleDeletePage}
-            selectedAnimation={selectedAnimation}
-            selectedOptions={selectedOptions}
-            selectedPages={selectedPages}
-            totalPrice={totalPrice}
-          />
-        </div>
+        {!isMobile && (
+          <div className="border-blue-30 col-span-1 h-full w-full shrink-0 rounded-3xl border-[1px] bg-[#e9e9fd] lg:col-span-2">
+            <ViewerBuilder
+              handleDeletePage={handleDeletePage}
+              selectedAnimation={selectedAnimation}
+              selectedOptions={selectedOptions}
+              selectedPages={selectedPages}
+              totalPrice={totalPrice}
+            />
+          </div>
+        )}
       </div>
     </>
   );

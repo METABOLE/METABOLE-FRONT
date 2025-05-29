@@ -24,7 +24,7 @@ const ViewerBuilder = ({
   const containerRef = useRef<HTMLButtonElement>(null);
 
   return (
-    <div className="grid h-full w-full grid-rows-[1fr_123px_123px]">
+    <div className="grid h-full w-full grid-rows-[1fr_186px_93px] lg:grid-rows-[1fr_124px_124px]">
       <div className="border-blue-30 relative h-full w-full overflow-hidden border-b-[1px]">
         <PageViewer handleDeletePage={handleDeletePage} pages={selectedPages} />
         <div className="absolute bottom-0 left-0 flex w-full gap-4 overflow-scroll p-4">
@@ -54,24 +54,32 @@ const ViewerBuilder = ({
           </AnimatePresence>
         </div>
       </div>
-      <div className="border-blue-30 grid h-full w-full grid-cols-[1fr_2fr_1fr] border-b-[1px]">
-        <div className="border-blue-30 grid grid-cols-2 items-center gap-2 border-r-[1px]">
-          <SafeNumberFlow className="h1 text-blue ml-auto" value={selectedPages.length} />
-          <p className="h3 pt-7">page{selectedPages.length > 1 ? 's' : ''}</p>
+      <div className="border-blue-30 grid h-full w-full grid-cols-2 border-b-[1px] lg:grid-cols-[1fr_2fr_1fr]">
+        <div className="border-blue-30 flex h-[93px] items-center justify-center gap-2 md:h-auto lg:border-r-[1px]">
+          <AnimatePresence>
+            <SafeNumberFlow className="h1 text-blue" value={selectedPages.length} />
+            <motion.p className="h3 pt-7" layout>
+              page{selectedPages.length > 1 ? 's' : ''}
+            </motion.p>
+          </AnimatePresence>
         </div>
-        <div className="flex flex-col items-center justify-center gap-2 text-center">
+        <div className="border-blue-30 col-span-2 row-start-2 flex h-[93px] flex-col items-center justify-center gap-2 border-t-[1px] text-center md:h-auto lg:col-span-1 lg:row-start-auto lg:border-t-0">
           <p className="h3">Animations</p>
           <p className="h3 text-blue">
             {isFrench ? selectedAnimation.title.fr : selectedAnimation.title.en}
           </p>
         </div>
-        <div className="border-blue-30 grid grid-cols-2 items-center gap-2 border-l-[1px]">
-          <SafeNumberFlow className="h1 text-blue ml-auto" value={selectedOptions.length} />
-          <p className="h3 pt-7">option{selectedOptions.length > 1 ? 's' : ''}</p>
+        <div className="border-blue-30 flex h-[93px] items-center justify-center gap-2 border-l-[1px] md:h-auto">
+          <AnimatePresence>
+            <SafeNumberFlow className="h1 text-blue" value={selectedOptions.length} />
+            <motion.p className="h3 pt-7" layout>
+              option{selectedOptions.length > 1 ? 's' : ''}
+            </motion.p>
+          </AnimatePresence>
         </div>
       </div>
-      <div className="flex h-full w-full items-end px-6 pt-6 pb-2">
-        <div className="flex gap-2.5 pb-4">
+      <div className="flex h-full w-full flex-col items-center px-6 pt-2 pb-2 lg:flex-row lg:items-end lg:pt-6">
+        <div className="flex gap-2.5 lg:pb-4">
           <button ref={containerRef} className="cursor-help">
             <IconQuestionMark color={COLORS.BLUE} />
             <Hint container={containerRef} isLeft={true}>
@@ -88,7 +96,7 @@ const ViewerBuilder = ({
               )}
             </Hint>
           </button>
-          <p>Notre estimation</p>
+          <p>Notre estimation :</p>
         </div>
         <p className="h2 text-blue pl-2">
           <SafeNumberFlow suffix=" €" value={totalPrice} />
