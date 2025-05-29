@@ -65,7 +65,7 @@ const WebsiteBuilder = () => {
               <div
                 key={index}
                 className={clsx(
-                  'ease-power4-in-out flex h-[78px] flex-col overflow-hidden rounded-3xl border-[1px] bg-[#e9e9fd] backdrop-blur-xl transition-all duration-700',
+                  'ease-power4-in-out flex h-[78px] flex-col overflow-hidden rounded-3xl border-[1px] bg-[#e9e9fd] backdrop-blur-2xl transition-all duration-700',
                   step.isCompleted && !step.isActive ? 'border-blue' : 'border-blue-30',
                   step.isActive ? 'grow' : 'shrink',
                 )}
@@ -77,29 +77,37 @@ const WebsiteBuilder = () => {
                   )}
                   onClick={() => goToStep(index)}
                 >
-                  <span className="p1 bg-blue flex h-14 w-14 shrink-0 items-center justify-center rounded-[19px] text-white">
-                    {step.isCompleted ? (
-                      <svg
-                        fill="none"
-                        height="24"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        viewBox="0 0 24 24"
-                        width="24"
-                      >
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                      </svg>
-                    ) : (
-                      index + 1
+                  <span
+                    className={clsx(
+                      'p1 bg-blue flex h-14 w-14 shrink-0 items-center justify-center rounded-[19px] text-white',
+                      'after:bg-blue after:absolute after:-z-10 after:h-4 after:w-4 after:rounded-full after:transition-transform after:duration-700 after:content-[""]',
+                      step.isCompleted && !step.isActive ? 'after:scale-[60]' : 'after:scale-0',
                     )}
-                    <div
+                  >
+                    <svg
+                      fill="none"
+                      height="24"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                      width="24"
                       className={clsx(
-                        'bg-blue ease-power4-in-out absolute -z-10 h-4 w-4 rounded-full transition-transform duration-700',
-                        step.isCompleted && !step.isActive ? 'scale-[60]' : 'scale-0',
+                        'ease-power4-in-out absolute transition-[scale,opacity] duration-700',
+                        step.isCompleted ? 'scale-100 opacity-100' : 'scale-0 opacity-0',
                       )}
-                    />
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    <span
+                      className={clsx(
+                        'ease-power4-in-out absolute transition-[scale,opacity] duration-700',
+                        step.isCompleted ? 'scale-0 opacity-0' : 'scale-100 opacity-100',
+                      )}
+                    >
+                      {index + 1}
+                    </span>
                   </span>
                   <span
                     className={clsx(
@@ -113,14 +121,11 @@ const WebsiteBuilder = () => {
                 <div className="px-6">{isFrench ? step.description.fr : step.description.en}</div>
                 <div
                   className={clsx(
-                    'grow overflow-hidden px-6',
-                    step.isActive && 'smoother-y-blue-menu-background',
+                    'grow overflow-hidden',
+                    step.isActive && 'smoother-y-website-builder-steps',
                   )}
                 >
-                  <div
-                    className="no-scrollbar h-full shrink-0 overflow-scroll py-6"
-                    data-lenis-prevent
-                  >
+                  <div className="no-scrollbar h-full shrink-0 overflow-scroll" data-lenis-prevent>
                     {renderActiveStep(step.type)}
                   </div>
                 </div>
@@ -140,7 +145,7 @@ const WebsiteBuilder = () => {
             );
           })}
         </div>
-        <div className="border-blue-30 col-span-1 h-full w-full shrink-0 rounded-3xl border-[1px] bg-[#e9e9fd] backdrop-blur-xl lg:col-span-2">
+        <div className="border-blue-30 col-span-1 h-full w-full shrink-0 rounded-3xl border-[1px] bg-[#e9e9fd] lg:col-span-2">
           <ViewerBuilder
             handleDeletePage={handleDeletePage}
             selectedAnimation={selectedAnimation}

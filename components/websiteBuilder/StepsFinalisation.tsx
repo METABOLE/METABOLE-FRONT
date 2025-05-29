@@ -50,7 +50,7 @@ const StepFinalisation = ({ initialFormData, onFormChange }: StepFinalisationPro
   }, [formData, errors, onFormChange]);
 
   return (
-    <div className="flex w-full flex-col gap-8">
+    <div className="flex w-full flex-col gap-8 p-6">
       <Input
         errorMessage={errors.name}
         id="name"

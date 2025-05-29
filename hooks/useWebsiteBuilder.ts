@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { ANIMATIONS, OPTIONS, PAGES, STEPS } from '@/constants/websiteBuilder.constant';
 import { Animation, FormWebsiteBuilderData, Option, Page, WEBSITE_BUILDER_STEPS } from '@/types';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 
 export const useWebsiteBuilder = () => {
   const [steps, setSteps] = useState(
@@ -13,12 +13,44 @@ export const useWebsiteBuilder = () => {
   );
 
   const [pages, setPages] = useState<Page[]>(PAGES.map((page) => ({ ...page, selected: false })));
-
-  const animations = Object.values(ANIMATIONS);
   const [selectedAnimation, setSelectedAnimation] = useState<Animation>(ANIMATIONS.IMMERSIVES);
-
   const [options, setOptions] = useState<Option[]>(
     OPTIONS.map((option) => ({ ...option, id: uuidv4(), selected: false })),
+  );
+
+  const [formData, setFormData] = useState<FormWebsiteBuilderData>({
+    name: '',
+    email: '',
+    phone: '',
+    message: '',
+  });
+
+  const selectedPages = useMemo(() => pages.filter((page) => page.selected), [pages]);
+  const selectedOptions = useMemo(() => options.filter((option) => option.selected), [options]);
+
+  const isPagesValid = useMemo(() => selectedPages.length > 0, [selectedPages]);
+  const isAnimationValid = useMemo(() => selectedAnimation !== null, [selectedAnimation]);
+  const isOptionsValid = useMemo(() => true, [options]);
+
+  const isFormValid = useMemo(() => {
+    return (
+      formData.name.trim() !== '' &&
+      formData.email.trim() !== '' &&
+      /^\S+@\S+\.\S+$/.test(formData.email) &&
+      formData.phone.trim() !== ''
+    );
+  }, [formData]);
+
+  const basePrice = useMemo(
+    () =>
+      selectedPages.reduce((acc, page) => acc + page.pricing, 0) +
+      selectedOptions.reduce((acc, option) => acc + option.pricing, 0),
+    [selectedPages, selectedOptions],
+  );
+
+  const totalPrice = useMemo(
+    () => (selectedAnimation ? basePrice + basePrice * selectedAnimation.percent : basePrice),
+    [basePrice, selectedAnimation],
   );
 
   useEffect(() => {
@@ -41,27 +73,16 @@ export const useWebsiteBuilder = () => {
     }
   }, []);
 
-  const [formData, setFormData] = useState<FormWebsiteBuilderData>({
-    name: '',
-    email: '',
-    phone: '',
-    message: '',
-  });
-
-  const [isPagesValid, setIsPagesValid] = useState(false);
-  const [isAnimationValid, setIsAnimationValid] = useState(true);
-  const [isOptionsValid, setIsOptionsValid] = useState(true);
-  const [isFormValid, setIsFormValid] = useState(false);
-
-  const selectedPages = pages.filter((page) => page.selected);
-  const selectedOptions = options.filter((option) => option.selected);
-  const basePrice =
-    selectedPages.reduce((acc, page) => acc + page.pricing, 0) +
-    selectedOptions.reduce((acc, option) => acc + option.pricing, 0);
-
-  const totalPrice = selectedAnimation
-    ? basePrice + basePrice * selectedAnimation.percent
-    : basePrice;
+  useEffect(() => {
+    setSteps((currentSteps) =>
+      currentSteps.map((step) => {
+        if (step.isCompleted && !isStepValid(step.type)) {
+          return { ...step, isCompleted: false };
+        }
+        return step;
+      }),
+    );
+  }, [isPagesValid, isAnimationValid, isOptionsValid, isFormValid]);
 
   // PAGES
   const handlePagesChange = (pageIdOrTitle: string) => {
@@ -79,7 +100,6 @@ export const useWebsiteBuilder = () => {
       const updatedPages = [...pages, newPage];
       localStorage.setItem('metabole-website-builder-pages', JSON.stringify(updatedPages));
       setPages(updatedPages);
-      setIsPagesValid(true);
     } else {
       const updatedPages = pages.map((page) =>
         page.id === pageIdOrTitle ? { ...page, selected: !page.selected } : page,
@@ -87,25 +107,19 @@ export const useWebsiteBuilder = () => {
 
       localStorage.setItem('metabole-website-builder-pages', JSON.stringify(updatedPages));
       setPages(updatedPages);
-      const isValid = updatedPages.some((page) => page.selected);
-      setIsPagesValid(isValid);
     }
   };
 
   const handleDeletePage = (pageId: string) => {
     const updatedPages = pages.filter((page) => page.id !== pageId);
-    const isValid = updatedPages.some((page) => page.selected);
-
     localStorage.setItem('metabole-website-builder-pages', JSON.stringify(updatedPages));
     setPages(updatedPages);
-    setIsPagesValid(isValid);
   };
 
   // ANIMATIONS
   const handleAnimationChange = (newAnimation: Animation) => {
     localStorage.setItem('metabole-website-builder-animation', JSON.stringify(newAnimation));
     setSelectedAnimation(newAnimation);
-    setIsAnimationValid(true);
   };
 
   // OPTIONS
@@ -116,13 +130,11 @@ export const useWebsiteBuilder = () => {
 
     localStorage.setItem('metabole-website-builder-options', JSON.stringify(updatedOptions));
     setOptions(updatedOptions);
-    setIsOptionsValid(true);
   };
 
   // FORM
-  const handleFormChange = (updatedFormData: FormWebsiteBuilderData, isValid: boolean) => {
+  const handleFormChange = (updatedFormData: FormWebsiteBuilderData) => {
     setFormData(updatedFormData);
-    setIsFormValid(isValid);
   };
 
   const goToStep = (stepIndex: number) => {
@@ -134,21 +146,74 @@ export const useWebsiteBuilder = () => {
     );
   };
 
+  // Fonction utilitaire pour vérifier la validité d'une étape
+  const isStepValid = (stepType: WEBSITE_BUILDER_STEPS) => {
+    switch (stepType) {
+      case WEBSITE_BUILDER_STEPS.PAGES:
+        return isPagesValid;
+      case WEBSITE_BUILDER_STEPS.ANIMATIONS:
+        return isAnimationValid;
+      case WEBSITE_BUILDER_STEPS.OPTIONS:
+        return isOptionsValid;
+      case WEBSITE_BUILDER_STEPS.FINAL:
+        return isFormValid;
+      default:
+        return false;
+    }
+  };
+
+  const isCurrentStepValid = () => {
+    const currentStep = steps.find((s) => s.isActive);
+    if (!currentStep) return false;
+    return isStepValid(currentStep.type);
+  };
+
   // STEPS
   const nextStep = () => {
     const currentStepIndex = steps.findIndex((step) => step.isActive);
 
+    // Vérification de la validité avant de passer à l'étape suivante
+    if (!isCurrentStepValid()) {
+      let errorMessage = '';
+      const currentStep = steps[currentStepIndex];
+
+      switch (currentStep.type) {
+        case WEBSITE_BUILDER_STEPS.PAGES:
+          errorMessage = 'Veuillez sélectionner au moins une page.';
+          break;
+        case WEBSITE_BUILDER_STEPS.ANIMATIONS:
+          errorMessage = "Veuillez sélectionner un type d'animation.";
+          break;
+        case WEBSITE_BUILDER_STEPS.FINAL:
+          errorMessage = 'Veuillez remplir tous les champs obligatoires.';
+          break;
+        default:
+          errorMessage = 'Veuillez remplir les informations requises.';
+      }
+
+      alert(errorMessage);
+      return;
+    }
+
     if (currentStepIndex === steps.length - 1) {
-      if (selectedPages.length === 0) {
-        alert('Veuillez sélectionner au moins une page.');
-        return;
-      }
-      if (!isCurrentStepValid()) {
-        alert('Veuillez remplir les informations requises.');
-        return;
-      }
       submitForm();
+      setSteps(
+        STEPS.map((step) => ({
+          ...step,
+          isActive: false,
+          isCompleted: true,
+        })),
+      );
+
+      // Reset après soumission
       setTimeout(() => {
+        localStorage.removeItem('metabole-website-builder-pages');
+        localStorage.removeItem('metabole-website-builder-animation');
+        localStorage.removeItem('metabole-website-builder-options');
+        setPages(PAGES.map((page) => ({ ...page, selected: false })));
+        setSelectedAnimation(ANIMATIONS.IMMERSIVES);
+        setOptions(OPTIONS.map((option) => ({ ...option, id: uuidv4(), selected: false })));
+        setFormData({ name: '', email: '', phone: '', message: '' });
         setSteps(
           STEPS.map((step, index) => ({
             ...step,
@@ -156,19 +221,11 @@ export const useWebsiteBuilder = () => {
             isCompleted: false,
           })),
         );
-        localStorage.removeItem('metabole-website-builder-pages');
-        localStorage.removeItem('metabole-website-builder-animation');
-        localStorage.removeItem('metabole-website-builder-options');
-        setPages(PAGES.map((page) => ({ ...page, selected: false })));
-        setSelectedAnimation(ANIMATIONS.IMMERSIVES);
-        setOptions(OPTIONS.map((option) => ({ ...option, id: uuidv4(), selected: false })));
-        setSteps((currentSteps) =>
-          currentSteps.map((step) => ({ ...step, isActive: false, isCompleted: true })),
-        );
       }, 1000);
       return;
     }
 
+    // Passage à l'étape suivante
     setSteps((currentSteps) =>
       currentSteps.map((step, index) => {
         if (index === currentStepIndex) {
@@ -196,29 +253,11 @@ export const useWebsiteBuilder = () => {
     alert('Votre devis a été envoyé ! Nous vous contacterons rapidement.');
   };
 
-  const isCurrentStepValid = () => {
-    const currentStep = steps.find((s) => s.isActive);
-    if (!currentStep) return false;
-
-    switch (currentStep.type) {
-      case WEBSITE_BUILDER_STEPS.PAGES:
-        return isPagesValid;
-      case WEBSITE_BUILDER_STEPS.ANIMATIONS:
-        return isAnimationValid;
-      case WEBSITE_BUILDER_STEPS.OPTIONS:
-        return isOptionsValid;
-      case WEBSITE_BUILDER_STEPS.FINAL:
-        return isFormValid;
-      default:
-        return false;
-    }
-  };
-
   return {
     // États
     steps,
     pages,
-    animations,
+    animations: Object.values(ANIMATIONS),
     selectedAnimation,
     options,
     formData,

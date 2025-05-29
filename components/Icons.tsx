@@ -104,22 +104,20 @@ export const IconArrow = forwardRef<SVGSVGElement, IconProps>(
   ),
 );
 
-export const IconCross = forwardRef<SVGSVGElement, IconProps>(
-  ({ color = COLORS.WHITE, ...props }, ref) => (
-    <svg
-      ref={ref}
-      {...props}
-      fill="none"
-      height="15"
-      viewBox="0 0 14 15"
-      width="14"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <line stroke={color} strokeWidth="2" x1="14" y1="7.5" y2="7.5" />
-      <line stroke={color} strokeWidth="2" x1="7" x2="7" y1="14.5" y2="0.5" />
-    </svg>
-  ),
-);
+export const IconCross = forwardRef<SVGSVGElement, IconProps>(({ color, ...props }, ref) => (
+  <svg
+    ref={ref}
+    {...props}
+    fill="none"
+    height="15"
+    viewBox="0 0 14 15"
+    width="14"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <line stroke={color} strokeWidth="2" x1="14" y1="7.5" y2="7.5" />
+    <line stroke={color} strokeWidth="2" x1="7" x2="7" y1="14.5" y2="0.5" />
+  </svg>
+));
 
 export const IconQuestionMark = forwardRef<SVGSVGElement, IconProps>(
   ({ color = COLORS.WHITE, ...props }, ref) => (

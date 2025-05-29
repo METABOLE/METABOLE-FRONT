@@ -22,7 +22,7 @@ const Checkbox = forwardRef<HTMLLabelElement, CheckboxProps>(
     return (
       <label
         ref={ref}
-        className={clsx('flex cursor-pointer items-center', className)}
+        className={clsx('group/checkbox flex cursor-pointer items-center', className)}
         htmlFor={props.name}
       >
         <div className="relative">
@@ -36,8 +36,8 @@ const Checkbox = forwardRef<HTMLLabelElement, CheckboxProps>(
           <div className="border-blue flex h-4 w-4 items-center justify-center rounded-sm border-2">
             <div
               className={clsx(
-                'bg-blue h-2 w-2 rounded-[2px] transition-transform ease-out',
-                isChecked ? 'scale-100' : 'scale-0',
+                'bg-blue ease-power4-in-out h-2 w-2 rounded-[2px] transition-transform duration-300',
+                isChecked ? 'scale-100' : 'scale-0 group-hover/checkbox:scale-50',
               )}
             />
           </div>
@@ -45,8 +45,8 @@ const Checkbox = forwardRef<HTMLLabelElement, CheckboxProps>(
         {label && (
           <span
             className={clsx(
+              'ease-power4-in-out ml-2 cursor-pointer transition-transform duration-200 group-hover/checkbox:translate-x-2',
               isDisclaimer ? 'text-black-70 disclaimer' : 'p2',
-              'ml-2 cursor-pointer',
             )}
           >
             {label}

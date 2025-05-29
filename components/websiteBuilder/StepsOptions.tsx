@@ -11,7 +11,7 @@ const StepOptions = ({ options, onToggle }: StepOptionsProps) => {
   const { isFrench } = useLanguage();
 
   return (
-    <div className="grid w-full grid-cols-2 gap-6">
+    <div className="grid w-full grid-cols-2 gap-6 p-6">
       {options.map((option) => (
         <Checkbox
           key={option.id}

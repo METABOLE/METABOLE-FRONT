@@ -43,7 +43,7 @@ const StepPages = ({ pages, onToggle, onDelete, onAdd }: StepPagesProps) => {
   };
 
   return (
-    <div className="flex w-full flex-wrap gap-1.5 overflow-scroll">
+    <div className="flex w-full flex-wrap gap-1.5 overflow-scroll p-6">
       <AnimatePresence>
         {pages.map((page, index) => (
           <motion.div

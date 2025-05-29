@@ -27,7 +27,7 @@ const ViewerBuilder = ({
     <div className="grid h-full w-full grid-rows-[1fr_123px_123px]">
       <div className="border-blue-30 relative h-full w-full overflow-hidden border-b-[1px]">
         <PageViewer handleDeletePage={handleDeletePage} pages={selectedPages} />
-        <div className="absolute bottom-4 left-4 flex gap-4">
+        <div className="absolute bottom-0 left-0 flex w-full gap-4 overflow-scroll p-4">
           <AnimatePresence>
             {selectedOptions.map((option, index) => (
               <motion.div
@@ -43,7 +43,10 @@ const ViewerBuilder = ({
                 }}
                 layout
               >
-                <p key={option.id} className="p3 bg-blue rounded-md px-3 py-1.5 text-white">
+                <p
+                  key={option.id}
+                  className="p3 bg-blue rounded-md px-3 py-1.5 whitespace-nowrap text-white"
+                >
                   {isFrench ? option.title.fr : option.title.en}
                 </p>
               </motion.div>
