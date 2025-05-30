@@ -1,7 +1,7 @@
 import { useLanguage } from '@/providers/language.provider';
 import { motion } from 'framer-motion';
 import { FormWebsiteBuilderData } from '@/types';
-import { isEmail } from '@/utils/validation.utils';
+import { isEmail, isPhone } from '@/utils/validation.utils';
 import { useEffect, useState } from 'react';
 import Input from '../Input';
 
@@ -16,13 +16,16 @@ const StepFinalisation = ({ formData, onFormChange }: StepFinalisationProps) => 
   const [errors, setErrors] = useState<Record<string, string>>({
     name: '',
     email: '',
+    phone: '',
   });
 
   const isFormValid = (): boolean => {
     return (
       formData.name.trim() !== '' &&
       formData.email.trim() !== '' &&
+      formData.phone.trim() !== '' &&
       isEmail(formData.email) &&
+      isPhone(formData.phone) &&
       Object.values(errors).every((error) => error === '')
     );
   };
@@ -129,13 +132,31 @@ const StepFinalisation = ({ formData, onFormChange }: StepFinalisationProps) => 
         layout
       >
         <Input
+          errorMessage={errors.phone}
           id="phone"
           isDark={true}
           name="phone"
           placeholder="+33 6 12 34 56 78"
           type="tel"
           value={formData.phone}
+          onBlur={() => {
+            isPhone(formData.phone) ||
+              setErrors((prev) => ({
+                ...prev,
+                phone: isFrench
+                  ? 'Veuillez entrer un numéro de téléphone valide'
+                  : 'Please enter a valid phone number',
+              }));
+            !formData.phone &&
+              setErrors((prev) => ({
+                ...prev,
+                phone: isFrench
+                  ? 'Veuillez entrer votre numéro de téléphone'
+                  : 'Please enter your phone number',
+              }));
+          }}
           onChange={(e) => {
+            isPhone(e.target.value) && setErrors((prev) => ({ ...prev, phone: '' }));
             updateFormData('phone', e.target.value);
             e.target.value &&
               setErrors((prev) => ({

@@ -2,11 +2,11 @@ import { numberFormat, useTime } from '@/hooks/useTime';
 import clsx from 'clsx';
 import SafeNumberFlow from './SafeNumberFlow';
 
-const Time = ({ isDark = false }: { isDark?: boolean }) => {
+const Time = ({ isDark = false, className }: { isDark?: boolean; className?: string }) => {
   const { hours, minutes, period } = useTime();
 
   return (
-    <p className={clsx(isDark ? 'text-white' : 'text-black')}>
+    <p className={clsx(isDark ? 'text-white' : 'text-black', className)}>
       <SafeNumberFlow format={numberFormat} value={Number(hours)} />
       :
       <SafeNumberFlow format={numberFormat} value={Number(minutes)} />

@@ -107,9 +107,9 @@ const Footer = ({ setIsContactOpen }: { setIsContactOpen: (isContactOpen: boolea
         />
         <div ref={sectionRef} className="pt-y-default h-full w-full" id="footer">
           <div className="gap-y-y-default mx-auto flex w-[calc(100vw-(var(--x-default)*2))] flex-col">
-            <div className="grid h-full grid-cols-6 gap-5">
+            <div className="grid h-full grid-cols-2 gap-5 md:grid-cols-6">
               <Link
-                className="h-fit w-fit"
+                className="pb-y-half-default col-span-2 h-fit w-fit md:col-span-1"
                 href="/"
                 scroll={false}
                 onMouseMove={(e) => useMagnet(e, 0.8)}
@@ -183,13 +183,13 @@ const Footer = ({ setIsContactOpen }: { setIsContactOpen: (isContactOpen: boolea
                 <Language isDark={true} />
               </div>
             </div>
-            <div className="grid grid-cols-6 items-center gap-5">
+            <div className="flex w-full flex-col justify-between gap-5 md:flex-row md:items-center lg:grid lg:grid-cols-6">
               <p>Metabole® 2025</p>
-              <p>{CONTACT.ADDRESS}</p>
-              <Time isDark={true} />
+              <p className="whitespace-nowrap">{CONTACT.ADDRESS}</p>
+              <Time className="block md:hidden lg:block" isDark={true} />
               <a href={'mailto:' + CONTACT.EMAIL}>{CONTACT.EMAIL}</a>
               <button
-                className="sticky bottom-0 col-span-2 ml-auto flex w-fit cursor-pointer items-center justify-end gap-2 text-right"
+                className="flex w-fit cursor-pointer items-center justify-end gap-2 text-right lg:col-span-2 lg:ml-auto"
                 onClick={() =>
                   window.scrollTo({
                     top: 0,
