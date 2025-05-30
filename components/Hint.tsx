@@ -97,7 +97,7 @@ const Hint = ({
     <div
       ref={containerHintRef}
       className={clsx(
-        'pointer-events-none fixed z-50 h-fit',
+        'pointer-events-none absolute z-50 h-fit',
         isLeft ? '-translate-x-full' : 'translate-x-full',
       )}
     >

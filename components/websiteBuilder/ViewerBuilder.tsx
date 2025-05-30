@@ -99,18 +99,18 @@ const ViewerBuilder = ({
             <Hint container={containerRef} isLeft={true}>
               {isFrench ? (
                 <p>
-                  On ne spamme pas : <strong>1 mail tous les 3 mois</strong>, avec des news et du
-                  contenu utile !
+                  Estimation basée sur votre sélection. Le prix final peut varier selon les détails
+                  de votre projet. <strong>Contactez-nous</strong> pour un devis précis !
                 </p>
               ) : (
                 <p>
-                  We don’t spam: <strong>1 email every 3 months</strong>, with news and useful
-                  content!
+                  Estimate based on your selection. Final price may vary depending on project
+                  details. <strong>Contact us</strong> for an accurate quote!
                 </p>
               )}
             </Hint>
           </button>
-          <p>Notre estimation</p>
+          <p>{isFrench ? 'Notre estimation' : 'Our estimation'}</p>
         </div>
         <p className="h2 text-blue pl-2">
           <SafeNumberFlow suffix=" €" value={totalPrice} />

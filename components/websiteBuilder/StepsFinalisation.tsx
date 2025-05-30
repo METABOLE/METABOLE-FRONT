@@ -1,37 +1,22 @@
 import { useLanguage } from '@/providers/language.provider';
+import { motion } from 'framer-motion';
 import { FormWebsiteBuilderData } from '@/types';
 import { isEmail } from '@/utils/validation.utils';
 import { useEffect, useState } from 'react';
 import Input from '../Input';
 
 interface StepFinalisationProps {
-  initialFormData?: FormWebsiteBuilderData;
-  onFormChange?: (formData: FormWebsiteBuilderData, isValid: boolean) => void;
-  errors?: Record<string, string>;
+  formData: FormWebsiteBuilderData;
+  onFormChange: (formData: FormWebsiteBuilderData, isValid: boolean) => void;
 }
 
-const StepFinalisation = ({ initialFormData, onFormChange }: StepFinalisationProps) => {
+const StepFinalisation = ({ formData, onFormChange }: StepFinalisationProps) => {
   const { isFrench } = useLanguage();
-
-  const [formData, setFormData] = useState<FormWebsiteBuilderData>(
-    initialFormData || {
-      name: '',
-      email: '',
-      phone: '',
-      message: '',
-    },
-  );
 
   const [errors, setErrors] = useState<Record<string, string>>({
     name: '',
     email: '',
   });
-
-  useEffect(() => {
-    if (initialFormData) {
-      setFormData(initialFormData);
-    }
-  }, [initialFormData]);
 
   const isFormValid = (): boolean => {
     return (
@@ -43,91 +28,145 @@ const StepFinalisation = ({ initialFormData, onFormChange }: StepFinalisationPro
   };
 
   useEffect(() => {
-    if (onFormChange) {
-      const isValid = isFormValid();
-      onFormChange(formData, isValid);
-    }
+    const isValid = isFormValid();
+    onFormChange(formData, isValid);
   }, [formData, errors, onFormChange]);
+
+  const updateFormData = (field: keyof FormWebsiteBuilderData, value: string) => {
+    const updatedFormData = { ...formData, [field]: value };
+    onFormChange(updatedFormData, isFormValid());
+  };
 
   return (
     <div className="flex w-full flex-col gap-8 p-6">
-      <Input
-        errorMessage={errors.name}
-        id="name"
-        isDark={true}
-        name="name"
-        placeholder="John Doe"
-        type="text"
-        value={formData.name}
-        onBlur={() => {
-          !formData.name &&
-            setErrors((prev) => ({
-              ...prev,
-              name: isFrench ? 'Veuillez entrer un nom' : 'Please enter a name',
-            }));
+      <motion.div
+        key="step-finalisation-name"
+        animate={{ scale: 1, transformOrigin: 'left' }}
+        exit={{ scale: 0, transformOrigin: 'left' }}
+        initial={{ scale: 0, transformOrigin: 'left' }}
+        transition={{
+          duration: 0.3,
+          ease: [0.76, 0, 0.24, 1],
+          delay: 0.02,
         }}
-        onChange={(e) => {
-          setFormData((prev) => ({ ...prev, name: e.target.value }));
-          e.target.value &&
-            setErrors((prev) => ({
-              ...prev,
-              name: '',
-            }));
-        }}
-      />
+        layout
+      >
+        <Input
+          errorMessage={errors.name}
+          id="name"
+          isDark={true}
+          name="name"
+          placeholder="John Doe"
+          type="text"
+          value={formData.name}
+          onBlur={() => {
+            !formData.name &&
+              setErrors((prev) => ({
+                ...prev,
+                name: isFrench ? 'Veuillez entrer un nom' : 'Please enter a name',
+              }));
+          }}
+          onChange={(e) => {
+            updateFormData('name', e.target.value);
+            e.target.value &&
+              setErrors((prev) => ({
+                ...prev,
+                name: '',
+              }));
+          }}
+        />
+      </motion.div>
 
-      <Input
-        errorMessage={errors.email}
-        id="email"
-        isDark={true}
-        name="email"
-        placeholder="johndoe@company.com"
-        type="email"
-        value={formData.email}
-        onBlur={() => {
-          isEmail(formData.email) ||
-            setErrors((prev) => ({
-              ...prev,
-              email: isFrench ? 'Veuillez entrer un email valide' : 'Please enter a valid email',
-            }));
-          !formData.email &&
-            setErrors((prev) => ({
-              ...prev,
-              email: isFrench ? 'Veuillez entrer votre email' : 'Please enter your email',
-            }));
+      <motion.div
+        key="step-finalisation-email"
+        animate={{ scale: 1, transformOrigin: 'left' }}
+        exit={{ scale: 0, transformOrigin: 'left' }}
+        initial={{ scale: 0, transformOrigin: 'left' }}
+        transition={{
+          duration: 0.3,
+          ease: [0.76, 0, 0.24, 1],
+          delay: 0.04,
         }}
-        onChange={(e) => {
-          isEmail(e.target.value) && setErrors((prev) => ({ ...prev, email: '' }));
-          setFormData((prev) => ({ ...prev, email: e.target.value }));
-        }}
-      />
+        layout
+      >
+        <Input
+          errorMessage={errors.email}
+          id="email"
+          isDark={true}
+          name="email"
+          placeholder="johndoe@company.com"
+          type="email"
+          value={formData.email}
+          onBlur={() => {
+            isEmail(formData.email) ||
+              setErrors((prev) => ({
+                ...prev,
+                email: isFrench ? 'Veuillez entrer un email valide' : 'Please enter a valid email',
+              }));
+            !formData.email &&
+              setErrors((prev) => ({
+                ...prev,
+                email: isFrench ? 'Veuillez entrer votre email' : 'Please enter your email',
+              }));
+          }}
+          onChange={(e) => {
+            isEmail(e.target.value) && setErrors((prev) => ({ ...prev, email: '' }));
+            updateFormData('email', e.target.value);
+          }}
+        />
+      </motion.div>
 
-      <Input
-        id="phone"
-        isDark={true}
-        name="phone"
-        placeholder="+33 6 12 34 56 78"
-        type="tel"
-        value={formData.phone}
-        onChange={(e) => {
-          setFormData((prev) => ({ ...prev, phone: e.target.value }));
-          e.target.value &&
-            setErrors((prev) => ({
-              ...prev,
-              phone: '',
-            }));
+      <motion.div
+        key="step-finalisation-phone"
+        animate={{ scale: 1, transformOrigin: 'left' }}
+        exit={{ scale: 0, transformOrigin: 'left' }}
+        initial={{ scale: 0, transformOrigin: 'left' }}
+        transition={{
+          duration: 0.3,
+          ease: [0.76, 0, 0.24, 1],
+          delay: 0.06,
         }}
-      />
-
-      <Input
-        id="message"
-        isDark={true}
-        name="message"
-        placeholder={isFrench ? 'Un message à nous transmettre ?' : 'A message to send us?'}
-        type="textarea"
-        value={formData.message}
-        onChange={(e) => setFormData((prev) => ({ ...prev, message: e.target.value }))}
-      />
+        layout
+      >
+        <Input
+          id="phone"
+          isDark={true}
+          name="phone"
+          placeholder="+33 6 12 34 56 78"
+          type="tel"
+          value={formData.phone}
+          onChange={(e) => {
+            updateFormData('phone', e.target.value);
+            e.target.value &&
+              setErrors((prev) => ({
+                ...prev,
+                phone: '',
+              }));
+          }}
+        />
+      </motion.div>
+      <motion.div
+        key="step-finalisation-message"
+        animate={{ scale: 1, transformOrigin: 'left' }}
+        exit={{ scale: 0, transformOrigin: 'left' }}
+        initial={{ scale: 0, transformOrigin: 'left' }}
+        transition={{
+          duration: 0.3,
+          ease: [0.76, 0, 0.24, 1],
+          delay: 0.08,
+        }}
+        layout
+      >
+        <Input
+          id="message"
+          isDark={true}
+          name="message"
+          placeholder={isFrench ? 'Un message à nous transmettre ?' : 'A message to send us?'}
+          type="textarea"
+          value={formData.message}
+          onChange={(e) => updateFormData('message', e.target.value)}
+        />
+      </motion.div>
     </div>
   );
 };

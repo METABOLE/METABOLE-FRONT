@@ -72,6 +72,12 @@ export const useWebsiteBuilder = () => {
       const parsedOptions: Option[] = JSON.parse(storedOptions);
       setOptions(parsedOptions);
     }
+
+    const storedForm = localStorage.getItem('metabole-website-builder-form');
+    if (storedForm) {
+      const parsedForm: FormWebsiteBuilderData = JSON.parse(storedForm);
+      setFormData(parsedForm);
+    }
   }, []);
 
   useEffect(() => {
@@ -143,6 +149,7 @@ export const useWebsiteBuilder = () => {
 
   // FORM
   const handleFormChange = (updatedFormData: FormWebsiteBuilderData) => {
+    localStorage.setItem('metabole-website-builder-form', JSON.stringify(updatedFormData));
     setFormData(updatedFormData);
   };
 
@@ -219,6 +226,7 @@ export const useWebsiteBuilder = () => {
         localStorage.removeItem('metabole-website-builder-pages');
         localStorage.removeItem('metabole-website-builder-animation');
         localStorage.removeItem('metabole-website-builder-options');
+        localStorage.removeItem('metabole-website-builder-form');
         setPages(PAGES.map((page) => ({ ...page, selected: false })));
         setSelectedAnimation(ANIMATIONS.IMMERSIVES);
         setOptions(OPTIONS.map((option) => ({ ...option, id: uuidv4(), selected: false })));
@@ -268,8 +276,8 @@ export const useWebsiteBuilder = () => {
     pages,
     animations: Object.values(ANIMATIONS),
     selectedAnimation,
-    options,
     formData,
+    options,
     selectedPages,
     selectedOptions,
     totalPrice,

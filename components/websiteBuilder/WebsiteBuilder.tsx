@@ -22,6 +22,7 @@ const WebsiteBuilder = () => {
     pages,
     animations,
     selectedAnimation,
+    formData,
     options,
     selectedPages,
     selectedOptions,
@@ -38,16 +39,25 @@ const WebsiteBuilder = () => {
   } = useWebsiteBuilder();
   const isMobile = useMatchMedia(BREAKPOINTS.SM);
 
-  const [shouldRenderContent, setShouldRenderContent] = useState(false);
-  const [activeStepType, setActiveStepType] = useState<WEBSITE_BUILDER_STEPS | null>(null);
+  const [shouldRenderContent, setShouldRenderContent] = useState(true);
+  const [activeStepType, setActiveStepType] = useState<WEBSITE_BUILDER_STEPS | null>(
+    WEBSITE_BUILDER_STEPS.PAGES,
+  );
   const previousActiveStepId = useRef<string | null>(null);
 
-  // Gérer le délai de rendu UNIQUEMENT quand l'étape change
+  useEffect(() => {
+    const activeStep = steps.find((step) => step.isActive);
+    if (activeStep && previousActiveStepId.current === null) {
+      setActiveStepType(activeStep.type);
+      setShouldRenderContent(true);
+      previousActiveStepId.current = activeStep.id;
+    }
+  }, []);
+
   useEffect(() => {
     const activeStep = steps.find((step) => step.isActive);
     const currentActiveStepId = activeStep?.id || null;
 
-    // Ne déclencher le re-render que si l'étape active a vraiment changé
     if (currentActiveStepId !== previousActiveStepId.current) {
       if (activeStep) {
         setShouldRenderContent(false);
@@ -89,7 +99,7 @@ const WebsiteBuilder = () => {
       case WEBSITE_BUILDER_STEPS.OPTIONS:
         return <StepOptions options={options} onToggle={handleOptionsChange} />;
       case WEBSITE_BUILDER_STEPS.FINAL:
-        return <StepFinalisation onFormChange={handleFormChange} />;
+        return <StepFinalisation formData={formData} onFormChange={handleFormChange} />;
     }
   };
 

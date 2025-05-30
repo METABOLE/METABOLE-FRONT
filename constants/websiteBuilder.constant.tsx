@@ -222,27 +222,27 @@ export const OPTIONS = [
     days: 2,
   },
   {
-    title: { fr: 'Formulaire personnalisé', en: 'Custom form' },
+    title: { fr: 'Formulaire', en: 'Form' },
     days: 1,
   },
   {
-    title: { fr: 'Carte interactive', en: 'Interactive map' },
+    title: { fr: 'Carte', en: 'Map' },
     days: 1.5,
   },
   {
-    title: { fr: 'SEO technique', en: 'Technical SEO' },
+    title: { fr: 'SEO', en: 'SEO' },
     days: 1,
   },
   {
-    title: { fr: 'Connexion API externe', en: 'External API connection' },
+    title: { fr: 'APIs', en: 'APIs' },
     days: 2,
   },
   {
-    title: { fr: 'Login / Espace membre', en: 'Login / Member area' },
+    title: { fr: 'Blog', en: 'Blog' },
     days: 3,
   },
   {
-    title: { fr: 'Back-office personnalisé', en: 'Custom admin' },
-    days: 3.5,
+    title: { fr: 'E-commerce', en: 'E-commerce' },
+    days: 4,
   },
 ];
