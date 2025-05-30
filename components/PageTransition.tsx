@@ -16,7 +16,7 @@ export default function PageTransition({ children }: { children: ReactNode }) {
     enter: {
       scaleY: 0,
       transition: {
-        duration: 0.5,
+        duration: 0.6,
         ease: [0.72, 0, 0.3, 0.99],
       },
       transitionEnd: {
@@ -26,7 +26,7 @@ export default function PageTransition({ children }: { children: ReactNode }) {
     exit: {
       scaleY: 1,
       transition: {
-        duration: 0.5,
+        duration: 0.4,
         ease: [0.72, 0, 0.3, 0.99],
       },
     },
@@ -44,7 +44,7 @@ export default function PageTransition({ children }: { children: ReactNode }) {
   return (
     <>
       <motion.div
-        className="pointer-events-none fixed inset-0 z-[900] h-screen w-screen bg-black"
+        className="bg-blue pointer-events-none fixed inset-0 z-[900] h-screen w-screen"
         {...anim(expand)}
       />
       {children}
