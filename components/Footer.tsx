@@ -1,4 +1,4 @@
-import { CONTACT, LINKS, SOCIALS } from '@/constants';
+import { CONTACT, SOCIALS } from '@/constants';
 import { useMagnet, useResetMagnet } from '@/hooks/useMagnet';
 import { useMousePosition } from '@/hooks/useMousePosition';
 import { useLanguage } from '@/providers/language.provider';
@@ -13,7 +13,7 @@ import Language from './Language';
 import NewsletterSubscription from './NewsletterSubscription';
 import Time from './Time';
 
-const Footer = () => {
+const Footer = ({ setIsContactOpen }: { setIsContactOpen: (isContactOpen: boolean) => void }) => {
   const animatedTitleRef = useRef<SVGSVGElement>(null);
   const wrapperRef = useRef(null);
   const containerSectionRef = useRef(null);
@@ -120,17 +120,45 @@ const Footer = () => {
               <nav>
                 <ul className="flex flex-col gap-4">
                   <li>Pages</li>
-                  {LINKS.map((link, index) => (
+                  <li>
+                    <Link
+                      className="text-white-30 inline-block cursor-pointer transition-[translate,color] hover:translate-x-2 hover:text-white"
+                      href={getInternalPath('/')}
+                      scroll={false}
+                    >
+                      {isFrench ? 'Accueil' : 'Home'}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className="text-white-30 inline-block cursor-pointer transition-[translate,color] hover:translate-x-2 hover:text-white"
+                      href={getInternalPath('/pricing')}
+                      scroll={false}
+                    >
+                      {isFrench ? 'Tarifs' : 'Pricing'}
+                    </Link>
+                  </li>
+                  <li>
+                    <button
+                      className="text-white-30 inline-block cursor-pointer transition-[translate,color] hover:translate-x-2 hover:text-white"
+                      onClick={() => {
+                        setIsContactOpen(true);
+                      }}
+                    >
+                      {isFrench ? 'Contact' : 'Contact'}
+                    </button>
+                  </li>
+                  {/* {LINKS.map((link, index) => (
                     <li key={link.href + index}>
                       <Link
-                        className="text-white-30 inline-block transition-[translate,color] hover:translate-x-2 hover:text-white"
+                        className="text-white-30 inline-block transition-[translate,color] hover:translate-x-2 hover:text-white cursor-pointer"
                         href={getInternalPath(link.href)}
                         scroll={false}
                       >
                         {isFrench ? link.text.fr : link.text.en}
                       </Link>
                     </li>
-                  ))}
+                  ))} */}
                 </ul>
               </nav>
               <nav>

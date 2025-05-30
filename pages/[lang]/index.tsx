@@ -1,10 +1,9 @@
-import Lottie from '@/components/Lottie';
-import metaboleFull from '../../public/lotties/metabole-full-loader.json';
 import { AnimatedTitle } from '@/components/AnimatedTitle';
 import FallingCrosses from '@/components/FallingCrosses';
 import FloatingHalo from '@/components/FloatingHalo';
 import Div3D from '@/components/Text3D';
-import { useEnvironment } from '@/hooks/useEnvironment';
+import { TITLE } from '@/constants';
+import { useIsScreenLoader } from '@/hooks/useIsScreenLoader';
 import { useMousePosition } from '@/hooks/useMousePosition';
 import { useLanguage } from '@/providers/language.provider';
 import { useGSAP } from '@gsap/react';
@@ -15,46 +14,12 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useRef, useState } from 'react';
 
-const TITLE = {
-  FR: [
-    { text: 'Studio ', isBlue: false },
-    { text: 'créatif ', isBlue: false },
-    { text: 'qui ', isBlue: false },
-    { text: 'concoit ', isBlue: false },
-    { text: 'des ', isBlue: false },
-    { text: 'sites ', isBlue: true },
-    { text: 'web ', isBlue: true },
-    { text: 'uniques ', isBlue: false },
-    { text: 'et ', isBlue: false },
-    { text: 'immersifs ', isBlue: false },
-    { text: 'pour ', isBlue: false },
-    { text: 'les ', isBlue: false },
-    { text: 'entreprises ', isBlue: true },
-    { text: 'avant-', isBlue: true },
-    { text: 'gardistes.', isBlue: true },
-  ],
-  EN: [
-    { text: 'Creative ', isBlue: false },
-    { text: 'studio ', isBlue: false },
-    { text: 'crafting ', isBlue: false },
-    { text: 'unique ', isBlue: true },
-    { text: 'and ', isBlue: true },
-    { text: 'immersive ', isBlue: true },
-    { text: 'websites ', isBlue: false },
-    { text: 'for ', isBlue: false },
-    { text: 'forward-', isBlue: true },
-    { text: 'thinking ', isBlue: true },
-    { text: 'companies.', isBlue: true },
-  ],
-};
-
 export default function Home() {
   const { isFrench } = useLanguage();
-  const { isProd } = useEnvironment();
+  const isScreenLoader = useIsScreenLoader();
   const { x, y } = useMousePosition();
   const { asPath } = useRouter();
 
-  const lottieRef = useRef(null);
   const haloRef = useRef(null);
   const textRef = useRef(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -87,23 +52,12 @@ export default function Home() {
 
     gsap
       .timeline({
-        delay: isProd ? 4.5 : 0.8,
+        delay: isScreenLoader ? 4.5 : 0.8,
         defaults: {
           ease: 'power2.out',
           duration: 0.8,
           opacity: 1,
         },
-      })
-      .to(
-        lottieRef.current,
-        {
-          scaleY: 0,
-          duration: 0.1,
-        },
-        '-=0.6',
-      )
-      .set(lottieRef.current, {
-        display: 'none',
       })
       .to(allAnimElements, {
         y: 0,
@@ -135,18 +89,10 @@ export default function Home() {
         },
         '<',
       );
-  }, [isProd, isFrench]);
+  }, [isScreenLoader, isFrench]);
 
   return (
     <>
-      {isProd && (
-        <div
-          ref={lottieRef}
-          className="fixed top-1/2 left-1/2 z-20 -translate-x-1/2 -translate-y-1/2"
-        >
-          <Lottie animationData={metaboleFull} className="h-48" loop={false} />
-        </div>
-      )}
       <FloatingHalo
         ref={haloRef}
         className="!fixed top-[120%] -left-[90%] -z-30 h-[250vw] w-[250vw] -translate-x-full scale-50 opacity-0"

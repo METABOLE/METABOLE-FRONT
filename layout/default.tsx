@@ -1,21 +1,24 @@
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { SplitText } from 'gsap/SplitText';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import SEO from '@/components/SEO';
-import { useEnvironment } from '@/hooks/useEnvironment';
+import { useIsScreenLoader } from '@/hooks/useIsScreenLoader';
 import { useMousePosition } from '@/hooks/useMousePosition';
 import { useLanguage } from '@/providers/language.provider';
 import { useGSAP } from '@gsap/react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { SplitText } from 'gsap/SplitText';
 import Image from 'next/image';
-import { ReactNode, useRef } from 'react';
+import { ReactNode, useRef, useState } from 'react';
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
 const Layout = ({ children }: { children: ReactNode }) => {
   const { isFrench } = useLanguage();
-  const { isProd } = useEnvironment();
+  const isScreenLoader = useIsScreenLoader();
+
   const { x, y } = useMousePosition();
+
+  const [isContactOpen, setIsContactOpen] = useState(false);
 
   const backgroundRef = useRef(null);
 
@@ -29,7 +32,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
   useGSAP(() => {
     gsap
       .timeline({
-        delay: isProd ? 3.35 : 0.2,
+        delay: isScreenLoader ? 3.35 : 0.2,
       })
       .to(backgroundRef.current, {
         opacity: 1,
@@ -37,14 +40,14 @@ const Layout = ({ children }: { children: ReactNode }) => {
         duration: 2,
         ease: 'expo.out',
       });
-  }, [isProd]);
+  }, [isScreenLoader]);
 
   return (
     <>
       <SEO isFrench={isFrench} />
-      <Header />
+      <Header isContactOpen={isContactOpen} setIsContactOpen={setIsContactOpen} />
       <main className="min-h-screen pb-[300px]">{children}</main>
-      <Footer />
+      <Footer setIsContactOpen={setIsContactOpen} />
       <Image
         ref={backgroundRef}
         alt="background"

@@ -1,5 +1,7 @@
 // import 'element-internals-polyfill';
 import PageTransition from '@/components/PageTransition';
+import ScreenLoader from '@/components/ScreenLoader';
+import { useIsScreenLoader } from '@/hooks/useIsScreenLoader';
 import Layout from '@/layout/default';
 import { AppProvider } from '@/providers/root';
 import '@/styles/main.scss';
@@ -20,6 +22,8 @@ type AppPropsWithLayout = AppProps & {
 
 export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const pathname = usePathname();
+  const isScreenLoader = useIsScreenLoader();
+
   const getLayout = Component.getLayout || ((page) => <Layout>{page}</Layout>);
 
   useEffect(() => {
@@ -31,11 +35,14 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
   return (
     <AppProvider>
       {getLayout(
-        <AnimatePresence mode="wait" onExitComplete={() => window.scrollTo(0, 0)}>
-          <PageTransition key={pathname}>
-            <Component {...pageProps} />
-          </PageTransition>
-        </AnimatePresence>,
+        <>
+          {isScreenLoader && <ScreenLoader />}
+          <AnimatePresence mode="wait" onExitComplete={() => window.scrollTo(0, 0)}>
+            <PageTransition key={pathname}>
+              <Component {...pageProps} />
+            </PageTransition>
+          </AnimatePresence>
+        </>,
       )}
     </AppProvider>
   );

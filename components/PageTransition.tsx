@@ -44,7 +44,7 @@ export default function PageTransition({ children }: { children: ReactNode }) {
   return (
     <>
       <motion.div
-        className="pointer-events-none fixed inset-0 z-[910] h-screen w-screen bg-black"
+        className="pointer-events-none fixed inset-0 z-[900] h-screen w-screen bg-black"
         {...anim(expand)}
       />
       {children}
