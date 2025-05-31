@@ -8,6 +8,12 @@ export enum WEBSITE_BUILDER_STEPS {
   FINAL = 'FINAL',
 }
 
+export enum WEBSITE_BUILDER_ANIMATIONS {
+  LIGHT = 'LIGHT',
+  IMMERSIVES = 'IMMERSIVES',
+  ADVANCED = 'ADVANCED',
+}
+
 export type Step = {
   title: Language;
   description: { en: ReactNode; fr: ReactNode };
@@ -24,6 +30,7 @@ export type Page = {
 };
 
 export type Animation = {
+  type: WEBSITE_BUILDER_ANIMATIONS;
   title: Language;
   percent: number;
 };

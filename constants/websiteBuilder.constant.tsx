@@ -1,4 +1,4 @@
-import { WEBSITE_BUILDER_STEPS } from '@/types';
+import { WEBSITE_BUILDER_ANIMATIONS, WEBSITE_BUILDER_STEPS } from '@/types';
 import { v4 as uuidv4 } from 'uuid';
 
 export const STEPS = [
@@ -195,14 +195,17 @@ export const PAGES = [
 
 export const ANIMATIONS = {
   LIGHT: {
+    type: WEBSITE_BUILDER_ANIMATIONS.LIGHT,
     title: { fr: 'Légères', en: 'Light' },
     percent: 0.1,
   },
   IMMERSIVES: {
+    type: WEBSITE_BUILDER_ANIMATIONS.IMMERSIVES,
     title: { fr: 'Immersives', en: 'Immersive' },
     percent: 0.25,
   },
   ADVANCED: {
+    type: WEBSITE_BUILDER_ANIMATIONS.ADVANCED,
     title: { fr: 'Interactivité poussée', en: 'Advanced interactivity' },
     percent: 0.5,
   },

@@ -1,6 +1,9 @@
 import { ANIMATIONS, OPTIONS, PAGES, STEPS } from '@/constants/websiteBuilder.constant';
+import { postQuoteForm } from '@/services/quote.service';
 import { Animation, FormWebsiteBuilderData, Option, Page, WEBSITE_BUILDER_STEPS } from '@/types';
+import { QuoteFormData } from '@/types/quote.type';
 import { daysToPrice } from '@/utils/pricing.utils';
+import { useMutation } from '@tanstack/react-query';
 import { useEffect, useMemo, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -213,32 +216,6 @@ export const useWebsiteBuilder = () => {
 
     if (currentStepIndex === steps.length - 1) {
       submitForm();
-      setSteps(
-        STEPS.map((step) => ({
-          ...step,
-          isActive: false,
-          isCompleted: true,
-        })),
-      );
-
-      // Reset après soumission
-      setTimeout(() => {
-        localStorage.removeItem('metabole-website-builder-pages');
-        localStorage.removeItem('metabole-website-builder-animation');
-        localStorage.removeItem('metabole-website-builder-options');
-        localStorage.removeItem('metabole-website-builder-form');
-        setPages(PAGES.map((page) => ({ ...page, selected: false })));
-        setSelectedAnimation(ANIMATIONS.IMMERSIVES);
-        setOptions(OPTIONS.map((option) => ({ ...option, id: uuidv4(), selected: false })));
-        setFormData({ name: '', email: '', phone: '', message: '' });
-        setSteps(
-          STEPS.map((step, index) => ({
-            ...step,
-            isActive: index === 0,
-            isCompleted: false,
-          })),
-        );
-      }, 1000);
       return;
     }
 
@@ -256,18 +233,56 @@ export const useWebsiteBuilder = () => {
     );
   };
 
+  const resetForm = () => {
+    localStorage.removeItem('metabole-website-builder-pages');
+    localStorage.removeItem('metabole-website-builder-animation');
+    localStorage.removeItem('metabole-website-builder-options');
+    localStorage.removeItem('metabole-website-builder-form');
+    setPages(PAGES.map((page) => ({ ...page, selected: false })));
+    setSelectedAnimation(ANIMATIONS.IMMERSIVES);
+    setOptions(OPTIONS.map((option) => ({ ...option, id: uuidv4(), selected: false })));
+    setFormData({ name: '', email: '', phone: '', message: '' });
+    setSteps(
+      STEPS.map((step, index) => ({
+        ...step,
+        isActive: index === 0,
+        isCompleted: false,
+      })),
+    );
+  };
+
+  const sendQuote = useMutation({
+    mutationFn: ({ name, email, phone, message, devis, lang }: QuoteFormData) =>
+      postQuoteForm({ name, email, phone, message, devis, lang }),
+    onSuccess: () => {
+      setTimeout(() => {
+        resetForm();
+      }, 1000);
+    },
+    onMutate: () => {
+      setSteps(
+        STEPS.map((step) => ({
+          ...step,
+          isActive: false,
+          isCompleted: true,
+        })),
+      );
+    },
+    onError: (error) => {
+      console.error("Erreur d'envoi du devis", error);
+    },
+  });
+
   const submitForm = () => {
-    console.log('Envoi du devis :', {
+    sendQuote.mutate({
       ...formData,
       devis: {
-        pages: selectedPages,
-        animation: selectedAnimation,
-        options: selectedOptions,
+        pages: selectedPages.map((page) => page.title.fr),
+        animation: selectedAnimation.type,
+        options: selectedOptions.map((option) => option.title.fr),
         totalPrice,
       },
     });
-
-    alert('Votre devis a été envoyé ! Nous vous contacterons rapidement.');
   };
 
   return {
