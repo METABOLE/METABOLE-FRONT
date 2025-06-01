@@ -140,11 +140,11 @@ export const PAGES = [
     title: { fr: 'Contact', en: 'Contact' },
     days: 1,
   },
-  {
-    id: uuidv4(),
-    title: { fr: 'Mentions légales', en: 'Legal notice' },
-    days: 0.3,
-  },
+  // {
+  //   id: uuidv4(),
+  //   title: { fr: 'Mentions légales', en: 'Legal notice' },
+  //   days: 0.3,
+  // },
   {
     id: uuidv4(),
     title: { fr: 'Page 404', en: '404 Page' },
@@ -157,36 +157,36 @@ export const PAGES = [
     title: { fr: 'À propos', en: 'About' },
     days: 1,
   },
-  {
-    id: uuidv4(),
-    title: { fr: 'Équipe', en: 'Team' },
-    days: 1.2,
-  },
-  {
-    id: uuidv4(),
-    title: { fr: 'Services', en: 'Services' },
-    days: 1.2,
-  },
-  {
-    id: uuidv4(),
-    title: { fr: 'Réalisations', en: 'Projects' },
-    days: 2,
-  },
-  {
-    id: uuidv4(),
-    title: { fr: 'Détail projet', en: 'Project detail' },
-    days: 1.5,
-  },
-  {
-    id: uuidv4(),
-    title: { fr: 'Blog', en: 'Blog' },
-    days: 1.2,
-  },
-  {
-    id: uuidv4(),
-    title: { fr: 'Article', en: 'Article' },
-    days: 1,
-  },
+  // {
+  //   id: uuidv4(),
+  //   title: { fr: 'Équipe', en: 'Team' },
+  //   days: 1.2,
+  // },
+  // {
+  //   id: uuidv4(),
+  //   title: { fr: 'Services', en: 'Services' },
+  //   days: 1.2,
+  // },
+  // {
+  //   id: uuidv4(),
+  //   title: { fr: 'Réalisations', en: 'Projects' },
+  //   days: 2,
+  // },
+  // {
+  //   id: uuidv4(),
+  //   title: { fr: 'Détail projet', en: 'Project detail' },
+  //   days: 1.5,
+  // },
+  // {
+  //   id: uuidv4(),
+  //   title: { fr: 'Blog', en: 'Blog' },
+  //   days: 1.2,
+  // },
+  // {
+  //   id: uuidv4(),
+  //   title: { fr: 'Article', en: 'Article' },
+  //   days: 1,
+  // },
 ];
 
 // ----------------------

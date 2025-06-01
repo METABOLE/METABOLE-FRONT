@@ -34,6 +34,7 @@ const WebsiteBuilder = () => {
     handleAnimationChange,
     handleOptionsChange,
     handleFormChange,
+    setSteps,
     goToStep,
     nextStep,
   } = useWebsiteBuilder();
@@ -138,7 +139,23 @@ const WebsiteBuilder = () => {
                     'ease-power4-in-out flex items-center gap-2.5 whitespace-nowrap transition-[padding] duration-700',
                     step.isActive ? 'p-6' : 'p-2.5',
                   )}
-                  onClick={() => goToStep(index)}
+                  onClick={() => {
+                    const currentActiveIndex = steps.findIndex((s) => s.isActive);
+                    if (index === currentActiveIndex + 1 && isCurrentStepValid()) {
+                      setSteps((currentSteps) =>
+                        currentSteps.map((s, i) => {
+                          if (i === currentActiveIndex) {
+                            return { ...s, isActive: false, isCompleted: true };
+                          } else if (i === index) {
+                            return { ...s, isActive: true };
+                          }
+                          return s;
+                        }),
+                      );
+                    } else {
+                      goToStep(index);
+                    }
+                  }}
                 >
                   <span
                     className={clsx(

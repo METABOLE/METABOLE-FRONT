@@ -311,6 +311,7 @@ export const useWebsiteBuilder = () => {
     handleAnimationChange,
     handleOptionsChange,
     handleFormChange,
+    setSteps,
     goToStep,
     nextStep,
     submitForm,
