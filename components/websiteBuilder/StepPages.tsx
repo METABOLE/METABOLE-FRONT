@@ -69,7 +69,7 @@ const StepPages = ({ pages, onToggle, onDelete, onAdd }: StepPagesProps) => {
         transition={{
           duration: 0.3,
           ease: [0.76, 0, 0.24, 1],
-          delay: pages.length * 0.02,
+          delay: (pages.length + 1) * 0.02,
         }}
         layout
       >
