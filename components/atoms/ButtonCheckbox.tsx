@@ -58,7 +58,7 @@ const ButtonCheckbox = ({ id, title, selected, onToggle, onDelete }: ButtonCheck
                 : 'background-color 0.1s linear 0.2s, scale 0.5s var(--ease-power4-in-out)',
             }}
           />
-          <button
+          <div
             className="cursor-pointer"
             onClick={handleDelete}
             onMouseEnter={() => setIsCrossHovered(true)}
@@ -81,7 +81,7 @@ const ButtonCheckbox = ({ id, title, selected, onToggle, onDelete }: ButtonCheck
                   : 'stroke 0.3s linear 0.2s, rotate 0.3s var(--ease-power4-in-out)',
               }}
             />
-          </button>
+          </div>
         </div>
         <span className="z-20 max-w-[155px] overflow-hidden text-ellipsis whitespace-nowrap">
           {title}

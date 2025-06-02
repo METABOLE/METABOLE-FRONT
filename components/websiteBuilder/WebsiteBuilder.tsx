@@ -141,7 +141,7 @@ const WebsiteBuilder = () => {
                   )}
                   onClick={() => {
                     const currentActiveIndex = steps.findIndex((s) => s.isActive);
-                    if (index === currentActiveIndex + 1 && isCurrentStepValid()) {
+                    if (isCurrentStepValid()) {
                       setSteps((currentSteps) =>
                         currentSteps.map((s, i) => {
                           if (i === currentActiveIndex) {
@@ -159,7 +159,7 @@ const WebsiteBuilder = () => {
                 >
                   <span
                     className={clsx(
-                      'p1 bg-blue flex h-14 w-14 shrink-0 items-center justify-center rounded-[19px] text-white',
+                      'p1 bg-blue z-10 flex h-14 w-14 shrink-0 items-center justify-center rounded-[19px] text-white',
                       'after:bg-blue after:absolute after:-z-10 after:h-4 after:w-4 after:rounded-full after:transition-transform after:duration-700 after:content-[""]',
                       step.isCompleted && !step.isActive ? 'after:scale-[60]' : 'after:scale-0',
                     )}
@@ -191,24 +191,24 @@ const WebsiteBuilder = () => {
                   </span>
                   <span
                     className={clsx(
-                      'overflow-hidden leading-14 text-ellipsis transition-colors duration-300',
+                      'z-20 overflow-hidden leading-14 text-ellipsis transition-colors duration-300',
                       step.isCompleted && !step.isActive ? 'text-white' : 'text-black',
                     )}
                   >
                     {isFrench ? step.title.fr : step.title.en}
                   </span>
                 </h3>
-                <div className="px-6" id={`step-description-${step.id}`}>
+                <div className="px-6" id={'step-description-' + step.id}>
                   {isFrench ? step.description.fr : step.description.en}
                 </div>
                 <div
                   className={clsx(
-                    'grow overflow-hidden',
+                    'z-0 grow overflow-hidden',
                     step.isActive && 'smoother-y-website-builder-steps',
                   )}
                 >
                   <div className="no-scrollbar h-full shrink-0 overflow-scroll" data-lenis-prevent>
-                    <AnimatePresence>
+                    <AnimatePresence mode="wait">
                       {step.isActive &&
                         shouldRenderContent &&
                         activeStepType &&
