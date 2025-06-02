@@ -6,7 +6,6 @@ import { isEmail } from '@/utils/validation.utils';
 import { useMutation } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { useRef, useState } from 'react';
-import Hint from './Hint';
 import { IconArrow, IconQuestionMark } from './Icons';
 import Input, { AnimatedIputRef } from './Input';
 import Typography from './Typography';
@@ -24,7 +23,6 @@ const SUCCESS_MESSAGES = {
 
 const NewsletterSubscription = ({ className, isDark }: NewsletterSubscriptionProps) => {
   const wrapperRef = useRef(null);
-  const containerRef = useRef(null);
   const inputRef = useRef<AnimatedIputRef>(null);
   const arrowRef = useRef(null);
 
@@ -77,21 +75,8 @@ const NewsletterSubscription = ({ className, isDark }: NewsletterSubscriptionPro
         <Typography className={clsx('p3', isDark ? 'text-black' : 'text-white')} variant="h2">
           {isFrench ? 'Rejoignez notre newsletter ' : 'Join our newsletter '}
         </Typography>
-        <button ref={containerRef} className="cursor-help">
+        <button className="cursor-help" id="hint-newsletter">
           <IconQuestionMark color={COLORS.YELLOW} />
-          <Hint container={containerRef} isLeft={true}>
-            {isFrench ? (
-              <p>
-                On ne spamme pas : <strong>1 mail tous les 3 mois</strong>, avec des news et du
-                contenu utile !
-              </p>
-            ) : (
-              <p>
-                We don’t spam: <strong>1 email every 3 months</strong>, with news and useful
-                content!
-              </p>
-            )}
-          </Hint>
         </button>
       </div>
 

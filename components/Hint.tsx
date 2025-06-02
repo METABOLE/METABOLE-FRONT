@@ -1,16 +1,18 @@
 import { useGSAP } from '@gsap/react';
 import clsx from 'clsx';
 import gsap from 'gsap';
-import { ReactNode, RefObject, useEffect, useRef } from 'react';
+import { ReactNode, useEffect, useRef } from 'react';
 
 const Hint = ({
   children,
-  container,
+  containerId,
   isLeft,
+  isDark = false,
 }: {
   children: ReactNode;
-  container: RefObject<HTMLElement | null>;
+  containerId: string;
   isLeft?: boolean;
+  isDark?: boolean;
 }) => {
   const containerHintRef = useRef(null);
   const wrapperHintRef = useRef<HTMLDivElement>(null);
@@ -53,24 +55,15 @@ const Hint = ({
   });
 
   const handleMouseMove = (e: MouseEvent) => {
-    if (!container.current || !wrapperHintRef.current || !timelineRef.current) return;
-
-    const rect = container.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-
-    if (x < 0 || x > rect.width || y < 0 || y > rect.height) {
-      handleMouseLeave();
-      return;
-    }
+    if (!wrapperHintRef.current || !timelineRef.current) return;
 
     timelineRef.current.play();
 
     const wrapperRect = wrapperHintRef.current.getBoundingClientRect();
 
     gsap.to(containerHintRef.current, {
-      x: x + (isLeft ? -10 : 10),
-      y: y - wrapperRect.height - 40,
+      x: e.clientX + (isLeft ? -10 : 10),
+      y: e.clientY - wrapperRect.height - 40,
       duration: 0.3,
       ease: 'power2.out',
     });
@@ -82,22 +75,24 @@ const Hint = ({
   };
 
   useEffect(() => {
-    if (!container.current) return;
+    const element = document.getElementById(containerId);
 
-    container.current.addEventListener('mousemove', handleMouseMove);
-    container.current.addEventListener('mouseleave', handleMouseLeave);
+    if (!element) return;
+
+    element.addEventListener('mousemove', handleMouseMove);
+    element.addEventListener('mouseleave', handleMouseLeave);
 
     return () => {
-      container.current?.removeEventListener('mousemove', handleMouseMove);
-      container.current?.removeEventListener('mouseleave', handleMouseLeave);
+      element.removeEventListener('mousemove', handleMouseMove);
+      element.removeEventListener('mouseleave', handleMouseLeave);
     };
-  }, [container]);
+  }, [containerId]);
 
   return (
     <div
       ref={containerHintRef}
       className={clsx(
-        'pointer-events-none fixed z-50 h-fit',
+        'pointer-events-none fixed top-0 left-0 z-50 h-fit',
         isLeft ? '-translate-x-full' : 'translate-x-full',
       )}
     >
@@ -113,8 +108,9 @@ const Hint = ({
         <div
           ref={textHintRef}
           className={clsx(
-            'p3 inline w-fit shrink pt-0.5 text-left !text-black opacity-0',
+            'p3 inline w-fit shrink pt-0.5 text-left opacity-0',
             isLeft ? 'translate-x-3' : '-translate-x-3',
+            isDark ? 'text-white' : 'text-black',
           )}
         >
           {children}

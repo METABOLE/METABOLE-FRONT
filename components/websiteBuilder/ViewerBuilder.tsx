@@ -1,7 +1,6 @@
 import { useLanguage } from '@/providers/language.provider';
 import { Animation, COLORS, Option, Page } from '@/types';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useRef } from 'react';
 import Hint from '../Hint';
 import { IconQuestionMark } from '../Icons';
 import SafeNumberFlow from '../SafeNumberFlow';
@@ -23,7 +22,6 @@ const ViewerBuilder = ({
   handleUnselectPage: (id: string) => void;
 }) => {
   const { isFrench } = useLanguage();
-  const containerRef = useRef<HTMLButtonElement>(null);
 
   return (
     <div className="grid h-full w-full grid-rows-[1fr_243px_123px] lg:grid-rows-[1fr_123px_123px]">
@@ -94,9 +92,9 @@ const ViewerBuilder = ({
       </div>
       <div className="flex h-full w-full items-end px-6 pt-6 pb-2">
         <div className="flex gap-2.5 pb-4">
-          <button ref={containerRef} className="cursor-help">
+          <button className="cursor-help" id="hint-website-builder">
             <IconQuestionMark color={COLORS.BLUE} />
-            <Hint container={containerRef} isLeft={true}>
+            <Hint containerId="hint-website-builder" isLeft={true}>
               {isFrench ? (
                 <p>
                   Estimation basée sur votre sélection. Le prix final peut varier selon les détails
