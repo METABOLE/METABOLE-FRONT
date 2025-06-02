@@ -1,4 +1,5 @@
 import { ANIMATIONS, OPTIONS, PAGES, STEPS } from '@/constants/websiteBuilder.constant';
+import { useLanguage } from '@/providers/language.provider';
 import { postQuoteForm } from '@/services/quote.service';
 import { Animation, FormWebsiteBuilderData, Option, Page, WEBSITE_BUILDER_STEPS } from '@/types';
 import { QuoteFormData } from '@/types/quote.type';
@@ -273,9 +274,12 @@ export const useWebsiteBuilder = () => {
     },
   });
 
+  const { isFrench } = useLanguage();
+
   const submitForm = () => {
     sendQuote.mutate({
       ...formData,
+      lang: isFrench ? 'fr' : 'en',
       devis: {
         pages: selectedPages.map((page) => page.title.fr),
         animation: selectedAnimation.type,
