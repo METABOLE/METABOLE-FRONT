@@ -307,6 +307,7 @@ export const useWebsiteBuilder = () => {
 
     // VALIDATORS
     isCurrentStepValid,
+    isStepValid,
 
     // FUNCTIONS
     handlePagesChange,

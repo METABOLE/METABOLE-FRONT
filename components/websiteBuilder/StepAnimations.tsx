@@ -1,4 +1,5 @@
 import { useMagnet, useResetMagnet } from '@/hooks/useMagnet';
+import { useLanguage } from '@/providers/language.provider';
 import { Animation } from '@/types';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
@@ -14,6 +15,8 @@ const StepAnimations = ({
   selectedAnimation,
   onAnimationChange,
 }: StepAnimationsProps) => {
+  const { isFrench } = useLanguage();
+
   return (
     <div className="flex w-full flex-col gap-6 p-6">
       {animations.map((animation, index) => (
@@ -48,17 +51,17 @@ const StepAnimations = ({
                 <div
                   className={clsx(
                     'ease-power2-in-out top-0 z-10 h-2.5 w-2.5 rounded-full transition-transform duration-300 group-hover:bg-white',
-                    selectedAnimation?.title.fr === animation.title.fr ? 'bg-white' : 'bg-blue',
+                    selectedAnimation?.type === animation.type ? 'bg-white' : 'bg-blue',
                   )}
                 />
                 <div
                   className={clsx(
                     'bg-blue ease-power2-in-out absolute top-0 -z-10 h-2.5 w-2.5 rounded-full transition-transform duration-300 group-hover:scale-[50]',
-                    selectedAnimation?.title.fr === animation.title.fr ? 'scale-[50]' : 'scale-0',
+                    selectedAnimation?.type === animation.type ? 'scale-[50]' : 'scale-0',
                   )}
                 />
               </div>
-              <span className="z-10">{animation.title.fr}</span>
+              <span className="z-10">{animation.title[isFrench ? 'fr' : 'en']}</span>
             </div>
           </motion.button>
         </>

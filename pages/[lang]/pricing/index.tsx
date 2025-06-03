@@ -5,7 +5,7 @@ const Pricing = () => {
   const { isFrench } = useLanguage();
   return (
     <section className="px-x-default py-y-default">
-      <div className="pt-y-default mx-auto w-full space-y-3 pb-14 text-center">
+      <div className="pt-y-default mx-auto w-full space-y-3 pb-14 md:text-center">
         <h1>{isFrench ? 'Estimez votre site idéal' : 'Estimate your ideal website'}</h1>
         <p className="text-blue p1">
           {isFrench

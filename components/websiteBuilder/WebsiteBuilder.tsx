@@ -10,9 +10,9 @@ import { SplitText } from 'gsap/SplitText';
 import { useEffect, useRef, useState } from 'react';
 import Button from '../atoms/Button';
 import StepPages from './StepPages';
-import StepAnimations from './StepsAnimations';
-import StepFinalisation from './StepsFinalisation';
-import StepOptions from './StepsOptions';
+import StepAnimations from './StepAnimations';
+import StepFinalisation from './StepFinalisation';
+import StepOptions from './StepOptions';
 import ViewerBuilder from './ViewerBuilder';
 
 const WebsiteBuilder = () => {
@@ -31,6 +31,7 @@ const WebsiteBuilder = () => {
 
     // VALIDATORS
     isCurrentStepValid,
+    isStepValid,
 
     // FUNCTIONS
     handlePagesChange,
@@ -65,6 +66,8 @@ const WebsiteBuilder = () => {
   }, []);
 
   useEffect(() => {
+    if (isMobile) return;
+
     const activeStep = steps.find((step) => step.isActive);
     const currentActiveStepId = activeStep?.id || null;
 
@@ -114,6 +117,8 @@ const WebsiteBuilder = () => {
   };
 
   useGSAP(() => {
+    if (isMobile) return;
+
     const activeStep = steps.find((step) => step.isActive);
     const descriptionElement = document.getElementById(`step-description-${activeStep?.id}`);
     const split = SplitText.create(descriptionElement, { type: 'words, lines', mask: 'words' });
@@ -248,7 +253,7 @@ const WebsiteBuilder = () => {
                   <Button
                     className="shrink-0"
                     color="secondary"
-                    disabled={!isCurrentStepValid()}
+                    disabled={!isStepValid(step.type)}
                     onClick={nextStep}
                   >
                     {step.button.next[isFrench ? 'fr' : 'en']}
