@@ -12,7 +12,7 @@ const StepOptions = ({ options, onToggle }: StepOptionsProps) => {
   const { isFrench } = useLanguage();
 
   return (
-    <div className="grid w-full grid-cols-2 gap-6 p-6">
+    <div className="flex w-full flex-col gap-6 p-6">
       {options.map((option, index) => (
         <motion.div
           key={option.title.fr}

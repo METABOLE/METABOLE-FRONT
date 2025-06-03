@@ -5,6 +5,8 @@ import Hint from '../Hint';
 import { IconQuestionMark } from '../Icons';
 import SafeNumberFlow from '../SafeNumberFlow';
 import PageViewer from './PageViewer';
+import { ANIMATIONS } from '@/constants';
+import clsx from 'clsx';
 
 const ViewerBuilder = ({
   selectedPages,
@@ -24,22 +26,22 @@ const ViewerBuilder = ({
   const { isFrench } = useLanguage();
 
   return (
-    <div className="grid h-full w-full grid-rows-[1fr_243px_123px] lg:grid-rows-[1fr_123px_123px]">
+    <div className="grid h-full w-full grid-rows-[1fr_243px_123px] xl:grid-rows-[1fr_123px_123px]">
       <div className="border-blue-30 relative h-full w-full overflow-hidden border-b-[1px]">
         <PageViewer
           handleDeletePage={handleDeletePage}
           handleUnselectPage={handleUnselectPage}
           pages={selectedPages}
         />
-        <div className="absolute bottom-0 left-0 flex w-full gap-4 overflow-scroll p-4">
+        <div className="absolute right-0 bottom-0 flex w-full justify-end gap-4 overflow-scroll p-4">
           <AnimatePresence>
             {selectedOptions.map((option, index) => (
               <motion.div
                 key={option.id}
-                animate={{ scale: 1, transformOrigin: 'left' }}
+                animate={{ scale: 1, transformOrigin: 'right' }}
                 className="h-fit"
-                exit={{ scale: 0, transformOrigin: 'left' }}
-                initial={{ scale: 0, transformOrigin: 'left' }}
+                exit={{ scale: 0, transformOrigin: 'right' }}
+                initial={{ scale: 0, transformOrigin: 'right' }}
                 transition={{
                   duration: 0.3,
                   ease: [0.76, 0, 0.24, 1],
@@ -58,8 +60,8 @@ const ViewerBuilder = ({
           </AnimatePresence>
         </div>
       </div>
-      <div className="border-blue-30 grid h-full w-full grid-cols-2 border-b-[1px] lg:grid-cols-[1fr_2fr_1fr]">
-        <div className="border-blue-30 flex items-center justify-center gap-2 lg:border-r-[1px]">
+      <div className="border-blue-30 grid h-full w-full grid-cols-2 border-b-[1px] xl:grid-cols-[1fr_2fr_1fr]">
+        <div className="border-blue-30 flex items-center justify-center gap-2 xl:border-r-[1px]">
           <AnimatePresence>
             <SafeNumberFlow
               key="selected-pages"
@@ -71,11 +73,22 @@ const ViewerBuilder = ({
             </motion.p>
           </AnimatePresence>
         </div>
-        <div className="border-blue-30 col-span-2 row-start-2 flex flex-col items-center justify-center gap-2 border-t-[1px] text-center lg:col-span-1 lg:row-start-auto lg:border-t-0">
+        <div className="border-blue-30 col-span-2 row-start-2 flex flex-col items-center justify-center gap-2 border-t-[1px] text-center xl:col-span-1 xl:row-start-auto xl:border-t-0">
           <p className="h3">Animations</p>
-          <p className="h3 text-blue">
-            {isFrench ? selectedAnimation.title.fr : selectedAnimation.title.en}
-          </p>
+          <div className="h-7 overflow-hidden">
+            <p
+              className={clsx(
+                'h3 text-blue ease-power4-in-out space-y-1 transition-transform duration-500',
+                selectedAnimation.type === ANIMATIONS.LIGHT.type && 'translate-y-0',
+                selectedAnimation.type === ANIMATIONS.IMMERSIVES.type && 'translate-y-[-1.7rem]',
+                selectedAnimation.type === ANIMATIONS.ADVANCED.type && 'translate-y-[-3.4rem]',
+              )}
+            >
+              <span className="block">{ANIMATIONS.LIGHT.title[isFrench ? 'fr' : 'en']}</span>
+              <span className="block">{ANIMATIONS.IMMERSIVES.title[isFrench ? 'fr' : 'en']}</span>
+              <span className="block">{ANIMATIONS.ADVANCED.title[isFrench ? 'fr' : 'en']}</span>
+            </p>
+          </div>
         </div>
         <div className="border-blue-30 flex items-center justify-center gap-2 border-l-[1px]">
           <AnimatePresence>
@@ -108,7 +121,7 @@ const ViewerBuilder = ({
               )}
             </Hint>
           </button>
-          <p>{isFrench ? 'Notre estimation' : 'Our estimation'}</p>
+          <p>{isFrench ? 'Notre estimation' : 'Our estimation'} : </p>
         </div>
         <p className="h2 text-blue pl-2">
           <SafeNumberFlow suffix=" €" value={totalPrice} />

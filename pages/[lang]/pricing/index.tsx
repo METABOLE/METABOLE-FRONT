@@ -1,15 +1,30 @@
 import WebsiteBuilder from '@/components/websiteBuilder/WebsiteBuilder';
+import { useLanguage } from '@/providers/language.provider';
 
 const Pricing = () => {
+  const { isFrench } = useLanguage();
   return (
     <section className="px-x-default py-y-default">
-      <div className="pt-y-default mx-auto w-full space-y-3 pb-14 text-center md:w-2/3">
-        <h1>Website Builder</h1>
-        <p className="text-blue p1">En 3 étapes, imaginez le site qui vous ressemble.</p>
+      <div className="pt-y-default mx-auto w-full space-y-3 pb-14 text-center">
+        <h1>{isFrench ? 'Estimez votre site idéal' : 'Estimate your ideal website'}</h1>
+        <p className="text-blue p1">
+          {isFrench
+            ? 'Imaginez un site à votre image, en quelques étapes.'
+            : 'Imagine a website that reflects you — in just a few steps.'}
+        </p>
         <p className="p2">
-          Choisissez le nombre de pages, le style d’animation et les options essentielles. A la fin,
-          vous obtenez une estimation claire. Libre à vous de nous contacter pour donner vie à cette
-          idée.
+          {isFrench ? (
+            <>
+              Choisissez vos pages, le style d’animation, et les options essentielles. <br />
+              Obtenez une estimation claire — libre à vous de nous confier la suite.
+            </>
+          ) : (
+            <>
+              Choose your pages, animation style, and essential features.
+              <br />
+              Get a clear estimate — then decide if you'd like us to bring it to life.
+            </>
+          )}
         </p>
       </div>
       <WebsiteBuilder />

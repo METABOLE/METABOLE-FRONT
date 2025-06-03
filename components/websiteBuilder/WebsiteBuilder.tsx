@@ -18,6 +18,7 @@ import ViewerBuilder from './ViewerBuilder';
 const WebsiteBuilder = () => {
   const { isFrench } = useLanguage();
   const {
+    // STATES
     steps,
     pages,
     animations,
@@ -27,18 +28,26 @@ const WebsiteBuilder = () => {
     selectedPages,
     selectedOptions,
     totalPrice,
+
+    // VALIDATORS
     isCurrentStepValid,
+
+    // FUNCTIONS
     handlePagesChange,
     handleUnselectPage,
     handleDeletePage,
+    handleResetPages,
     handleAnimationChange,
+    handleResetAnimations,
     handleOptionsChange,
+    handleResetOptions,
     handleFormChange,
+    handleResetForm,
     setSteps,
     goToStep,
     nextStep,
   } = useWebsiteBuilder();
-  const isMobile = useMatchMedia(BREAKPOINTS.SM);
+  const isMobile = useMatchMedia(BREAKPOINTS.MD);
 
   const [shouldRenderContent, setShouldRenderContent] = useState(true);
   const [activeStepType, setActiveStepType] = useState<WEBSITE_BUILDER_STEPS | null>(
@@ -122,22 +131,25 @@ const WebsiteBuilder = () => {
 
   return (
     <>
-      <div className="grid h-[80vh] min-h-[800px] w-full gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mx-auto grid w-full max-w-[1600px] gap-5 md:h-[80vh] md:min-h-[800px] md:grid-cols-2 xl:grid-cols-3">
         <div className="col-span-1 flex h-full w-full flex-col gap-5">
           {steps.map((step, index) => {
             return (
               <div
                 key={index}
                 className={clsx(
-                  'ease-power4-in-out flex h-[78px] flex-col overflow-hidden rounded-3xl border-[1px] bg-[#e9e9fd] backdrop-blur-2xl transition-all duration-700',
-                  step.isCompleted && !step.isActive ? 'border-blue' : 'border-blue-30',
-                  step.isActive ? 'grow' : 'shrink',
+                  'ease-power4-in-out flex flex-col overflow-hidden rounded-3xl border-[1px] bg-[#e9e9fd] backdrop-blur-2xl transition-all duration-700 md:h-[78px]',
+                  step.isCompleted && !step.isActive
+                    ? 'md:border-blue border-blue-30'
+                    : 'border-blue-30',
+                  !isMobile && step.isActive ? 'grow' : 'md:shrink',
+                  isMobile && 'grow!',
                 )}
               >
                 <h3
                   className={clsx(
                     'ease-power4-in-out flex items-center gap-2.5 whitespace-nowrap transition-[padding] duration-700',
-                    step.isActive ? 'p-6' : 'p-2.5',
+                    step.isActive ? 'p-6' : 'p-6 md:p-2.5',
                   )}
                   onClick={() => {
                     const currentActiveIndex = steps.findIndex((s) => s.isActive);
@@ -161,7 +173,7 @@ const WebsiteBuilder = () => {
                     className={clsx(
                       'p1 bg-blue z-10 flex h-14 w-14 shrink-0 items-center justify-center rounded-[19px] text-white',
                       'after:bg-blue after:absolute after:-z-10 after:h-4 after:w-4 after:rounded-full after:transition-transform after:duration-700 after:content-[""]',
-                      step.isCompleted && !step.isActive ? 'after:scale-[60]' : 'after:scale-0',
+                      step.isCompleted && !step.isActive ? 'md:after:scale-[65]' : 'after:scale-0',
                     )}
                   >
                     <svg
@@ -192,7 +204,9 @@ const WebsiteBuilder = () => {
                   <span
                     className={clsx(
                       'z-20 overflow-hidden leading-14 text-ellipsis transition-colors duration-300',
-                      step.isCompleted && !step.isActive ? 'text-white' : 'text-black',
+                      step.isCompleted && !step.isActive
+                        ? 'text-black md:text-white'
+                        : 'text-black',
                     )}
                   >
                     {isFrench ? step.title.fr : step.title.en}
@@ -201,39 +215,51 @@ const WebsiteBuilder = () => {
                 <div className="px-6" id={'step-description-' + step.id}>
                   {isFrench ? step.description.fr : step.description.en}
                 </div>
-                <div
-                  className={clsx(
-                    'z-0 grow overflow-hidden',
-                    step.isActive && 'smoother-y-website-builder-steps',
-                  )}
-                >
-                  <div className="no-scrollbar h-full shrink-0 overflow-scroll" data-lenis-prevent>
-                    <AnimatePresence mode="wait">
-                      {step.isActive &&
-                        shouldRenderContent &&
-                        activeStepType &&
-                        renderActiveStep(activeStepType)}
+                <div className="smoother-y-website-builder-steps z-0 md:grow md:overflow-hidden">
+                  <div className="no-scrollbar h-fit overflow-scroll md:h-full md:shrink-0">
+                    <AnimatePresence>
+                      {isMobile
+                        ? renderActiveStep(step.type)
+                        : step.isActive &&
+                          shouldRenderContent &&
+                          activeStepType &&
+                          renderActiveStep(activeStepType)}
                     </AnimatePresence>
                   </div>
                 </div>
-                <div className="mt-auto ml-auto p-6">
-                  {step.isActive && (
-                    <Button
-                      className="shrink-0"
-                      color="secondary"
-                      disabled={!isCurrentStepValid()}
-                      onClick={nextStep}
-                    >
-                      {index === steps.length - 1 ? 'Finaliser' : 'Suivant'}
-                    </Button>
-                  )}
+                <div className="mt-auto ml-auto space-x-2 p-6">
+                  <Button
+                    className="shrink-0"
+                    color="primary"
+                    onClick={() => {
+                      if (step.type === WEBSITE_BUILDER_STEPS.PAGES) {
+                        handleResetPages();
+                      } else if (step.type === WEBSITE_BUILDER_STEPS.ANIMATIONS) {
+                        handleResetAnimations();
+                      } else if (step.type === WEBSITE_BUILDER_STEPS.OPTIONS) {
+                        handleResetOptions();
+                      } else if (step.type === WEBSITE_BUILDER_STEPS.FINAL) {
+                        handleResetForm();
+                      }
+                    }}
+                  >
+                    {step.button.reset[isFrench ? 'fr' : 'en']}
+                  </Button>
+                  <Button
+                    className="shrink-0"
+                    color="secondary"
+                    disabled={!isCurrentStepValid()}
+                    onClick={nextStep}
+                  >
+                    {step.button.next[isFrench ? 'fr' : 'en']}
+                  </Button>
                 </div>
               </div>
             );
           })}
         </div>
         {!isMobile && (
-          <div className="border-blue-30 col-span-1 h-full w-full shrink-0 rounded-3xl border-[1px] bg-[#e9e9fd] lg:col-span-2">
+          <div className="border-blue-30 col-span-1 h-full w-full shrink-0 rounded-3xl border-[1px] bg-[#e9e9fd] xl:col-span-2">
             <ViewerBuilder
               handleDeletePage={handleDeletePage}
               handleUnselectPage={handleUnselectPage}

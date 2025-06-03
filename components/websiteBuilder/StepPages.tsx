@@ -40,10 +40,10 @@ const StepPages = ({ pages, onToggle, onDelete, onAdd }: StepPagesProps) => {
         {pages.map((page, index) => (
           <motion.div
             key={page.id}
-            animate={{ scale: 1, transformOrigin: 'left' }}
+            animate={{ scale: 1, transformOrigin: '20px' }}
             className="h-fit"
-            exit={{ scale: 0, transformOrigin: 'left' }}
-            initial={{ scale: 0, transformOrigin: 'left' }}
+            exit={{ scale: 0, transformOrigin: '20px' }}
+            initial={{ scale: 0, transformOrigin: '20px' }}
             transition={{
               duration: 0.3,
               ease: [0.76, 0, 0.24, 1],
@@ -64,9 +64,9 @@ const StepPages = ({ pages, onToggle, onDelete, onAdd }: StepPagesProps) => {
 
         <motion.div
           key="button-add-page"
-          animate={{ scale: 1, transformOrigin: 'left' }}
-          exit={{ scale: 0, transformOrigin: 'left' }}
-          initial={{ scale: 0, transformOrigin: 'left' }}
+          animate={{ scale: 1, transformOrigin: '20px' }}
+          exit={{ scale: 0, transformOrigin: '20px' }}
+          initial={{ scale: 0, transformOrigin: '20px' }}
           transition={{
             duration: 0.3,
             ease: [0.76, 0, 0.24, 1],

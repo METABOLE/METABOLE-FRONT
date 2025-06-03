@@ -135,10 +135,20 @@ export const useWebsiteBuilder = () => {
     setPages(updatedPages);
   };
 
+  const handleResetPages = () => {
+    localStorage.removeItem('metabole-website-builder-pages');
+    setPages(PAGES.map((page) => ({ ...page, selected: false })));
+  };
+
   // ANIMATIONS
   const handleAnimationChange = (newAnimation: Animation) => {
     localStorage.setItem('metabole-website-builder-animation', JSON.stringify(newAnimation));
     setSelectedAnimation(newAnimation);
+  };
+
+  const handleResetAnimations = () => {
+    localStorage.removeItem('metabole-website-builder-animation');
+    setSelectedAnimation(ANIMATIONS.IMMERSIVES);
   };
 
   // OPTIONS
@@ -151,10 +161,20 @@ export const useWebsiteBuilder = () => {
     setOptions(updatedOptions);
   };
 
+  const handleResetOptions = () => {
+    localStorage.removeItem('metabole-website-builder-options');
+    setOptions(OPTIONS.map((option) => ({ ...option, id: uuidv4(), selected: false })));
+  };
+
   // FORM
   const handleFormChange = (updatedFormData: FormWebsiteBuilderData) => {
     localStorage.setItem('metabole-website-builder-form', JSON.stringify(updatedFormData));
     setFormData(updatedFormData);
+  };
+
+  const handleResetForm = () => {
+    localStorage.removeItem('metabole-website-builder-form');
+    setFormData({ name: '', email: '', phone: '', message: '' });
   };
 
   const goToStep = (stepIndex: number) => {
@@ -176,7 +196,7 @@ export const useWebsiteBuilder = () => {
       case WEBSITE_BUILDER_STEPS.OPTIONS:
         return isOptionsValid;
       case WEBSITE_BUILDER_STEPS.FINAL:
-        return isFormValid;
+        return isFormValid && isPagesValid && isAnimationValid && isOptionsValid;
       default:
         return false;
     }
@@ -192,35 +212,19 @@ export const useWebsiteBuilder = () => {
   const nextStep = () => {
     const currentStepIndex = steps.findIndex((step) => step.isActive);
 
-    // Vérification de la validité avant de passer à l'étape suivante
-    if (!isCurrentStepValid()) {
-      let errorMessage = '';
-      const currentStep = steps[currentStepIndex];
-
-      switch (currentStep.type) {
-        case WEBSITE_BUILDER_STEPS.PAGES:
-          errorMessage = 'Veuillez sélectionner au moins une page.';
-          break;
-        case WEBSITE_BUILDER_STEPS.ANIMATIONS:
-          errorMessage = "Veuillez sélectionner un type d'animation.";
-          break;
-        case WEBSITE_BUILDER_STEPS.FINAL:
-          errorMessage = 'Veuillez remplir tous les champs obligatoires.';
-          break;
-        default:
-          errorMessage = 'Veuillez remplir les informations requises.';
-      }
-
-      alert(errorMessage);
-      return;
-    }
-
-    if (currentStepIndex === steps.length - 1) {
+    if (
+      currentStepIndex === steps.length - 1 &&
+      isPagesValid &&
+      isAnimationValid &&
+      isOptionsValid &&
+      isFormValid
+    ) {
       submitForm();
       return;
     }
 
-    // Passage à l'étape suivante
+    if (!isStepValid(steps[currentStepIndex].type)) return;
+
     setSteps((currentSteps) =>
       currentSteps.map((step, index) => {
         if (index === currentStepIndex) {
@@ -290,7 +294,7 @@ export const useWebsiteBuilder = () => {
   };
 
   return {
-    // États
+    // STATES
     steps,
     pages,
     animations: Object.values(ANIMATIONS),
@@ -301,23 +305,22 @@ export const useWebsiteBuilder = () => {
     selectedOptions,
     totalPrice,
 
-    // Validations
-    isPagesValid,
-    isAnimationValid,
-    isOptionsValid,
-    isFormValid,
+    // VALIDATORS
     isCurrentStepValid,
 
-    // Actions
+    // FUNCTIONS
     handlePagesChange,
     handleUnselectPage,
     handleDeletePage,
+    handleResetPages,
     handleAnimationChange,
+    handleResetAnimations,
     handleOptionsChange,
+    handleResetOptions,
     handleFormChange,
+    handleResetForm,
     setSteps,
     goToStep,
     nextStep,
-    submitForm,
   };
 };

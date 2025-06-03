@@ -11,23 +11,32 @@ export const STEPS = [
     description: {
       fr: (
         <p>
-          <span className="text-black">Combien de pages pour raconter votre histoire ?</span>
+          <span className="text-black">Combien de pages ?</span>
           <br />
           <span className="text-black-30">
-            Ajoutez et supprimez des pages en fonction de vos besoins. Vous pouvez nommer vos pages
-            pour vous repérer
+            Nommez vos pages (ex : Accueil, Contact…) et précisez le nombre de sections par page.
           </span>
         </p>
       ),
       en: (
         <p>
-          <span className="text-black">How many pages to tell your story?</span>
+          <span className="text-black">How many pages?</span>
           <br />
           <span className="text-black-30">
-            Add and remove pages as needed. You can name your pages to keep track of them.
+            Name each page (e.g. Home, Contact) and estimate how many sections it will contain.
           </span>
         </p>
       ),
+    },
+    button: {
+      next: {
+        fr: 'Suivant',
+        en: 'Next',
+      },
+      reset: {
+        fr: 'Réinitialiser',
+        en: 'Reset',
+      },
     },
     type: WEBSITE_BUILDER_STEPS.PAGES,
   },
@@ -40,24 +49,38 @@ export const STEPS = [
     description: {
       fr: (
         <p>
-          <span className="text-black">Fonctionnalités, modules, intégrations.</span>
+          <span className="text-black">Quel niveau d’animation ?</span>
           <br />
           <span className="text-black-30">
-            Blog, formulaire, multilingue, carte, CMS… cochez ce dont vous avez besoin. Tout est
-            pensé pour vous simplifier la vie sans compromettre l'esthétique.
+            • Légères : transitions simples.
+            <br />
+            • Immersives : effets de scroll.
+            <br />• Interactives : storytelling, animations complexes.
           </span>
         </p>
       ),
       en: (
         <p>
-          <span className="text-black">Animation type</span>
+          <span className="text-black">Animation level?</span>
           <br />
           <span className="text-black-30">
-            Choose the animation type that best suits your needs. You can select from light,
-            immersive, or advanced interactivity animations.
+            • Light: simple transitions.
+            <br />
+            • Immersive: scroll effects.
+            <br />• Interactive: storytelling, advanced motion.
           </span>
         </p>
       ),
+    },
+    button: {
+      next: {
+        fr: 'Suivant',
+        en: 'Next',
+      },
+      reset: {
+        fr: 'Réinitialiser',
+        en: 'Reset',
+      },
     },
     type: WEBSITE_BUILDER_STEPS.ANIMATIONS,
   },
@@ -70,24 +93,30 @@ export const STEPS = [
     description: {
       fr: (
         <p>
-          <span className="text-black">Fonctionnalités, modules, intégrations.</span>
+          <span className="text-black">Fonctionnalités globales</span>
           <br />
           <span className="text-black-30">
-            Blog, formulaire, multilingue, carte, CMS… cochez ce dont vous avez besoin. Tout est
-            pensé pour vous simplifier la vie sans compromettre l'esthétique.
+            Multilingue, CMS, SEO… sélectionnez ce qui vous est utile.
           </span>
         </p>
       ),
       en: (
         <p>
-          <span className="text-black">Features, modules, integrations.</span>
+          <span className="text-black">Global features</span>
           <br />
-          <span className="text-black-30">
-            Blog, form, multilingual, map, CMS... check what you need. Everything is designed to
-            make your life easier without compromising aesthetics.
-          </span>
+          <span className="text-black-30">Multilingual, CMS, SEO… pick what matters to you.</span>
         </p>
       ),
+    },
+    button: {
+      next: {
+        fr: 'Suivant',
+        en: 'Next',
+      },
+      reset: {
+        fr: 'Réinitialiser',
+        en: 'Reset',
+      },
     },
     type: WEBSITE_BUILDER_STEPS.OPTIONS,
   },
@@ -100,23 +129,30 @@ export const STEPS = [
     description: {
       fr: (
         <p>
-          <span className="text-black">Finalisez votre devis.</span>
+          <span className="text-black">Votre estimation est prête</span>
           <br />
           <span className="text-black-30">
-            Vous pouvez modifier vos choix à tout moment. Vous pouvez également demander un devis
-            personnalisé.
+            Vous pouvez ajuster vos choix ou demander un devis sur-mesure.
           </span>
         </p>
       ),
       en: (
         <p>
-          <span className="text-black">Finalize your quote.</span>
+          <span className="text-black">Your estimate is ready</span>
           <br />
-          <span className="text-black-30">
-            You can modify your choices at any time. You can also request a custom quote.
-          </span>
+          <span className="text-black-30">Adjust your choices or request a custom quote.</span>
         </p>
       ),
+    },
+    button: {
+      next: {
+        fr: 'Terminer',
+        en: 'Finish',
+      },
+      reset: {
+        fr: 'Réinitialiser',
+        en: 'Reset',
+      },
     },
     type: WEBSITE_BUILDER_STEPS.FINAL,
   },
@@ -124,12 +160,8 @@ export const STEPS = [
 
 export const TJM = 500;
 
-// ----------------------
-// Pages disponibles
-// ----------------------
-
+// PAGES
 export const PAGES = [
-  // Pages essentielles
   {
     id: uuidv4(),
     title: { fr: 'Accueil', en: 'Home' },
@@ -140,59 +172,14 @@ export const PAGES = [
     title: { fr: 'Contact', en: 'Contact' },
     days: 1,
   },
-  // {
-  //   id: uuidv4(),
-  //   title: { fr: 'Mentions légales', en: 'Legal notice' },
-  //   days: 0.3,
-  // },
-  {
-    id: uuidv4(),
-    title: { fr: 'Page 404', en: '404 Page' },
-    days: 0.5,
-  },
-
-  // Pages de contenu
   {
     id: uuidv4(),
     title: { fr: 'À propos', en: 'About' },
     days: 1,
   },
-  // {
-  //   id: uuidv4(),
-  //   title: { fr: 'Équipe', en: 'Team' },
-  //   days: 1.2,
-  // },
-  // {
-  //   id: uuidv4(),
-  //   title: { fr: 'Services', en: 'Services' },
-  //   days: 1.2,
-  // },
-  // {
-  //   id: uuidv4(),
-  //   title: { fr: 'Réalisations', en: 'Projects' },
-  //   days: 2,
-  // },
-  // {
-  //   id: uuidv4(),
-  //   title: { fr: 'Détail projet', en: 'Project detail' },
-  //   days: 1.5,
-  // },
-  // {
-  //   id: uuidv4(),
-  //   title: { fr: 'Blog', en: 'Blog' },
-  //   days: 1.2,
-  // },
-  // {
-  //   id: uuidv4(),
-  //   title: { fr: 'Article', en: 'Article' },
-  //   days: 1,
-  // },
 ];
 
-// ----------------------
-// Niveaux d'animation
-// ----------------------
-
+// ANIMATIONS
 export const ANIMATIONS = {
   LIGHT: {
     type: WEBSITE_BUILDER_ANIMATIONS.LIGHT,
@@ -211,10 +198,7 @@ export const ANIMATIONS = {
   },
 };
 
-// ----------------------
-// Options fonctionnelles
-// ----------------------
-
+// OPTIONS
 export const OPTIONS = [
   {
     title: { fr: 'Multilingue', en: 'Multilingual' },
@@ -225,27 +209,7 @@ export const OPTIONS = [
     days: 2,
   },
   {
-    title: { fr: 'Formulaire', en: 'Form' },
-    days: 1,
-  },
-  {
-    title: { fr: 'Carte', en: 'Map' },
-    days: 1.5,
-  },
-  {
     title: { fr: 'SEO', en: 'SEO' },
     days: 1,
-  },
-  {
-    title: { fr: 'APIs', en: 'APIs' },
-    days: 2,
-  },
-  {
-    title: { fr: 'Blog', en: 'Blog' },
-    days: 3,
-  },
-  {
-    title: { fr: 'E-commerce', en: 'E-commerce' },
-    days: 4,
   },
 ];
