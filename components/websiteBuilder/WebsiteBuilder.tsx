@@ -262,6 +262,7 @@ const WebsiteBuilder = () => {
           <div className="border-blue-30 col-span-1 h-full w-full shrink-0 rounded-3xl border-[1px] bg-[#e9e9fd] xl:col-span-2">
             <ViewerBuilder
               handleDeletePage={handleDeletePage}
+              handleSelectPage={handlePagesChange}
               handleUnselectPage={handleUnselectPage}
               selectedAnimation={selectedAnimation}
               selectedOptions={selectedOptions}

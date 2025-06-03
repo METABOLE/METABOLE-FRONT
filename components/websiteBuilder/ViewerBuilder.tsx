@@ -1,12 +1,14 @@
+import { ANIMATIONS } from '@/constants';
+import { useClickOutside } from '@/hooks/useClickOutside';
 import { useLanguage } from '@/providers/language.provider';
 import { Animation, COLORS, Option, Page } from '@/types';
+import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useState } from 'react';
 import Hint from '../Hint';
 import { IconQuestionMark } from '../Icons';
 import SafeNumberFlow from '../SafeNumberFlow';
 import PageViewer from './PageViewer';
-import { ANIMATIONS } from '@/constants';
-import clsx from 'clsx';
 
 const ViewerBuilder = ({
   selectedPages,
@@ -15,6 +17,7 @@ const ViewerBuilder = ({
   totalPrice,
   handleUnselectPage,
   handleDeletePage,
+  handleSelectPage,
 }: {
   selectedPages: Page[];
   selectedAnimation: Animation;
@@ -22,18 +25,72 @@ const ViewerBuilder = ({
   totalPrice: number;
   handleDeletePage: (id: string) => void;
   handleUnselectPage: (id: string) => void;
+  handleSelectPage?: (pageId: string) => void;
 }) => {
   const { isFrench } = useLanguage();
+  const [isDragOver, setIsDragOver] = useState(false);
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'copy';
+  };
+
+  const handleDragEnter = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX;
+    const y = e.clientY;
+
+    if (x < rect.left || x > rect.right || y < rect.top || y > rect.bottom) {
+      setIsDragOver(false);
+    }
+  };
+
+  const dragRef = useClickOutside<HTMLDivElement>(() => {
+    setIsDragOver(false);
+  });
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(false);
+
+    const pageId = e.dataTransfer.getData('text/plain');
+    if (pageId && handleSelectPage) {
+      handleSelectPage(pageId);
+    }
+  };
 
   return (
     <div className="grid h-full w-full grid-rows-[1fr_243px_123px] xl:grid-rows-[1fr_123px_123px]">
       <div className="border-blue-30 relative h-full w-full overflow-hidden border-b-[1px]">
-        <PageViewer
-          handleDeletePage={handleDeletePage}
-          handleUnselectPage={handleUnselectPage}
-          pages={selectedPages}
-        />
-        <div className="absolute right-0 bottom-0 flex w-full justify-end gap-4 overflow-scroll p-4">
+        <div
+          ref={dragRef}
+          className="relative h-full w-full overflow-hidden rounded-t-3xl"
+          onDragEnter={handleDragEnter}
+          onDragExit={handleDragLeave}
+          onDragLeave={handleDragLeave}
+          onDragOver={handleDragOver}
+          onDrop={handleDrop}
+        >
+          <PageViewer
+            handleDeletePage={handleDeletePage}
+            handleUnselectPage={handleUnselectPage}
+            pages={selectedPages}
+          />
+
+          <div
+            className={clsx(
+              'bg-blue/10 pointer-events-none absolute inset-0 z-50 transition-opacity',
+              isDragOver ? 'opacity-100' : 'opacity-0',
+            )}
+          />
+        </div>
+        <div className="pointer-events-none absolute right-0 bottom-0 flex w-full justify-end gap-4 overflow-scroll p-4">
           <AnimatePresence>
             {selectedOptions.map((option, index) => (
               <motion.div

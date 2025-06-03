@@ -11,6 +11,7 @@ interface StepPagesProps {
   onToggle: (pageId: string) => void;
   onDelete: (pageId: string) => void;
   onAdd: (pageTitle: string) => void;
+  onDragEnd?: () => void;
 }
 
 const StepPages = ({ pages, onToggle, onDelete, onAdd }: StepPagesProps) => {
@@ -34,6 +35,11 @@ const StepPages = ({ pages, onToggle, onDelete, onAdd }: StepPagesProps) => {
     }
   };
 
+  const handleDragStart = (e: React.DragEvent, pageId: string) => {
+    e.dataTransfer.setData('text/plain', pageId);
+    e.dataTransfer.effectAllowed = 'copy';
+  };
+
   return (
     <div className="flex w-full flex-wrap gap-1.5 overflow-scroll p-6">
       <AnimatePresence>
@@ -51,14 +57,19 @@ const StepPages = ({ pages, onToggle, onDelete, onAdd }: StepPagesProps) => {
             }}
             layout
           >
-            <ButtonCheckbox
-              key={page.id}
-              id={page.id}
-              selected={page.selected}
-              title={isFrench ? page.title.fr : page.title.en}
-              onDelete={onDelete}
-              onToggle={onToggle}
-            />
+            <div
+              {...(!page.selected && { draggable: true })}
+              onDragStart={(e) => handleDragStart(e, page.id)}
+            >
+              <ButtonCheckbox
+                key={page.id}
+                id={page.id}
+                selected={page.selected}
+                title={isFrench ? page.title.fr : page.title.en}
+                onDelete={onDelete}
+                onToggle={onToggle}
+              />
+            </div>
           </motion.div>
         ))}
 
