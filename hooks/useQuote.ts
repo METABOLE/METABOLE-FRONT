@@ -1,15 +1,15 @@
-import { ANIMATIONS, OPTIONS, PAGES, STEPS } from '@/constants/websiteBuilder.constant';
+import { ANIMATIONS, OPTIONS, PAGES, STEPS } from '@/constants/quote.constant';
 import { useLanguage } from '@/providers/language.provider';
 import { postQuoteForm } from '@/services/quote.service';
-import { Animation, FormWebsiteBuilderData, Option, Page, WEBSITE_BUILDER_STEPS } from '@/types';
-import { QuoteFormData, StepState } from '@/types/quote.type';
+import { Animation, Option, Page, QUOTE_STEPS } from '@/types';
+import { QuoteFormData, StepFormData, StepState } from '@/types/quote.type';
 import { useMutation } from '@tanstack/react-query';
 import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { v4 as uuidv4 } from 'uuid';
 import { useAudio } from './useAudio';
 
-export const useWebsiteBuilder = () => {
+export const useQuote = () => {
   const { isFrench } = useLanguage();
   const { play: playError } = useAudio('/sounds/error.mp3');
   const { play: playSuccess } = useAudio('/sounds/sent.mp3');
@@ -28,7 +28,7 @@ export const useWebsiteBuilder = () => {
     OPTIONS.map((option) => ({ ...option, id: uuidv4(), selected: false })),
   );
 
-  const [formData, setFormData] = useState<FormWebsiteBuilderData>({
+  const [formData, setFormData] = useState<StepFormData>({
     name: '',
     email: '',
     phone: '',
@@ -51,31 +51,31 @@ export const useWebsiteBuilder = () => {
   }, [formData]);
 
   useEffect(() => {
-    const storedPages = localStorage.getItem('metabole-website-builder-pages');
+    const storedPages = localStorage.getItem('metabole-quote-builder-pages');
     if (storedPages) {
       const parsedPages: Page[] = JSON.parse(storedPages);
       setPages(parsedPages);
     }
 
-    const storedAnimation = localStorage.getItem('metabole-website-builder-animation');
+    const storedAnimation = localStorage.getItem('metabole-quote-builder-animation');
     if (storedAnimation) {
       const parsedAnimation: Animation = JSON.parse(storedAnimation);
       setSelectedAnimation(parsedAnimation);
     }
 
-    const storedOptions = localStorage.getItem('metabole-website-builder-options');
+    const storedOptions = localStorage.getItem('metabole-quote-builder-options');
     if (storedOptions) {
       const parsedOptions: Option[] = JSON.parse(storedOptions);
       setOptions(parsedOptions);
     }
 
-    const storedForm = localStorage.getItem('metabole-website-builder-form');
+    const storedForm = localStorage.getItem('metabole-quote-builder-form');
     if (storedForm) {
-      const parsedForm: FormWebsiteBuilderData = JSON.parse(storedForm);
+      const parsedForm: StepFormData = JSON.parse(storedForm);
       setFormData(parsedForm);
     }
 
-    const storedStepsState = localStorage.getItem('metabole-website-builder-steps');
+    const storedStepsState = localStorage.getItem('metabole-quote-builder-steps');
     if (storedStepsState) {
       try {
         const parsedStepsState: StepState[] = JSON.parse(storedStepsState);
@@ -94,7 +94,7 @@ export const useWebsiteBuilder = () => {
         );
       } catch (error) {
         console.error('Erreur lors de la reconstruction des steps:', error);
-        localStorage.removeItem('metabole-website-builder-steps');
+        localStorage.removeItem('metabole-quote-builder-steps');
       }
     }
   }, []);
@@ -123,21 +123,21 @@ export const useWebsiteBuilder = () => {
       };
 
       const updatedPages = [...pages, newPage];
-      localStorage.setItem('metabole-website-builder-pages', JSON.stringify(updatedPages));
+      localStorage.setItem('metabole-quote-builder-pages', JSON.stringify(updatedPages));
       setPages(updatedPages);
     } else {
       const updatedPages = pages.map((page) =>
         page.id === pageIdOrTitle ? { ...page, selected: !page.selected } : page,
       );
 
-      localStorage.setItem('metabole-website-builder-pages', JSON.stringify(updatedPages));
+      localStorage.setItem('metabole-quote-builder-pages', JSON.stringify(updatedPages));
       setPages(updatedPages);
     }
   };
 
   const handleDeletePage = (pageId: string) => {
     const updatedPages = pages.filter((page) => page.id !== pageId);
-    localStorage.setItem('metabole-website-builder-pages', JSON.stringify(updatedPages));
+    localStorage.setItem('metabole-quote-builder-pages', JSON.stringify(updatedPages));
     setPages(updatedPages);
   };
 
@@ -145,23 +145,23 @@ export const useWebsiteBuilder = () => {
     const updatedPages = pages.map((page) =>
       page.id === pageId ? { ...page, selected: false } : page,
     );
-    localStorage.setItem('metabole-website-builder-pages', JSON.stringify(updatedPages));
+    localStorage.setItem('metabole-quote-builder-pages', JSON.stringify(updatedPages));
     setPages(updatedPages);
   };
 
   const handleResetPages = () => {
-    localStorage.removeItem('metabole-website-builder-pages');
+    localStorage.removeItem('metabole-quote-builder-pages');
     setPages(PAGES.map((page) => ({ ...page, selected: false })));
   };
 
   // ANIMATIONS
   const handleAnimationChange = (newAnimation: Animation) => {
-    localStorage.setItem('metabole-website-builder-animation', JSON.stringify(newAnimation));
+    localStorage.setItem('metabole-quote-builder-animation', JSON.stringify(newAnimation));
     setSelectedAnimation(newAnimation);
   };
 
   const handleResetAnimations = () => {
-    localStorage.removeItem('metabole-website-builder-animation');
+    localStorage.removeItem('metabole-quote-builder-animation');
     setSelectedAnimation(ANIMATIONS.IMMERSIVES);
   };
 
@@ -171,36 +171,36 @@ export const useWebsiteBuilder = () => {
       option.id === optionId ? { ...option, selected: !option.selected } : option,
     );
 
-    localStorage.setItem('metabole-website-builder-options', JSON.stringify(updatedOptions));
+    localStorage.setItem('metabole-quote-builder-options', JSON.stringify(updatedOptions));
     setOptions(updatedOptions);
   };
 
   const handleResetOptions = () => {
-    localStorage.removeItem('metabole-website-builder-options');
+    localStorage.removeItem('metabole-quote-builder-options');
     setOptions(OPTIONS.map((option) => ({ ...option, id: uuidv4(), selected: false })));
   };
 
   // FORM
-  const handleFormChange = (updatedFormData: FormWebsiteBuilderData) => {
-    localStorage.setItem('metabole-website-builder-form', JSON.stringify(updatedFormData));
+  const handleFormChange = (updatedFormData: StepFormData) => {
+    localStorage.setItem('metabole-quote-builder-form', JSON.stringify(updatedFormData));
     setFormData(updatedFormData);
   };
 
   const handleResetForm = () => {
-    localStorage.removeItem('metabole-website-builder-form');
+    localStorage.removeItem('metabole-quote-builder-form');
     setFormData({ name: '', email: '', phone: '', message: '' });
   };
 
   // VALIDATORS
-  const isStepValid = (stepType: WEBSITE_BUILDER_STEPS) => {
+  const isStepValid = (stepType: QUOTE_STEPS) => {
     switch (stepType) {
-      case WEBSITE_BUILDER_STEPS.PAGES:
+      case QUOTE_STEPS.PAGES:
         return isPagesValid;
-      case WEBSITE_BUILDER_STEPS.ANIMATIONS:
+      case QUOTE_STEPS.ANIMATIONS:
         return isAnimationValid;
-      case WEBSITE_BUILDER_STEPS.OPTIONS:
+      case QUOTE_STEPS.OPTIONS:
         return isOptionsValid;
-      case WEBSITE_BUILDER_STEPS.FINAL:
+      case QUOTE_STEPS.FINAL:
         return isFormValid && isPagesValid && isAnimationValid && isOptionsValid;
       default:
         return false;
@@ -220,7 +220,7 @@ export const useWebsiteBuilder = () => {
         ...step,
         isActive: index === stepIndex,
       }));
-      localStorage.setItem('metabole-website-builder-steps', JSON.stringify(updatedSteps));
+      localStorage.setItem('metabole-quote-builder-steps', JSON.stringify(updatedSteps));
       return updatedSteps;
     });
   };
@@ -251,17 +251,17 @@ export const useWebsiteBuilder = () => {
           return step;
         }
       });
-      localStorage.setItem('metabole-website-builder-steps', JSON.stringify(updatedSteps));
+      localStorage.setItem('metabole-quote-builder-steps', JSON.stringify(updatedSteps));
       return updatedSteps;
     });
   };
 
   const resetForm = () => {
-    localStorage.removeItem('metabole-website-builder-pages');
-    localStorage.removeItem('metabole-website-builder-animation');
-    localStorage.removeItem('metabole-website-builder-options');
-    localStorage.removeItem('metabole-website-builder-form');
-    localStorage.removeItem('metabole-website-builder-steps');
+    localStorage.removeItem('metabole-quote-builder-pages');
+    localStorage.removeItem('metabole-quote-builder-animation');
+    localStorage.removeItem('metabole-quote-builder-options');
+    localStorage.removeItem('metabole-quote-builder-form');
+    localStorage.removeItem('metabole-quote-builder-steps');
 
     setPages(PAGES.map((page) => ({ ...page, selected: false })));
     setSelectedAnimation(ANIMATIONS.IMMERSIVES);

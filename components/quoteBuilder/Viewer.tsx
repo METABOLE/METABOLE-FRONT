@@ -8,7 +8,7 @@ import { useState } from 'react';
 import SafeNumberFlow from '../SafeNumberFlow';
 import PageViewer from './PageViewer';
 
-const ViewerBuilder = ({
+const Viewer = ({
   selectedPages,
   selectedAnimation,
   selectedOptions,
@@ -160,4 +160,4 @@ const ViewerBuilder = ({
   );
 };
 
-export default ViewerBuilder;
+export default Viewer;

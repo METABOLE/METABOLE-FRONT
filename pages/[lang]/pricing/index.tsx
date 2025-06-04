@@ -1,4 +1,4 @@
-import WebsiteBuilder from '@/components/websiteBuilder/WebsiteBuilder';
+import QuoteBuilder from '@/components/quoteBuilder/QuoteBuilder';
 import { useLanguage } from '@/providers/language.provider';
 
 const Pricing = () => {
@@ -27,7 +27,7 @@ const Pricing = () => {
           )}
         </p>
       </div>
-      <WebsiteBuilder />
+      <QuoteBuilder />
     </section>
   );
 };

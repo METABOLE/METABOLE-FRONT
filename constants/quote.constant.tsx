@@ -1,4 +1,4 @@
-import { WEBSITE_BUILDER_ANIMATIONS, WEBSITE_BUILDER_STEPS } from '@/types';
+import { QUOTE_ANIMATIONS, QUOTE_STEPS } from '@/types';
 import { v4 as uuidv4 } from 'uuid';
 
 export const STEPS = [
@@ -38,7 +38,7 @@ export const STEPS = [
         en: 'Reset',
       },
     },
-    type: WEBSITE_BUILDER_STEPS.PAGES,
+    type: QUOTE_STEPS.PAGES,
   },
   {
     id: 'step-2-animations',
@@ -82,7 +82,7 @@ export const STEPS = [
         en: 'Reset',
       },
     },
-    type: WEBSITE_BUILDER_STEPS.ANIMATIONS,
+    type: QUOTE_STEPS.ANIMATIONS,
   },
   {
     id: 'step-3-options',
@@ -118,7 +118,7 @@ export const STEPS = [
         en: 'Reset',
       },
     },
-    type: WEBSITE_BUILDER_STEPS.OPTIONS,
+    type: QUOTE_STEPS.OPTIONS,
   },
   {
     id: 'step-4-finalisation',
@@ -158,7 +158,7 @@ export const STEPS = [
         en: 'Reset',
       },
     },
-    type: WEBSITE_BUILDER_STEPS.FINAL,
+    type: QUOTE_STEPS.FINAL,
   },
 ];
 
@@ -183,15 +183,15 @@ export const PAGES = [
 // ANIMATIONS
 export const ANIMATIONS = {
   LIGHT: {
-    type: WEBSITE_BUILDER_ANIMATIONS.LIGHT,
+    type: QUOTE_ANIMATIONS.LIGHT,
     title: { fr: 'Légères', en: 'Light' },
   },
   IMMERSIVES: {
-    type: WEBSITE_BUILDER_ANIMATIONS.IMMERSIVES,
+    type: QUOTE_ANIMATIONS.IMMERSIVES,
     title: { fr: 'Immersives', en: 'Immersive' },
   },
   ADVANCED: {
-    type: WEBSITE_BUILDER_ANIMATIONS.ADVANCED,
+    type: QUOTE_ANIMATIONS.ADVANCED,
     title: { fr: 'Interactivité poussée', en: 'Advanced interactivity' },
   },
 };

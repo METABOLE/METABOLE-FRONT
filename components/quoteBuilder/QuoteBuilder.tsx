@@ -1,7 +1,7 @@
 import { useMatchMedia } from '@/hooks/useCheckScreenSize';
-import { useWebsiteBuilder } from '@/hooks/useWebsiteBuilder';
+import { useQuote } from '@/hooks/useQuote';
 import { useLanguage } from '@/providers/language.provider';
-import { BREAKPOINTS, WEBSITE_BUILDER_STEPS } from '@/types';
+import { BREAKPOINTS, QUOTE_STEPS } from '@/types';
 import { useGSAP } from '@gsap/react';
 import clsx from 'clsx';
 import { AnimatePresence } from 'framer-motion';
@@ -14,9 +14,9 @@ import StepAnimations from './StepAnimations';
 import StepFinalisation from './StepFinalisation';
 import StepOptions from './StepOptions';
 import StepPages from './StepPages';
-import ViewerBuilder from './ViewerBuilder';
+import Viewer from './Viewer';
 
-const WebsiteBuilder = () => {
+const QuoteBuilder = () => {
   const { isFrench } = useLanguage();
   const {
     // STATES
@@ -47,13 +47,11 @@ const WebsiteBuilder = () => {
     setSteps,
     goToStep,
     nextStep,
-  } = useWebsiteBuilder();
+  } = useQuote();
   const isMobile = useMatchMedia(BREAKPOINTS.MD);
 
   const [shouldRenderContent, setShouldRenderContent] = useState(true);
-  const [activeStepType, setActiveStepType] = useState<WEBSITE_BUILDER_STEPS | null>(
-    WEBSITE_BUILDER_STEPS.PAGES,
-  );
+  const [activeStepType, setActiveStepType] = useState<QUOTE_STEPS | null>(QUOTE_STEPS.PAGES);
   const previousActiveStepId = useRef<string | null>(null);
 
   useEffect(() => {
@@ -90,9 +88,9 @@ const WebsiteBuilder = () => {
     }
   }, [steps.map((step) => `${step.id}-${step.isActive}`).join(',')]);
 
-  const renderActiveStep = (type: WEBSITE_BUILDER_STEPS) => {
+  const renderActiveStep = (type: QUOTE_STEPS) => {
     switch (type) {
-      case WEBSITE_BUILDER_STEPS.PAGES:
+      case QUOTE_STEPS.PAGES:
         return (
           <StepPages
             pages={pages}
@@ -101,7 +99,7 @@ const WebsiteBuilder = () => {
             onToggle={handlePagesChange}
           />
         );
-      case WEBSITE_BUILDER_STEPS.ANIMATIONS:
+      case QUOTE_STEPS.ANIMATIONS:
         return (
           <StepAnimations
             animations={animations}
@@ -109,9 +107,9 @@ const WebsiteBuilder = () => {
             onAnimationChange={handleAnimationChange}
           />
         );
-      case WEBSITE_BUILDER_STEPS.OPTIONS:
+      case QUOTE_STEPS.OPTIONS:
         return <StepOptions options={options} onToggle={handleOptionsChange} />;
-      case WEBSITE_BUILDER_STEPS.FINAL:
+      case QUOTE_STEPS.FINAL:
         return <StepFinalisation formData={formData} onFormChange={handleFormChange} />;
     }
   };
@@ -186,7 +184,7 @@ const WebsiteBuilder = () => {
                       });
                       setSteps(stepsToSave);
                       localStorage.setItem(
-                        'metabole-website-builder-steps',
+                        'metabole-quote-builder-steps',
                         JSON.stringify(stepsToSave),
                       );
                       // setSteps((currentSteps) =>
@@ -250,10 +248,10 @@ const WebsiteBuilder = () => {
                 <div className="px-6" id={'step-description-' + step.id}>
                   {isFrench ? step.description.fr : step.description.en}
                 </div>
-                <div className="smoother-y-website-builder-steps z-0 md:grow md:overflow-hidden">
+                <div className="smoother-y-quote-builder-steps z-0 md:grow md:overflow-hidden">
                   <div
                     className="no-scrollbar h-fit overflow-scroll md:h-full md:shrink-0"
-                    {...(step.type === WEBSITE_BUILDER_STEPS.PAGES && { 'data-lenis-prevent': '' })}
+                    {...(step.type === QUOTE_STEPS.PAGES && { 'data-lenis-prevent': '' })}
                   >
                     <AnimatePresence>
                       {isMobile
@@ -270,13 +268,13 @@ const WebsiteBuilder = () => {
                     className="shrink-0"
                     color="primary"
                     onClick={() => {
-                      if (step.type === WEBSITE_BUILDER_STEPS.PAGES) {
+                      if (step.type === QUOTE_STEPS.PAGES) {
                         handleResetPages();
-                      } else if (step.type === WEBSITE_BUILDER_STEPS.ANIMATIONS) {
+                      } else if (step.type === QUOTE_STEPS.ANIMATIONS) {
                         handleResetAnimations();
-                      } else if (step.type === WEBSITE_BUILDER_STEPS.OPTIONS) {
+                      } else if (step.type === QUOTE_STEPS.OPTIONS) {
                         handleResetOptions();
-                      } else if (step.type === WEBSITE_BUILDER_STEPS.FINAL) {
+                      } else if (step.type === QUOTE_STEPS.FINAL) {
                         handleResetForm();
                       }
                     }}
@@ -298,7 +296,7 @@ const WebsiteBuilder = () => {
         </div>
         {!isMobile && (
           <div className="border-blue-30 col-span-1 h-full w-full shrink-0 rounded-3xl border-[1px] bg-[#e9e9fd] xl:col-span-2">
-            <ViewerBuilder
+            <Viewer
               handleDeletePage={handleDeletePage}
               handleSelectPage={handlePagesChange}
               handleUnselectPage={handleUnselectPage}
@@ -313,4 +311,4 @@ const WebsiteBuilder = () => {
   );
 };
 
-export default WebsiteBuilder;
+export default QuoteBuilder;

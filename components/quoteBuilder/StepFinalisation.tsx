@@ -1,13 +1,13 @@
 import { useLanguage } from '@/providers/language.provider';
 import { motion } from 'framer-motion';
-import { FormWebsiteBuilderData } from '@/types';
 import { isEmail, isPhone } from '@/utils/validation.utils';
 import { useEffect, useState } from 'react';
 import Input from '../Input';
+import { StepFormData } from '@/types/quote.type';
 
 interface StepFinalisationProps {
-  formData: FormWebsiteBuilderData;
-  onFormChange: (formData: FormWebsiteBuilderData, isValid: boolean) => void;
+  formData: StepFormData;
+  onFormChange: (formData: StepFormData, isValid: boolean) => void;
 }
 
 const StepFinalisation = ({ formData, onFormChange }: StepFinalisationProps) => {
@@ -27,7 +27,7 @@ const StepFinalisation = ({ formData, onFormChange }: StepFinalisationProps) => 
     isPhone(formData.phone) &&
     Object.values(errors).every((error) => error === '');
 
-  const updateFormData = (field: keyof FormWebsiteBuilderData, value: string) => {
+  const updateFormData = (field: keyof StepFormData, value: string) => {
     const updatedFormData = { ...formData, [field]: value };
     onFormChange(updatedFormData, isFormValid());
   };
