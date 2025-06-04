@@ -22,7 +22,6 @@ const StepFinalisation = ({ formData, onFormChange }: StepFinalisationProps) => 
   const isFormValid = () =>
     formData.name.trim() !== '' &&
     formData.email.trim() !== '' &&
-    formData.phone.trim() !== '' &&
     isEmail(formData.email) &&
     isPhone(formData.phone) &&
     Object.values(errors).every((error) => error === '');
@@ -63,7 +62,7 @@ const StepFinalisation = ({ formData, onFormChange }: StepFinalisationProps) => 
             !formData.name &&
               setErrors((prev) => ({
                 ...prev,
-                name: isFrench ? 'Veuillez entrer un nom' : 'Please enter a name',
+                name: isFrench ? 'Nom requis' : 'Name required',
               }));
           }}
           onChange={(e) => {
@@ -102,14 +101,12 @@ const StepFinalisation = ({ formData, onFormChange }: StepFinalisationProps) => 
               isEmail(formData.email) ||
                 setErrors((prev) => ({
                   ...prev,
-                  email: isFrench
-                    ? 'Veuillez entrer un email valide'
-                    : 'Please enter a valid email',
+                  email: isFrench ? 'Email invalide' : 'Invalid email',
                 }));
               !formData.email &&
                 setErrors((prev) => ({
                   ...prev,
-                  email: isFrench ? 'Veuillez entrer votre email' : 'Please enter your email',
+                  email: isFrench ? 'Email requis' : 'Email required',
                 }));
             }}
             onChange={(e) => {
@@ -143,22 +140,18 @@ const StepFinalisation = ({ formData, onFormChange }: StepFinalisationProps) => 
               isPhone(formData.phone) ||
                 setErrors((prev) => ({
                   ...prev,
-                  phone: isFrench
-                    ? 'Veuillez entrer un numéro de téléphone valide'
-                    : 'Please enter a valid phone number',
+                  phone: isFrench ? 'Téléphone invalide' : 'Invalid phone',
                 }));
               !formData.phone &&
                 setErrors((prev) => ({
                   ...prev,
-                  phone: isFrench
-                    ? 'Veuillez entrer votre numéro de téléphone'
-                    : 'Please enter your phone number',
+                  phone: '',
                 }));
             }}
             onChange={(e) => {
               isPhone(e.target.value) && setErrors((prev) => ({ ...prev, phone: '' }));
               updateFormData('phone', e.target.value);
-              e.target.value &&
+              !e.target.value &&
                 setErrors((prev) => ({
                   ...prev,
                   phone: '',

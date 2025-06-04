@@ -8,6 +8,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { v4 as uuidv4 } from 'uuid';
 import { useAudio } from './useAudio';
+import { isEmail, isPhone } from '@/utils/validation.utils';
 
 export const useQuote = () => {
   const { isFrench } = useLanguage();
@@ -45,8 +46,8 @@ export const useQuote = () => {
     return (
       formData.name.trim() !== '' &&
       formData.email.trim() !== '' &&
-      /^\S+@\S+\.\S+$/.test(formData.email) &&
-      formData.phone.trim() !== ''
+      isEmail(formData.email) &&
+      (formData.phone ? isPhone(formData.phone) : true)
     );
   }, [formData]);
 

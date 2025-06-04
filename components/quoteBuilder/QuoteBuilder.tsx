@@ -187,16 +187,6 @@ const QuoteBuilder = () => {
                         'metabole-quote-builder-steps',
                         JSON.stringify(stepsToSave),
                       );
-                      // setSteps((currentSteps) =>
-                      //   currentSteps.map((s, i) => {
-                      //     if (i === currentActiveIndex) {
-                      //       return { ...s, isActive: false, isCompleted: true };
-                      //     } else if (i === index) {
-                      //       return { ...s, isActive: true };
-                      //     }
-                      //     return s;
-                      //   }),
-                      // );
                     } else {
                       goToStep(index);
                     }

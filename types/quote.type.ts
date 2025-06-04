@@ -58,9 +58,9 @@ export interface QuoteFormData {
   phone: string;
   message: string;
   devis: {
-    pages: Page[];
-    options: Option[];
-    animation: Animation;
+    pages: string[];
+    options: string[];
+    animation: string;
   };
   lang?: 'fr' | 'en';
 }
