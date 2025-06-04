@@ -1,9 +1,9 @@
 import Lottie from '@/components/Lottie';
-import metaboleFull from '../public/lotties/metabole-full-loader.json';
-import { useRef } from 'react';
-import { useGSAP } from '@gsap/react';
 import { useEnvironment } from '@/hooks/useEnvironment';
+import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
+import { useRef } from 'react';
+import metaboleFull from '../public/lotties/metabole-full-loader.json';
 
 const ScreenLoader = () => {
   const lottieRef = useRef(null);

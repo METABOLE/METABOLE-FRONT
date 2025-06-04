@@ -8,11 +8,11 @@ import gsap from 'gsap';
 import Link from 'next/link';
 import { useRef } from 'react';
 import FloatingHalo from './FloatingHalo';
+import Hint from './Hint';
 import { IconArrow, LogoSmall } from './Icons';
 import Language from './Language';
 import NewsletterSubscription from './NewsletterSubscription';
 import Time from './Time';
-import Hint from './Hint';
 
 const Footer = ({ setIsContactOpen }: { setIsContactOpen: (isContactOpen: boolean) => void }) => {
   const animatedTitleRef = useRef<SVGSVGElement>(null);

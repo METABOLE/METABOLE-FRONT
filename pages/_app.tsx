@@ -7,6 +7,7 @@ import { AppProvider } from '@/providers/root';
 import '@/styles/main.scss';
 import '@/styles/tailwind.css';
 import { AnimatePresence } from 'framer-motion';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import { usePathname } from 'next/navigation';
@@ -37,7 +38,15 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
       {getLayout(
         <>
           {isScreenLoader && <ScreenLoader />}
-          <AnimatePresence mode="wait" onExitComplete={() => window.scrollTo(0, 0)}>
+          <AnimatePresence
+            mode="wait"
+            onExitComplete={() => {
+              window.scrollTo(0, 0);
+              setTimeout(() => {
+                ScrollTrigger.refresh();
+              }, 100);
+            }}
+          >
             <PageTransition key={pathname}>
               <Component {...pageProps} />
             </PageTransition>
