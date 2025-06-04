@@ -277,7 +277,7 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
           >
             <div
               ref={textRef}
-              className="relative flex h-full w-fit items-center justify-center px-6 whitespace-nowrap"
+              className="relative flex h-full w-fit items-center justify-center whitespace-nowrap"
             >
               {currentChild}
             </div>
@@ -285,7 +285,7 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
         </DynamicElement>
         <div
           ref={hiddenButtonRef}
-          className="label pointer-events-none invisible fixed top-0 left-0 -z-10 h-full w-fit items-center justify-center px-6 whitespace-nowrap opacity-0"
+          className="label pointer-events-none invisible fixed top-0 left-0 -z-10 h-full w-fit items-center justify-center px-6 whitespace-nowrap uppercase opacity-0"
         >
           {children}
         </div>
