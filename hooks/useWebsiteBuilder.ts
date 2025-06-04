@@ -5,9 +5,15 @@ import { Animation, FormWebsiteBuilderData, Option, Page, WEBSITE_BUILDER_STEPS 
 import { QuoteFormData } from '@/types/quote.type';
 import { useMutation } from '@tanstack/react-query';
 import { useEffect, useMemo, useState } from 'react';
+import { toast } from 'sonner';
 import { v4 as uuidv4 } from 'uuid';
+import { useAudio } from './useAudio';
 
 export const useWebsiteBuilder = () => {
+  const { isFrench } = useLanguage();
+  const { play: playError } = useAudio('/sounds/error.mp3');
+  const { play: playSuccess } = useAudio('/sounds/sent.mp3');
+
   const [steps, setSteps] = useState(
     STEPS.map((step, index) => ({
       ...step,
@@ -172,7 +178,7 @@ export const useWebsiteBuilder = () => {
     );
   };
 
-  // Fonction utilitaire pour vérifier la validité d'une étape
+  // VALIDATORS
   const isStepValid = (stepType: WEBSITE_BUILDER_STEPS) => {
     switch (stepType) {
       case WEBSITE_BUILDER_STEPS.PAGES:
@@ -246,9 +252,10 @@ export const useWebsiteBuilder = () => {
     mutationFn: ({ name, email, phone, message, devis, lang }: QuoteFormData) =>
       postQuoteForm({ name, email, phone, message, devis, lang }),
     onSuccess: () => {
+      playSuccess();
       setTimeout(() => {
         resetForm();
-      }, 1000);
+      }, 100);
     },
     onMutate: () => {
       setSteps(
@@ -260,14 +267,13 @@ export const useWebsiteBuilder = () => {
       );
     },
     onError: (error) => {
+      playError();
       console.error("Erreur d'envoi du devis", error);
     },
   });
 
-  const { isFrench } = useLanguage();
-
   const submitForm = () => {
-    sendQuote.mutate({
+    const quoteData: QuoteFormData = {
       ...formData,
       lang: isFrench ? 'fr' : 'en',
       devis: {
@@ -275,6 +281,23 @@ export const useWebsiteBuilder = () => {
         animation: selectedAnimation.type,
         options: selectedOptions.map((option) => option.title.fr),
       },
+    };
+
+    const mutationPromise = new Promise((resolve, reject) => {
+      sendQuote.mutate(quoteData, {
+        onSuccess: (data) => {
+          resolve(data);
+        },
+        onError: (error) => {
+          reject(error);
+        },
+      });
+    });
+
+    toast.promise(mutationPromise, {
+      loading: isFrench ? 'Envoi du devis en cours...' : 'Sending quote in progress...',
+      success: isFrench ? 'Devis envoyé avec succès !' : 'Quote sent successfully!',
+      error: isFrench ? "Erreur d'envoi du devis" : 'Error sending quote',
     });
   };
 

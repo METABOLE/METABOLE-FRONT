@@ -8,11 +8,12 @@ import { AnimatePresence } from 'framer-motion';
 import gsap from 'gsap';
 import { SplitText } from 'gsap/SplitText';
 import { useEffect, useRef, useState } from 'react';
+import { Toaster } from 'sonner';
 import Button from '../atoms/Button';
-import StepPages from './StepPages';
 import StepAnimations from './StepAnimations';
 import StepFinalisation from './StepFinalisation';
 import StepOptions from './StepOptions';
+import StepPages from './StepPages';
 import ViewerBuilder from './ViewerBuilder';
 
 const WebsiteBuilder = () => {
@@ -135,6 +136,23 @@ const WebsiteBuilder = () => {
 
   return (
     <>
+      <Toaster
+        toastOptions={{
+          classNames: {
+            toast:
+              '!bg-[#e9e9fd] !border-blue-30 !backdrop-blur-2xl !rounded-3xl !border-[1px] !shadow-lg',
+            title: 'font-safiro-medium',
+            description: '!text-black/70',
+            actionButton:
+              '!bg-blue !text-white !rounded-[19px] !px-4 !py-2 hover:!bg-blue/90 !transition-colors',
+            cancelButton:
+              '!bg-blue-30 !text-black !rounded-[19px] !px-4 !py-2 hover:!bg-blue-30/80 !transition-colors',
+            closeButton:
+              '!bg-blue-30 !border-blue-30 !text-black hover:!bg-blue hover:!text-white !transition-colors !rounded-[19px]',
+          },
+        }}
+      />
+
       <div className="mx-auto grid w-full max-w-[1600px] gap-5 md:h-[80vh] md:min-h-[800px] md:grid-cols-2 xl:grid-cols-3">
         <div className="col-span-1 flex h-full w-full flex-col gap-5">
           {steps.map((step, index) => {
