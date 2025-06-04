@@ -1,12 +1,10 @@
 import { ANIMATIONS } from '@/constants';
 import { useClickOutside } from '@/hooks/useClickOutside';
 import { useLanguage } from '@/providers/language.provider';
-import { Animation, COLORS, Option, Page } from '@/types';
+import { Animation, Option, Page } from '@/types';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
-import Hint from '../Hint';
-import { IconQuestionMark } from '../Icons';
 import SafeNumberFlow from '../SafeNumberFlow';
 import PageViewer from './PageViewer';
 
@@ -14,7 +12,6 @@ const ViewerBuilder = ({
   selectedPages,
   selectedAnimation,
   selectedOptions,
-  totalPrice,
   handleUnselectPage,
   handleDeletePage,
   handleSelectPage,
@@ -22,7 +19,6 @@ const ViewerBuilder = ({
   selectedPages: Page[];
   selectedAnimation: Animation;
   selectedOptions: Option[];
-  totalPrice: number;
   handleDeletePage: (id: string) => void;
   handleUnselectPage: (id: string) => void;
   handleSelectPage?: (pageId: string) => void;
@@ -66,7 +62,7 @@ const ViewerBuilder = ({
   };
 
   return (
-    <div className="grid h-full w-full grid-rows-[1fr_243px_123px] xl:grid-rows-[1fr_123px_123px]">
+    <div className="grid h-full w-full grid-rows-[1fr_243px] xl:grid-rows-[1fr_123px]">
       <div className="border-blue-30 relative h-full w-full overflow-hidden border-b-[1px]">
         <div
           ref={dragRef}
@@ -117,7 +113,7 @@ const ViewerBuilder = ({
           </AnimatePresence>
         </div>
       </div>
-      <div className="border-blue-30 grid h-full w-full grid-cols-2 border-b-[1px] xl:grid-cols-[1fr_2fr_1fr]">
+      <div className="grid h-full w-full grid-cols-2 xl:grid-cols-[1fr_2fr_1fr]">
         <div className="border-blue-30 flex items-center justify-center gap-2 xl:border-r-[1px]">
           <AnimatePresence>
             <SafeNumberFlow
@@ -159,30 +155,6 @@ const ViewerBuilder = ({
             </motion.p>
           </AnimatePresence>
         </div>
-      </div>
-      <div className="flex h-full w-full items-end px-6 pt-6 pb-2">
-        <div className="flex gap-2.5 pb-4">
-          <button className="cursor-help" id="hint-website-builder">
-            <IconQuestionMark color={COLORS.BLUE} />
-            <Hint containerId="hint-website-builder" isLeft={true}>
-              {isFrench ? (
-                <p>
-                  Estimation basée sur votre sélection. Le prix final peut varier selon les détails
-                  de votre projet. <strong>Contactez-nous</strong> pour un devis précis !
-                </p>
-              ) : (
-                <p>
-                  Estimate based on your selection. Final price may vary depending on project
-                  details. <strong>Contact us</strong> for an accurate quote!
-                </p>
-              )}
-            </Hint>
-          </button>
-          <p>{isFrench ? 'Notre estimation' : 'Our estimation'} : </p>
-        </div>
-        <p className="h2 text-blue pl-2">
-          <SafeNumberFlow suffix=" €" value={totalPrice} />
-        </p>
       </div>
     </div>
   );

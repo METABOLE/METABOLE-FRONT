@@ -3,7 +3,6 @@ import { useLanguage } from '@/providers/language.provider';
 import { postQuoteForm } from '@/services/quote.service';
 import { Animation, FormWebsiteBuilderData, Option, Page, WEBSITE_BUILDER_STEPS } from '@/types';
 import { QuoteFormData } from '@/types/quote.type';
-import { daysToPrice } from '@/utils/pricing.utils';
 import { useMutation } from '@tanstack/react-query';
 import { useEffect, useMemo, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
@@ -45,18 +44,6 @@ export const useWebsiteBuilder = () => {
       formData.phone.trim() !== ''
     );
   }, [formData]);
-
-  const basePrice = useMemo(
-    () =>
-      selectedPages.reduce((acc, page) => acc + daysToPrice(page.days), 0) +
-      selectedOptions.reduce((acc, option) => acc + daysToPrice(option.days), 0),
-    [selectedPages, selectedOptions],
-  );
-
-  const totalPrice = useMemo(
-    () => (selectedAnimation ? basePrice + basePrice * selectedAnimation.percent : basePrice),
-    [basePrice, selectedAnimation],
-  );
 
   useEffect(() => {
     const storedPages = localStorage.getItem('metabole-website-builder-pages');
@@ -104,7 +91,6 @@ export const useWebsiteBuilder = () => {
           en: pageIdOrTitle.trim(),
           fr: pageIdOrTitle.trim(),
         },
-        days: 1.5,
         selected: true,
       };
 
@@ -288,7 +274,6 @@ export const useWebsiteBuilder = () => {
         pages: selectedPages.map((page) => page.title.fr),
         animation: selectedAnimation.type,
         options: selectedOptions.map((option) => option.title.fr),
-        totalPrice,
       },
     });
   };
@@ -303,7 +288,6 @@ export const useWebsiteBuilder = () => {
     options,
     selectedPages,
     selectedOptions,
-    totalPrice,
 
     // VALIDATORS
     isCurrentStepValid,

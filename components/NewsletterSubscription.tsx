@@ -89,7 +89,7 @@ const NewsletterSubscription = ({ className, isDark }: NewsletterSubscriptionPro
             isDark={isDark}
             isLoading={formStatus === FORM_STATUS.PENDING}
             name="email"
-            placeholder="johndoe@company.com"
+            placeholder="john@company.com"
             type="email"
             value={email}
             successMessage={

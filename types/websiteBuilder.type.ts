@@ -25,19 +25,16 @@ export type Step = {
 export type Page = {
   id: string;
   title: Language;
-  days: number;
   selected: boolean;
 };
 
 export type Animation = {
   type: WEBSITE_BUILDER_ANIMATIONS;
   title: Language;
-  percent: number;
 };
 
 export type Option = {
   id: string;
   title: Language;
-  days: number;
   selected: boolean;
 };

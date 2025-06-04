@@ -5,10 +5,7 @@ import { useEffect, useRef } from 'react';
 import Wave, { WaveHandles } from './Wave';
 
 const FADE_DURATION = 0.5;
-const SOUND_STORAGE_KEY = 'metabole-sound-disabled';
-const LAST_VISIT_KEY = 'metabole-last-visit';
-const SOUND_DISABLE_DURATION = 10 * 60 * 1000;
-const ONE_DAY_DURATION = 24 * 60 * 60 * 1000;
+const SOUND_STORAGE_KEY = 'metabole-sound-enabled';
 
 type AudioResources = {
   audioContext: AudioContext;
@@ -45,50 +42,10 @@ const Sound = ({ className }: { className: string }) => {
     isInitializedRef.current = true;
   };
 
-  const updateLastVisit = () => {
+  const getSoundPreference = (): boolean => {
     try {
-      const currentTime = Date.now();
-      localStorage.setItem(LAST_VISIT_KEY, currentTime.toString());
-    } catch (error) {
-      console.error('Erreur lors de la mise à jour de la dernière visite:', error);
-    }
-  };
-
-  const checkAndResetPreferences = (): boolean => {
-    try {
-      const lastVisitStr = localStorage.getItem(LAST_VISIT_KEY);
-
-      if (lastVisitStr) {
-        const lastVisit = parseInt(lastVisitStr, 10);
-        const currentTime = Date.now();
-
-        if (currentTime - lastVisit > ONE_DAY_DURATION) {
-          localStorage.removeItem(SOUND_STORAGE_KEY);
-          return true;
-        }
-      }
-
-      updateLastVisit();
-
-      return false;
-    } catch (error) {
-      console.error('Erreur lors de la vérification des préférences:', error);
-      return false;
-    }
-  };
-
-  const shouldEnableSound = (): boolean => {
-    try {
-      const preferencesReset = checkAndResetPreferences();
-      if (preferencesReset) return true;
-
-      const storedTime = localStorage.getItem(SOUND_STORAGE_KEY);
-      if (!storedTime) return true;
-
-      const disabledTimestamp = parseInt(storedTime, 10);
-      const currentTime = Date.now();
-
-      return currentTime - disabledTimestamp > SOUND_DISABLE_DURATION;
+      const stored = localStorage.getItem(SOUND_STORAGE_KEY);
+      return stored !== 'false';
     } catch (error) {
       console.error('Erreur lors de la lecture du localStorage:', error);
       return true;
@@ -106,8 +63,6 @@ const Sound = ({ className }: { className: string }) => {
   };
 
   useEffect(() => {
-    updateLastVisit();
-
     if (!audioRef.current || !isInitializedRef.current) return;
 
     if (isSoundOn) {
@@ -136,9 +91,8 @@ const Sound = ({ className }: { className: string }) => {
 
       setupAudio();
 
-      if (shouldEnableSound()) {
-        setIsSoundOn(true);
-      }
+      const soundEnabled = getSoundPreference();
+      setIsSoundOn(soundEnabled);
 
       document.removeEventListener('click', handleFirstPageClick);
     };
@@ -158,18 +112,10 @@ const Sound = ({ className }: { className: string }) => {
     const newSoundState = !isSoundOn;
     setIsSoundOn(newSoundState);
 
-    if (!newSoundState) {
-      try {
-        localStorage.setItem(SOUND_STORAGE_KEY, Date.now().toString());
-      } catch (error) {
-        console.error("Erreur lors de l'écriture dans le localStorage:", error);
-      }
-    } else {
-      try {
-        localStorage.removeItem(SOUND_STORAGE_KEY);
-      } catch (error) {
-        console.error('Erreur lors de la suppression du localStorage:', error);
-      }
+    try {
+      localStorage.setItem(SOUND_STORAGE_KEY, newSoundState.toString());
+    } catch (error) {
+      console.error("Erreur lors de l'écriture dans le localStorage:", error);
     }
   };
 

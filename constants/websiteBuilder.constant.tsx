@@ -14,7 +14,7 @@ export const STEPS = [
           <span className="text-black">Combien de pages ?</span>
           <br />
           <span className="text-black-30">
-            Nommez vos pages (ex : Accueil, Contact…) et précisez le nombre de sections par page.
+            Nommez les pages que vous souhaitez (ex : Accueil, Contact, À propos…).
           </span>
         </p>
       ),
@@ -23,7 +23,7 @@ export const STEPS = [
           <span className="text-black">How many pages?</span>
           <br />
           <span className="text-black-30">
-            Name each page (e.g. Home, Contact) and estimate how many sections it will contain.
+            Name the pages you want (e.g. Home, Contact, About…).
           </span>
         </p>
       ),
@@ -129,18 +129,22 @@ export const STEPS = [
     description: {
       fr: (
         <p>
-          <span className="text-black">Votre estimation est prête</span>
+          <span className="text-black">Votre brief est prêt</span>
           <br />
           <span className="text-black-30">
-            Vous pouvez ajuster vos choix ou demander un devis sur-mesure.
+            Merci. Nous allons étudier votre demande et vous recontacter sous 48h avec une
+            proposition sur-mesure.
           </span>
         </p>
       ),
       en: (
         <p>
-          <span className="text-black">Your estimate is ready</span>
+          <span className="text-black">Your brief is ready</span>
           <br />
-          <span className="text-black-30">Adjust your choices or request a custom quote.</span>
+          <span className="text-black-30">
+            Thank you. We will review your request and get back to you within 48 hours with a
+            tailored proposal.
+          </span>
         </p>
       ),
     },
@@ -165,17 +169,14 @@ export const PAGES = [
   {
     id: uuidv4(),
     title: { fr: 'Accueil', en: 'Home' },
-    days: 2.5,
   },
   {
     id: uuidv4(),
     title: { fr: 'Contact', en: 'Contact' },
-    days: 1,
   },
   {
     id: uuidv4(),
     title: { fr: 'À propos', en: 'About' },
-    days: 1,
   },
 ];
 
@@ -184,17 +185,14 @@ export const ANIMATIONS = {
   LIGHT: {
     type: WEBSITE_BUILDER_ANIMATIONS.LIGHT,
     title: { fr: 'Légères', en: 'Light' },
-    percent: 0.1,
   },
   IMMERSIVES: {
     type: WEBSITE_BUILDER_ANIMATIONS.IMMERSIVES,
     title: { fr: 'Immersives', en: 'Immersive' },
-    percent: 0.25,
   },
   ADVANCED: {
     type: WEBSITE_BUILDER_ANIMATIONS.ADVANCED,
     title: { fr: 'Interactivité poussée', en: 'Advanced interactivity' },
-    percent: 0.5,
   },
 };
 
@@ -202,14 +200,11 @@ export const ANIMATIONS = {
 export const OPTIONS = [
   {
     title: { fr: 'Multilingue', en: 'Multilingual' },
-    days: 1.5,
   },
   {
     title: { fr: 'CMS', en: 'CMS' },
-    days: 2,
   },
   {
     title: { fr: 'SEO', en: 'SEO' },
-    days: 1,
   },
 ];

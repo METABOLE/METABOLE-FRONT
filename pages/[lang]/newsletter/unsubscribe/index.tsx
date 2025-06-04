@@ -98,7 +98,7 @@ const UnsubscribePage: NextPageWithLayout = () => {
             errorMessage={error}
             isLoading={isLoading}
             name="email"
-            placeholder="johndoe@company.com"
+            placeholder="john@company.com"
             successMessage={success}
             type="email"
             value={email}

@@ -2,7 +2,6 @@ interface Quote {
   pages: string[];
   options: string[];
   animation: string;
-  totalPrice: number;
 }
 
 export interface QuoteFormData {

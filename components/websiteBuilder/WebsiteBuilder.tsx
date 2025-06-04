@@ -27,7 +27,6 @@ const WebsiteBuilder = () => {
     options,
     selectedPages,
     selectedOptions,
-    totalPrice,
 
     // VALIDATORS
     isCurrentStepValid,
@@ -272,7 +271,6 @@ const WebsiteBuilder = () => {
               selectedAnimation={selectedAnimation}
               selectedOptions={selectedOptions}
               selectedPages={selectedPages}
-              totalPrice={totalPrice}
             />
           </div>
         )}

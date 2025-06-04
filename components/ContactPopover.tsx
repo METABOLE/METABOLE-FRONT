@@ -388,7 +388,7 @@ const ContactPopover = ({
           errorMessage={errors.email}
           isDark={true}
           name="email"
-          placeholder="johndoe@company.com"
+          placeholder="john@company.com"
           type="email"
           value={formData.email}
           required

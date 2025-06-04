@@ -95,7 +95,7 @@ const StepFinalisation = ({ formData, onFormChange }: StepFinalisationProps) => 
             id="email"
             isDark={true}
             name="email"
-            placeholder="johndoe@company.com"
+            placeholder="john@company.com"
             type="email"
             value={formData.email}
             onBlur={() => {
