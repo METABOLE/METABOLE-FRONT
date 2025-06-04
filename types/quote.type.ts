@@ -12,3 +12,8 @@ export interface QuoteFormData {
   devis: Quote;
   lang?: 'fr' | 'en';
 }
+export interface StepState {
+  id: string;
+  isActive: boolean;
+  isCompleted: boolean;
+}

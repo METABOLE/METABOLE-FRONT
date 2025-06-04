@@ -2,7 +2,7 @@ import { ANIMATIONS, OPTIONS, PAGES, STEPS } from '@/constants/websiteBuilder.co
 import { useLanguage } from '@/providers/language.provider';
 import { postQuoteForm } from '@/services/quote.service';
 import { Animation, FormWebsiteBuilderData, Option, Page, WEBSITE_BUILDER_STEPS } from '@/types';
-import { QuoteFormData } from '@/types/quote.type';
+import { QuoteFormData, StepState } from '@/types/quote.type';
 import { useMutation } from '@tanstack/react-query';
 import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
@@ -41,7 +41,6 @@ export const useWebsiteBuilder = () => {
   const isPagesValid = useMemo(() => selectedPages.length > 0, [selectedPages]);
   const isAnimationValid = useMemo(() => selectedAnimation !== null, [selectedAnimation]);
   const isOptionsValid = useMemo(() => true, [options]);
-
   const isFormValid = useMemo(() => {
     return (
       formData.name.trim() !== '' &&
@@ -75,18 +74,41 @@ export const useWebsiteBuilder = () => {
       const parsedForm: FormWebsiteBuilderData = JSON.parse(storedForm);
       setFormData(parsedForm);
     }
+
+    const storedStepsState = localStorage.getItem('metabole-website-builder-steps');
+    if (storedStepsState) {
+      try {
+        const parsedStepsState: StepState[] = JSON.parse(storedStepsState);
+        setSteps((currentSteps) =>
+          currentSteps.map((step) => {
+            const storedStep = parsedStepsState.find((s) => s.id === step.id);
+            if (storedStep) {
+              return {
+                ...step,
+                isActive: storedStep.isActive,
+                isCompleted: storedStep.isCompleted,
+              };
+            }
+            return step;
+          }),
+        );
+      } catch (error) {
+        console.error('Erreur lors de la reconstruction des steps:', error);
+        localStorage.removeItem('metabole-website-builder-steps');
+      }
+    }
   }, []);
 
-  useEffect(() => {
-    setSteps((currentSteps) =>
-      currentSteps.map((step) => {
-        if (step.isCompleted && !isStepValid(step.type)) {
-          return { ...step, isCompleted: false };
-        }
-        return step;
-      }),
-    );
-  }, [isPagesValid, isAnimationValid, isOptionsValid, isFormValid]);
+  // useEffect(() => {
+  //   setSteps((currentSteps) =>
+  //     currentSteps.map((step) => {
+  //       if (step.isCompleted && !isStepValid(step.type)) {
+  //         return { ...step, isCompleted: false };
+  //       }
+  //       return step;
+  //     }),
+  //   );
+  // }, [isPagesValid, isAnimationValid, isOptionsValid, isFormValid]);
 
   // PAGES
   const handlePagesChange = (pageIdOrTitle: string) => {
@@ -169,15 +191,6 @@ export const useWebsiteBuilder = () => {
     setFormData({ name: '', email: '', phone: '', message: '' });
   };
 
-  const goToStep = (stepIndex: number) => {
-    setSteps((currentSteps) =>
-      currentSteps.map((step, index) => ({
-        ...step,
-        isActive: index === stepIndex,
-      })),
-    );
-  };
-
   // VALIDATORS
   const isStepValid = (stepType: WEBSITE_BUILDER_STEPS) => {
     switch (stepType) {
@@ -201,6 +214,17 @@ export const useWebsiteBuilder = () => {
   };
 
   // STEPS
+  const goToStep = (stepIndex: number) => {
+    setSteps((currentSteps) => {
+      const updatedSteps = currentSteps.map((step, index) => ({
+        ...step,
+        isActive: index === stepIndex,
+      }));
+      localStorage.setItem('metabole-website-builder-steps', JSON.stringify(updatedSteps));
+      return updatedSteps;
+    });
+  };
+
   const nextStep = () => {
     const currentStepIndex = steps.findIndex((step) => step.isActive);
 
@@ -217,8 +241,8 @@ export const useWebsiteBuilder = () => {
 
     if (!isStepValid(steps[currentStepIndex].type)) return;
 
-    setSteps((currentSteps) =>
-      currentSteps.map((step, index) => {
+    setSteps((currentSteps) => {
+      const updatedSteps = currentSteps.map((step, index) => {
         if (index === currentStepIndex) {
           return { ...step, isActive: false, isCompleted: true };
         } else if (index === currentStepIndex + 1) {
@@ -226,8 +250,10 @@ export const useWebsiteBuilder = () => {
         } else {
           return step;
         }
-      }),
-    );
+      });
+      localStorage.setItem('metabole-website-builder-steps', JSON.stringify(updatedSteps));
+      return updatedSteps;
+    });
   };
 
   const resetForm = () => {
@@ -235,6 +261,8 @@ export const useWebsiteBuilder = () => {
     localStorage.removeItem('metabole-website-builder-animation');
     localStorage.removeItem('metabole-website-builder-options');
     localStorage.removeItem('metabole-website-builder-form');
+    localStorage.removeItem('metabole-website-builder-steps');
+
     setPages(PAGES.map((page) => ({ ...page, selected: false })));
     setSelectedAnimation(ANIMATIONS.IMMERSIVES);
     setOptions(OPTIONS.map((option) => ({ ...option, id: uuidv4(), selected: false })));

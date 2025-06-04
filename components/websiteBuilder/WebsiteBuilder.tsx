@@ -176,16 +176,29 @@ const WebsiteBuilder = () => {
                   onClick={() => {
                     const currentActiveIndex = steps.findIndex((s) => s.isActive);
                     if (isCurrentStepValid()) {
-                      setSteps((currentSteps) =>
-                        currentSteps.map((s, i) => {
-                          if (i === currentActiveIndex) {
-                            return { ...s, isActive: false, isCompleted: true };
-                          } else if (i === index) {
-                            return { ...s, isActive: true };
-                          }
-                          return s;
-                        }),
+                      const stepsToSave = steps.map((s, i) => {
+                        if (i === currentActiveIndex) {
+                          return { ...s, isActive: false, isCompleted: true };
+                        } else if (i === index) {
+                          return { ...s, isActive: true };
+                        }
+                        return s;
+                      });
+                      setSteps(stepsToSave);
+                      localStorage.setItem(
+                        'metabole-website-builder-steps',
+                        JSON.stringify(stepsToSave),
                       );
+                      // setSteps((currentSteps) =>
+                      //   currentSteps.map((s, i) => {
+                      //     if (i === currentActiveIndex) {
+                      //       return { ...s, isActive: false, isCompleted: true };
+                      //     } else if (i === index) {
+                      //       return { ...s, isActive: true };
+                      //     }
+                      //     return s;
+                      //   }),
+                      // );
                     } else {
                       goToStep(index);
                     }
