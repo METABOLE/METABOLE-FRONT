@@ -238,7 +238,10 @@ const WebsiteBuilder = () => {
                   {isFrench ? step.description.fr : step.description.en}
                 </div>
                 <div className="smoother-y-website-builder-steps z-0 md:grow md:overflow-hidden">
-                  <div className="no-scrollbar h-fit overflow-scroll md:h-full md:shrink-0">
+                  <div
+                    className="no-scrollbar h-fit overflow-scroll md:h-full md:shrink-0"
+                    {...(step.type === WEBSITE_BUILDER_STEPS.PAGES && { 'data-lenis-prevent': '' })}
+                  >
                     <AnimatePresence>
                       {isMobile
                         ? renderActiveStep(step.type)
