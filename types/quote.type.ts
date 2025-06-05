@@ -57,7 +57,7 @@ export interface QuoteFormData {
   email: string;
   phone: string;
   message: string;
-  devis: {
+  quote: {
     pages: string[];
     options: string[];
     animation: string;

@@ -278,8 +278,8 @@ export const useQuote = () => {
   };
 
   const sendQuote = useMutation({
-    mutationFn: ({ name, email, phone, message, devis, lang }: QuoteFormData) =>
-      postQuoteForm({ name, email, phone, message, devis, lang }),
+    mutationFn: ({ name, email, phone, message, quote, lang }: QuoteFormData) =>
+      postQuoteForm({ name, email, phone, message, quote, lang }),
     onSuccess: () => {
       playSuccess();
       setTimeout(() => {
@@ -305,7 +305,7 @@ export const useQuote = () => {
     const quoteData: QuoteFormData = {
       ...formData,
       lang: isFrench ? 'fr' : 'en',
-      devis: {
+      quote: {
         pages: selectedPages.map((page) => page.title.fr),
         animation: selectedAnimation.type,
         options: selectedOptions.map((option) => option.title.fr),

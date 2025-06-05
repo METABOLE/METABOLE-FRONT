@@ -3,7 +3,7 @@ import { instance } from './config';
 
 export const postQuoteForm = async (formData: QuoteFormData) => {
   try {
-    const response = await instance.post<QuoteFormData>('/quote/send', formData);
+    const response = await instance.post<QuoteFormData>('/quote', formData);
     return response.data;
   } catch (error) {
     if (error instanceof Error) {
