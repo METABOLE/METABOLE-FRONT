@@ -3,7 +3,7 @@ import { instance } from './config';
 
 export const postContactForm = async (formData: ContactFormData) => {
   try {
-    const response = await instance.post<ContactFormData>('/contact/send', formData);
+    const response = await instance.post<ContactFormData>('/contact', formData);
     return response.data;
   } catch (error) {
     if (error instanceof Error) {
