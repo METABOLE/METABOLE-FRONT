@@ -7,3 +7,4 @@ export * from './newsletter.type';
 export * from './projects.type';
 export * from './tags.type';
 export * from './quote.type';
+export * from './offer.type';

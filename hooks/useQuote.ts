@@ -100,16 +100,16 @@ export const useQuote = () => {
     }
   }, []);
 
-  // useEffect(() => {
-  //   setSteps((currentSteps) =>
-  //     currentSteps.map((step) => {
-  //       if (step.isCompleted && !isStepValid(step.type)) {
-  //         return { ...step, isCompleted: false };
-  //       }
-  //       return step;
-  //     }),
-  //   );
-  // }, [isPagesValid, isAnimationValid, isOptionsValid, isFormValid]);
+  useEffect(() => {
+    setSteps((currentSteps) =>
+      currentSteps.map((step) => {
+        if (step.isCompleted && !isStepValid(step.type)) {
+          return { ...step, isCompleted: false };
+        }
+        return step;
+      }),
+    );
+  }, [isPagesValid, isAnimationValid, isOptionsValid, isFormValid]);
 
   // PAGES
   const handlePagesChange = (pageIdOrTitle: string) => {

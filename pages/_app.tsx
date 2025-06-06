@@ -1,4 +1,3 @@
-// import 'element-internals-polyfill';
 import PageTransition from '@/components/PageTransition';
 import ScreenLoader from '@/components/ScreenLoader';
 import { useIsScreenLoader } from '@/hooks/useIsScreenLoader';

@@ -1,4 +1,4 @@
-import Div3D from '@/components/Text3D';
+import Div3D from '@/components/Div3D';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { useRef } from 'react';

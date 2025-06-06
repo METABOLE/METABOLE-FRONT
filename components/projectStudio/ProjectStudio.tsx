@@ -16,7 +16,7 @@ import StepOptions from './StepOptions';
 import StepPages from './StepPages';
 import Viewer from './Viewer';
 
-const QuoteBuilder = () => {
+const ProjectStudio = () => {
   const { isFrench } = useLanguage();
   const {
     // STATES
@@ -301,4 +301,4 @@ const QuoteBuilder = () => {
   );
 };
 
-export default QuoteBuilder;
+export default ProjectStudio;

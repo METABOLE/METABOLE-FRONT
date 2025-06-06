@@ -1,7 +1,7 @@
 import { AnimatedTitle } from '@/components/AnimatedTitle';
+import Div3D from '@/components/Div3D';
 import FallingCrosses from '@/components/FallingCrosses';
 import FloatingHalo from '@/components/FloatingHalo';
-import Div3D from '@/components/Text3D';
 import { TITLE } from '@/constants';
 import { useIsScreenLoader } from '@/hooks/useIsScreenLoader';
 import { useMousePosition } from '@/hooks/useMousePosition';
