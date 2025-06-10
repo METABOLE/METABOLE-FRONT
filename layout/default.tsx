@@ -1,24 +1,28 @@
+import Burger from '@/components/Burger';
 import Footer from '@/components/Footer';
-import Header from '@/components/Header';
+import Menu from '@/components/Menu';
 import SEO from '@/components/SEO';
+import { useMatchMedia } from '@/hooks/useCheckScreenSize';
 import { useIsScreenLoader } from '@/hooks/useIsScreenLoader';
 import { useMousePosition } from '@/hooks/useMousePosition';
 import { useLanguage } from '@/providers/language.provider';
+import { BREAKPOINTS, ProjectType } from '@/types';
 import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 import Image from 'next/image';
-import { ReactNode, useRef, useState } from 'react';
+import { ReactNode, useRef } from 'react';
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
-const Layout = ({ children }: { children: ReactNode }) => {
+const Layout = ({ projects, children }: { projects: ProjectType[]; children: ReactNode }) => {
   const { isFrench } = useLanguage();
   const isScreenLoader = useIsScreenLoader();
+  const isTablet = useMatchMedia(BREAKPOINTS.MD);
 
   const { x, y } = useMousePosition();
 
-  const [isContactOpen, setIsContactOpen] = useState(false);
+  // const [isContactOpen, setIsContactOpen] = useState(false);
 
   const backgroundRef = useRef(null);
 
@@ -45,9 +49,10 @@ const Layout = ({ children }: { children: ReactNode }) => {
   return (
     <>
       <SEO isFrench={isFrench} />
-      <Header isContactOpen={isContactOpen} setIsContactOpen={setIsContactOpen} />
+      {/* <Header isContactOpen={isContactOpen} setIsContactOpen={setIsContactOpen} /> */}
+      {isTablet ? <Burger /> : <Menu projects={projects} />}
       <main className="min-h-screen pb-[300px]">{children}</main>
-      <Footer setIsContactOpen={setIsContactOpen} />
+      <Footer />
       <Image
         ref={backgroundRef}
         alt="background"

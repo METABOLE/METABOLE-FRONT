@@ -3,8 +3,10 @@ import ScreenLoader from '@/components/ScreenLoader';
 import { useIsScreenLoader } from '@/hooks/useIsScreenLoader';
 import Layout from '@/layout/default';
 import { AppProvider } from '@/providers/root';
+import { fetchProjects } from '@/services/projects.service';
 import '@/styles/main.scss';
 import '@/styles/tailwind.css';
+import { ProjectType } from '@/types';
 import { AnimatePresence } from 'framer-motion';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { NextPage } from 'next';
@@ -16,15 +18,19 @@ export type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
 };
 
-type AppPropsWithLayout = AppProps & {
+interface CustomAppProps extends AppProps {
   Component: NextPageWithLayout;
-};
+  globalProps: {
+    projects: ProjectType[];
+  };
+}
 
-export default function App({ Component, pageProps }: AppPropsWithLayout) {
+function App({ Component, pageProps, globalProps }: CustomAppProps) {
   const pathname = usePathname();
   const isScreenLoader = useIsScreenLoader();
 
-  const getLayout = Component.getLayout || ((page) => <Layout>{page}</Layout>);
+  const getLayout =
+    Component.getLayout || ((page) => <Layout projects={globalProps.projects}>{page}</Layout>);
 
   useEffect(() => {
     if (typeof window !== 'undefined' && !('attachInternals' in HTMLElement.prototype)) {
@@ -55,3 +61,15 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
     </AppProvider>
   );
 }
+
+App.getInitialProps = async () => {
+  const projects = await fetchProjects();
+
+  return {
+    globalProps: {
+      projects,
+    },
+  };
+};
+
+export default App;

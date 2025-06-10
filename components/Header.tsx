@@ -7,17 +7,12 @@ import { useRef } from 'react';
 import metaboleFull from '../public/lotties/metabole-full-blue.json';
 import metaboleSmall from '../public/lotties/metabole-small-blue.json';
 import Button from './atoms/Button';
-import ContactPopover from './ContactPopover';
 import Lottie from './Lottie';
+import Menu from './Menu';
 import Sound from './Sound';
+import { projects } from '@/constants';
 
-const Header = ({
-  isContactOpen,
-  setIsContactOpen,
-}: {
-  isContactOpen: boolean;
-  setIsContactOpen: (isContactOpen: boolean) => void;
-}) => {
+const Header = () => {
   const headerRef = useRef(null);
 
   const isScreenLoader = useIsScreenLoader();
@@ -53,9 +48,10 @@ const Header = ({
           <Button className="hidden! md:inline-block!" href={getInternalPath('/pricing')}>
             {isFrench ? 'Tarifs' : 'Pricing'}
           </Button>
-          <div className="relative w-[117px] md:w-auto">
+          <Menu projects={projects} />
+          {/* <div className="relative w-[117px] md:w-auto">
             <ContactPopover isContactOpen={isContactOpen} setIsContactOpen={setIsContactOpen} />
-          </div>
+          </div> */}
         </div>
       </div>
     </header>

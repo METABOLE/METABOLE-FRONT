@@ -3,6 +3,7 @@ export interface ContactFormData {
   email: string;
   phone?: string;
   message?: string;
+  type?: string;
   consentMarketing: boolean;
   lang: 'fr' | 'en';
 }
