@@ -165,8 +165,8 @@ const Footer = () => {
                 </nav>
                 <div />
                 <div className="gap-y-default col-span-2 flex flex-col">
-                  <NewsletterSubscription isDark={false} />
-                  <Language isDark={true} />
+                  <NewsletterSubscription animate={false} isDark={false} />
+                  <Language className="md:ml-auto" isDark={true} />
                 </div>
               </div>
               <div className="flex w-full flex-col justify-between gap-5 md:flex-row md:items-center lg:grid lg:grid-cols-6">

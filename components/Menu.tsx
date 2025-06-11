@@ -58,7 +58,7 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
         xPercent: 0,
       })
       .set(socialsRef.current.children, {
-        width: '0px',
+        xPercent: 100,
       })
       .set(linksRef.current, {
         overflow: 'visible',
@@ -147,7 +147,7 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
       .to(
         socialsRef.current.children,
         {
-          width: 'auto',
+          xPercent: 0,
           duration: 0.6,
           ease: 'power2.out',
           stagger: 0.1,
@@ -200,7 +200,7 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
       .to(
         socialsRef.current.children,
         {
-          width: 0,
+          xPercent: 100,
           duration: 0.6,
           ease: 'power2.out',
           stagger: 0.1,
@@ -286,7 +286,7 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
             <LogoFull />
           </Link>
           <div ref={wrapperButtonRef} className="flex gap-4">
-            <Sound className="shrink-0" />
+            <Sound className="shrink-0" isDark={true} />
             <Button ref={contactMenuRef} href={getInternalPath('/contact')} transformOrigin="right">
               CONTACT
             </Button>
@@ -367,7 +367,7 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
               )}
             </nav>
             <div className="col-span-3">
-              <NewsletterForm ref={newsletterFormRef} isDark={true} />
+              <NewsletterForm ref={newsletterFormRef} animate={true} isDark={true} />
               <nav className="pt-y-default text-right">
                 <ul ref={socialsRef} className="flex flex-col items-end gap-4 overflow-hidden">
                   <li className="p3 text-black">Socials</li>

@@ -1,15 +1,15 @@
 import { useLanguage } from '@/providers/language.provider';
+import { postSubscribeNewsletter } from '@/services/newsletter.service';
 import { COLORS, FORM_STATUS, NewsletterSubscribeData } from '@/types';
+import { isEmail } from '@/utils/validation.utils';
 import { useGSAP } from '@gsap/react';
+import { useMutation } from '@tanstack/react-query';
 import clsx from 'clsx';
+import gsap from 'gsap';
 import { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import { IconArrow, IconQuestionMark } from './Icons';
-import Typography, { AnimatedTypoRef } from './Typography';
-import gsap from 'gsap';
-import { useMutation } from '@tanstack/react-query';
-import { postSubscribeNewsletter } from '@/services/newsletter.service';
-import { isEmail } from '@/utils/validation.utils';
 import Input, { AnimatedInputRef } from './Input';
+import Typography, { AnimatedTypoRef } from './Typography';
 
 interface LeadFormProps {
   className?: string;
@@ -28,9 +28,8 @@ export interface AnimatedNewsletterFormRef {
 }
 
 const NewsletterForm = forwardRef<AnimatedNewsletterFormRef, LeadFormProps>(
-  ({ className, isDark }, ref) => {
+  ({ className, isDark, animate }, ref) => {
     const typographyRef = useRef<AnimatedTypoRef>(null);
-    const wrapperRef = useRef(null);
     const inputRef = useRef<AnimatedInputRef>(null);
     const arrowRef = useRef(null);
 
@@ -38,11 +37,10 @@ const NewsletterForm = forwardRef<AnimatedNewsletterFormRef, LeadFormProps>(
     const { isFrench } = useLanguage();
 
     useGSAP(() => {
+      if (!animate) return;
       typographyRef.current?.reset();
-      // inputRef.current?.reset();
       gsap.set(arrowRef.current, { x: -50, y: 50 });
-      gsap.set(wrapperRef.current, { opacity: 1 });
-    }, []);
+    }, [animate]);
 
     const play = contextSafe(() => {
       if (!typographyRef.current) return gsap.timeline();
@@ -52,7 +50,6 @@ const NewsletterForm = forwardRef<AnimatedNewsletterFormRef, LeadFormProps>(
       return gsap
         .timeline()
         .set(arrowRef.current, { x: -50, y: 50 })
-        .set(wrapperRef.current, { opacity: 1 })
         .add(() => inputRef.current?.play())
         .add(typographyRef.current.play())
         .to(
@@ -85,8 +82,7 @@ const NewsletterForm = forwardRef<AnimatedNewsletterFormRef, LeadFormProps>(
             ease: 'power2.in',
           },
           '<',
-        )
-        .set(wrapperRef.current, { opacity: 0 });
+        );
     });
 
     useImperativeHandle(ref, () => ({
@@ -136,11 +132,11 @@ const NewsletterForm = forwardRef<AnimatedNewsletterFormRef, LeadFormProps>(
     };
 
     return (
-      <div ref={wrapperRef} className={className}>
+      <div className={className}>
         <div className="flex items-center gap-5 pb-3">
           <Typography
             ref={typographyRef}
-            animate={true}
+            animate={animate}
             className={clsx('p3 whitespace-nowrap', isDark ? 'text-black' : 'text-white')}
             variant="h2"
           >
@@ -155,7 +151,7 @@ const NewsletterForm = forwardRef<AnimatedNewsletterFormRef, LeadFormProps>(
           <div className="relative flex items-center">
             <Input
               ref={inputRef}
-              animate={true}
+              animate={animate}
               className={clsx('p3 w-full py-4 pr-5')}
               errorMessage={error}
               isDark={isDark}
