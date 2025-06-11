@@ -68,7 +68,7 @@ const Burger = () => {
       .addLabel('show-mask')
       .to(
         menuRef.current,
-        { backdropFilter: 'blur(10px)', backgroundColor: '#E3E3FF', duration: 0.8 },
+        { backdropFilter: 'blur(10px)', backgroundColor: COLORS.MENU, duration: 0.8 },
         'hide-button',
       )
       .to(soundRef.current, { backgroundColor: COLORS.WHITE }, 'hide-button')
@@ -173,7 +173,7 @@ const Burger = () => {
       .to(soundRef.current, { backgroundColor: COLORS.MENU }, '<')
       .to(
         menuRef.current,
-        { backdropFilter: 'blur(0px)', backgroundColor: '#E3E3FF00', duration: 0.8 },
+        { backdropFilter: 'blur(0px)', backgroundColor: COLORS.MENU_00, duration: 0.8 },
         '-=0.2',
       )
       .set(menuRef.current, { display: 'none' })
@@ -216,7 +216,7 @@ const Burger = () => {
       </header>
       <div
         ref={menuRef}
-        className="px-x-default gap-y-default fixed z-[800] flex h-full w-full flex-col justify-between bg-[#E3E3FF00] pt-[140px] pb-8"
+        className="px-x-default gap-y-default bg-menu/0 fixed z-[800] flex h-full w-full flex-col justify-between pt-[140px] pb-8"
       >
         <nav className="col-span-4">
           <ul ref={linksRef} className="flex flex-col gap-5">

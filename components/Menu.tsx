@@ -1,7 +1,7 @@
 import { CONTACT, LINKS, SOCIALS } from '@/constants';
 import { useShortcut } from '@/hooks/useShortcut';
 import { useLanguage } from '@/providers/language.provider';
-import { ProjectType, TAG_TYPE } from '@/types';
+import { COLORS, ProjectType, TAG_TYPE } from '@/types';
 import { useGSAP } from '@gsap/react';
 import clsx from 'clsx';
 import gsap from 'gsap';
@@ -81,7 +81,7 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
       .addLabel('show-mask')
       .to(
         menuRef.current,
-        { backdropFilter: 'blur(10px)', backgroundColor: '#E3E3FF', duration: 0.8 },
+        { backdropFilter: 'blur(10px)', backgroundColor: COLORS.MENU, duration: 0.8 },
         'show-mask',
       )
       .add(() => cutoutRef.current?.openCutoutWrapper(), 'show-mask')
@@ -232,9 +232,9 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
           duration: 1,
           ease: 'power2.inOut',
         },
-        '-=1',
+        '-=0.7',
       )
-      .add(() => cutoutRef.current?.closeCutoutWrapper(), '+=0.2')
+      .add(() => cutoutRef.current?.closeCutoutWrapper(), '<')
       .to(
         headerRef.current.children,
         {
@@ -257,7 +257,7 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
       )
       .to(
         menuRef.current,
-        { backdropFilter: 'blur(0px)', backgroundColor: '#E3E3FF00', duration: 0.8 },
+        { backdropFilter: 'blur(0px)', backgroundColor: COLORS.MENU_00, duration: 0.8 },
         '<',
       )
       .to(wrapperButtonRef.current, { width: 'auto', gap: 16, duration: 0.6 }, '<')
@@ -303,7 +303,7 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
       <CutoutWrapper ref={cutoutRef}>
         <div
           ref={menuRef}
-          className="px-x-default py-y-default gap-y-default flex h-full w-full flex-col justify-between bg-[#E3E3FF00]"
+          className="px-x-default py-y-default gap-y-default bg-menu/0 flex h-full w-full flex-col justify-between"
         >
           <div />
           <div className="grid grid-cols-10 gap-5">

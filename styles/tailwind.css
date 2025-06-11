@@ -40,6 +40,7 @@
   /* COLORS (tertiary) */
   --color-blur-glass: #c5c4ff4d;
   --color-menu: #e3e3ff;
+  --color-menu-00: #e3e3ff00;
 
   /* FONTS */
   --font-safiro-bold: var(--font-safiro-bold);

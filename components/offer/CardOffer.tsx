@@ -26,7 +26,7 @@ const CardOffer = ({
       id={id}
       className={clsx(
         'flex h-fit max-w-[400px] flex-col items-center gap-12 rounded-3xl border-[1px] px-6 py-8 text-center backdrop-blur-lg',
-        type === OFFER_TYPE.SIMPLE ? 'border-blue-70 bg-[#E3E3FF]/50' : 'border-blue-30 bg-white',
+        type === OFFER_TYPE.SIMPLE ? 'border-blue-70 bg-menu/50' : 'border-blue-30 bg-white',
         className,
       )}
       style={{

@@ -32,6 +32,7 @@ const NewsletterForm = forwardRef<AnimatedNewsletterFormRef, LeadFormProps>(
     const typographyRef = useRef<AnimatedTypoRef>(null);
     const inputRef = useRef<AnimatedInputRef>(null);
     const arrowRef = useRef(null);
+    const buttonQuestionMarkRef = useRef(null);
 
     const { contextSafe } = useGSAP();
     const { isFrench } = useLanguage();
@@ -40,6 +41,7 @@ const NewsletterForm = forwardRef<AnimatedNewsletterFormRef, LeadFormProps>(
       if (!animate) return;
       typographyRef.current?.reset();
       gsap.set(arrowRef.current, { x: -50, y: 50 });
+      gsap.set(buttonQuestionMarkRef.current, { scale: 0 });
     }, [animate]);
 
     const play = contextSafe(() => {
@@ -52,6 +54,7 @@ const NewsletterForm = forwardRef<AnimatedNewsletterFormRef, LeadFormProps>(
         .set(arrowRef.current, { x: -50, y: 50 })
         .add(() => inputRef.current?.play())
         .add(typographyRef.current.play())
+        .to(buttonQuestionMarkRef.current, { scale: 1, duration: 0.6, ease: 'bounce.out' })
         .to(
           arrowRef.current,
           {
@@ -72,6 +75,7 @@ const NewsletterForm = forwardRef<AnimatedNewsletterFormRef, LeadFormProps>(
       return gsap
         .timeline()
         .add(() => inputRef.current?.reverse())
+        .to(buttonQuestionMarkRef.current, { scale: 0, duration: 0.4, ease: 'power2.in' })
         .add(typographyRef.current.reverse())
         .to(
           arrowRef.current,
@@ -142,8 +146,8 @@ const NewsletterForm = forwardRef<AnimatedNewsletterFormRef, LeadFormProps>(
           >
             {isFrench ? 'Rejoignez notre newsletter ' : 'Join our newsletter '}
           </Typography>
-          <button className="cursor-help" id="hint-newsletter">
-            <IconQuestionMark color={COLORS.YELLOW} />
+          <button ref={buttonQuestionMarkRef} className="cursor-help" id="hint-newsletter">
+            <IconQuestionMark color={isDark ? COLORS.BLUE : COLORS.YELLOW} />
           </button>
         </div>
 

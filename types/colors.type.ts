@@ -15,4 +15,5 @@ export enum COLORS {
   YELLOW_30 = '#caee1759',
   // MENU
   MENU = '#e3e3ff',
+  MENU_00 = '#e3e3ff00',
 }
