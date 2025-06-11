@@ -32,6 +32,9 @@ const StepOptions = ({ options, onToggle }: StepOptionsProps) => {
             label={isFrench ? option.title.fr : option.title.en}
             onChange={() => onToggle(option.id)}
           />
+          <p className="text-black-70 label !font-safiro-medium-italic pt-1.5 italic">
+            {option.description[isFrench ? 'fr' : 'en']}
+          </p>
         </motion.div>
       ))}
     </div>

@@ -17,14 +17,14 @@ type InputProps = {
   React.TextareaHTMLAttributes<HTMLTextAreaElement> &
   React.SelectHTMLAttributes<HTMLSelectElement>;
 
-export interface AnimatedIputRef {
+export interface AnimatedInputRef {
   play: () => void;
   reverse: () => void;
   reset: () => void;
   blur: () => void;
 }
 
-const Input = forwardRef<AnimatedIputRef, InputProps>(
+const Input = forwardRef<AnimatedInputRef, InputProps>(
   (
     {
       name,

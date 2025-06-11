@@ -200,11 +200,23 @@ export const ANIMATIONS = {
 export const OPTIONS = [
   {
     title: { fr: 'Multilingue', en: 'Multilingual' },
+    description: {
+      fr: 'Support de plusieurs langues avec traductions automatiques.',
+      en: 'Multi-language support with automatic translations.',
+    },
   },
   {
     title: { fr: 'CMS', en: 'CMS' },
+    description: {
+      fr: 'Gestion de contenu simple et intuitive.',
+      en: 'Simple and intuitive content management.',
+    },
   },
   {
     title: { fr: 'SEO', en: 'SEO' },
+    description: {
+      fr: 'Optimisation pour les moteurs de recherche.',
+      en: 'Search engine optimization features.',
+    },
   },
 ];

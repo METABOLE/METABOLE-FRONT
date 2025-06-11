@@ -77,7 +77,13 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
 
     const [currentChild, setCurrentChild] = useState(children);
 
+    // Animation de changement de contenu (seulement si le contenu change vraiment)
     useGSAP(() => {
+      // Ne pas animer au premier rendu
+      if (currentChild === children) {
+        return;
+      }
+
       const widthHiddenButton = hiddenButtonRef.current?.getBoundingClientRect();
 
       gsap
@@ -121,6 +127,7 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
       gsap.set(wrapperButtonRef.current, {
         width: 30,
         scale: 0,
+        display: 'none',
       });
       gsap.set(buttonRef.current, {
         opacity: 0,
@@ -152,7 +159,7 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
           {
             opacity: 1,
             duration: 0.3,
-            ease: 'power.out',
+            ease: 'power2.out',
           },
           '-=0.3',
         )
@@ -271,13 +278,14 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
             )}
           />
           <div
+            ref={buttonRef}
             className="h-full w-full"
             onMouseMove={(e) => useMagnet(e, 0.4)}
             onMouseOut={(e) => useResetMagnet(e)}
           >
             <div
               ref={textRef}
-              className="relative flex h-full w-fit items-center justify-center whitespace-nowrap"
+              className="relative flex h-full w-fit items-center justify-center px-6 whitespace-nowrap"
             >
               {currentChild}
             </div>

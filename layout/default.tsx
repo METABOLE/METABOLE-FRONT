@@ -22,8 +22,6 @@ const Layout = ({ projects, children }: { projects: ProjectType[]; children: Rea
 
   const { x, y } = useMousePosition();
 
-  // const [isContactOpen, setIsContactOpen] = useState(false);
-
   const backgroundRef = useRef(null);
 
   gsap.to(backgroundRef.current, {
@@ -49,7 +47,6 @@ const Layout = ({ projects, children }: { projects: ProjectType[]; children: Rea
   return (
     <>
       <SEO isFrench={isFrench} />
-      {/* <Header isContactOpen={isContactOpen} setIsContactOpen={setIsContactOpen} /> */}
       {isTablet ? <Burger /> : <Menu projects={projects} />}
       <main className="min-h-screen pb-[300px]">{children}</main>
       <Footer />

@@ -13,7 +13,7 @@ import Tag, { AnimatedTagRef } from './atoms/Tag';
 import CutoutWrapper, { AnimatedCutoutWrapperRef } from './CutoutWrapper';
 import { LogoFull } from './Icons';
 import Language from './Language';
-import NewsletterSubscription from './NewsletterSubscription';
+import NewsletterForm, { AnimatedNewsletterFormRef } from './NewsletterForm';
 import Sound from './Sound';
 import Time from './Time';
 
@@ -30,7 +30,7 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
   const linksRef = useRef<HTMLUListElement>(null);
   const titleProjectsRef = useRef(null);
   const projectTagsRefs = useRef<AnimatedTagRef[]>([]);
-  // const leadFormRef = useRef<AnimatedLeadFormRef>(null);
+  const newsletterFormRef = useRef<AnimatedNewsletterFormRef>(null);
   const socialsRef = useRef<HTMLUListElement>(null);
   const infosRef = useRef<HTMLDivElement>(null);
 
@@ -141,9 +141,9 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
         });
       }, '-=1')
       // .addLabel('show-form')
-      // .add(() => {
-      //   leadFormRef.current?.play();
-      // }, '-=0.6')
+      .add(() => {
+        newsletterFormRef.current?.play();
+      }, '-=0.6')
       .to(
         socialsRef.current.children,
         {
@@ -212,9 +212,9 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
           gsap.delayedCall(index * 0.05, () => ref.reverse());
         });
       }, '<')
-      // .add(() => {
-      //   leadFormRef.current?.reverse();
-      // }, '<')
+      .add(() => {
+        newsletterFormRef.current?.reverse();
+      }, '<')
       .to(
         infosRef.current.children,
         {
@@ -367,7 +367,7 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
               )}
             </nav>
             <div className="col-span-3">
-              <NewsletterSubscription isDark={true} />
+              <NewsletterForm ref={newsletterFormRef} isDark={true} />
               <nav className="pt-y-default text-right">
                 <ul ref={socialsRef} className="flex flex-col items-end gap-4 overflow-hidden">
                   <li className="p3 text-black">Socials</li>

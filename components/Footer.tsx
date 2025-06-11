@@ -11,7 +11,7 @@ import FloatingHalo from './FloatingHalo';
 import Hint from './Hint';
 import { IconArrow, LogoSmall } from './Icons';
 import Language from './Language';
-import NewsletterSubscription from './NewsletterSubscription';
+import NewsletterSubscription from './NewsletterForm';
 import Time from './Time';
 
 const Footer = () => {

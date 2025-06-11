@@ -36,6 +36,7 @@ export type Animation = {
 export type Option = {
   id: string;
   title: Language;
+  description: Language;
   selected: boolean;
 };
 

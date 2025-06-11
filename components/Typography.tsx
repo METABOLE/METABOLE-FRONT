@@ -1,13 +1,8 @@
+import { useGSAP } from '@gsap/react';
 import clsx from 'clsx';
 import gsap from 'gsap';
-import React, {
-  forwardRef,
-  isValidElement,
-  type ReactNode,
-  type ReactElement,
-  useImperativeHandle,
-  useRef,
-} from 'react';
+import { SplitText } from 'gsap/SplitText';
+import { forwardRef, type ReactNode, useImperativeHandle, useRef } from 'react';
 
 type Variant = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'span';
 
@@ -19,85 +14,81 @@ type Props = {
 };
 
 export type AnimatedTypoRef = {
-  play: () => gsap.core.Tween;
-  reverse: () => gsap.core.Tween;
-  reset: () => gsap.core.Tween;
+  play: () => gsap.core.Tween | gsap.core.Timeline;
+  reverse: () => gsap.core.Tween | gsap.core.Timeline;
+  reset: () => void;
 };
-
-interface ElementWithProps extends ReactElement {
-  props: {
-    children?: ReactNode;
-    [key: string]: unknown;
-  };
-}
 
 const Typography = forwardRef<AnimatedTypoRef, Props>(
   ({ variant, animate = false, children, className }, ref) => {
     const elementRef = useRef<HTMLElement>(null);
+    const splitText = useRef<SplitText | null>(null);
 
-    useImperativeHandle(ref, () => ({
-      play: () =>
-        gsap.fromTo(
-          elementRef.current?.querySelectorAll('span') || [],
-          { y: 40, opacity: 0 },
-          { y: 0, opacity: 1, stagger: 0.02, duration: 1.2, ease: 'power2.out' },
-        ),
-      reverse: () =>
-        gsap.to(elementRef.current?.querySelectorAll('span') || [], {
+    const { contextSafe } = useGSAP();
+
+    useGSAP(() => {
+      if (!elementRef.current) return;
+      splitText.current = new SplitText(elementRef.current, {
+        type: 'words',
+        mask: 'words',
+      });
+      if (!animate) return;
+      gsap.set([...splitText.current.words], { y: 40, opacity: 0 });
+    }, [children]);
+
+    const play = contextSafe(() => {
+      if (!splitText.current) return gsap.timeline();
+      gsap.killTweensOf(splitText.current.words);
+      return gsap.fromTo(
+        splitText.current.words,
+        {
           y: 40,
           opacity: 0,
+        },
+        {
+          y: 0,
+          opacity: 1,
           stagger: 0.02,
           duration: 1.2,
           ease: 'power2.out',
-        }),
-      reset: () =>
-        gsap.set(elementRef.current?.querySelectorAll('span') || [], { y: 40, opacity: 0 }),
+        },
+      );
+    });
+
+    const reverse = contextSafe(() => {
+      if (!splitText.current) return gsap.timeline();
+      gsap.killTweensOf(splitText.current.words);
+      return gsap.to(splitText.current.words, {
+        y: 40,
+        opacity: 0,
+        stagger: 0.02,
+        duration: 1.2,
+        ease: 'power2.out',
+      });
+    });
+
+    const reset = contextSafe(() => {
+      if (!splitText.current) return;
+      gsap.set(splitText.current.words, { y: 40, opacity: 0 });
+    });
+
+    useImperativeHandle(ref, () => ({
+      play,
+      reverse,
+      reset,
     }));
 
-    const processNode = (node: ReactNode): ReactNode => {
-      if (typeof node === 'string') {
-        if (!animate) return node;
+    const Tag = variant;
 
-        return node.split(' ').map((word, index, array) => (
-          <span key={index} className="inline-block">
-            {word}
-            {index !== array.length - 1 && '\u00A0'}
-          </span>
-        ));
-      }
-
-      if (isValidElement(node)) {
-        const element = node as ElementWithProps;
-        if (element.type === 'span') {
-          return element;
-        }
-
-        const processedChildren = React.Children.map(element.props.children, (child) =>
-          processNode(child),
-        );
-
-        return React.cloneElement(element, {
-          ...element.props,
-          children: processedChildren,
-        });
-      }
-
-      if (Array.isArray(node)) {
-        return node.map((child, index) => (
-          <React.Fragment key={index}>{processNode(child)}</React.Fragment>
-        ));
-      }
-
-      return node;
-    };
-
-    return React.createElement(
-      variant,
-      {
-        ref: elementRef,
-        className: clsx(className, 'animate-text inline-block overflow-hidden'),
-      },
-      processNode(children),
+    return (
+      <Tag
+        ref={(el) => {
+          elementRef.current = el;
+        }}
+        className={clsx(className)}
+      >
+        {children}
+      </Tag>
     );
   },
 );
