@@ -232,7 +232,7 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
           duration: 1,
           ease: 'power2.inOut',
         },
-        '-=0.7',
+        '-=0.8',
       )
       .add(() => cutoutRef.current?.closeCutoutWrapper(), '<')
       .to(
@@ -257,7 +257,12 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
       )
       .to(
         menuRef.current,
-        { backdropFilter: 'blur(0px)', backgroundColor: COLORS.MENU_00, duration: 0.8 },
+        {
+          backdropFilter: 'blur(0px)',
+          backgroundColor: COLORS.MENU_00,
+          duration: 0.8,
+          ease: 'power2.inOut',
+        },
         '<',
       )
       .to(wrapperButtonRef.current, { width: 'auto', gap: 16, duration: 0.6 }, '<')

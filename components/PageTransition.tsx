@@ -16,7 +16,7 @@ export default function PageTransition({ children }: { children: ReactNode }) {
     enter: {
       scaleY: 0,
       transition: {
-        duration: 0.6,
+        duration: 0.8,
         ease: [0.72, 0, 0.3, 0.99],
       },
       transitionEnd: {
@@ -26,7 +26,7 @@ export default function PageTransition({ children }: { children: ReactNode }) {
     exit: {
       scaleY: 1,
       transition: {
-        duration: 0.4,
+        duration: 0.8,
         ease: [0.72, 0, 0.3, 0.99],
       },
     },

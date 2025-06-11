@@ -5,7 +5,6 @@ import FloatingHalo from '@/components/FloatingHalo';
 import { TITLE } from '@/constants';
 import { useIsScreenLoader } from '@/hooks/useIsScreenLoader';
 import { useMousePosition } from '@/hooks/useMousePosition';
-import { useScrollLock } from '@/hooks/useToggleScroll';
 import { useLanguage } from '@/providers/language.provider';
 import { useGSAP } from '@gsap/react';
 import clsx from 'clsx';
@@ -13,14 +12,13 @@ import gsap from 'gsap';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 export default function Home() {
   const { isFrench } = useLanguage();
   const isScreenLoader = useIsScreenLoader();
   const { x, y } = useMousePosition();
   const { asPath } = useRouter();
-  const { lockScroll } = useScrollLock();
 
   const haloRef = useRef(null);
   const textRef = useRef(null);
@@ -35,10 +33,6 @@ export default function Home() {
     x: -x / 90,
     ease: 'power2.out',
   });
-
-  useEffect(() => {
-    lockScroll(true);
-  }, []);
 
   useGSAP(() => {
     if (!titleRef.current || !createdByRef.current) return;
@@ -65,7 +59,6 @@ export default function Home() {
           opacity: 1,
         },
       })
-      .add(() => lockScroll(false))
       .to(allAnimElements, {
         y: 0,
         x: 0,

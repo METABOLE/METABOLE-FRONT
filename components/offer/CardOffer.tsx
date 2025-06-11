@@ -25,7 +25,7 @@ const CardOffer = ({
     <div
       id={id}
       className={clsx(
-        'flex h-fit max-w-[400px] flex-col items-center gap-12 rounded-3xl border-[1px] px-6 py-8 text-center backdrop-blur-lg',
+        'flex h-fit w-fit max-w-[400px] flex-col items-center gap-12 rounded-3xl border-[1px] px-6 py-8 text-center backdrop-blur-lg md:max-w-[330px] lg:max-w-[400px]',
         type === OFFER_TYPE.SIMPLE ? 'border-blue-70 bg-menu/50' : 'border-blue-30 bg-white',
         className,
       )}
@@ -50,7 +50,7 @@ const CardOffer = ({
             <li
               key={index}
               className={clsx(
-                'p2 not-hover: flex items-center gap-7 py-2.5 text-left transition-colors',
+                'p2 flex items-center gap-4 py-2.5 text-left transition-colors xl:gap-7',
                 hoveredIndex === index ? 'text-black' : 'text-black-30',
                 hoveredIndex === null && 'text-black-70',
               )}

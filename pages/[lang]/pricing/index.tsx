@@ -2,8 +2,9 @@ import Button from '@/components/atoms/Button';
 import Div3D from '@/components/Div3D';
 import CardOffer from '@/components/offer/CardOffer';
 import { OFFERS } from '@/constants/offer.constant';
+import { useMatchMedia } from '@/hooks/useCheckScreenSize';
 import { useLanguage } from '@/providers/language.provider';
-import { OFFER_TYPE } from '@/types';
+import { BREAKPOINTS, OFFER_TYPE } from '@/types';
 import { useGSAP } from '@gsap/react';
 import clsx from 'clsx';
 import gsap from 'gsap';
@@ -12,8 +13,29 @@ import { useState } from 'react';
 const Pricing = () => {
   const { isFrench, getInternalPath } = useLanguage();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const isTablet = useMatchMedia(BREAKPOINTS.LG);
 
   useGSAP(() => {
+    if (isTablet) {
+      gsap
+        .timeline()
+        .to(
+          [
+            `#offer-card-${OFFERS[0].type}`,
+            `#offer-card-${OFFERS[1].type}`,
+            `#offer-card-${OFFERS[2].type}`,
+          ],
+          {
+            opacity: 1,
+            y: 0,
+            stagger: 0.2,
+            duration: 0.8,
+            ease: 'power2.out',
+          },
+        );
+      return;
+    }
+
     gsap.set(`#offer-card-${OFFER_TYPE.CUSTOM}`, {
       transformOrigin: 'left center',
     });
@@ -85,7 +107,44 @@ const Pricing = () => {
         },
         '<',
       );
-  }, []);
+  }, [isTablet]);
+
+  const renderCard = (offer: (typeof OFFERS)[0]) => {
+    const cardElement = (
+      <CardOffer
+        hoveredIndex={hoveredIndex}
+        id={`offer-card-${offer.type}`}
+        offer={offer}
+        setHoveredIndex={setHoveredIndex}
+        className={clsx(
+          offer.type === OFFER_TYPE.SIMPLE ? 'scale-100 lg:scale-110' : 'scale-100 lg:!scale-95',
+          !isTablet && offer.type === OFFER_TYPE.LANDING && 'translate-x-full opacity-0',
+          !isTablet && offer.type === OFFER_TYPE.CUSTOM && '-translate-x-full opacity-0',
+          isTablet && 'translate-y-8 opacity-0',
+        )}
+      />
+    );
+
+    if (isTablet) {
+      return (
+        <div key={offer.type} id={`wrapper-offer-card-${offer.type}`}>
+          {cardElement}
+        </div>
+      );
+    }
+
+    return (
+      <Div3D
+        key={offer.type}
+        className={clsx(offer.type === OFFER_TYPE.SIMPLE && 'z-10')}
+        followMouse={true}
+        id={`wrapper-offer-card-${offer.type}`}
+        intensity={2}
+      >
+        {cardElement}
+      </Div3D>
+    );
+  };
 
   return (
     <section className="px-x-default py-y-default gap-y-y-default flex flex-col text-center">
@@ -97,28 +156,13 @@ const Pricing = () => {
             : 'We will put all our skills to work for the realization of our projects.'}
         </p>
       </div>
-      <div className="mx-auto grid grid-cols-3 items-center gap-5">
-        {OFFERS.map((offer) => (
-          <Div3D
-            key={offer.type}
-            className={clsx(offer.type === OFFER_TYPE.SIMPLE && 'z-10')}
-            followMouse={true}
-            id={`wrapper-offer-card-${offer.type}`}
-            intensity={2}
-          >
-            <CardOffer
-              hoveredIndex={hoveredIndex}
-              id={`offer-card-${offer.type}`}
-              offer={offer}
-              setHoveredIndex={setHoveredIndex}
-              className={clsx(
-                offer.type === OFFER_TYPE.SIMPLE ? 'scale-110' : '!scale-95',
-                offer.type === OFFER_TYPE.LANDING && 'translate-x-full opacity-0',
-                offer.type === OFFER_TYPE.CUSTOM && '-translate-x-full opacity-0',
-              )}
-            />
-          </Div3D>
-        ))}
+      <div
+        className={clsx(
+          'mx-auto items-center gap-5 lg:gap-0',
+          'flex flex-wrap justify-center lg:grid lg:grid-cols-3',
+        )}
+      >
+        {OFFERS.map(renderCard)}
       </div>
       <div className="mx-auto md:w-2/3">
         <p className="p1 pb-9">
