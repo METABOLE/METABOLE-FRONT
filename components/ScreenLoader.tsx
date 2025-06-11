@@ -14,7 +14,7 @@ const ScreenLoader = () => {
 
   useGSAP(() => {
     gsap.set(screenLoaderRef.current, {
-      delay: 1.6,
+      delay: 1.8,
       display: 'none',
     });
   }, []);
