@@ -10,7 +10,7 @@ import { BREAKPOINTS, ProjectType } from '@/types';
 import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { SplitText } from 'gsap/all';
+import { SplitText } from 'gsap/SplitText';
 import Image from 'next/image';
 import { ReactNode, useRef } from 'react';
 gsap.registerPlugin(ScrollTrigger, SplitText);

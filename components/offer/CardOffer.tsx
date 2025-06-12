@@ -25,7 +25,7 @@ const CardOffer = ({
     <div
       id={id}
       className={clsx(
-        'flex h-fit w-fit max-w-[400px] flex-col items-center gap-12 rounded-3xl border-[1px] px-6 py-8 text-center backdrop-blur-lg md:max-w-[330px] lg:max-w-[400px]',
+        'flex h-fit w-full max-w-[400px] min-w-[350px] shrink-0 flex-col items-center gap-12 rounded-3xl border-[1px] px-6 py-8 text-center backdrop-blur-lg md:min-w-[320px]',
         type === OFFER_TYPE.SIMPLE ? 'border-blue-70 bg-menu/50' : 'border-blue-30 bg-white',
         className,
       )}
@@ -34,7 +34,7 @@ const CardOffer = ({
         backfaceVisibility: 'hidden',
       }}
     >
-      <h2 className="p1 uppercase">{title[isFrench ? 'fr' : 'en']}</h2>
+      <h2 className="p2 uppercase">{title[isFrench ? 'fr' : 'en']}</h2>
       <div className="flex flex-col">
         <p className="p3 inline-block pb-2">
           {type !== OFFER_TYPE.CUSTOM && (isFrench ? 'À partir de' : 'Starting from')}
@@ -50,7 +50,7 @@ const CardOffer = ({
             <li
               key={index}
               className={clsx(
-                'p2 flex items-center gap-4 py-2.5 text-left transition-colors xl:gap-7',
+                'p3 flex items-center gap-4 py-2.5 text-left transition-colors xl:gap-7',
                 hoveredIndex === index ? 'text-black' : 'text-black-30',
                 hoveredIndex === null && 'text-black-70',
               )}
@@ -64,8 +64,8 @@ const CardOffer = ({
         </ul>
       </div>
       <div>
-        <h3 className="p2 uppercase">{delivery.title[isFrench ? 'fr' : 'en']}</h3>
-        <p className="p2 text-blue">{delivery.description[isFrench ? 'fr' : 'en']}</p>
+        <h3 className="p3 uppercase">{delivery.title[isFrench ? 'fr' : 'en']}</h3>
+        <p className="p3 text-blue">{delivery.description[isFrench ? 'fr' : 'en']}</p>
       </div>
       <Button
         color={type === OFFER_TYPE.SIMPLE ? 'secondary' : 'primary'}
@@ -74,7 +74,7 @@ const CardOffer = ({
         {isFrench ? 'Contactez-nous' : 'Contact us'}
       </Button>
       {type === OFFER_TYPE.CUSTOM && (
-        <p className="text-black-70 p2">
+        <p className="text-black-70 p3">
           ou configurez votre site avec notre{' '}
           <Link
             className="underline"

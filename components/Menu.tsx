@@ -16,6 +16,7 @@ import Language from './Language';
 import NewsletterForm, { AnimatedNewsletterFormRef } from './NewsletterForm';
 import Sound from './Sound';
 import Time from './Time';
+import { useEnvironment } from '@/hooks/useEnvironment';
 
 const Menu = ({ projects }: { projects: ProjectType[] }) => {
   const SLICED_PROJECTS = projects.slice(0, 6);
@@ -36,6 +37,7 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
 
   const timelineRef = useRef<gsap.core.Timeline>(gsap.timeline());
 
+  const { isProd } = useEnvironment();
   const pathname = usePathname();
   const { isFrench, getInternalPath } = useLanguage();
   const { contextSafe } = useGSAP();
@@ -283,9 +285,22 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
     contactMenuRef.current?.play();
   }, []);
 
+  useGSAP(() => {
+    gsap.to(headerRef.current, {
+      delay: 4,
+      duration: 2,
+      ease: 'power4.out',
+      y: 0,
+      scale: 1,
+    });
+  }, [isProd]);
+
   return (
     <>
-      <header ref={headerRef} className="px-x-default fixed z-[900] w-full">
+      <header
+        ref={headerRef}
+        className="px-x-default fixed z-[900] w-full -translate-y-full scale-125"
+      >
         <div className="flex items-center justify-between py-8">
           <Link href={getInternalPath('/')} scroll={false}>
             <LogoFull />

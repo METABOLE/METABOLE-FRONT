@@ -35,15 +35,12 @@ const Pricing = () => {
         );
       return;
     }
-
     gsap.set(`#offer-card-${OFFER_TYPE.CUSTOM}`, {
       transformOrigin: 'left center',
     });
-
     gsap.set(`#offer-card-${OFFER_TYPE.LANDING}`, {
       transformOrigin: 'right center',
     });
-
     gsap
       .timeline()
       .to([`#offer-card-${OFFERS[0].type}`, `#offer-card-${OFFERS[2].type}`], {
@@ -77,7 +74,6 @@ const Pricing = () => {
         },
         '<',
       );
-
     gsap
       .timeline({
         scrollTrigger: {
@@ -120,7 +116,6 @@ const Pricing = () => {
           offer.type === OFFER_TYPE.SIMPLE ? 'scale-100 lg:scale-110' : 'scale-100 lg:!scale-95',
           !isTablet && offer.type === OFFER_TYPE.LANDING && 'translate-x-full opacity-0',
           !isTablet && offer.type === OFFER_TYPE.CUSTOM && '-translate-x-full opacity-0',
-          isTablet && 'translate-y-8 opacity-0',
         )}
       />
     );
@@ -147,7 +142,7 @@ const Pricing = () => {
   };
 
   return (
-    <section className="px-x-default py-y-default gap-y-y-default flex flex-col text-center">
+    <section className="py-y-default flex flex-col text-center">
       <div className="pt-y-default mx-auto md:w-2/3">
         <h1 className="text-blue h1 pb-2.5">{isFrench ? 'Tarification' : 'Pricing'}</h1>
         <p className="p1">
@@ -158,8 +153,7 @@ const Pricing = () => {
       </div>
       <div
         className={clsx(
-          'mx-auto items-center gap-5 lg:gap-0',
-          'flex flex-wrap justify-center lg:grid lg:grid-cols-3',
+          'px-x-default py-y-default lg:py-y-double-default flex w-full flex-col items-center gap-5 overflow-scroll sm:flex-row lg:justify-center lg:gap-0 lg:overflow-hidden xl:gap-5',
         )}
       >
         {OFFERS.map(renderCard)}

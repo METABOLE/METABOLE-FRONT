@@ -4,9 +4,9 @@ const nextConfig: NextConfig = {
   /* config options here */
   transpilePackages: ['gsap'],
   reactStrictMode: true,
-  experimental: {
-    esmExternals: 'loose',
-  },
+  // experimental: {
+  //   esmExternals: 'loose',
+  // },
 };
 
 export default nextConfig;

@@ -2,6 +2,8 @@
 
 :root {
   /* SPACINGS */
+  --x-double-default: clamp(40px, 16vw, 200px);
+  --y-double-default: clamp(40px, 16vh, 200px);
   --x-default: clamp(20px, 8vw, 100px);
   --y-default: clamp(20px, 8vh, 100px);
   --x-half-default: calc(var(--x-default) / 2);
@@ -53,6 +55,8 @@
   --font-safiro-semibold-italic: var(--font-safiro-semibold-italic);
 
   /* PADDING */
+  --padding-x-double-default: var(--x-double-default);
+  --padding-y-double-default: var(--y-double-default);
   --padding-x-default: var(--x-default);
   --padding-y-default: var(--y-default);
   --padding-x-half-default: var(--x-half-default);

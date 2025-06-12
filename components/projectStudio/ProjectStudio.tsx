@@ -6,7 +6,7 @@ import { useGSAP } from '@gsap/react';
 import clsx from 'clsx';
 import { AnimatePresence } from 'framer-motion';
 import gsap from 'gsap';
-import { SplitText } from 'gsap/all';
+import { SplitText } from 'gsap/SplitText';
 import { useEffect, useRef, useState } from 'react';
 import { Toaster } from 'sonner';
 import Button from '../atoms/Button';

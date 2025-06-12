@@ -1,7 +1,7 @@
 import { useGSAP } from '@gsap/react';
 import clsx from 'clsx';
 import gsap from 'gsap';
-import { SplitText } from 'gsap/all';
+import { SplitText } from 'gsap/SplitText';
 import { forwardRef, type ReactNode, useImperativeHandle, useRef } from 'react';
 
 type Variant = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'span';
