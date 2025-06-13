@@ -70,6 +70,7 @@ const CardOffer = ({
       <Button
         color={type === OFFER_TYPE.SIMPLE ? 'secondary' : 'primary'}
         href={getInternalPath(href)}
+        scroll={false}
       >
         {isFrench ? 'Contactez-nous' : 'Contact us'}
       </Button>

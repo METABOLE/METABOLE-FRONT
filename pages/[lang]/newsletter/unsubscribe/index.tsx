@@ -132,6 +132,7 @@ const UnsubscribePage: NextPageWithLayout = () => {
         <Link
           className="flex cursor-pointer items-center gap-3 text-white"
           href={getInternalPath('/')}
+          scroll={false}
         >
           <IconArrow className="rotate-45" color={COLORS.WHITE} />
           {isFrench ? "Retour à l'accueil" : 'Back to home'}

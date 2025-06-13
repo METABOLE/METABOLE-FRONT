@@ -31,6 +31,7 @@ type DivButtonProps = BaseButtonProps &
 interface LinkButtonProps extends BaseButtonProps {
   href: string;
   target?: string;
+  scroll?: boolean;
 }
 
 type ButtonProps = DivButtonProps | LinkButtonProps;

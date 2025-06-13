@@ -161,9 +161,9 @@ const Pricing = () => {
       <div className="mx-auto md:w-2/3">
         <p className="p1 pb-9">
           Si vous avez une idée précise de votre besoin, utilisez notre website builder pour nous
-          orienter dans la réflexion :{' '}
+          orienter dans la réflexion :
         </p>
-        <Button color="secondary" href={getInternalPath('/pricing/project-studio')}>
+        <Button color="secondary" href={getInternalPath('/pricing/project-studio')} scroll={false}>
           PROJECT STUDIO
         </Button>
       </div>

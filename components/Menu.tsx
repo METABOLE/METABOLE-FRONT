@@ -307,7 +307,12 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
           </Link>
           <div ref={wrapperButtonRef} className="flex gap-4">
             <Sound className="shrink-0" isDark={true} />
-            <Button ref={contactMenuRef} href={getInternalPath('/contact')} transformOrigin="right">
+            <Button
+              ref={contactMenuRef}
+              href={getInternalPath('/contact')}
+              scroll={false}
+              transformOrigin="right"
+            >
               CONTACT
             </Button>
             <Button
@@ -396,6 +401,7 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
                       <Link
                         className="p3 text-black-30 inline-block transition-[translate,color] hover:-translate-x-2 hover:text-black"
                         href={link.href}
+                        scroll={false}
                         target="_blank"
                       >
                         {link.text}

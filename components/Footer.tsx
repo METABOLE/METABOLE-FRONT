@@ -155,6 +155,7 @@ const Footer = () => {
                         <Link
                           className="text-white-30 inline-block transition-[translate,color] hover:translate-x-2 hover:text-white"
                           href={link.href}
+                          scroll={false}
                           target="_blank"
                         >
                           {link.text}
