@@ -4,9 +4,10 @@ import { useLanguage } from '@/providers/language.provider';
 import { Animation, Option, Page } from '@/types';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import SafeNumberFlow from '../SafeNumberFlow';
 import PageViewer from './PageViewer';
+import AddPage, { AddPageRef } from './AddPage';
 
 const Viewer = ({
   selectedPages,
@@ -25,6 +26,7 @@ const Viewer = ({
 }) => {
   const { isFrench } = useLanguage();
   const [isDragOver, setIsDragOver] = useState(false);
+  const addPageRef = useRef<AddPageRef>(null);
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -61,6 +63,14 @@ const Viewer = ({
     }
   };
 
+  useEffect(() => {
+    if (selectedPages.length > 0) {
+      addPageRef.current?.reverse();
+    } else {
+      addPageRef.current?.play();
+    }
+  }, [selectedPages.length]);
+
   return (
     <div className="grid h-full w-full grid-rows-[1fr_243px] xl:grid-rows-[1fr_123px]">
       <div className="border-blue-30 relative h-full w-full overflow-hidden border-b-[1px]">
@@ -73,6 +83,8 @@ const Viewer = ({
           onDragOver={handleDragOver}
           onDrop={handleDrop}
         >
+          <p className="h3 absolute top-6 left-6">{isFrench ? 'Votre site :' : 'Your site :'}</p>
+          <AddPage ref={addPageRef} />
           <PageViewer
             handleDeletePage={handleDeletePage}
             handleUnselectPage={handleUnselectPage}
