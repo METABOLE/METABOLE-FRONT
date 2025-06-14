@@ -1,4 +1,5 @@
 import { CONTACT, LINKS, SOCIALS } from '@/constants';
+import { useIsScreenLoader } from '@/hooks/useIsScreenLoader';
 import { useShortcut } from '@/hooks/useShortcut';
 import { useLanguage } from '@/providers/language.provider';
 import { COLORS, ProjectType, TAG_TYPE } from '@/types';
@@ -16,7 +17,6 @@ import Language from './Language';
 import NewsletterForm, { AnimatedNewsletterFormRef } from './NewsletterForm';
 import Sound from './Sound';
 import Time from './Time';
-import { useEnvironment } from '@/hooks/useEnvironment';
 
 const Menu = ({ projects }: { projects: ProjectType[] }) => {
   const SLICED_PROJECTS = projects.slice(0, 6);
@@ -37,7 +37,7 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
 
   const timelineRef = useRef<gsap.core.Timeline>(gsap.timeline());
 
-  const { isProd } = useEnvironment();
+  const isScreenLoader = useIsScreenLoader();
   const pathname = usePathname();
   const { isFrench, getInternalPath } = useLanguage();
   const { contextSafe } = useGSAP();
@@ -287,13 +287,13 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
 
   useGSAP(() => {
     gsap.to(headerRef.current, {
-      delay: 4,
+      delay: isScreenLoader ? 4 : 0.85,
       duration: 2,
       ease: 'power4.out',
       y: 0,
       scale: 1,
     });
-  }, [isProd]);
+  }, [isScreenLoader]);
 
   return (
     <>

@@ -1,6 +1,6 @@
 message="$(cat $1)"
 
-valid_emoji_codes=":(sparkles|art|lipstick|bug|mag|rocket|wrench|construction|dizzy|iphone|puzzle_piece|globe_with_meridians|performing_arts|crystal_ball|bento|memo|test_tube|arrow_up):"
+valid_emoji_codes=":(sparkles|art|lipstick|bug|mag|rocket|wrench|construction|dizzy|iphone|wastebasket|puzzle_piece|globe_with_meridians|performing_arts|crystal_ball|bento|memo|test_tube|arrow_up):"
 
 if ! [[ "${message}" =~ ^${valid_emoji_codes}[[:space:]] ]]; then
     echo "🌀 Metabole Studio: Commit sans gitmoji détecté!

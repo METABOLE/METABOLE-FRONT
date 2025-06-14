@@ -11,6 +11,18 @@ export const LINKS = [
     href: '/contact',
     text: { en: 'Contact', fr: 'Contact' },
   },
+  // {
+  //   href: '/about',
+  //   text: { en: 'About', fr: 'À propos' },
+  // },
+  // {
+  //   href: '/services',
+  //   text: { en: 'Services', fr: 'Services' },
+  // },
+  // {
+  //   href: '/works',
+  //   text: { en: 'Works', fr: 'Réalisations' },
+  // },
 ];
 
 export const SOCIALS = [
