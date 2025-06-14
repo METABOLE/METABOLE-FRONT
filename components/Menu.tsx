@@ -340,12 +340,14 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
                       href={getInternalPath(link.href)}
                       scroll={false}
                       className={clsx(
-                        'h2 link inline-block',
+                        'h2 link before:bg-blue ease-power4-in-out relative inline-block overflow-hidden pb-1 transition-colors duration-300 before:absolute before:inset-0 before:origin-left before:scale-x-0 before:transition-transform before:duration-500 before:ease-out hover:text-white hover:before:scale-x-100',
                         pathname === getInternalPath(link.href) ? 'text-blue' : 'text-black-70',
                       )}
                       onClick={closeMenu}
                     >
-                      {isFrench ? link.text.fr : link.text.en}
+                      <span className="relative z-10">
+                        {isFrench ? link.text.fr : link.text.en}
+                      </span>
                     </Link>
                   </li>
                 ))}

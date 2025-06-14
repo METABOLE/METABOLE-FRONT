@@ -1,4 +1,4 @@
-import { OFFER_TYPE } from '@/types';
+import { CONTACT_TYPE_VALUES, OFFER_TYPE } from '@/types';
 
 export const OFFERS = [
   {
@@ -56,13 +56,13 @@ export const OFFERS = [
         fr: '3 à 4 semaines',
       },
     },
-    href: '/contact?type=' + OFFER_TYPE.LANDING,
+    href: '/contact?type=' + CONTACT_TYPE_VALUES.LANDING,
   },
   {
     type: OFFER_TYPE.SIMPLE,
     title: {
-      en: 'COMPLETE WEBSITE',
-      fr: 'SITE COMPLET',
+      en: 'SIGNATURE WEBSITE',
+      fr: 'SITE SIGNATURE',
     },
     startingPrice: '7500',
     options: [
@@ -113,7 +113,7 @@ export const OFFERS = [
         fr: '6 à 8 semaines',
       },
     },
-    href: '/contact?type=' + OFFER_TYPE.SIMPLE,
+    href: '/contact?type=' + CONTACT_TYPE_VALUES.SIMPLE,
   },
   {
     type: OFFER_TYPE.CUSTOM,
@@ -170,6 +170,6 @@ export const OFFERS = [
         fr: '+ 6 semaines',
       },
     },
-    href: '/contact?type=' + OFFER_TYPE.CUSTOM,
+    href: '/contact?type=' + CONTACT_TYPE_VALUES.CUSTOM,
   },
 ];

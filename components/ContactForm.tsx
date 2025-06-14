@@ -3,8 +3,8 @@ import Checkbox from '@/components/atoms/Checkbox';
 import Input from '@/components/Input';
 import { useLanguage } from '@/providers/language.provider';
 import { postContactForm } from '@/services/contact.service';
-import { FORM_STATUS, OFFER_TYPE } from '@/types';
-import { ContactFormData } from '@/types/contact.type';
+import { CONTACT_TYPE_VALUES, FORM_STATUS } from '@/types';
+import { ContactFormData, ContactFormState, ContactType } from '@/types/contact.type';
 import { isEmail } from '@/utils/validation.utils';
 import { useMutation } from '@tanstack/react-query';
 import clsx from 'clsx';
@@ -15,18 +15,19 @@ const ContactForm = ({ className }: { className?: string }) => {
   const searchParams = useSearchParams();
   const type = searchParams.get('type');
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<ContactFormState>({
     name: '',
     email: '',
     phone: '',
     message: '',
-    type: type || '',
+    type: (type as ContactType) || CONTACT_TYPE_VALUES.DEFAULT,
     consentMarketing: false,
   });
 
   const [errors, setErrors] = useState({
     name: '',
     email: '',
+    type: '',
   });
 
   const [formStatus, setFormStatus] = useState(FORM_STATUS.DEFAULT);
@@ -55,7 +56,7 @@ const ContactForm = ({ className }: { className?: string }) => {
       email: '',
       phone: '',
       message: '',
-      type: type || '',
+      type: (type as ContactType) || CONTACT_TYPE_VALUES.DEFAULT,
       consentMarketing: false,
     });
   };
@@ -64,6 +65,7 @@ const ContactForm = ({ className }: { className?: string }) => {
     setErrors({
       name: '',
       email: '',
+      type: '',
     });
   };
 
@@ -91,6 +93,14 @@ const ContactForm = ({ className }: { className?: string }) => {
       setErrors((prev) => ({
         ...prev,
         email: isFrench ? 'Veuillez entrer un email valide' : 'Please enter a valid email',
+      }));
+      hasErrors = true;
+    }
+
+    if (!formData.type || formData.type === CONTACT_TYPE_VALUES.DEFAULT) {
+      setErrors((prev) => ({
+        ...prev,
+        type: isFrench ? 'Veuillez sélectionner un type' : 'Please select a type',
       }));
       hasErrors = true;
     }
@@ -187,24 +197,54 @@ const ContactForm = ({ className }: { className?: string }) => {
       />
 
       <Input
+        errorMessage={errors.type}
         isDark={true}
         // label={isFrench ? 'Type de demande' : 'Request type'}
         name="contact-type"
         type="select"
         value={formData.type}
-        onChange={(e) => setFormData((prev) => ({ ...prev, type: e.target.value }))}
+        required
+        onBlur={() => {
+          if (!formData.type || formData.type === CONTACT_TYPE_VALUES.DEFAULT) {
+            setErrors((prev) => ({
+              ...prev,
+              type: isFrench ? 'Veuillez sélectionner un type' : 'Please select a type',
+            }));
+          }
+        }}
+        onChange={(e) => {
+          const newType = e.target.value as ContactType;
+
+          setFormData((prev) => ({
+            ...prev,
+            type: newType,
+          }));
+
+          if (newType !== CONTACT_TYPE_VALUES.DEFAULT) {
+            setErrors((prev) => ({ ...prev, type: '' }));
+          } else {
+            setErrors((prev) => ({
+              ...prev,
+              type: isFrench ? 'Veuillez sélectionner un type' : 'Please select a type',
+            }));
+          }
+        }}
       >
-        <option value="">{isFrench ? 'Sélectionnez un type' : 'Select a type'}</option>
-        <option value={OFFER_TYPE.LANDING}>Landing page (1 page)</option>
-        <option value={OFFER_TYPE.SIMPLE}>
+        <option value={CONTACT_TYPE_VALUES.DEFAULT}>
+          {isFrench ? 'Sélectionnez un type' : 'Select a type'}
+        </option>
+        <option value={CONTACT_TYPE_VALUES.LANDING}>
+          {isFrench ? 'Page de destination (1 page)' : 'Landing page (1 page)'}
+        </option>
+        <option value={CONTACT_TYPE_VALUES.SIMPLE}>
           {isFrench ? 'Site web (3 à 6 pages)' : 'Website (3 to 6 pages)'}
         </option>
-        <option value={OFFER_TYPE.CUSTOM}>
+        <option value={CONTACT_TYPE_VALUES.CUSTOM}>
           {isFrench
             ? 'Site web personnalisé (pages illimitées)'
             : 'Custom website (unlimited pages)'}
         </option>
-        <option value="other">{isFrench ? 'Autre' : 'Other'}</option>
+        <option value={CONTACT_TYPE_VALUES.OTHER}>{isFrench ? 'Autre' : 'Other'}</option>
       </Input>
 
       <Input
