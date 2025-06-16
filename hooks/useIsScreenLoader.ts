@@ -6,7 +6,6 @@ export const useIsScreenLoader = () => {
   const [isScreenLoader, setIsScreenLoader] = useState(true);
 
   useEffect(() => {
-    // window.location.origin !== 'http://localhost:3000' &&
     setIsScreenLoader(pathname === '/en' || pathname === '/fr' || pathname === '/');
   }, []);
 

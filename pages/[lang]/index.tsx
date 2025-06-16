@@ -52,7 +52,7 @@ export default function Home() {
 
     gsap
       .timeline({
-        delay: isScreenLoader ? 4.5 : 0.8,
+        delay: isScreenLoader ? 4 : 0.8,
         defaults: {
           ease: 'power2.out',
           duration: 0.8,

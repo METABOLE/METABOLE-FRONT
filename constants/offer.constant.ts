@@ -11,8 +11,8 @@ export const OFFERS = [
     options: [
       {
         title: {
-          en: 'Up to 6 sections',
-          fr: "Jusqu'à 6 sections",
+          en: '1 page',
+          fr: '1 page',
         },
       },
       {
