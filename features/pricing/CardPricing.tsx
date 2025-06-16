@@ -1,11 +1,11 @@
+import Button from '@/components/ui/Button';
+import { IconCheck } from '@/components/ui/Icons';
 import { useLanguage } from '@/providers/language.provider';
 import { Offer, OFFER_TYPE } from '@/types';
 import clsx from 'clsx';
-import { IconCheck } from '../Icons';
-import Button from '../atoms/Button';
 import Link from 'next/link';
 
-const CardOffer = ({
+const CardPricing = ({
   offer,
   id,
   className,
@@ -90,4 +90,4 @@ const CardOffer = ({
   );
 };
 
-export default CardOffer;
+export default CardPricing;

@@ -1,11 +1,11 @@
-import FloatingHalo from '@/components/FloatingHalo';
-import Lottie from '@/components/Lottie';
+import FloatingHalo from '@/components/shared/FloatingHalo';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ReactNode } from 'react';
 import metaboleFull from '../public/lotties/metabole-full-yellow.json';
 import { useLanguage } from '@/providers/language.provider';
-import SEO from '@/components/SEO';
+import SEO from '@/components/ui/SEO';
+import Lottie from '@/components/shared/Lottie';
 
 interface NewsletterLayoutProps {
   children: ReactNode;

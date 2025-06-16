@@ -2,8 +2,8 @@ import { useLanguage } from '@/providers/language.provider';
 import { motion } from 'framer-motion';
 import { isEmail, isPhone } from '@/utils/validation.utils';
 import { useEffect, useState } from 'react';
-import Input from '../Input';
 import { StepFormData } from '@/types/quote.type';
+import Input from '@/components/ui/Input';
 
 interface StepFinalisationProps {
   formData: StepFormData;

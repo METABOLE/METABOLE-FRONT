@@ -7,9 +7,9 @@ import { useMutation } from '@tanstack/react-query';
 import clsx from 'clsx';
 import gsap from 'gsap';
 import { forwardRef, useImperativeHandle, useRef, useState } from 'react';
-import { IconArrow, IconQuestionMark } from './Icons';
-import Input, { AnimatedInputRef } from './Input';
-import Typography, { AnimatedTypoRef } from './Typography';
+import { IconArrow, IconQuestionMark } from '../ui/Icons';
+import Input, { AnimatedInputRef } from '../ui/Input';
+import Typography, { AnimatedTypoRef } from '../ui/Typography';
 
 interface LeadFormProps {
   className?: string;

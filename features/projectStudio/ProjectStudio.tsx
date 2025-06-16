@@ -9,12 +9,12 @@ import gsap from 'gsap';
 import { SplitText } from 'gsap/SplitText';
 import { useEffect, useRef, useState } from 'react';
 import { Toaster } from 'sonner';
-import Button from '../atoms/Button';
 import StepAnimations from './StepAnimations';
 import StepFinalisation from './StepFinalisation';
 import StepOptions from './StepOptions';
 import StepPages from './StepPages';
 import Viewer from './Viewer';
+import Button from '@/components/ui/Button';
 
 const ProjectStudio = () => {
   const { isFrench } = useLanguage();

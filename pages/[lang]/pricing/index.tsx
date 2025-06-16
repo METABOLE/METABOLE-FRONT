@@ -1,7 +1,7 @@
-import Button from '@/components/atoms/Button';
-import Div3D from '@/components/Div3D';
-import CardOffer from '@/components/offer/CardOffer';
+import Div3D from '@/components/shared/Div3D';
+import Button from '@/components/ui/Button';
 import { OFFERS } from '@/constants/offer.constant';
+import CardPricing from '@/features/pricing/CardPricing';
 import { useMatchMedia } from '@/hooks/useCheckScreenSize';
 import { useLanguage } from '@/providers/language.provider';
 import { BREAKPOINTS, OFFER_TYPE } from '@/types';
@@ -107,7 +107,7 @@ const Pricing = () => {
 
   const renderCard = (offer: (typeof OFFERS)[0]) => {
     const cardElement = (
-      <CardOffer
+      <CardPricing
         hoveredIndex={hoveredIndex}
         id={`offer-card-${offer.type}`}
         offer={offer}

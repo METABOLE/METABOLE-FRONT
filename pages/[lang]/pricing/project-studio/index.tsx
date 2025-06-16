@@ -1,4 +1,4 @@
-import ProjectStudio from '@/components/projectStudio/ProjectStudio';
+import ProjectStudio from '@/features/projectStudio/ProjectStudio';
 import { useLanguage } from '@/providers/language.provider';
 
 const Pricing = () => {

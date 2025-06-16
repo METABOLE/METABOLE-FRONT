@@ -8,10 +8,10 @@ import gsap from 'gsap';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useRef, useState } from 'react';
-import { LogoSmall } from './Icons';
-import Language from './Language';
-import Sound from './Sound';
-import Time from './Time';
+import { LogoSmall } from '../ui/Icons';
+import Sound from '../shared/Sound';
+import Time from '../shared/Time';
+import Language from '../shared/Language';
 
 const Burger = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

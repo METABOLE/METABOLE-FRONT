@@ -2,7 +2,7 @@ import { useMagnet, useResetMagnet } from '@/hooks/useMagnet';
 import { useSound } from '@/providers/sound.provider';
 import clsx from 'clsx';
 import { forwardRef, useEffect, useRef } from 'react';
-import Wave, { WaveHandles } from './Wave';
+import Wave, { WaveHandles } from '../ui/Wave';
 import { COLORS } from '@/types';
 
 const FADE_DURATION = 0.5;

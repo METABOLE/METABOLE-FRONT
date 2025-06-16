@@ -1,5 +1,5 @@
-import { IconDelete } from '../Icons';
-import SafeNumberFlow from '../SafeNumberFlow';
+import SafeNumberFlow from '@/components/shared/SafeNumberFlow';
+import { IconDelete } from '@/components/ui/Icons';
 
 const PageCard = ({
   title,

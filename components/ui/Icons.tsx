@@ -74,6 +74,7 @@ export const LogoFull = forwardRef<SVGSVGElement, IconProps>(
     </svg>
   ),
 );
+
 export const LogoSmall = forwardRef<SVGSVGElement, IconProps>(
   ({ color = COLORS.BLUE, ...props }, ref) => (
     <svg {...props} ref={ref} fill="none" viewBox="0 0 525 477" xmlns="http://www.w3.org/2000/svg">
@@ -81,6 +82,22 @@ export const LogoSmall = forwardRef<SVGSVGElement, IconProps>(
       <rect fill={color} height="476.392" width="85.5793" x="176.861" />
       <path d="M355.154 0H440.734L348.023 476.392H262.443L355.154 0Z" fill={color} />
       <path d="M92.7109 0H178.29L85.5793 476.392H0L92.7109 0Z" fill={color} />
+    </svg>
+  ),
+);
+
+export const ShapeCorner = forwardRef<SVGSVGElement, IconProps>(
+  ({ color = COLORS.BLACK, ...props }, ref) => (
+    <svg
+      ref={ref}
+      {...props}
+      fill="none"
+      height="46"
+      viewBox="0 0 46 46"
+      width="46"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path d="M23 46C23.0012 34 12.0013 23 0 23V0H46V46H23Z" fill={color} />
     </svg>
   ),
 );

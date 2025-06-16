@@ -9,14 +9,14 @@ import gsap from 'gsap';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useRef, useState } from 'react';
-import Button, { AnimatedButtonRef } from './atoms/Button';
-import Tag, { AnimatedTagRef } from './atoms/Tag';
 import CutoutWrapper, { AnimatedCutoutWrapperRef } from './CutoutWrapper';
-import { LogoFull } from './Icons';
-import Language from './Language';
-import NewsletterForm, { AnimatedNewsletterFormRef } from './NewsletterForm';
-import Sound from './Sound';
-import Time from './Time';
+import Button, { AnimatedButtonRef } from '../ui/Button';
+import Tag, { AnimatedTagRef } from '../ui/Tag';
+import NewsletterForm, { AnimatedNewsletterFormRef } from '../shared/NewsletterForm';
+import { LogoFull } from '../ui/Icons';
+import Sound from '../shared/Sound';
+import Time from '../shared/Time';
+import Language from '../shared/Language';
 
 const Menu = ({ projects }: { projects: ProjectType[] }) => {
   const SLICED_PROJECTS = projects.slice(0, 6);

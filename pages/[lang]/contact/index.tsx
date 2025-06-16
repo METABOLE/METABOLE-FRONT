@@ -1,4 +1,4 @@
-import ContactForm from '@/components/ContactForm';
+import ContactForm from '@/features/contact/ContactForm';
 import { CONTACT } from '@/constants';
 import { useLanguage } from '@/providers/language.provider';
 

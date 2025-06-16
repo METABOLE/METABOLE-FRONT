@@ -1,6 +1,7 @@
-import Button from '@/components/atoms/Button';
-import Checkbox from '@/components/atoms/Checkbox';
-import Input from '@/components/Input';
+import Button from '@/components/ui/Button';
+import Checkbox from '@/components/ui/Checkbox';
+import Input from '@/components/ui/Input';
+import { useAudio } from '@/hooks/useAudio';
 import { useLanguage } from '@/providers/language.provider';
 import { postContactForm } from '@/services/contact.service';
 import { CONTACT_TYPE_VALUES, FORM_STATUS } from '@/types';
@@ -14,6 +15,8 @@ import { useState } from 'react';
 const ContactForm = ({ className }: { className?: string }) => {
   const searchParams = useSearchParams();
   const type = searchParams.get('type');
+  const { play: playError } = useAudio('/sounds/error.mp3');
+  const { play: playSuccess } = useAudio('/sounds/sent.mp3');
 
   const [formData, setFormData] = useState<ContactFormState>({
     name: '',
@@ -37,6 +40,7 @@ const ContactForm = ({ className }: { className?: string }) => {
     mutationFn: ({ name, email, phone, message, type, consentMarketing, lang }: ContactFormData) =>
       postContactForm({ name, email, phone, message, type, consentMarketing, lang }),
     onSuccess: () => {
+      playSuccess();
       resetForm();
       resetErrors();
       setFormStatus(FORM_STATUS.SUCCESS);
@@ -45,6 +49,7 @@ const ContactForm = ({ className }: { className?: string }) => {
       setFormStatus(FORM_STATUS.PENDING);
     },
     onError: (error) => {
+      playError();
       setFormStatus(FORM_STATUS.ERROR);
       console.error("Erreur d'inscription", error);
     },

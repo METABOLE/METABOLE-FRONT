@@ -1,7 +1,7 @@
 import { Option } from '@/types';
-import Checkbox from '../atoms/Checkbox';
 import { useLanguage } from '@/providers/language.provider';
 import { motion } from 'framer-motion';
+import Checkbox from '@/components/ui/Checkbox';
 
 interface StepOptionsProps {
   options: Option[];

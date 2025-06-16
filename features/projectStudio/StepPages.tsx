@@ -1,10 +1,10 @@
+import ButtonCheckbox from '@/components/ui/ButtonCheckbox';
+import { IconCross } from '@/components/ui/Icons';
 import { useLanguage } from '@/providers/language.provider';
 import { COLORS, Page } from '@/types';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import { useRef, useState } from 'react';
-import { IconCross } from '../Icons';
-import ButtonCheckbox from '../atoms/ButtonCheckbox';
 
 interface StepPagesProps {
   pages: Page[];

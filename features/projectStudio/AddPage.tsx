@@ -1,8 +1,8 @@
 import { useGSAP } from '@gsap/react';
 import { forwardRef, useImperativeHandle, useRef } from 'react';
-import { IconChevron } from '../Icons';
 import gsap from 'gsap';
 import { SplitText } from 'gsap/SplitText';
+import { IconChevron } from '@/components/ui/Icons';
 
 export interface AddPageRef {
   play: () => void;

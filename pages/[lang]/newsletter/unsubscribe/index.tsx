@@ -1,7 +1,7 @@
-import Button from '@/components/atoms/Button';
-import { IconArrow } from '@/components/Icons';
-import Input from '@/components/Input';
-import Typography from '@/components/Typography';
+import Button from '@/components/ui/Button';
+import { IconArrow } from '@/components/ui/Icons';
+import Input from '@/components/ui/Input';
+import Typography from '@/components/ui/Typography';
 import NewsletterLayout from '@/layout/newsletter';
 import { NextPageWithLayout } from '@/pages/_app';
 import { useLanguage } from '@/providers/language.provider';

@@ -7,12 +7,12 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import Link from 'next/link';
 import { useRef } from 'react';
-import FloatingHalo from './FloatingHalo';
-import Hint from './Hint';
-import { IconArrow, LogoSmall } from './Icons';
-import Language from './Language';
-import NewsletterSubscription from './NewsletterForm';
-import Time from './Time';
+import FloatingHalo from '../shared/FloatingHalo';
+import Language from '../shared/Language';
+import NewsletterForm from '../shared/NewsletterForm';
+import Time from '../shared/Time';
+import Hint from '../ui/Hint';
+import { IconArrow, LogoSmall } from '../ui/Icons';
 
 const Footer = () => {
   const animatedTitleRef = useRef<SVGSVGElement>(null);
@@ -166,7 +166,7 @@ const Footer = () => {
                 </nav>
                 <div />
                 <div className="gap-y-default col-span-2 flex flex-col">
-                  <NewsletterSubscription animate={false} isDark={false} />
+                  <NewsletterForm animate={false} isDark={false} />
                   <Language className="md:ml-auto" isDark={true} />
                 </div>
               </div>

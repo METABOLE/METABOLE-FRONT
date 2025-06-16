@@ -5,9 +5,9 @@ import { Animation, Option, Page } from '@/types';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
-import SafeNumberFlow from '../SafeNumberFlow';
 import PageViewer from './PageViewer';
 import AddPage, { AddPageRef } from './AddPage';
+import SafeNumberFlow from '@/components/shared/SafeNumberFlow';
 
 const Viewer = ({
   selectedPages,

@@ -1,7 +1,7 @@
-import Burger from '@/components/Burger';
-import Footer from '@/components/Footer';
-import Menu from '@/components/Menu';
-import SEO from '@/components/SEO';
+import Burger from '@/components/layout/Burger';
+import Footer from '@/components/layout/Footer';
+import Menu from '@/components/layout/Menu';
+import SEO from '@/components/ui/SEO';
 import { useMatchMedia } from '@/hooks/useCheckScreenSize';
 import { useIsScreenLoader } from '@/hooks/useIsScreenLoader';
 import { useMousePosition } from '@/hooks/useMousePosition';

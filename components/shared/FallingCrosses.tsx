@@ -2,9 +2,9 @@ import useWindowResize from '@/hooks/useReloadResize';
 import { useTouchDevice } from '@/hooks/useTouchDevice';
 import clsx from 'clsx';
 import { useRef, useState } from 'react';
-import { useFallingCrosses } from '../hooks/useFallingCrosses';
-import { FallingCrossesProps } from '../types/crosses.types';
-import { DEFAULT_CROSS_COLORS } from '../utils/crosses.utils';
+import { useFallingCrosses } from '../../hooks/useFallingCrosses';
+import { FallingCrossesProps } from '../../types/crosses.types';
+import { DEFAULT_CROSS_COLORS } from '../../utils/crosses.utils';
 
 const FallingCrosses = ({ className, crossColors = DEFAULT_CROSS_COLORS }: FallingCrossesProps) => {
   const isTouchDevice = useTouchDevice();
