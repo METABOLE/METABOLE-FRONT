@@ -160,8 +160,9 @@ const Pricing = () => {
       </div>
       <div className="mx-auto md:w-2/3">
         <p className="p1 pb-9">
-          Si vous avez une idée précise de votre besoin, utilisez notre website builder pour nous
-          orienter dans la réflexion :
+          {isFrench
+            ? 'Si vous avez une idée précise de votre besoin, utilisez notre project studio pour nous orienter dans la réflexion :'
+            : 'If you have a clear idea of your needs, use our project studio to guide us in our thinking:'}
         </p>
         <Button color="secondary" href={getInternalPath('/pricing/project-studio')} scroll={false}>
           PROJECT STUDIO
