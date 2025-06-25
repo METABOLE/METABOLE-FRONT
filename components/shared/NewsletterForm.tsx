@@ -15,6 +15,7 @@ interface LeadFormProps {
   className?: string;
   isDark?: boolean;
   animate?: boolean;
+  hintId?: string;
 }
 
 const SUCCESS_MESSAGES = {
@@ -28,7 +29,7 @@ export interface AnimatedNewsletterFormRef {
 }
 
 const NewsletterForm = forwardRef<AnimatedNewsletterFormRef, LeadFormProps>(
-  ({ className, isDark, animate }, ref) => {
+  ({ className, isDark, animate, hintId }, ref) => {
     const typographyRef = useRef<AnimatedTypoRef>(null);
     const inputRef = useRef<AnimatedInputRef>(null);
     const arrowRef = useRef(null);
@@ -146,7 +147,7 @@ const NewsletterForm = forwardRef<AnimatedNewsletterFormRef, LeadFormProps>(
           >
             {isFrench ? 'Rejoignez notre newsletter ' : 'Join our newsletter '}
           </Typography>
-          <button ref={buttonQuestionMarkRef} className="cursor-help" id="hint-newsletter">
+          <button ref={buttonQuestionMarkRef} className="cursor-help" id={hintId}>
             <IconQuestionMark color={isDark ? COLORS.BLUE : COLORS.YELLOW} />
           </button>
         </div>

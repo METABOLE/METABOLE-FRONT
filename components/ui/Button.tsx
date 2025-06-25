@@ -3,6 +3,7 @@ import { COLORS } from '@/types';
 import { useGSAP } from '@gsap/react';
 import { clsx } from 'clsx';
 import gsap from 'gsap';
+import { SplitText } from 'gsap/SplitText';
 import Link from 'next/link';
 import {
   ComponentProps,
@@ -13,6 +14,8 @@ import {
   useRef,
   useState,
 } from 'react';
+
+gsap.registerPlugin(SplitText);
 
 interface BaseButtonProps {
   children: ReactNode;
@@ -73,14 +76,15 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
     const buttonRef = useRef(null);
     const hiddenButtonRef = useRef<HTMLDivElement>(null);
     const textRef = useRef(null);
+    const currentChildRef = useRef<HTMLSpanElement>(null);
+    const absoluteChildRef = useRef<HTMLSpanElement>(null);
+    const timelineHoverRef = useRef<gsap.core.Timeline | null>(null);
 
     const { contextSafe } = useGSAP();
 
     const [currentChild, setCurrentChild] = useState(children);
 
-    // Animation de changement de contenu (seulement si le contenu change vraiment)
     useGSAP(() => {
-      // Ne pas animer au premier rendu
       if (currentChild === children) {
         return;
       }
@@ -120,6 +124,37 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
             ease: 'power2.out',
           },
           '<',
+        );
+    }, [children]);
+
+    useGSAP(() => {
+      const splitText = new SplitText(currentChildRef.current, {
+        type: 'chars',
+        mask: 'chars',
+      });
+      const absoluteSplitText = new SplitText(absoluteChildRef.current, {
+        type: 'chars',
+        mask: 'chars',
+      });
+      gsap.set(splitText.chars, { y: 0 });
+      gsap.set(absoluteSplitText.chars, { y: 20 });
+      timelineHoverRef.current = gsap
+        .timeline({ paused: true })
+        .to(splitText.chars, {
+          y: -20,
+          duration: 0.2,
+          stagger: 0.02,
+          ease: 'power2.in',
+        })
+        .to(
+          absoluteSplitText.chars,
+          {
+            y: 0,
+            duration: 0.3,
+            stagger: 0.02,
+            ease: 'power2.out',
+          },
+          '<0.1',
         );
     }, [children]);
 
@@ -266,10 +301,16 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
           disabled={disabled}
           href={href}
           target={target}
-          onMouseEnter={showBackground}
-          onMouseLeave={hideBackground}
           onMouseMove={(e) => useMagnet(e, 0.8)}
           onMouseOut={(e) => useResetMagnet(e)}
+          onMouseEnter={() => {
+            showBackground();
+            timelineHoverRef.current?.play();
+          }}
+          onMouseLeave={() => {
+            hideBackground();
+            timelineHoverRef.current?.reverse();
+          }}
         >
           <div
             ref={backgroudButtonRef}
@@ -280,15 +321,18 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
           />
           <div
             ref={buttonRef}
-            className="h-full w-full"
+            className="flex h-full w-full items-center"
             onMouseMove={(e) => useMagnet(e, 0.4)}
             onMouseOut={(e) => useResetMagnet(e)}
           >
             <div
               ref={textRef}
-              className="relative flex h-full w-fit items-center justify-center px-6 whitespace-nowrap"
+              className="relative flex w-fit items-center justify-center px-6 whitespace-nowrap"
             >
-              {currentChild}
+              <span ref={currentChildRef}>{currentChild}</span>
+              <span ref={absoluteChildRef} className="absolute">
+                {currentChild}
+              </span>
             </div>
           </div>
         </DynamicElement>

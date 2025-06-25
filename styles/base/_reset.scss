@@ -37,28 +37,22 @@ html {
   display: none;
 }
 
-
-
 .border-gradient-white-to-b {
   position: relative;
   overflow: hidden;
 }
 
 .border-gradient-white-to-b::before {
-  content: '';
   position: absolute;
   inset: 0;
   padding: 1px;
-  background: linear-gradient(
-    to bottom,
-    #1B17EE59,
-    #1b17ee02,
-  );
-  border-radius: inherit; /* hérite du border-radius parent */
+  border-radius: inherit;
+  background: linear-gradient(to bottom, #1b17ee59, #1b17ee02);
+  content: '';
   -webkit-mask:
     linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
+  -webkit-mask-composite: exclude;
   mask-composite: exclude;
   pointer-events: none;
 }

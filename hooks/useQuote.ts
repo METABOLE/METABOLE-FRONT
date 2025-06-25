@@ -324,9 +324,9 @@ export const useQuote = () => {
     });
 
     toast.promise(mutationPromise, {
-      loading: isFrench ? 'Envoi du devis en cours...' : 'Sending quote in progress...',
-      success: isFrench ? 'Devis envoyé avec succès !' : 'Quote sent successfully!',
-      error: isFrench ? "Erreur d'envoi du devis" : 'Error sending quote',
+      loading: isFrench ? 'Envoi de la demande en cours...' : 'Sending request...',
+      success: isFrench ? 'Demande envoyée avec succès !' : 'Request sent successfully!',
+      error: isFrench ? "Erreur d'envoi de la demande" : 'Error sending request',
     });
   };
 

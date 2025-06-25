@@ -17,6 +17,7 @@ import { LogoFull } from '../ui/Icons';
 import Sound from '../shared/Sound';
 import Time from '../shared/Time';
 import Language from '../shared/Language';
+import Hint from '../ui/Hint';
 
 const Menu = ({ projects }: { projects: ProjectType[] }) => {
   const SLICED_PROJECTS = projects.slice(0, 6);
@@ -297,6 +298,18 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
 
   return (
     <>
+      <Hint containerId="hint-newsletter-menu" isDark={false} isLeft={true}>
+        {isFrench ? (
+          <p>
+            On ne spamme pas : <strong>1 mail tous les 3 mois</strong>, avec des news et du contenu
+            utile !
+          </p>
+        ) : (
+          <p>
+            We don’t spam: <strong>1 email every 3 months</strong>, with news and useful content!
+          </p>
+        )}
+      </Hint>
       <header
         ref={headerRef}
         className="px-x-default fixed z-[900] w-full -translate-y-full scale-125"
@@ -394,7 +407,12 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
               )}
             </nav>
             <div className="col-span-3">
-              <NewsletterForm ref={newsletterFormRef} animate={true} isDark={true} />
+              <NewsletterForm
+                ref={newsletterFormRef}
+                animate={true}
+                hintId="hint-newsletter-menu"
+                isDark={true}
+              />
               <nav className="pt-y-default text-right">
                 <ul ref={socialsRef} className="flex flex-col items-end gap-4 overflow-hidden">
                   <li className="p3 text-black">Socials</li>
