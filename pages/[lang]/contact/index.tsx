@@ -1,6 +1,7 @@
 import ContactForm from '@/features/contact/ContactForm';
 import { CONTACT } from '@/constants';
 import { useLanguage } from '@/providers/language.provider';
+import CopyButton from '@/components/ui/CopyButton';
 
 const ContactPage = () => {
   const { isFrench } = useLanguage();
@@ -40,14 +41,18 @@ const ContactPage = () => {
         <h3 className="block md:hidden">
           {isFrench ? 'Ou sinon, directement ici :' : 'Or directly here :'}
         </h3>
-        <p className="text-black-30 pt-12 uppercase">MAIL : </p>
-        <a className="pt-2" href={'mailto:' + CONTACT.EMAIL}>
-          {CONTACT.EMAIL}
-        </a>
-        <p className="text-black-30 pt-6 uppercase">TELEPHONE : </p>
-        <a className="pt-2" href={'tel:' + CONTACT.PHONE}>
-          {CONTACT.PHONE}
-        </a>
+        <CopyButton className="flex w-fit flex-col" value={CONTACT.EMAIL}>
+          <p className="text-black-30 pt-12 uppercase">MAIL : </p>
+          <a className="pt-2" href={'mailto:' + CONTACT.EMAIL}>
+            {CONTACT.EMAIL}
+          </a>
+        </CopyButton>
+        <CopyButton className="flex w-fit flex-col" value={CONTACT.PHONE}>
+          <p className="text-black-30 pt-6 uppercase">TELEPHONE : </p>
+          <a className="pt-2" href={'tel:' + CONTACT.PHONE}>
+            {CONTACT.PHONE}
+          </a>
+        </CopyButton>
       </div>
     </div>
   );

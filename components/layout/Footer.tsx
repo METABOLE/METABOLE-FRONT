@@ -2,7 +2,7 @@ import { CONTACT, LINKS, SOCIALS } from '@/constants';
 import { useMagnet, useResetMagnet } from '@/hooks/useMagnet';
 import { useMousePosition } from '@/hooks/useMousePosition';
 import { useLanguage } from '@/providers/language.provider';
-import { COLORS } from '@/types';
+import { BREAKPOINTS, COLORS } from '@/types';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import Link from 'next/link';
@@ -13,6 +13,8 @@ import NewsletterForm from '../shared/NewsletterForm';
 import Time from '../shared/Time';
 import Hint from '../ui/Hint';
 import { IconArrow, LogoSmall } from '../ui/Icons';
+import { useMatchMedia } from '@/hooks/useCheckScreenSize';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 const Footer = () => {
   const animatedTitleRef = useRef<SVGSVGElement>(null);
@@ -21,6 +23,7 @@ const Footer = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const floatingHaloRef = useRef<HTMLDivElement>(null);
 
+  const isMobile = useMatchMedia(BREAKPOINTS.MD);
   const { isFrench, getInternalPath } = useLanguage();
   const { x, y } = useMousePosition(wrapperRef);
   const { contextSafe } = useGSAP();
@@ -66,6 +69,20 @@ const Footer = () => {
   });
 
   useGSAP(() => {
+    ScrollTrigger.getAll().forEach((trigger) => {
+      if (trigger.trigger === wrapperRef.current) {
+        trigger.kill();
+      }
+    });
+
+    if (isMobile) {
+      gsap.set(containerSectionRef.current, { y: 0, borderRadius: '0px' });
+      gsap.set(wrapperRef.current, { paddingInline: '', clearProps: 'paddingInline' });
+      return;
+    }
+
+    if (isMobile) return;
+
     gsap.set(containerSectionRef.current, { y: -300 });
 
     gsap
@@ -89,11 +106,11 @@ const Footer = () => {
         },
         '<',
       );
-  }, []);
+  }, [isMobile]);
 
   return (
     <>
-      <Hint containerId="hint-newsletter" isDark={true} isLeft={true}>
+      <Hint containerId="hint-newsletter-footer" isDark={true} isLeft={true}>
         {isFrench ? (
           <p>
             On ne spamme pas : <strong>1 mail tous les 3 mois</strong>, avec des news et du contenu
@@ -166,7 +183,7 @@ const Footer = () => {
                 </nav>
                 <div />
                 <div className="gap-y-default col-span-2 flex flex-col">
-                  <NewsletterForm animate={false} isDark={false} />
+                  <NewsletterForm animate={false} hintId="hint-newsletter-footer" isDark={false} />
                   <Language className="md:ml-auto" isDark={true} />
                 </div>
               </div>

@@ -147,8 +147,8 @@ const Pricing = () => {
         <h1 className="text-blue h1 pb-2.5">{isFrench ? 'Tarification' : 'Pricing'}</h1>
         <p className="p1">
           {isFrench
-            ? 'Nous mettrons toutes nos compétences en oeuvre pour la réalisation de nos projets.'
-            : 'We will put all our skills to work for the realization of our projects.'}
+            ? 'Nous mettrons toutes nos compétences en oeuvre pour la réalisation de vos projets.'
+            : 'We will put all our skills to work for the realization of your projects.'}
         </p>
       </div>
       <div
