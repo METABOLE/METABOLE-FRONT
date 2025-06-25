@@ -85,9 +85,7 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
     const [currentChild, setCurrentChild] = useState(children);
 
     useGSAP(() => {
-      if (currentChild === children) {
-        return;
-      }
+      if (currentChild === children) return;
 
       const widthHiddenButton = hiddenButtonRef.current?.getBoundingClientRect();
 
@@ -128,6 +126,9 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
     }, [children]);
 
     useGSAP(() => {
+      if (disabled) return;
+      if (timelineHoverRef.current) timelineHoverRef.current.kill();
+
       const splitText = new SplitText(currentChildRef.current, {
         type: 'chars',
         mask: 'chars',
@@ -136,8 +137,10 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
         type: 'chars',
         mask: 'chars',
       });
+
       gsap.set(splitText.chars, { y: 0 });
       gsap.set(absoluteSplitText.chars, { y: 20 });
+
       timelineHoverRef.current = gsap
         .timeline({ paused: true })
         .to(splitText.chars, {
@@ -156,7 +159,7 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
           },
           '<0.1',
         );
-    }, [children]);
+    }, [currentChild]);
 
     useGSAP(() => {
       if (!ref) return;
