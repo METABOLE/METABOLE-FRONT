@@ -1,13 +1,13 @@
-/* Abstracts */
+/* ABSTRACTS */
 @use 'abstracts/_mixins.scss';
 @use 'abstracts/_keyframes.scss';
 
-/* Base */
+/* BASE */
 @use 'base/reset';
 @use 'base/fonts';
 @use 'base/lenis';
 
-/* Components */
+/* COMPONENTS */
 @use 'components/images';
 @use 'components/smoother';
 @use 'components/txt';
