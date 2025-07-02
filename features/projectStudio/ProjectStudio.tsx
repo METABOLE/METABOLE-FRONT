@@ -132,6 +132,15 @@ const ProjectStudio = () => {
       });
   }, [steps.map((step) => `${step.id}-${step.isActive}`).join(',')]);
 
+  const scrollToStep = (index: number) => {
+    const step = steps[index];
+    if (!step) return;
+    const el = document.getElementById(step.id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  };
+
   return (
     <>
       <Toaster
@@ -157,6 +166,7 @@ const ProjectStudio = () => {
             return (
               <div
                 key={index}
+                id={step.id}
                 className={clsx(
                   'ease-power4-in-out flex flex-col overflow-hidden rounded-3xl border-[1px] bg-[#e9e9fd] backdrop-blur-2xl transition-all duration-700 md:h-[78px]',
                   step.isCompleted && !step.isActive
@@ -275,7 +285,10 @@ const ProjectStudio = () => {
                     className="shrink-0"
                     color="secondary"
                     disabled={!isStepValid(step.type)}
-                    onClick={nextStep}
+                    onClick={() => {
+                      nextStep();
+                      isMobile && scrollToStep(index + 1);
+                    }}
                   >
                     {step.button.next[isFrench ? 'fr' : 'en']}
                   </Button>
