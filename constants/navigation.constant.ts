@@ -27,7 +27,7 @@ export const LINKS = [
 
 export const SOCIALS = [
   {
-    href: 'https://bento.me/metabolestudio',
+    href: 'https://bento.me/metabole-studio',
     text: 'Bento',
   },
   {
