@@ -1,4 +1,8 @@
+import Expertise from '@/features/home/expertise/Expertise';
 import Faq from '@/features/home/Faq';
+import Hero from '@/features/team/Hero';
+import Inspiration from '@/features/team/Inspiration';
+import Us from '@/features/team/Us';
 import { fetchProjects } from '@/services/projects.service';
 import { fetchQuestions } from '@/services/questions.service';
 import { QuestionType } from '@/types';
@@ -13,7 +17,10 @@ export default function Services({ questions }: { questions: QuestionType[] }) {
       <Head>
         <link key="canonical" href={'https://metabole.studio' + asPath + '/team'} rel="canonical" />
       </Head>
-      <h1>TEAM</h1>
+      <Hero />
+      <Inspiration />
+      <Us />
+      <Expertise />
       <Faq questions={questions} />
     </>
   );

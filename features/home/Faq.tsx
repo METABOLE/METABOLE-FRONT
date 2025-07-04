@@ -1,28 +1,60 @@
 import CardFaq from '@/components/shared/CardFaq';
 import { QuestionType } from '@/types';
-import { useState } from 'react';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useRef, useState } from 'react';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Faq = ({ questions }: { questions: QuestionType[] }) => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLDivElement>(null);
 
   const handleToggle = (index: number) => {
     setActiveIndex(activeIndex === index ? null : index);
   };
 
+  useGSAP(() => {
+    gsap.set(titleRef.current, { yPercent: 0 });
+
+    gsap
+      .timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 80%',
+          end: 'bottom 30%',
+          scrub: true,
+        },
+      })
+      .to(titleRef.current, {
+        yPercent: 90,
+        ease: 'none',
+      });
+  }, []);
+
   return (
-    <section className="px-x-default py-y-default relative">
-      <h1 className="text-blue sticky top-1/2 mb-8 text-center">FAQ</h1>
-      <div className="columns-1 gap-5 space-y-5 md:columns-2 lg:columns-3">
-        {questions.map((question, index) => (
-          <CardFaq
-            key={index}
-            className="mb-5 break-inside-avoid"
-            index={index + 1}
-            isActive={activeIndex === index}
-            question={question}
-            onToggle={() => handleToggle(index)}
-          />
-        ))}
+    <section className="px-x-default pt-y-default relative overflow-hidden">
+      <div className="py-y-double-default relative">
+        <div
+          ref={titleRef}
+          className="absolute top-0 flex h-full w-full items-center justify-center"
+        >
+          <h1 className="text-blue h-full text-center !text-[70px]">FAQ</h1>
+        </div>
+        <div ref={sectionRef} className="columns-1 gap-5 space-y-5 md:columns-2 lg:columns-3">
+          {questions.map((question, index) => (
+            <CardFaq
+              key={index}
+              className="mb-5 break-inside-avoid"
+              index={index + 1}
+              isActive={activeIndex === index}
+              question={question}
+              onToggle={() => handleToggle(index)}
+            />
+          ))}
+        </div>
       </div>
     </section>
   );

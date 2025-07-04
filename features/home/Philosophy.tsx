@@ -5,7 +5,17 @@ const Philosophy = () => {
   const { isFrench, getInternalPath } = useLanguage();
   return (
     <section className="px-x-double-default gap-y-default pb-y-default flex flex-col items-center">
-      <button className="label">SCROLL</button>
+      <button
+        className="label"
+        onClick={() =>
+          scrollTo({
+            top: window.innerHeight,
+            behavior: 'smooth',
+          })
+        }
+      >
+        SCROLL
+      </button>
       <div className="bg-blur-glass aspect-video w-2/3 rounded-3xl"></div>
       <h2 className="mr-auto w-1/2">
         {isFrench ? (
