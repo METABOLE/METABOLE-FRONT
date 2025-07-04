@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import Button from '@/components/ui/Button';
 import { useLanguage } from '@/providers/language.provider';
 
-const Expertise = ({ isPageServices = false }: { isPageServices: boolean }) => {
+const Expertise = ({ isPageServices = false }: { isPageServices?: boolean }) => {
   const isMobile = useMatchMedia(BREAKPOINTS.MD);
   const { isFrench, getInternalPath } = useLanguage();
 

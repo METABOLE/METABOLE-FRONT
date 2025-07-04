@@ -1,6 +1,7 @@
 import Expertise from '@/features/home/expertise/Expertise';
 import Faq from '@/features/home/Faq';
 import Hero from '@/features/home/Hero';
+import Process from '@/features/services/Process';
 import { fetchProjects } from '@/services/projects.service';
 import { fetchQuestions } from '@/services/questions.service';
 import { QuestionType } from '@/types';
@@ -21,6 +22,7 @@ export default function Services({ questions }: { questions: QuestionType[] }) {
       </Head>
       <Hero />
       <Expertise isPageServices={true} />
+      <Process />
       <Faq questions={questions} />
     </>
   );

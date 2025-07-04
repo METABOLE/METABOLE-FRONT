@@ -1,0 +1,226 @@
+import { useRef } from 'react';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Event from './timeline/Event';
+import Divider from './timeline/Divider';
+import {
+  IconDelivery,
+  IconDesign,
+  IconDevelopment,
+  IconFixing,
+  IconIdeation,
+  IconInitialExchange,
+} from '@/components/ui/Icons';
+import clsx from 'clsx';
+import { useLanguage } from '@/providers/language.provider';
+
+gsap.registerPlugin(ScrollTrigger);
+
+const Process = () => {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const horizontalRef = useRef<HTMLDivElement>(null);
+  const lineRef = useRef<HTMLDivElement>(null);
+  const progressBarRef = useRef<HTMLDivElement>(null);
+
+  const { isFrench } = useLanguage();
+
+  useGSAP(() => {
+    if (!sectionRef.current || !horizontalRef.current || !progressBarRef.current) return;
+
+    const horizontal = horizontalRef.current;
+    const section = sectionRef.current;
+    const progressBar = progressBarRef.current;
+    const line = lineRef.current;
+    const totalWidth = horizontal.scrollWidth;
+    const viewportWidth = window.innerWidth;
+    const scrollDistance = totalWidth - viewportWidth;
+
+    gsap.to(horizontal, {
+      x: () => `-${scrollDistance}px`,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: section,
+        start: 'top top',
+        end: () => `+=${scrollDistance}`,
+        scrub: true,
+        pin: true,
+        anticipatePin: 1,
+      },
+    });
+
+    // Animate the progress bar width based on scroll progress
+    gsap
+      .timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: 'top top',
+          end: () => `+=${scrollDistance}`,
+          scrub: true,
+        },
+      })
+      .to(progressBar, {
+        width: '100%',
+        ease: 'none',
+      })
+      .to(
+        line,
+        {
+          xPercent: 100,
+          ease: 'none',
+        },
+        '<',
+      );
+  }, []);
+
+  return (
+    <section
+      ref={sectionRef}
+      className="pt-y-double-default relative flex h-screen w-full flex-col overflow-hidden bg-black"
+    >
+      <div className="px-x-default gap-x-x-default pb-y-default flex items-center">
+        <h1 className="text-white">PROCESSUS</h1>
+        <div className="relative h-0.5 w-[489px] bg-[#C5C4FF]/30">
+          <div ref={progressBarRef} className="bg-yellow absolute h-0.5 w-0">
+            <svg
+              className="absolute -top-[3px] -right-3"
+              fill="none"
+              height="8"
+              viewBox="0 0 8 8"
+              width="8"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M0 4L8 4" stroke="#CAEE17" stroke-width="2" />
+              <path d="M4 0L4 8" stroke="#CAEE17" stroke-width="2" />
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div
+        ref={horizontalRef}
+        className="px-x-default pb-y-default pt-auto flex w-fit grow flex-row items-end"
+      >
+        <div className="gap-x-x-default pr-x-default grid grid-cols-[40vw_1fr]">
+          <p className="p2 pr-x-default row-span-8 text-white">
+            Notre méthodologie est structurée pour garantir rigueur, clarté et excellence à chaque
+            étape du projet.
+            <br />
+            <br />
+            Elle articule conception, design et développement sur-mesure autour d’un cadre
+            collaboratif précis et maîtrisé.
+          </p>
+          <div>
+            <div className="absolute z-0 grid h-fit grid-cols-[62px_2px_288px_2px_288px_2px_288px_2px_288px_2px_288px_2px_288px_2px_288px_2px_288px] grid-rows-[repeat(8,62px)] text-white">
+              <div className="absolute top-0 left-0 z-10 h-64 w-full bg-gradient-to-b from-black to-black/0" />
+              <div
+                className={clsx(
+                  'absolute -bottom-0.5 left-0 z-10 h-0.5 w-5/6 bg-[#F1F2FF] opacity-50',
+                  'after:absolute after:top-0 after:right-0 after:h-0.5 after:w-[288px] after:translate-x-[calc(100%-2px)] after:bg-gradient-to-r after:from-[#F1F2FF] after:to-black after:content-[""]',
+                  'before:absolute before:top-0 before:left-0 before:h-0.5 before:w-[188px] before:-translate-x-[calc(100%-14px)] before:bg-gradient-to-l before:from-[#F1F2FF] before:to-black before:content-[""]',
+                )}
+              />
+              <div />
+              <Divider className="row-span-8" />
+              <div className="row-span-8 flex h-full w-full items-end">
+                <span className="translate-y-[110%] px-2">S1</span>
+              </div>
+              <Divider className="row-span-8" isDashed />
+              <div className="row-span-8 flex h-full w-full items-end">
+                <span className="translate-y-[110%] px-2">S2</span>
+              </div>
+              <Divider className="row-span-8" isDashed />
+              <div className="row-span-8 flex h-full w-full items-end">
+                <span className="translate-y-[110%] px-2">S3</span>
+              </div>
+              <Divider className="row-span-8" isDashed />
+              <div className="row-span-8 flex h-full w-full items-end">
+                <span className="translate-y-[110%] px-2">S4</span>
+              </div>
+              <Divider className="row-span-8" />
+              <div className="row-span-8 flex h-full w-full items-end">
+                <span className="translate-y-[110%] px-2">S5</span>
+              </div>
+              <Divider className="row-span-8" isDashed />
+              <div className="row-span-8 flex h-full w-full items-end">
+                <span className="translate-y-[110%] px-2">S6</span>
+              </div>
+              <Divider className="row-span-8" isDashed />
+              <div className="row-span-8 flex h-full w-full items-end">
+                <span className="translate-y-[110%] px-2">S7</span>
+              </div>
+            </div>
+            <div className="relative z-10 grid h-fit grid-cols-[62px_288px_288px_288px_288px_288px_288px_62px_288px_288px] grid-rows-[repeat(8,62px)] gap-0.5 text-white">
+              <div
+                ref={lineRef}
+                className="absolute bottom-3 z-50 h-full w-full -translate-x-full bg-black/30"
+              >
+                <div className="bg-yellow absolute top-0 right-0 z-10 h-full w-0.5">
+                  <svg
+                    className="absolute -top-3 -right-[3px]"
+                    fill="none"
+                    height="8"
+                    viewBox="0 0 8 8"
+                    width="8"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M0 4L8 4" stroke="#CAEE17" stroke-width="2" />
+                    <path d="M4 0L4 8" stroke="#CAEE17" stroke-width="2" />
+                  </svg>
+                </div>
+              </div>
+              <Event
+                className="col-start-1 col-end-2 row-start-1"
+                icon={<IconInitialExchange />}
+                label="ECHANGE INITIAL / KICK OFF"
+                isSquare
+              />
+              <div />
+              <Event
+                className="col-start-2 col-end-3 row-start-2"
+                duration="1 sem"
+                icon={<IconIdeation />}
+                label={isFrench ? 'IDEATION' : 'IDEATION'}
+              />
+              <div />
+              <Event
+                duration="3 sem"
+                icon={<IconDesign />}
+                label="DESIGN"
+                className={clsx(
+                  'col-start-3 col-end-6 row-start-3',
+                  'after:p2 after:absolute after:top-[3px] after:right-0 after:-z-10 after:flex after:h-14 after:w-[288px] after:translate-x-[calc(100%-14px)] after:items-center after:rounded-r-xl after:bg-[#8887B0]/30 after:pl-7 after:text-white',
+                  isFrench ? 'after:content-["RETOURS"]' : 'after:content-["FEEDBACKS"]',
+                )}
+              />
+              <div />
+              <Event
+                className="col-start-5 col-end-8 row-start-4"
+                duration="3 sem"
+                icon={<IconDevelopment />}
+                label={isFrench ? 'DEVELOPPEMENT' : 'DEVELOPMENT'}
+              />
+              <div />
+              <Event
+                className="col-start-8 col-end-9 row-start-5"
+                icon={<IconDelivery />}
+                label="VALIDATION & LIVRAISON"
+                isSquare
+              />
+              <div />
+              <Event
+                icon={<IconFixing />}
+                label={isFrench ? 'ACCOMPAGNEMENT' : 'SUPPORT'}
+                className={clsx(
+                  'col-start-9 col-end-10 row-start-6',
+                  'after:from-blue after:absolute after:top-[3px] after:right-0 after:h-14 after:w-[288px] after:translate-x-[calc(100%-14px)] after:bg-gradient-to-r after:to-black after:content-[""]',
+                )}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default Process;
