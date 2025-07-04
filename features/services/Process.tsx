@@ -176,6 +176,11 @@ const Process = () => {
                   'col-start-1 col-end-2 row-start-1 transition-opacity duration-200',
                   activeIndex === null || activeIndex === 0 ? 'opacity-100' : 'opacity-40',
                 )}
+                description={
+                  isFrench
+                    ? 'On commence par ce premier échange pour poser les bases : vos besoins, vos envies, vos enjeux.'
+                    : 'We start with this first exchange to set the bases: your needs, your wishes, your goals.'
+                }
                 isSquare
                 onMouseEnter={() => setActiveIndex(0)}
                 onMouseLeave={() => setActiveIndex(null)}
@@ -189,6 +194,11 @@ const Process = () => {
                   'col-start-2 col-end-3 row-start-2 transition-opacity duration-200',
                   activeIndex === null || activeIndex === 1 ? 'opacity-100' : 'opacity-40',
                 )}
+                description={
+                  isFrench
+                    ? 'On alimente cette phase avec de l’inspiration et les premières intentions créatives. Elle permet de valider la DA et les fondations du projet.'
+                    : 'We feed this phase with inspiration and the first creative intentions. It allows to validate the DA and the foundations of the project.'
+                }
                 onMouseEnter={() => setActiveIndex(1)}
                 onMouseLeave={() => setActiveIndex(null)}
               />
@@ -204,6 +214,11 @@ const Process = () => {
                   'transition-opacity duration-200',
                   activeIndex === null || activeIndex === 2 ? 'opacity-100' : 'opacity-40',
                 )}
+                description={
+                  isFrench
+                    ? 'On conçoit une direction artistique sur-mesure.Chaque écran, chaque section du site est réalisée et prototypée pour vous donner un aperçu du résultat final.'
+                    : 'We design a custom artistic direction. Each screen, each section of the site is designed and prototyped to give you an overview of the final result.'
+                }
                 onMouseEnter={() => setActiveIndex(2)}
                 onMouseLeave={() => setActiveIndex(null)}
               />
@@ -216,6 +231,11 @@ const Process = () => {
                   'col-start-5 col-end-8 row-start-4 transition-opacity duration-200',
                   activeIndex === null || activeIndex === 3 ? 'opacity-100' : 'opacity-40',
                 )}
+                description={
+                  isFrench
+                    ? 'On code l’ensemble du site, avec des animations soignées et un CMS intégré pour une autonomie totale.Optimisation, responsive et performance, SEO : tout est custom pour répondre à vos besoins.'
+                    : 'We code the entire site, with carefully designed animations and a CMS for total autonomy. Optimization, responsive and performance, SEO: everything is custom to meet your needs.'
+                }
                 onMouseEnter={() => setActiveIndex(3)}
                 onMouseLeave={() => setActiveIndex(null)}
               />
@@ -227,6 +247,11 @@ const Process = () => {
                   'col-start-8 col-end-9 row-start-5 transition-opacity duration-200',
                   activeIndex === null || activeIndex === 4 ? 'opacity-100' : 'opacity-40',
                 )}
+                description={
+                  isFrench
+                    ? 'On commence par ce premier échange pour poser les bases : vos besoins, vos envies, vos enjeux.On cadre notre mission pour répondre le plus précisément à vos problématiques.'
+                    : 'We start with this first exchange to set the bases: your needs, your wishes, your goals. We frame our mission to respond as precisely as possible to your problems.'
+                }
                 isSquare
                 onMouseEnter={() => setActiveIndex(4)}
                 onMouseLeave={() => setActiveIndex(null)}
@@ -241,6 +266,11 @@ const Process = () => {
                   'transition-opacity duration-200',
                   activeIndex === null || activeIndex === 5 ? 'opacity-100' : 'opacity-40',
                 )}
+                description={
+                  isFrench
+                    ? 'Après la livraison, on reste disponibles.Maintenance, évolutions, nouvelles pages ou nouvelles ambitions : on avance avec vous sur le long terme.'
+                    : 'After delivery, we remain available. Maintenance, evolutions, new pages or new ambitions: we advance with you on the long term.'
+                }
                 onMouseEnter={() => setActiveIndex(5)}
                 onMouseLeave={() => setActiveIndex(null)}
               />
