@@ -1,24 +1,26 @@
 import Expertise from '@/features/home/expertise/Expertise';
 import Faq from '@/features/home/Faq';
 import Hero from '@/features/home/Hero';
-import Philosophy from '@/features/home/Philosophy';
 import { fetchProjects } from '@/services/projects.service';
 import { fetchQuestions } from '@/services/questions.service';
 import { QuestionType } from '@/types';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
-export default function Home({ questions }: { questions: QuestionType[] }) {
+export default function Services({ questions }: { questions: QuestionType[] }) {
   const { asPath } = useRouter();
 
   return (
     <>
       <Head>
-        <link key="canonical" href={'https://metabole.studio' + asPath} rel="canonical" />
+        <link
+          key="canonical"
+          href={'https://metabole.studio' + asPath + '/services'}
+          rel="canonical"
+        />
       </Head>
       <Hero />
-      <Philosophy />
-      <Expertise />
+      <Expertise isPageServices={true} />
       <Faq questions={questions} />
     </>
   );

@@ -22,6 +22,7 @@ interface BaseButtonProps {
   className?: string;
   transformOrigin?: 'left' | 'right' | 'center';
   color?: 'primary' | 'secondary' | 'tertiary';
+  isDark?: boolean;
   disabled?: boolean;
 }
 
@@ -65,6 +66,7 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
       transformOrigin = 'left',
       color = 'primary',
       target,
+      isDark = false,
       className,
       disabled = false,
       ...props
@@ -146,7 +148,7 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
         .to(splitText.chars, {
           y: -20,
           duration: 0.2,
-          stagger: 0.02,
+          stagger: 0.015,
           ease: 'power2.in',
         })
         .to(
@@ -154,7 +156,7 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
           {
             y: 0,
             duration: 0.3,
-            stagger: 0.02,
+            stagger: 0.015,
             ease: 'power2.out',
           },
           '<0.1',
@@ -254,7 +256,7 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
         .to(
           textRef.current,
           {
-            color: COLORS.WHITE,
+            color: color === 'primary' && isDark ? COLORS.BLACK : COLORS.WHITE,
           },
           '<',
         );
@@ -276,7 +278,7 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
         .to(
           textRef.current,
           {
-            color: color === 'secondary' ? COLORS.WHITE : COLORS.BLACK,
+            color: color === 'secondary' || isDark ? COLORS.WHITE : COLORS.BLACK,
           },
           '<',
         );
@@ -294,6 +296,7 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
           className={clsx(
             'label group/button inline-block h-11 w-fit cursor-pointer overflow-hidden rounded-full uppercase backdrop-blur-xl',
             color === 'primary' && 'bg-blur-glass text-black',
+            color === 'primary' && isDark && 'text-white',
             color === 'secondary' && 'bg-blue text-white',
             color === 'tertiary' && 'bg-yellow text-black',
             `origin-${transformOrigin}`,
@@ -320,6 +323,7 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
             className={clsx(
               'absolute top-full -left-1/4 h-22 w-[150%] rounded-[100%]',
               color === 'primary' ? 'bg-blue' : 'bg-black',
+              color === 'primary' && isDark && 'bg-yellow',
             )}
           />
           <div

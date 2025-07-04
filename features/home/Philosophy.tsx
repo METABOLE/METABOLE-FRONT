@@ -30,8 +30,10 @@ const Philosophy = () => {
           <span className="text-blue">innovantes</span>, pensées pour{' '}
           <span className="text-blue">évoluer</span> avec les besoins de demain.
         </p>
-        <Button href={getInternalPath('/contact')}>CONTACT</Button>
       </div>
+      <Button href={getInternalPath('/contact')}>
+        {isFrench ? 'DECOUVRIR NOS SERVICES' : 'DISCOVER OUR SERVICES'}
+      </Button>
     </section>
   );
 };
