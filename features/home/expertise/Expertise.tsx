@@ -19,7 +19,7 @@ const Expertise = ({ isPageServices = false }: { isPageServices?: boolean }) => 
       )}
     >
       <FloatingHalo
-        className="-top-1/2 -left-1/2 z-30 h-[200vw] w-[200vw] opacity-30"
+        className="absolute bottom-0 -left-1/2 z-30 h-[200vw] w-[200vw] translate-1/3 opacity-30"
         from="#1b17ee"
         to="#14141800"
       />

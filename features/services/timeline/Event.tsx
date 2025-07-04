@@ -1,8 +1,8 @@
-import clsx from 'clsx';
-import { useState, useRef, useEffect } from 'react';
-import { SplitText } from 'gsap/SplitText';
-import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
+import clsx from 'clsx';
+import gsap from 'gsap';
+import { SplitText } from 'gsap/SplitText';
+import { useRef } from 'react';
 
 const Event = ({
   isSquare = false,
