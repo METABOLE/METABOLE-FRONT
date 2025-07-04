@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -24,6 +24,7 @@ const Process = () => {
   const progressBarRef = useRef<HTMLDivElement>(null);
 
   const { isFrench } = useLanguage();
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   useGSAP(() => {
     if (!sectionRef.current || !horizontalRef.current || !progressBarRef.current) return;
@@ -106,7 +107,7 @@ const Process = () => {
             étape du projet.
             <br />
             <br />
-            Elle articule conception, design et développement sur-mesure autour d’un cadre
+            Elle articule conception, design et développement sur-mesure autour d'un cadre
             collaboratif précis et maîtrisé.
           </p>
           <div>
@@ -152,7 +153,7 @@ const Process = () => {
             <div className="relative z-10 grid h-fit grid-cols-[62px_288px_288px_288px_288px_288px_288px_62px_288px_288px] grid-rows-[repeat(8,62px)] gap-0.5 text-white">
               <div
                 ref={lineRef}
-                className="absolute bottom-3 z-50 h-full w-full -translate-x-full bg-black/30"
+                className="pointer-events-none absolute bottom-3 z-50 h-[calc(100%+100px)] w-full -translate-x-full bg-black/30"
               >
                 <div className="bg-yellow absolute top-0 right-0 z-10 h-full w-0.5">
                   <svg
@@ -169,17 +170,27 @@ const Process = () => {
                 </div>
               </div>
               <Event
-                className="col-start-1 col-end-2 row-start-1"
                 icon={<IconInitialExchange />}
                 label="ECHANGE INITIAL / KICK OFF"
+                className={clsx(
+                  'col-start-1 col-end-2 row-start-1 transition-opacity duration-200',
+                  activeIndex === null || activeIndex === 0 ? 'opacity-100' : 'opacity-40',
+                )}
                 isSquare
+                onMouseEnter={() => setActiveIndex(0)}
+                onMouseLeave={() => setActiveIndex(null)}
               />
               <div />
               <Event
-                className="col-start-2 col-end-3 row-start-2"
                 duration="1 sem"
                 icon={<IconIdeation />}
                 label={isFrench ? 'IDEATION' : 'IDEATION'}
+                className={clsx(
+                  'col-start-2 col-end-3 row-start-2 transition-opacity duration-200',
+                  activeIndex === null || activeIndex === 1 ? 'opacity-100' : 'opacity-40',
+                )}
+                onMouseEnter={() => setActiveIndex(1)}
+                onMouseLeave={() => setActiveIndex(null)}
               />
               <div />
               <Event
@@ -190,21 +201,35 @@ const Process = () => {
                   'col-start-3 col-end-6 row-start-3',
                   'after:p2 after:absolute after:top-[3px] after:right-0 after:-z-10 after:flex after:h-14 after:w-[288px] after:translate-x-[calc(100%-14px)] after:items-center after:rounded-r-xl after:bg-[#8887B0]/30 after:pl-7 after:text-white',
                   isFrench ? 'after:content-["RETOURS"]' : 'after:content-["FEEDBACKS"]',
+                  'transition-opacity duration-200',
+                  activeIndex === null || activeIndex === 2 ? 'opacity-100' : 'opacity-40',
                 )}
+                onMouseEnter={() => setActiveIndex(2)}
+                onMouseLeave={() => setActiveIndex(null)}
               />
               <div />
               <Event
-                className="col-start-5 col-end-8 row-start-4"
                 duration="3 sem"
                 icon={<IconDevelopment />}
                 label={isFrench ? 'DEVELOPPEMENT' : 'DEVELOPMENT'}
+                className={clsx(
+                  'col-start-5 col-end-8 row-start-4 transition-opacity duration-200',
+                  activeIndex === null || activeIndex === 3 ? 'opacity-100' : 'opacity-40',
+                )}
+                onMouseEnter={() => setActiveIndex(3)}
+                onMouseLeave={() => setActiveIndex(null)}
               />
               <div />
               <Event
-                className="col-start-8 col-end-9 row-start-5"
                 icon={<IconDelivery />}
                 label="VALIDATION & LIVRAISON"
+                className={clsx(
+                  'col-start-8 col-end-9 row-start-5 transition-opacity duration-200',
+                  activeIndex === null || activeIndex === 4 ? 'opacity-100' : 'opacity-40',
+                )}
                 isSquare
+                onMouseEnter={() => setActiveIndex(4)}
+                onMouseLeave={() => setActiveIndex(null)}
               />
               <div />
               <Event
@@ -213,7 +238,11 @@ const Process = () => {
                 className={clsx(
                   'col-start-9 col-end-10 row-start-6',
                   'after:from-blue after:absolute after:top-[3px] after:right-0 after:h-14 after:w-[288px] after:translate-x-[calc(100%-14px)] after:bg-gradient-to-r after:to-black after:content-[""]',
+                  'transition-opacity duration-200',
+                  activeIndex === null || activeIndex === 5 ? 'opacity-100' : 'opacity-40',
                 )}
+                onMouseEnter={() => setActiveIndex(5)}
+                onMouseLeave={() => setActiveIndex(null)}
               />
             </div>
           </div>

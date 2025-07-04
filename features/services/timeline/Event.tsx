@@ -6,15 +6,23 @@ const Event = ({
   icon,
   label,
   duration,
+  onMouseEnter,
+  onMouseLeave,
 }: {
   isSquare?: boolean;
   className?: string;
   icon: React.ReactNode;
   label: string;
   duration?: string;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
 }) => {
   return (
-    <div className={clsx('relative p-[3px]', className)}>
+    <div
+      className={clsx('relative p-[3px]', className)}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
       <div
         className={clsx(
           'z-10 flex h-14 items-center gap-2.5 rounded-xl px-6',
