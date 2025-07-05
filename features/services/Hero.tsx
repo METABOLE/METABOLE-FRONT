@@ -149,9 +149,13 @@ const Hero = () => {
               className="absolute top-1/2 -left-10 hidden -translate-y-1/2 md:block"
               color={COLORS.BLUE}
             />
-            Metabole est un <span className="text-blue">studio créatif</span> qui conçoit des{' '}
-            <span className="text-blue">expériences intéractives</span> et
-            <span className="text-blue">performantes</span>.
+            <span>Metabole est un </span>
+            <span className="text-blue">studio créatif</span>
+            <span> qui conçoit des </span>
+            <span className="text-blue">expériences intéractives</span>
+            <span> et </span>
+            <span className="text-blue">performantes</span>
+            <span>.</span>
           </h2>
         </div>
       </div>
@@ -162,10 +166,15 @@ const Hero = () => {
               className="absolute top-1/2 -left-10 hidden -translate-y-1/2 md:block"
               color={COLORS.BLUE}
             />
-            En mettant l’accent sur <span className="text-blue">l’esthétique</span> et{' '}
-            <span className="text-blue">l’accessibilité</span>, nous imaginons des interfaces
-            fluides et <span className="text-blue">innovantes</span>, pensées pour{' '}
-            <span className="text-blue">évoluer</span> avec les besoins de demain.
+            <span>En mettant l’accent sur </span>
+            <span className="text-blue">l’esthétique</span>
+            <span> et </span>
+            <span className="text-blue">l’accessibilité</span>
+            <span>, nous imaginons des interfaces fluides et </span>
+            <span className="text-blue">innovantes</span>
+            <span>, pensées pour </span>
+            <span className="text-blue">évoluer</span>
+            <span> avec les besoins de demain.</span>
           </p>
         </div>
       </div>

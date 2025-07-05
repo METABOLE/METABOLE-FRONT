@@ -10,18 +10,47 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useMatchMedia } from '@/hooks/useCheckScreenSize';
 import { BREAKPOINTS, COLORS } from '@/types';
+import { SplitText } from 'gsap/SplitText';
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, SplitText);
 
 const Us = () => {
   const sectionRef = useRef(null);
   const imagesRefs = [useRef(null), useRef(null)];
+  const titleRef = useRef(null);
 
   const { isFrench } = useLanguage();
   const isMobile = useMatchMedia(BREAKPOINTS.MD);
+  const { contextSafe } = useGSAP();
+
+  const revealAnimation = contextSafe(() => {
+    const splitTitle = new SplitText(titleRef.current, {
+      type: 'chars',
+      mask: 'chars',
+    });
+
+    gsap.set(splitTitle.chars, {
+      yPercent: 100,
+    });
+
+    gsap.to(splitTitle.chars, {
+      yPercent: 0,
+      duration: 1,
+      stagger: 0.01,
+      ease: 'power4.out',
+      scrollTrigger: {
+        trigger: titleRef.current,
+        start: 'top 75%',
+        end: 'bottom 40%',
+        toggleActions: 'play none none reverse',
+      },
+    });
+  });
 
   useGSAP(() => {
     ScrollTrigger.getById('team-parallax')?.kill();
+
+    revealAnimation();
 
     if (isMobile) {
       gsap.set(imagesRefs[0].current, { y: 0 });
@@ -66,8 +95,8 @@ const Us = () => {
       ref={sectionRef}
       className="px-x-default py-y-double-default gap-y-y-default flex flex-col items-center"
     >
-      <h1 className="relative w-fit text-center">
-        {isFrench ? 'JUSTE LES DEUX DESSOUS' : 'JUST THE TWO OF US'}
+      <h1 ref={titleRef} className="relative w-fit text-center">
+        {isFrench ? 'NOS FONDATEURS' : 'OUR FOUNDERS'}
         <IconCross className="absolute -right-10 bottom-0 hidden md:block" color={COLORS.BLACK} />
       </h1>
       <div className="lg:px-x-default relative flex flex-col gap-5 md:flex-row">

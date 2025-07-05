@@ -3,6 +3,7 @@ export const EXPERTISES = [
     category: {
       fr: 'Stratégie & Image de Marque',
       en: 'Strategy & Brand Image',
+      img: '/images/matteo.jpg',
     },
     items: [
       {
@@ -27,6 +28,7 @@ export const EXPERTISES = [
     category: {
       fr: 'Site Web sur mesure',
       en: 'Custom Website',
+      img: '/images/jerome.jpg',
     },
     items: [
       {
@@ -59,6 +61,7 @@ export const EXPERTISES = [
     category: {
       fr: 'Et plus...',
       en: 'And more...',
+      img: '/images/matteo-and-jerome.png',
     },
     items: [
       {
