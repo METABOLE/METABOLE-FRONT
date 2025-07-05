@@ -32,7 +32,7 @@ const Philosophy = () => {
       .fromTo(
         imageRef.current,
         {
-          scale: 0.5,
+          scale: 0.8,
         },
         {
           scale: 1,
@@ -69,7 +69,7 @@ const Philosophy = () => {
   return (
     <section
       ref={sectionRef}
-      className="px-x-double-default gap-y-default pb-y-default flex flex-col items-center"
+      className="px-x-double-default gap-y-default-double pb-y-double-default flex flex-col items-center"
     >
       <ScrollButton />
       <div className="group/image relative aspect-video w-full md:w-2/3">

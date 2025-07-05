@@ -1,3 +1,4 @@
+import { useMagnet, useResetMagnet } from '@/hooks/useMagnet';
 import { IconChevron } from './Icons';
 
 const ScrollButton = () => {
@@ -27,7 +28,9 @@ const ScrollButton = () => {
 
   return (
     <button
-      className="label relative flex cursor-pointer flex-col items-center gap-1.5"
+      className="label group/scroll-button relative flex cursor-pointer flex-col items-center gap-1.5"
+      onMouseMove={(e) => useMagnet(e, 0.8)}
+      onMouseOut={(e) => useResetMagnet(e)}
       onClick={() => {
         const currentScrollY = window.scrollY;
         const targetScrollY = currentScrollY + window.innerHeight;
@@ -36,7 +39,7 @@ const ScrollButton = () => {
       }}
     >
       SCROLL
-      <IconChevron className="-rotate-90 stroke-black" />
+      <IconChevron className="ease-power4-in-out -rotate-90 stroke-black transition-transform duration-300 group-hover/scroll-button:translate-y-2" />
     </button>
   );
 };
