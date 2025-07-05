@@ -2,6 +2,7 @@ import Background from '@/components/layout/Background';
 import Burger from '@/components/layout/Burger';
 import Footer from '@/components/layout/Footer';
 import Menu from '@/components/layout/Menu';
+import ScrollBar from '@/components/layout/ScrollBar';
 import SEO from '@/components/ui/SEO';
 import { useMatchMedia } from '@/hooks/useCheckScreenSize';
 import { useLanguage } from '@/providers/language.provider';
@@ -21,6 +22,7 @@ const Layout = ({ projects, children }: { projects: ProjectType[]; children: Rea
       <SEO isFrench={isFrench} />
       {isTablet ? <Burger /> : <Menu projects={projects} />}
       <main className="min-h-screen md:pb-[300px]">{children}</main>
+      <ScrollBar />
       <Footer />
       <Background />
     </>
