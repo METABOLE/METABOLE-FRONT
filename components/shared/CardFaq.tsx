@@ -10,24 +10,29 @@ import { IconArrow } from '../ui/Icons';
 gsap.registerPlugin(SplitText);
 
 const CardFaq = ({
-  index,
   question,
   className,
   isActive,
+  isOpen,
   onToggle,
+  onMouseEnter,
+  onMouseLeave,
 }: {
-  index: number;
   question: QuestionType;
   className?: string;
   isActive: boolean;
+  isOpen: boolean;
   onToggle: () => void;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
 }) => {
   const { isFrench } = useLanguage();
-  const { question: questionText, answer } = question;
+  const { question: questionText, answer, id } = question;
 
   const answerRef = useRef(null);
   const textAnswerRef = useRef(null);
   const arrowRef = useRef(null);
+  const cardRef = useRef(null);
   const timelineRef = useRef(gsap.timeline({ paused: true }));
 
   useGSAP(() => {
@@ -77,30 +82,49 @@ const CardFaq = ({
   useGSAP(() => {
     if (!timelineRef.current) return;
 
-    if (isActive) {
+    if (isOpen) {
       timelineRef.current.play();
     } else {
       timelineRef.current.reverse();
     }
-  }, [isActive]);
+  }, [isOpen]);
+
+  const handleMouseEnter = () => {
+    onMouseEnter?.();
+  };
+
+  const handleMouseLeave = () => {
+    onMouseLeave?.();
+  };
 
   return (
     <div
+      ref={cardRef}
       className={clsx(
-        'flex cursor-pointer flex-col gap-6 rounded-3xl bg-[#C5C4FF]/30 p-6 backdrop-blur-xl transition-all duration-300 hover:bg-[#C5C4FF]/40',
+        'flex cursor-pointer flex-col gap-6 rounded-3xl p-6 backdrop-blur-xl transition-all duration-300 hover:scale-95 hover:bg-[#C5C4FF]/40',
+        isActive ? 'bg-[#C5C4FF]/30' : 'bg-[#C5C4FF]/15',
         className,
       )}
       onClick={onToggle}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
-      <h2 className="text-blue mb-4">{index}.</h2>
-      <p className="p2">{isFrench ? questionText.fr : questionText.en}</p>
-      <div ref={answerRef}>
-        <p ref={textAnswerRef} className="p3 text-blue-70">
-          {isFrench ? answer.fr : answer.en}
-        </p>
-      </div>
-      <div ref={arrowRef} className="ml-auto">
-        <IconArrow color={COLORS.BLUE} />
+      <div
+        className={clsx(
+          'flex flex-col gap-6 transition-opacity duration-300',
+          isActive ? 'opacity-100' : 'opacity-50',
+        )}
+      >
+        <h2 className="text-blue mb-4">{id}.</h2>
+        <p className="p2">{isFrench ? questionText.fr : questionText.en}</p>
+        <div ref={answerRef}>
+          <p ref={textAnswerRef} className="p3 text-blue-70">
+            {isFrench ? answer.fr : answer.en}
+          </p>
+        </div>
+        <div ref={arrowRef} className="ml-auto">
+          <IconArrow color={COLORS.BLUE} />
+        </div>
       </div>
     </div>
   );

@@ -9,11 +9,20 @@ gsap.registerPlugin(ScrollTrigger);
 
 const Faq = ({ questions }: { questions: QuestionType[] }) => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [hoveredIndex, setHoveredIndex] = useState<number | undefined>(undefined);
   const sectionRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
 
   const handleToggle = (index: number) => {
     setActiveIndex(activeIndex === index ? null : index);
+  };
+
+  const handleMouseEnter = (index: number) => {
+    setHoveredIndex(index);
+  };
+
+  const handleMouseLeave = () => {
+    setHoveredIndex(undefined);
   };
 
   useGSAP(() => {
@@ -48,9 +57,11 @@ const Faq = ({ questions }: { questions: QuestionType[] }) => {
             <CardFaq
               key={index}
               className="mb-5 break-inside-avoid"
-              index={index + 1}
-              isActive={activeIndex === index}
+              isActive={hoveredIndex === undefined || hoveredIndex === index}
+              isOpen={activeIndex === index}
               question={question}
+              onMouseEnter={() => handleMouseEnter(index)}
+              onMouseLeave={handleMouseLeave}
               onToggle={() => handleToggle(index)}
             />
           ))}
