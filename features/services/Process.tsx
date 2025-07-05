@@ -1,5 +1,6 @@
 import FloatingHalo from '@/components/shared/FloatingHalo';
 import {
+  IconCross,
   IconDelivery,
   IconDesign,
   IconDevelopment,
@@ -15,6 +16,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useRef, useState } from 'react';
 import Divider from './timeline/Divider';
 import Event from './timeline/Event';
+import { COLORS } from '@/types';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -116,7 +118,13 @@ const Process = () => {
             ref={titleRef}
             className="gap-x-x-default pb-y-default pt-y-default flex w-[calc(100%+calc(var(--x-default)*2)-100vw)] items-center"
           >
-            <h1 className="text-white">PROCESSUS</h1>
+            <h1 className="relative w-fit text-white">
+              {isFrench ? 'PROCESSUS' : 'PROCESS'}
+              <IconCross
+                className="absolute -right-10 bottom-0 hidden md:block"
+                color={COLORS.WHITE}
+              />
+            </h1>
             <div className="relative h-0.5 w-[35vw] max-w-[489px] bg-[#C5C4FF]/30">
               <div ref={progressBarRef} className="bg-yellow absolute h-0.5 w-0">
                 <svg

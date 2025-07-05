@@ -1,4 +1,4 @@
-import { IconLink } from '@/components/ui/Icons';
+import { IconCross, IconLink } from '@/components/ui/Icons';
 import { useLanguage } from '@/providers/language.provider';
 import { TEAM_MEMBERS } from '@/constants/us.constant';
 import Image from 'next/image';
@@ -9,7 +9,7 @@ import { useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useMatchMedia } from '@/hooks/useCheckScreenSize';
-import { BREAKPOINTS } from '@/types';
+import { BREAKPOINTS, COLORS } from '@/types';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -62,11 +62,19 @@ const Us = () => {
   }, [isMobile]);
 
   return (
-    <section ref={sectionRef} className="px-x-default py-y-double-default">
-      <h1 className="pb-y-default text-center">
+    <section
+      ref={sectionRef}
+      className="px-x-default py-y-double-default gap-y-y-default flex flex-col items-center"
+    >
+      <h1 className="relative w-fit text-center">
         {isFrench ? 'JUSTE LES DEUX DESSOUS' : 'JUST THE TWO OF US'}
+        <IconCross className="absolute -right-10 bottom-0 hidden md:block" color={COLORS.BLACK} />
       </h1>
-      <div className="lg:px-x-default flex flex-col gap-5 md:flex-row">
+      <div className="lg:px-x-default relative flex flex-col gap-5 md:flex-row">
+        <IconCross
+          className="left-x-default absolute -bottom-20 hidden md:block"
+          color={COLORS.BLUE}
+        />
         {TEAM_MEMBERS.map((member, index) => (
           <div
             key={member.name}

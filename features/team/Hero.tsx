@@ -1,3 +1,6 @@
+import { IconCross } from '@/components/ui/Icons';
+import { useLanguage } from '@/providers/language.provider';
+import { COLORS } from '@/types';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -10,6 +13,8 @@ const Hero = () => {
   const sectionRef = useRef(null);
   const titleRefs = [useRef(null), useRef(null), useRef(null), useRef(null)];
   const imageRef = useRef(null);
+
+  const { isFrench } = useLanguage();
 
   useGSAP(() => {
     if (!sectionRef.current) return;
@@ -53,31 +58,49 @@ const Hero = () => {
       ref={sectionRef}
       className="pt-y-double-default px-x-default pb-y-default gap-y-default relative flex min-h-screen flex-col justify-center"
     >
-      <h1 ref={titleRefs[0]} className="transform-gpu text-left !text-[90px] leading-loose">
-        INNOVER
-      </h1>
-      <h1
-        ref={titleRefs[1]}
-        className="text-blue transform-gpu text-right !text-[90px] leading-loose"
-      >
-        DESIGNER
-      </h1>
-      <h1 ref={titleRefs[2]} className="transform-gpu pl-[15vw] !text-[90px] leading-loose">
-        CRÉER
-      </h1>
-      <h1
-        ref={titleRefs[3]}
-        className="text-blue transform-gpu pr-[25vw] text-right !text-[90px] leading-loose"
-      >
-        SUBLIMER
-      </h1>
+      <div className="relative">
+        <h1 ref={titleRefs[0]} className="text-left !text-[90px] leading-loose">
+          {isFrench ? 'INNOVER' : 'INNOVATE'}
+        </h1>
+        <IconCross
+          className="absolute -top-10 -right-10 hidden -translate-y-1/2 md:block"
+          color={COLORS.BLUE}
+        />
+      </div>
+      <div className="relative">
+        <h1 ref={titleRefs[1]} className="text-blue text-right !text-[90px] leading-loose">
+          {isFrench ? 'DESIGNER' : 'DESIGNER'}
+        </h1>
+        <IconCross
+          className="absolute top-1/2 -left-10 hidden -translate-y-1/2 md:block"
+          color={COLORS.BLACK}
+        />
+      </div>
+      <div className="relative">
+        <h1 ref={titleRefs[2]} className="pl-[15vw] !text-[90px] leading-loose">
+          {isFrench ? 'CRÉER' : 'CREATE'}
+        </h1>
+        <IconCross
+          className="absolute top-1/2 right-1/4 hidden -translate-y-1/2 md:block"
+          color={COLORS.BLUE}
+        />
+      </div>
+      <div className="relative">
+        <h1
+          ref={titleRefs[3]}
+          className="text-blue pr-[25vw] text-right !text-[90px] leading-loose"
+        >
+          {isFrench ? 'SUBLIMER' : 'SUBLIMATE'}
+        </h1>
+        <IconCross className="absolute -right-10 -bottom-10 hidden md:block" color={COLORS.BLACK} />
+      </div>
       <div
         ref={imageRef}
-        className="px-x-default py-y-default absolute top-0 left-0 h-screen w-screen scale-0"
+        className="px-x-default pt-y-double-default pb-y-default absolute top-0 left-0 h-screen w-screen scale-0"
       >
         <Image
           alt="Matteo and Jerome"
-          className="h-full w-full rounded-3xl object-cover"
+          className="h-full w-full rounded-3xl object-cover object-top"
           height={1920}
           src="/images/matteo-and-jerome.png"
           width={1080}

@@ -2,9 +2,10 @@ import FloatingHalo from '@/components/shared/FloatingHalo';
 import Button from '@/components/ui/Button';
 import { useMatchMedia } from '@/hooks/useCheckScreenSize';
 import { useLanguage } from '@/providers/language.provider';
-import { BREAKPOINTS } from '@/types';
+import { BREAKPOINTS, COLORS } from '@/types';
 import ExpertiseDesktop from './ExpertiseDesktop';
 import ExpertiseMobile from './ExpertiseMobile';
+import { IconCross } from '@/components/ui/Icons';
 
 const Expertise = ({ isPageServices = false }: { isPageServices?: boolean }) => {
   const isMobile = useMatchMedia(BREAKPOINTS.MD);
@@ -17,7 +18,10 @@ const Expertise = ({ isPageServices = false }: { isPageServices?: boolean }) => 
         from="#1b17ee"
         to="#14141800"
       />
-      <h1 className="text-white">NOS EXPERTISES</h1>
+      <h1 className="relative w-fit text-white">
+        {isFrench ? 'NOS EXPERTISES' : 'OUR EXPERTISES'}
+        <IconCross className="absolute -right-10 bottom-0 hidden md:block" color={COLORS.WHITE} />
+      </h1>
 
       {isMobile ? <ExpertiseMobile /> : <ExpertiseDesktop />}
       {!isPageServices && (
