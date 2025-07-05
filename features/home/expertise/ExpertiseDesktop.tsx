@@ -118,8 +118,6 @@ const ExpertiseDesktop = () => {
                   'p2 relative w-fit bg-black py-3 pl-4 whitespace-nowrap transition-[colors,translate] duration-300',
                   'after:absolute after:-bottom-1 after:left-0 after:h-2 after:w-full after:bg-black after:content-[""]',
                   'before:absolute before:-top-1 before:left-0 before:h-2 before:w-full before:bg-black before:content-[""]',
-                  index === 0 && 'translate-x-4',
-                  index === 2 && '-translate-x-4',
                   index === activeIndex ? 'text-yellow -translate-x-4' : 'text-white-30',
                 )}
               >
