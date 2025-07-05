@@ -13,11 +13,23 @@ export interface AnimatedTextProps {
   className?: string;
   variant?: Variant;
   start?: string;
+  stagger?: number;
   duration?: number;
 }
 
 const AnimatedText = forwardRef<HTMLElement, AnimatedTextProps>(
-  ({ children, className, variant = 'p', start = 'top 80%', duration = 1.2, ...props }, ref) => {
+  (
+    {
+      children,
+      className,
+      variant = 'p',
+      start = 'top 80%',
+      duration = 1.2,
+      stagger = 0.02,
+      ...props
+    },
+    ref,
+  ) => {
     const textRef = useRef<HTMLElement>(null);
     const elementRef = ref || textRef;
 
@@ -42,7 +54,7 @@ const AnimatedText = forwardRef<HTMLElement, AnimatedTextProps>(
         opacity: 1,
         duration,
         filter: 'blur(0px)',
-        stagger: 0.02,
+        stagger,
         ease: 'power4.out',
         scrollTrigger: {
           trigger: element.current,

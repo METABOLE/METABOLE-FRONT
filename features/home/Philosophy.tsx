@@ -69,7 +69,7 @@ const Philosophy = () => {
   return (
     <section
       ref={sectionRef}
-      className="px-x-double-default gap-y-default-double pb-y-double-default flex flex-col items-center"
+      className="px-x-double-default gap-y-default pb-y-default flex flex-col items-center"
     >
       <div className="gap-y-default flex w-full flex-col items-center">
         <ScrollButton />
@@ -105,13 +105,14 @@ const Philosophy = () => {
         ref={titleRef}
         className="h2 relative mr-auto pt-[300px] md:w-1/2"
         duration={1.2}
+        stagger={0.02}
         start="top+=300px 80%"
         variant="h2"
       >
         {isFrench ? (
           <>
             Metabole est un <span className="text-blue">studio créatif</span> qui conçoit des{' '}
-            <span className="text-blue">expériences intéractives</span> et
+            <span className="text-blue">expériences intéractives</span> et{' '}
             <span className="text-blue">performantes</span>.
           </>
         ) : (
@@ -123,7 +124,7 @@ const Philosophy = () => {
         )}
       </AnimatedText>
       <div className="relative ml-auto -translate-y-28 md:w-1/2">
-        <AnimatedText className="p2 pb-8" duration={0.8}>
+        <AnimatedText className="p2 pb-8" duration={0.8} stagger={0.005}>
           En mettant l'accent sur l'<span className="text-blue">esthétique</span> et l'
           <span className="text-blue">accessibilité</span>, nous imaginons des interfaces{' '}
           <span className="text-blue">fluides</span> et
