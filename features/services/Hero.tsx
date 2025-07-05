@@ -10,10 +10,13 @@ import { useRef } from 'react';
 gsap.registerPlugin(SplitText);
 
 const Hero = () => {
+  const sectionRef = useRef(null);
   const titleRef = useRef(null);
   const descriptionRef = useRef(null);
 
-  useGSAP(() => {
+  const { contextSafe } = useGSAP();
+
+  const revealAnimation = contextSafe(() => {
     const splitTitle = new SplitText(titleRef.current, {
       type: 'words',
     });
@@ -56,10 +59,54 @@ const Hero = () => {
         },
         '-=1',
       );
+  });
+
+  const scrollAnimation = contextSafe(() => {
+    gsap
+      .timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 1,
+        },
+      })
+      .fromTo(
+        titleRef.current,
+        {
+          x: -100,
+        },
+        {
+          x: 100,
+          duration: 2,
+          ease: 'none',
+        },
+        '<',
+      )
+      .fromTo(
+        descriptionRef.current,
+        {
+          x: 100,
+        },
+        {
+          x: -100,
+          duration: 2,
+          ease: 'none',
+        },
+        '<',
+      );
+  });
+
+  useGSAP(() => {
+    revealAnimation();
+    scrollAnimation();
   }, []);
 
   return (
-    <section className="pt-y-double-default gap-y-y-default pb-y-default flex min-h-screen w-screen flex-col justify-between">
+    <section
+      ref={sectionRef}
+      className="pt-y-double-default gap-y-y-default pb-y-default flex min-h-screen w-screen flex-col justify-between"
+    >
       <ScrollingContainer scrollSpeed={15}>
         <div className="flex shrink-0 flex-row gap-x-7 pl-7">
           <h1 className="text-blue !text-[70px] !leading-normal md:!text-[120px]">SERVICES</h1>

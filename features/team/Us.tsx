@@ -4,12 +4,53 @@ import { TEAM_MEMBERS } from '@/constants/us.constant';
 import Image from 'next/image';
 import Link from 'next/link';
 import clsx from 'clsx';
+import { useGSAP } from '@gsap/react';
+import { useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Us = () => {
+  const sectionRef = useRef(null);
+  const imagesRefs = [useRef(null), useRef(null)];
+
   const { isFrench } = useLanguage();
 
+  useGSAP(() => {
+    gsap
+      .timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 1,
+        },
+      })
+      .fromTo(
+        imagesRefs[0].current,
+        {
+          y: 150,
+        },
+        {
+          y: -50,
+        },
+        '<',
+      )
+      .fromTo(
+        imagesRefs[1].current,
+        {
+          y: 400,
+        },
+        {
+          y: 0,
+        },
+        '<',
+      );
+  }, []);
+
   return (
-    <section className="px-x-default py-y-double-default">
+    <section ref={sectionRef} className="px-x-default py-y-double-default">
       <h1 className="pb-y-default text-center">
         {isFrench ? 'JUSTE LES DEUX DESSOUS' : 'JUST THE TWO OF US'}
       </h1>
@@ -17,6 +58,7 @@ const Us = () => {
         {TEAM_MEMBERS.map((member, index) => (
           <div
             key={member.name}
+            ref={imagesRefs[index]}
             className={clsx(
               'relative flex-1 overflow-hidden rounded-3xl',
               index === 1 && 'md:translate-y-[var(--y-default)]',
