@@ -71,33 +71,35 @@ const Philosophy = () => {
       ref={sectionRef}
       className="px-x-double-default gap-y-default-double pb-y-double-default flex flex-col items-center"
     >
-      <ScrollButton />
-      <div className="group/image relative aspect-video w-full md:w-2/3">
-        <IconCross
-          className="ease-power4-in-out absolute -top-6 -left-6 hidden transition-transform duration-500 group-hover/image:-translate-4 md:block"
-          color={COLORS.BLUE}
-        />
-        <IconCross
-          className="ease-power4-in-out absolute -top-6 -right-6 hidden transition-transform duration-500 group-hover/image:translate-x-4 group-hover/image:-translate-y-4 md:block"
-          color={COLORS.BLUE}
-        />
-        <IconCross
-          className="ease-power4-in-out absolute -right-6 -bottom-6 hidden transition-transform duration-500 group-hover/image:translate-4 md:block"
-          color={COLORS.BLUE}
-        />
-        <IconCross
-          className="ease-power4-in-out absolute -bottom-6 -left-6 hidden transition-transform duration-500 group-hover/image:-translate-x-4 group-hover/image:translate-y-4 md:block"
-          color={COLORS.BLUE}
-        />
-        <Image
-          ref={imageRef}
-          alt="Philosophy"
-          className="h-full w-full rounded-3xl object-cover"
-          height={1920}
-          src="/images/matteo-and-jerome.png"
-          width={1080}
-          priority
-        />
+      <div className="gap-y-default flex w-full flex-col items-center">
+        <ScrollButton />
+        <div className="group/image md:w-ful relative aspect-video w-full">
+          <IconCross
+            className="ease-power4-in-out absolute -top-6 -left-6 hidden transition-transform duration-500 group-hover/image:-translate-4 md:block"
+            color={COLORS.BLUE}
+          />
+          <IconCross
+            className="ease-power4-in-out absolute -top-6 -right-6 hidden transition-transform duration-500 group-hover/image:translate-x-4 group-hover/image:-translate-y-4 md:block"
+            color={COLORS.BLUE}
+          />
+          <IconCross
+            className="ease-power4-in-out absolute -right-6 -bottom-6 hidden transition-transform duration-500 group-hover/image:translate-4 md:block"
+            color={COLORS.BLUE}
+          />
+          <IconCross
+            className="ease-power4-in-out absolute -bottom-6 -left-6 hidden transition-transform duration-500 group-hover/image:-translate-x-4 group-hover/image:translate-y-4 md:block"
+            color={COLORS.BLUE}
+          />
+          <Image
+            ref={imageRef}
+            alt="Philosophy"
+            className="h-full w-full rounded-3xl object-cover"
+            height={1920}
+            src="/images/matteo-and-jerome.png"
+            width={1080}
+            priority
+          />
+        </div>
       </div>
       <AnimatedText
         ref={titleRef}

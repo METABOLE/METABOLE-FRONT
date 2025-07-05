@@ -39,7 +39,7 @@ const ScrollButton = () => {
       }}
     >
       SCROLL
-      <IconChevron className="ease-power4-in-out -rotate-90 stroke-black transition-transform duration-300 group-hover/scroll-button:translate-y-2" />
+      <IconChevron className="ease-power4-in-out -rotate-90 stroke-black transition-transform duration-500 group-hover/scroll-button:translate-y-2" />
     </button>
   );
 };

@@ -104,7 +104,7 @@ const Hero = () => {
   return (
     <section
       ref={sectionRef}
-      className="px-x-default py-y-double-default pb-y-default flex min-h-[70vh] flex-col justify-evenly"
+      className="px-x-default pb-y-default flex min-h-[70vh] flex-col justify-evenly pt-[calc(var(--y-default)*3)]"
     >
       <h1 className="h0 uppercase">
         {isFrench ? (
@@ -206,7 +206,7 @@ const Hero = () => {
           </span>
         )}
       </h1>
-      <div className="flex gap-4 pt-8">
+      <div className="pt-y-default flex gap-4">
         <Button color="secondary" href={getInternalPath('/contact')}>
           {isFrench ? 'CONTACT' : 'CONTACT'}
         </Button>
