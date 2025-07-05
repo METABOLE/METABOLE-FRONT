@@ -41,7 +41,7 @@ const CardFaq = ({
     const tl = gsap.timeline({ paused: true });
 
     gsap.set(answerRef.current, { height: 0 });
-    gsap.set(splitText.words, { y: 20, opacity: 0 });
+    gsap.set(splitText.words, { y: 20, opacity: 0, filter: 'blur(10px)' });
     gsap.set(arrowRef.current, { rotation: 135 });
 
     tl.to(answerRef.current, {
@@ -52,7 +52,7 @@ const CardFaq = ({
       .to(
         arrowRef.current,
         {
-          rotation: 45,
+          rotation: -45,
           duration: 1,
           ease: 'power4.inOut',
         },
@@ -63,8 +63,9 @@ const CardFaq = ({
         {
           y: 0,
           opacity: 1,
-          stagger: 0.01,
-          duration: 0.6,
+          filter: 'blur(0px)',
+          stagger: 0.008,
+          duration: 0.8,
           ease: 'power4.out',
         },
         '-=0.5',
@@ -92,9 +93,9 @@ const CardFaq = ({
       onClick={onToggle}
     >
       <h2 className="text-blue mb-4">{index}.</h2>
-      <p className="text-sm font-medium">{isFrench ? questionText.fr : questionText.en}</p>
-      <div ref={answerRef} className="">
-        <p ref={textAnswerRef} className="text-sm text-gray-700">
+      <p className="p2">{isFrench ? questionText.fr : questionText.en}</p>
+      <div ref={answerRef}>
+        <p ref={textAnswerRef} className="p3 text-blue-70">
           {isFrench ? answer.fr : answer.en}
         </p>
       </div>
