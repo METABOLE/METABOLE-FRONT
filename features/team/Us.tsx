@@ -1,21 +1,22 @@
 import { IconCross, IconLink } from '@/components/ui/Icons';
-import { useLanguage } from '@/providers/language.provider';
 import { TEAM_MEMBERS } from '@/constants/us.constant';
-import Image from 'next/image';
-import Link from 'next/link';
-import clsx from 'clsx';
+import { useMatchMedia } from '@/hooks/useCheckScreenSize';
+import { useLanguage } from '@/providers/language.provider';
+import { BREAKPOINTS, COLORS } from '@/types';
 import { useGSAP } from '@gsap/react';
-import { useRef } from 'react';
+import clsx from 'clsx';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useMatchMedia } from '@/hooks/useCheckScreenSize';
-import { BREAKPOINTS, COLORS } from '@/types';
 import { SplitText } from 'gsap/SplitText';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRef } from 'react';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
 const Us = () => {
   const sectionRef = useRef(null);
+  const wrapperImagesRefs = [useRef(null), useRef(null)];
   const imagesRefs = [useRef(null), useRef(null)];
   const titleRef = useRef(null);
 
@@ -47,16 +48,11 @@ const Us = () => {
     });
   });
 
-  useGSAP(() => {
-    ScrollTrigger.getById('team-parallax')?.kill();
-
-    revealAnimation();
-
-    if (isMobile) {
-      gsap.set(imagesRefs[0].current, { y: 0 });
-      gsap.set(imagesRefs[1].current, { y: 0 });
-      return;
-    }
+  const scrollAnimation = contextSafe(() => {
+    gsap.set(wrapperImagesRefs[0].current, { y: 150 });
+    gsap.set(wrapperImagesRefs[1].current, { y: 400 });
+    gsap.set(imagesRefs[0].current, { y: -200 });
+    gsap.set(imagesRefs[1].current, { y: -200 });
 
     gsap
       .timeline({
@@ -68,26 +64,54 @@ const Us = () => {
           scrub: 1,
         },
       })
-      .fromTo(
-        imagesRefs[0].current,
+      .to(wrapperImagesRefs[0].current, {
+        y: -50,
+        ease: 'none',
+      })
+      .to(
+        wrapperImagesRefs[1].current,
         {
-          y: 150,
-        },
-        {
-          y: -50,
+          y: 0,
+          ease: 'none',
         },
         '<',
       )
-      .fromTo(
-        imagesRefs[1].current,
-        {
-          y: 400,
-        },
+      .to(
+        imagesRefs[0].current,
         {
           y: 0,
+          ease: 'none',
+        },
+        '<',
+      )
+      .to(
+        imagesRefs[1].current,
+        {
+          y: 0,
+          ease: 'none',
         },
         '<',
       );
+  });
+
+  useGSAP(() => {
+    ScrollTrigger.getById('team-parallax')?.kill();
+
+    revealAnimation();
+
+    if (isMobile) {
+      gsap.set(wrapperImagesRefs[0].current, { y: 0 });
+      gsap.set(wrapperImagesRefs[1].current, { y: 0 });
+      gsap.set(imagesRefs[0].current, { y: 0 });
+      gsap.set(imagesRefs[1].current, { y: 0 });
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      scrollAnimation();
+    }, 100);
+
+    return () => clearTimeout(timer);
   }, [isMobile]);
 
   return (
@@ -107,7 +131,7 @@ const Us = () => {
         {TEAM_MEMBERS.map((member, index) => (
           <div
             key={member.name}
-            ref={imagesRefs[index]}
+            ref={wrapperImagesRefs[index]}
             className={clsx(
               'group/image relative flex-1 overflow-hidden rounded-3xl',
               index === 1 && 'md:translate-y-[var(--y-default)]',
@@ -121,8 +145,9 @@ const Us = () => {
               <IconLink />
             </Link>
             <Image
+              ref={imagesRefs[index]}
               alt={member.alt}
-              className="ease-power4-in-out transition-transform duration-700 group-hover/image:scale-105"
+              className="h-[calc(100%+100px)] object-cover group-hover/image:scale-105"
               height={1920}
               src={member.image}
               width={1080}
