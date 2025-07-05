@@ -2,20 +2,82 @@ import Button from '@/components/ui/Button';
 import { IconCross } from '@/components/ui/Icons';
 import { useLanguage } from '@/providers/language.provider';
 import { COLORS } from '@/types';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { SplitText } from 'gsap/SplitText';
+import { useRef } from 'react';
+
+gsap.registerPlugin(SplitText);
 
 const Hero = () => {
   const { isFrench, getInternalPath } = useLanguage();
+
+  const desktopSpan1Ref = useRef<HTMLSpanElement>(null);
+  const desktopSpan2Ref = useRef<HTMLSpanElement>(null);
+  const desktopSpan3Ref = useRef<HTMLSpanElement>(null);
+  const mobileTitleRef = useRef<HTMLSpanElement>(null);
+
+  useGSAP(() => {
+    const timeoutId = setTimeout(() => {
+      const desktopSpans = [
+        desktopSpan1Ref.current,
+        desktopSpan2Ref.current,
+        desktopSpan3Ref.current,
+      ];
+
+      if (desktopSpans.every((span) => span)) {
+        gsap.set(desktopSpans, {
+          xPercent: (index) => (index % 2 === 0 ? -100 : 100),
+          opacity: 0,
+        });
+
+        gsap.to(desktopSpans, {
+          xPercent: 0,
+          delay: 0.2,
+          opacity: 1,
+          stagger: 0.1,
+          duration: 1.2,
+          ease: 'power4.out',
+        });
+      }
+
+      const split = new SplitText(mobileTitleRef.current, {
+        type: 'words',
+      });
+
+      gsap.set(split.words, {
+        opacity: 0,
+        yPercent: 100,
+        filter: 'blur(10px)',
+      });
+
+      gsap.to(split.words, {
+        opacity: 1,
+        yPercent: 0,
+        filter: 'blur(0px)',
+        duration: 1.2,
+        stagger: 0.02,
+        ease: 'power4.out',
+        delay: 0.5,
+      });
+    }, 100);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, []);
+
   return (
     <section className="px-x-default py-y-double-default pb-y-default">
       <h1 className="uppercase">
         {isFrench ? (
-          <span className="block md:hidden">
+          <span ref={mobileTitleRef} className="block md:hidden">
             Conception de <span className="text-blue">sites web</span>{' '}
             <span className="text-blue">uniques</span> et{' '}
             <span className="text-blue">immersifs</span> pour les entreprises avant-gardistes
           </span>
         ) : (
-          <span className="block md:hidden">
+          <span ref={mobileTitleRef} className="block md:hidden">
             Designing <span className="text-blue">unique</span> and{' '}
             <span className="text-blue">immersive</span> websites for{' '}
             <span className="text-blue">forward-thinking</span> company
@@ -23,52 +85,64 @@ const Hero = () => {
         )}
         {isFrench ? (
           <span className="hidden md:block">
-            <span className="relative block text-left whitespace-nowrap">
+            <div className="relative">
               <IconCross
                 className="absolute -top-10 -right-10 hidden md:block"
                 color={COLORS.BLUE}
               />
-              Conception de <span className="text-blue">sites web</span>
-            </span>
-            <span className="relative block text-right whitespace-nowrap">
+              <span ref={desktopSpan1Ref} className="relative block text-left whitespace-nowrap">
+                Conception de <span className="text-blue">sites web</span>
+              </span>
+            </div>
+            <div className="relative">
               <IconCross
                 className="absolute top-1/2 -left-10 hidden -translate-y-1/2 md:block"
                 color={COLORS.BLUE}
               />
-              <span className="text-blue">uniques</span> et{' '}
-              <span className="text-blue">immersifs</span> pour les
-            </span>
-            <span className="relative block text-left whitespace-nowrap">
+              <span ref={desktopSpan2Ref} className="relative block text-right whitespace-nowrap">
+                <span className="text-blue">uniques</span> et{' '}
+                <span className="text-blue">immersifs</span> pour les
+              </span>
+            </div>
+            <div className="relative">
               <IconCross
                 className="absolute -right-10 -bottom-10 hidden md:block"
                 color={COLORS.BLUE}
               />
-              entreprises avant-gardistes
-            </span>
+              <span ref={desktopSpan3Ref} className="relative block text-left whitespace-nowrap">
+                entreprises avant-gardistes
+              </span>
+            </div>
           </span>
         ) : (
           <span className="hidden md:block">
-            <span className="relative block text-left whitespace-nowrap">
+            <div className="relative">
               <IconCross
                 className="absolute -top-10 -right-10 hidden md:block"
                 color={COLORS.BLUE}
               />
-              Designing <span className="text-blue">unique</span> and
-            </span>
-            <span className="relative block text-right whitespace-nowrap">
+              <span ref={desktopSpan1Ref} className="relative block text-left whitespace-nowrap">
+                Designing <span className="text-blue">unique</span> and
+              </span>
+            </div>
+            <div className="relative">
               <IconCross
                 className="absolute top-1/2 -left-10 hidden -translate-y-1/2 md:block"
                 color={COLORS.BLUE}
               />
-              <span className="text-blue">immersive</span> websites for
-            </span>
-            <span className="relative block text-left whitespace-nowrap">
+              <span ref={desktopSpan2Ref} className="relative block text-right whitespace-nowrap">
+                <span className="text-blue">immersive</span> websites for
+              </span>
+            </div>
+            <div className="relative">
               <IconCross
                 className="absolute -right-10 -bottom-10 hidden md:block"
                 color={COLORS.BLUE}
               />
-              <span className="text-blue">forward-thinking</span> company
-            </span>
+              <span ref={desktopSpan3Ref} className="relative block text-left whitespace-nowrap">
+                <span className="text-blue">forward-thinking</span> company
+              </span>
+            </div>
           </span>
         )}
       </h1>

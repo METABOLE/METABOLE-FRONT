@@ -3,9 +3,60 @@ import ScrollButton from '@/components/ui/ScrollButton';
 import ScrollingContainer from '@/components/ui/ScrollingContainer';
 import { COLORS } from '@/types';
 import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { SplitText } from 'gsap/SplitText';
+import { useRef } from 'react';
+
+gsap.registerPlugin(SplitText);
 
 const Hero = () => {
-  const { contextSafe } = useGSAP();
+  const titleRef = useRef(null);
+  const descriptionRef = useRef(null);
+
+  useGSAP(() => {
+    const splitTitle = new SplitText(titleRef.current, {
+      type: 'words',
+    });
+    const splitDescription = new SplitText(descriptionRef.current, {
+      type: 'words',
+    });
+
+    gsap.set(splitTitle.words, {
+      yPercent: 100,
+      opacity: 0,
+      filter: 'blur(10px)',
+    });
+    gsap.set(splitDescription.words, {
+      yPercent: 100,
+      opacity: 0,
+      filter: 'blur(10px)',
+    });
+
+    gsap
+      .timeline({
+        delay: 0.6,
+      })
+      .to(splitTitle.words, {
+        yPercent: 0,
+        opacity: 1,
+        duration: 1,
+        filter: 'blur(0px)',
+        stagger: 0.02,
+        ease: 'power4.out',
+      })
+      .to(
+        splitDescription.words,
+        {
+          yPercent: 0,
+          opacity: 1,
+          duration: 1,
+          filter: 'blur(0px)',
+          stagger: 0.02,
+          ease: 'power4.out',
+        },
+        '-=1',
+      );
+  }, []);
 
   return (
     <section className="pt-y-double-default gap-y-y-default pb-y-default flex min-h-screen w-screen flex-col justify-between">
@@ -35,7 +86,7 @@ const Hero = () => {
       </ScrollingContainer>
       <div className="px-x-default">
         <div className="md:pl-[10vw]">
-          <h2 className="relative w-[60vw] md:w-[50vw]">
+          <h2 ref={titleRef} className="relative w-[60vw] md:w-[50vw]">
             <IconCross
               className="absolute top-1/2 -left-10 hidden -translate-y-1/2 md:block"
               color={COLORS.BLUE}
@@ -48,7 +99,7 @@ const Hero = () => {
       </div>
       <div className="px-x-default">
         <div className="md:pr-[5vw]">
-          <p className="p2 relative ml-auto w-[60vw] md:w-[40vw]">
+          <p ref={descriptionRef} className="p2 relative ml-auto w-[60vw] md:w-[40vw]">
             <IconCross
               className="absolute top-1/2 -left-10 hidden -translate-y-1/2 md:block"
               color={COLORS.BLUE}
