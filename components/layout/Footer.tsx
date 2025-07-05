@@ -15,6 +15,7 @@ import Hint from '../ui/Hint';
 import { IconArrow, LogoSmall } from '../ui/Icons';
 import { useMatchMedia } from '@/hooks/useCheckScreenSize';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useSmoothScroll } from '@/hooks/useSmoothScroll';
 
 const Footer = () => {
   const animatedTitleRef = useRef<SVGSVGElement>(null);
@@ -26,6 +27,7 @@ const Footer = () => {
   const isMobile = useMatchMedia(BREAKPOINTS.MD);
   const { isFrench, getInternalPath } = useLanguage();
   const { x, y } = useMousePosition(wrapperRef);
+  const { smoothScrollTo } = useSmoothScroll();
   const { contextSafe } = useGSAP();
 
   const trainAnimPlay = contextSafe(() => {
@@ -194,12 +196,7 @@ const Footer = () => {
                 <a href={'mailto:' + CONTACT.EMAIL}>{CONTACT.EMAIL}</a>
                 <button
                   className="flex w-fit cursor-pointer items-center justify-end gap-2 text-right lg:col-span-2 lg:ml-auto"
-                  onClick={() =>
-                    window.scrollTo({
-                      top: 0,
-                      behavior: 'smooth',
-                    })
-                  }
+                  onClick={() => smoothScrollTo(0, 1800)}
                 >
                   <IconArrow />
                   <p>Back to top</p>
