@@ -1,21 +1,12 @@
 import Button from '@/components/ui/Button';
+import ScrollButton from '@/components/ui/ScrollButton';
 import { useLanguage } from '@/providers/language.provider';
 
 const Philosophy = () => {
   const { isFrench, getInternalPath } = useLanguage();
   return (
     <section className="px-x-double-default gap-y-default pb-y-default flex flex-col items-center">
-      <button
-        className="label"
-        onClick={() =>
-          scrollTo({
-            top: window.innerHeight,
-            behavior: 'smooth',
-          })
-        }
-      >
-        SCROLL
-      </button>
+      <ScrollButton />
       <div className="bg-blur-glass aspect-video w-2/3 rounded-3xl"></div>
       <h2 className="mr-auto w-1/2">
         {isFrench ? (

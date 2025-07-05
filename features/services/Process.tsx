@@ -94,7 +94,7 @@ const Process = () => {
             className="gap-x-x-default pb-y-default pt-y-default flex w-[calc(100%+calc(var(--x-default)*2)-100vw)] items-center"
           >
             <h1 className="text-white">PROCESSUS</h1>
-            <div className="relative h-0.5 w-[489px] bg-[#C5C4FF]/30">
+            <div className="relative h-0.5 w-[35vw] max-w-[489px] bg-[#C5C4FF]/30">
               <div ref={progressBarRef} className="bg-yellow absolute h-0.5 w-0">
                 <svg
                   className="absolute -top-[3px] -right-3"
@@ -110,7 +110,7 @@ const Process = () => {
               </div>
             </div>
           </div>
-          <div className="gap-x-x-default pr-x-default grid grid-cols-[40vw_1fr]">
+          <div className="gap-x-x-default pr-x-default grid grid-cols-[60vw_1fr] md:grid-cols-[40vw_1fr]">
             <p className="p2 pr-x-default row-span-8 text-white">
               Notre méthodologie est structurée pour garantir rigueur, clarté et excellence à chaque
               étape du projet.

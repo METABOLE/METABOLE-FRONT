@@ -56,7 +56,7 @@ const ExpertiseMobile = () => {
         <div
           className={clsx(
             'absolute h-px w-full bg-white transition-transform',
-            activeIndex === 11 || activeIndex === 4 ? '-translate-x-8' : 'translate-x-0',
+            activeIndex === 11 || activeIndex === 4 ? '-translate-x-14' : 'translate-x-0',
           )}
         />
       </div>

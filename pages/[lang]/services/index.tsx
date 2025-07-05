@@ -1,6 +1,6 @@
 import Expertise from '@/features/home/expertise/Expertise';
 import Faq from '@/features/home/Faq';
-import Hero from '@/features/home/Hero';
+import Hero from '@/features/services/Hero';
 import Process from '@/features/services/Process';
 import { fetchProjects } from '@/services/projects.service';
 import { fetchQuestions } from '@/services/questions.service';
