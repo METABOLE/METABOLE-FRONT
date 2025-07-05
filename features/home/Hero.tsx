@@ -102,7 +102,7 @@ const Hero = () => {
         },
       })
       .to(desktopSpans, {
-        x: (index) => (index % 2 === 0 ? 20 : -20),
+        xPercent: (index) => (index % 2 === 0 ? 20 : -20),
         display: 'inline-block',
         duration: 1.2,
         ease: 'power4.out',
@@ -124,15 +124,22 @@ const Hero = () => {
       <h1 className="h0 uppercase">
         {isFrench ? (
           <span ref={mobileTitleRef} className="block md:hidden">
-            Conception de <span className="text-blue">sites web</span>{' '}
-            <span className="text-blue">uniques</span> et{' '}
-            <span className="text-blue">immersifs</span> pour les entreprises avant-gardistes
+            <span>Conception de </span>
+            <span className="text-blue">sites web</span>
+            <span className="text-blue">uniques </span>
+            <span>et </span>
+            <span className="text-blue">immersifs</span>
+            <span> pour les entreprises avant-gardistes</span>
           </span>
         ) : (
           <span ref={mobileTitleRef} className="block md:hidden">
-            Designing <span className="text-blue">unique</span> and{' '}
-            <span className="text-blue">immersive</span> websites for{' '}
-            <span className="text-blue">forward-thinking</span> company
+            <span>Designing </span>
+            <span className="text-blue">unique</span>
+            <span> and </span>
+            <span className="text-blue">immersive</span>
+            <span> websites for </span>
+            <span className="text-blue">forward-thinking</span>
+            <span> company</span>
           </span>
         )}
         {isFrench ? (
@@ -144,7 +151,8 @@ const Hero = () => {
               />
               <span ref={desktopSpan1Ref} className="relative block text-left whitespace-nowrap">
                 <span>
-                  Conception de <span className="text-blue">sites web</span>
+                  <span>Conception de </span>
+                  <span className="text-blue">sites web</span>
                 </span>
               </span>
             </div>
@@ -155,8 +163,9 @@ const Hero = () => {
               />
               <span ref={desktopSpan2Ref} className="relative block text-right whitespace-nowrap">
                 <span>
-                  <span className="text-blue">uniques</span> et{' '}
-                  <span className="text-blue">immersifs</span>{' '}
+                  <span className="text-blue">uniques </span>
+                  <span>et </span>
+                  <span className="text-blue">immersifs</span>
                 </span>
               </span>
             </div>
@@ -184,7 +193,9 @@ const Hero = () => {
               />
               <span ref={desktopSpan1Ref} className="relative block text-left whitespace-nowrap">
                 <span>
-                  Designing <span className="text-blue">unique</span> and
+                  <span>Designing </span>
+                  <span className="text-blue">unique </span>
+                  <span>and </span>
                 </span>
               </span>
             </div>
@@ -195,7 +206,8 @@ const Hero = () => {
               />
               <span ref={desktopSpan2Ref} className="relative block text-right whitespace-nowrap">
                 <span>
-                  <span className="text-blue">immersive</span> websites
+                  <span className="text-blue">immersive</span>
+                  <span> websites</span>
                 </span>
               </span>
             </div>
@@ -206,7 +218,8 @@ const Hero = () => {
               />
               <span ref={desktopSpan3Ref} className="relative block text-left whitespace-nowrap">
                 <span>
-                  for <span className="text-blue">forward-thinking </span>
+                  <span>for </span>
+                  <span className="text-blue">forward-thinking </span>
                 </span>
               </span>
             </div>

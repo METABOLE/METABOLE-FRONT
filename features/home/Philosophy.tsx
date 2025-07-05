@@ -163,15 +163,23 @@ const Philosophy = () => {
       >
         {isFrench ? (
           <>
-            Metabole est un <span className="text-blue">studio créatif</span> qui conçoit des{' '}
-            <span className="text-blue">expériences intéractives</span> et{' '}
-            <span className="text-blue">performantes</span>.
+            <span>Metabole est un </span>
+            <span className="text-blue">studio créatif</span>
+            <span> qui conçoit des </span>
+            <span className="text-blue">expériences intéractives</span>
+            <span> et </span>
+            <span className="text-blue">performantes</span>
+            <span>.</span>
           </>
         ) : (
           <>
-            Metabole is a <span className="text-blue">creative studio</span> that designs{' '}
-            <span className="text-blue">interactive</span> and{' '}
-            <span className="text-blue">high-performance</span> experiences.
+            <span>Metabole is a </span>
+            <span className="text-blue">creative studio</span>
+            <span> that designs </span>
+            <span className="text-blue">interactive</span>
+            <span> and </span>
+            <span className="text-blue">high-performance</span>
+            <span> experiences.</span>
           </>
         )}
       </AnimatedText>
@@ -183,22 +191,33 @@ const Philosophy = () => {
       >
         {isFrench ? (
           <>
-            En mettant l'accent sur l'<span className="text-blue">esthétique</span> et l'
-            <span className="text-blue">accessibilité</span>, nous imaginons des interfaces{' '}
-            <span className="text-blue">fluides</span> et
-            <span className="text-blue">innovantes</span>, pensées pour{' '}
-            <span className="text-blue">évoluer</span> avec les besoins de{' '}
-            <span className="text-blue">demain</span>.
+            <span>En mettant l'accent sur l'</span>
+            <span className="text-blue">esthétique</span>
+            <span> et l'</span>
+            <span className="text-blue">accessibilité</span>
+            <span>, nous imaginons des interfaces </span>
+            <span className="text-blue">fluides</span>
+            <span> et </span>
+            <span className="text-blue">innovantes</span>
+            <span>, pensées pour </span>
+            <span className="text-blue">évoluer</span>
+            <span> avec les besoins de </span>
+            <span className="text-blue">demain</span>
+            <span>.</span>
           </>
         ) : (
           <>
-            By focusing on <span className="text-blue">aesthetics</span> and{' '}
-            <span className="text-blue">accessibility</span>, we imagine fluid and innovative
-            interfaces, thought to <span className="text-blue">evolve</span> with the needs of
-            tomorrow.
+            <span>By focusing on </span>
+            <span className="text-blue">aesthetics</span>
+            <span> and </span>
+            <span className="text-blue">accessibility</span>
+            <span>, we imagine fluid and innovative interfaces, thought to </span>
+            <span className="text-blue">evolve</span>
+            <span> with the needs of tomorrow.</span>
           </>
         )}
       </AnimatedText>
+
       <Button href={getInternalPath('/services')} scroll={false}>
         {isFrench ? 'NOS SERVICES' : 'OUR SERVICES'}
       </Button>
