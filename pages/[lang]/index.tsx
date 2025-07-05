@@ -2,6 +2,7 @@ import Expertise from '@/features/home/expertise/Expertise';
 import Faq from '@/features/home/Faq';
 import Hero from '@/features/home/Hero';
 import Philosophy from '@/features/home/Philosophy';
+import Us from '@/features/team/Us';
 import { fetchProjects } from '@/services/projects.service';
 import { fetchQuestions } from '@/services/questions.service';
 import { QuestionType } from '@/types';
@@ -19,6 +20,7 @@ export default function Home({ questions }: { questions: QuestionType[] }) {
       <Hero />
       <Philosophy />
       <Expertise />
+      <Us />
       <Faq questions={questions} />
     </>
   );
