@@ -20,11 +20,11 @@ import FloatingHalo from '@/components/shared/FloatingHalo';
 gsap.registerPlugin(ScrollTrigger);
 
 const Process = () => {
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef(null);
   const horizontalRef = useRef<HTMLDivElement>(null);
-  const lineRef = useRef<HTMLDivElement>(null);
-  const titleRef = useRef<HTMLDivElement>(null);
-  const progressBarRef = useRef<HTMLDivElement>(null);
+  const lineRef = useRef(null);
+  const titleRef = useRef(null);
+  const progressBarRef = useRef(null);
 
   const { isFrench } = useLanguage();
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -32,19 +32,13 @@ const Process = () => {
   useGSAP(() => {
     if (!sectionRef.current || !horizontalRef.current || !progressBarRef.current) return;
 
-    const horizontal = horizontalRef.current;
-    const section = sectionRef.current;
-    const progressBar = progressBarRef.current;
-    const line = lineRef.current;
-    const totalWidth = horizontal.scrollWidth;
-    const viewportWidth = window.innerWidth;
-    const scrollDistance = totalWidth - viewportWidth;
+    const scrollDistance = horizontalRef.current.scrollWidth - window.innerWidth;
 
-    gsap.to(horizontal, {
+    gsap.to(horizontalRef.current, {
       x: () => `-${scrollDistance}px`,
       ease: 'none',
       scrollTrigger: {
-        trigger: section,
+        trigger: sectionRef.current,
         start: 'top top',
         end: () => `+=${scrollDistance}`,
         scrub: true,
@@ -53,22 +47,21 @@ const Process = () => {
       },
     });
 
-    // Animate the progress bar width based on scroll progress
     gsap
       .timeline({
         scrollTrigger: {
-          trigger: section,
+          trigger: sectionRef.current,
           start: 'top top',
           end: () => `+=${scrollDistance - window.innerWidth}`,
           scrub: true,
         },
       })
-      .to(progressBar, {
+      .to(progressBarRef.current, {
         width: '100%',
         ease: 'none',
       })
       .to(
-        line,
+        lineRef.current,
         {
           xPercent: 100,
           ease: 'none',

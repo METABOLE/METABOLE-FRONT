@@ -94,8 +94,9 @@ const Philosophy = () => {
           alt="Philosophy"
           className="h-full w-full rounded-3xl object-cover"
           height={1920}
-          src="/images/placeholder.png"
+          src="/images/matteo-and-jerome.png"
           width={1080}
+          priority
         />
       </div>
       <AnimatedText
@@ -129,7 +130,7 @@ const Philosophy = () => {
         </AnimatedText>
       </div>
       <div ref={buttonRef}>
-        <Button href={getInternalPath('/contact')}>
+        <Button href={getInternalPath('/services')} scroll={false}>
           {isFrench ? 'DECOUVRIR NOS SERVICES' : 'DISCOVER OUR SERVICES'}
         </Button>
       </div>

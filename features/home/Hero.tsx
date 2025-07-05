@@ -12,54 +12,85 @@ gsap.registerPlugin(SplitText);
 const Hero = () => {
   const { isFrench, getInternalPath } = useLanguage();
 
+  const sectionRef = useRef(null);
   const desktopSpan1Ref = useRef<HTMLSpanElement>(null);
   const desktopSpan2Ref = useRef<HTMLSpanElement>(null);
   const desktopSpan3Ref = useRef<HTMLSpanElement>(null);
   const mobileTitleRef = useRef<HTMLSpanElement>(null);
 
+  const { contextSafe } = useGSAP();
+
+  const revealAnimation = contextSafe(() => {
+    const desktopSpans = [
+      desktopSpan1Ref.current,
+      desktopSpan2Ref.current,
+      desktopSpan3Ref.current,
+    ];
+
+    if (desktopSpans.every((span) => span)) {
+      gsap.set(desktopSpans, {
+        xPercent: (index) => (index % 2 === 0 ? -100 : 100),
+        opacity: 0,
+      });
+
+      gsap.to(desktopSpans, {
+        xPercent: 0,
+        delay: 0.2,
+        opacity: 1,
+        stagger: 0.1,
+        duration: 1.2,
+        ease: 'power4.out',
+      });
+    }
+
+    const split = new SplitText(mobileTitleRef.current, {
+      type: 'words',
+    });
+
+    gsap.set(split.words, {
+      opacity: 0,
+      yPercent: 100,
+      filter: 'blur(10px)',
+    });
+
+    gsap.to(split.words, {
+      opacity: 1,
+      yPercent: 0,
+      filter: 'blur(0px)',
+      duration: 1.2,
+      stagger: 0.02,
+      ease: 'power4.out',
+      delay: 0.5,
+    });
+  });
+
+  const scrollAnimation = contextSafe(() => {
+    const desktopSpans = [
+      desktopSpan1Ref.current?.children,
+      desktopSpan2Ref.current?.children,
+      desktopSpan3Ref.current?.children,
+    ];
+
+    gsap
+      .timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top top',
+          scrub: 1,
+        },
+      })
+      .to(desktopSpans, {
+        xPercent: (index) => (index % 2 === 0 ? 20 : -20),
+        display: 'inline-block',
+        duration: 1.2,
+        ease: 'power4.out',
+      });
+  });
+
   useGSAP(() => {
     const timeoutId = setTimeout(() => {
-      const desktopSpans = [
-        desktopSpan1Ref.current,
-        desktopSpan2Ref.current,
-        desktopSpan3Ref.current,
-      ];
-
-      if (desktopSpans.every((span) => span)) {
-        gsap.set(desktopSpans, {
-          xPercent: (index) => (index % 2 === 0 ? -100 : 100),
-          opacity: 0,
-        });
-
-        gsap.to(desktopSpans, {
-          xPercent: 0,
-          delay: 0.2,
-          opacity: 1,
-          stagger: 0.1,
-          duration: 1.2,
-          ease: 'power4.out',
-        });
-      }
-
-      const split = new SplitText(mobileTitleRef.current, {
-        type: 'words',
-      });
-
-      gsap.set(split.words, {
-        opacity: 0,
-        yPercent: 100,
-        filter: 'blur(10px)',
-      });
-
-      gsap.to(split.words, {
-        opacity: 1,
-        yPercent: 0,
-        filter: 'blur(0px)',
-        duration: 1.2,
-        stagger: 0.02,
-        ease: 'power4.out',
-        delay: 0.5,
-      });
+      scrollAnimation();
+      revealAnimation();
     }, 100);
 
     return () => {
@@ -68,7 +99,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="px-x-default py-y-double-default pb-y-default">
+    <section ref={sectionRef} className="px-x-default py-y-double-default pb-y-default">
       <h1 className="uppercase">
         {isFrench ? (
           <span ref={mobileTitleRef} className="block md:hidden">
@@ -91,7 +122,9 @@ const Hero = () => {
                 color={COLORS.BLUE}
               />
               <span ref={desktopSpan1Ref} className="relative block text-left whitespace-nowrap">
-                Conception de <span className="text-blue">sites web</span>
+                <span>
+                  Conception de <span className="text-blue">sites web</span>
+                </span>
               </span>
             </div>
             <div className="relative">
@@ -100,8 +133,10 @@ const Hero = () => {
                 color={COLORS.BLUE}
               />
               <span ref={desktopSpan2Ref} className="relative block text-right whitespace-nowrap">
-                <span className="text-blue">uniques</span> et{' '}
-                <span className="text-blue">immersifs</span> pour les
+                <span>
+                  <span className="text-blue">uniques</span> et{' '}
+                  <span className="text-blue">immersifs</span> pour les
+                </span>
               </span>
             </div>
             <div className="relative">
@@ -110,7 +145,7 @@ const Hero = () => {
                 color={COLORS.BLUE}
               />
               <span ref={desktopSpan3Ref} className="relative block text-left whitespace-nowrap">
-                entreprises avant-gardistes
+                <span>entreprises avant-gardistes</span>
               </span>
             </div>
           </span>
@@ -122,7 +157,9 @@ const Hero = () => {
                 color={COLORS.BLUE}
               />
               <span ref={desktopSpan1Ref} className="relative block text-left whitespace-nowrap">
-                Designing <span className="text-blue">unique</span> and
+                <span>
+                  Designing <span className="text-blue">unique</span> and
+                </span>
               </span>
             </div>
             <div className="relative">
@@ -131,7 +168,9 @@ const Hero = () => {
                 color={COLORS.BLUE}
               />
               <span ref={desktopSpan2Ref} className="relative block text-right whitespace-nowrap">
-                <span className="text-blue">immersive</span> websites for
+                <span>
+                  <span className="text-blue">immersive</span> websites for
+                </span>
               </span>
             </div>
             <div className="relative">
@@ -140,7 +179,9 @@ const Hero = () => {
                 color={COLORS.BLUE}
               />
               <span ref={desktopSpan3Ref} className="relative block text-left whitespace-nowrap">
-                <span className="text-blue">forward-thinking</span> company
+                <span>
+                  <span className="text-blue">forward-thinking</span> company
+                </span>
               </span>
             </div>
           </span>
