@@ -1,13 +1,15 @@
 import { IconCross } from '@/components/ui/Icons';
 import ScrollButton from '@/components/ui/ScrollButton';
 import ScrollingContainer from '@/components/ui/ScrollingContainer';
-import { COLORS } from '@/types';
+import { useMatchMedia } from '@/hooks/useCheckScreenSize';
+import { BREAKPOINTS, COLORS } from '@/types';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 import { useRef } from 'react';
 
-gsap.registerPlugin(SplitText);
+gsap.registerPlugin(SplitText, ScrollTrigger);
 
 const Hero = () => {
   const sectionRef = useRef(null);
@@ -15,6 +17,7 @@ const Hero = () => {
   const descriptionRef = useRef(null);
 
   const { contextSafe } = useGSAP();
+  const isMobile = useMatchMedia(BREAKPOINTS.MD);
 
   const revealAnimation = contextSafe(() => {
     const splitTitle = new SplitText(titleRef.current, {
@@ -69,6 +72,7 @@ const Hero = () => {
           start: 'top bottom',
           end: 'bottom top',
           scrub: 1,
+          id: 'services-scroll',
         },
       })
       .fromTo(
@@ -99,8 +103,15 @@ const Hero = () => {
 
   useGSAP(() => {
     revealAnimation();
+    ScrollTrigger.getById('services-scroll')?.kill();
+
+    if (isMobile) {
+      gsap.set(titleRef.current, { x: 0 });
+      gsap.set(descriptionRef.current, { x: 0 });
+      return;
+    }
     scrollAnimation();
-  }, []);
+  }, [isMobile]);
 
   return (
     <section

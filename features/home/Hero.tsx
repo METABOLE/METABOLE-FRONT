@@ -4,10 +4,11 @@ import { useLanguage } from '@/providers/language.provider';
 import { COLORS } from '@/types';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 import { useRef } from 'react';
 
-gsap.registerPlugin(SplitText);
+gsap.registerPlugin(SplitText, ScrollTrigger);
 
 const Hero = () => {
   const { isFrench, getInternalPath } = useLanguage();
@@ -29,21 +30,37 @@ const Hero = () => {
       desktopSpan4Ref.current,
     ];
 
-    if (desktopSpans.every((span) => span)) {
-      gsap.set(desktopSpans, {
-        xPercent: (index) => (index % 2 === 0 ? -100 : 100),
-        opacity: 0,
-      });
+    const splitTexts = desktopSpans
+      .map((span) => {
+        if (span) {
+          return new SplitText(span, {
+            type: 'words',
+            mask: 'words',
+          });
+        }
+        return null;
+      })
+      .filter(Boolean);
 
-      gsap.to(desktopSpans, {
-        xPercent: 0,
-        delay: 0.2,
-        opacity: 1,
-        stagger: 0.1,
-        duration: 1.2,
-        ease: 'power4.out',
-      });
-    }
+    splitTexts.forEach((split) => {
+      if (split) {
+        gsap.set(split.words, {
+          yPercent: 100,
+        });
+      }
+    });
+
+    splitTexts.forEach((split, index) => {
+      if (split) {
+        gsap.to(split.words, {
+          yPercent: 0,
+          duration: 1.8,
+          stagger: 0.03,
+          ease: 'power4.out',
+          delay: 0.2 + index * 0.1,
+        });
+      }
+    });
 
     const split = new SplitText(mobileTitleRef.current, {
       type: 'words',
@@ -79,11 +96,13 @@ const Hero = () => {
         scrollTrigger: {
           trigger: sectionRef.current,
           start: 'top top',
+          end: 'bottom top',
           scrub: 1,
+          id: 'hero-scroll',
         },
       })
       .to(desktopSpans, {
-        xPercent: (index) => (index % 2 === 0 ? 20 : -20),
+        x: (index) => (index % 2 === 0 ? 20 : -20),
         display: 'inline-block',
         duration: 1.2,
         ease: 'power4.out',
@@ -91,14 +110,10 @@ const Hero = () => {
   });
 
   useGSAP(() => {
-    const timeoutId = setTimeout(() => {
+    setTimeout(() => {
       scrollAnimation();
       revealAnimation();
     }, 100);
-
-    return () => {
-      clearTimeout(timeoutId);
-    };
   }, [isFrench]);
 
   return (
@@ -196,10 +211,6 @@ const Hero = () => {
               </span>
             </div>
             <div className="relative"></div>
-            <IconCross
-              className="absolute -right-10 -bottom-10 hidden md:block"
-              color={COLORS.BLUE}
-            />
             <span ref={desktopSpan4Ref} className="relative block text-center whitespace-nowrap">
               <span>company</span>
             </span>

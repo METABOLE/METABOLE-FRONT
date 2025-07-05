@@ -99,11 +99,11 @@ const Event = ({
       {description && (
         <div
           className={clsx(
-            'pointer-events-none absolute left-0 z-20 w-[288px] p-4 text-white transition-opacity duration-300',
+            'pointer-events-none absolute left-0 z-50 w-[288px] p-3 text-white transition-opacity duration-300',
             isSquare ? 'bottom-full' : 'top-full',
           )}
         >
-          <p ref={descriptionRef} className="p2 text-white/80">
+          <p ref={descriptionRef} className="!text-[14px] !leading-none text-white/80">
             {description}
           </p>
         </div>

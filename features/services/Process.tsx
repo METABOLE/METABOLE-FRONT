@@ -1,9 +1,4 @@
-import { useRef, useState } from 'react';
-import { useGSAP } from '@gsap/react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Event from './timeline/Event';
-import Divider from './timeline/Divider';
+import FloatingHalo from '@/components/shared/FloatingHalo';
 import {
   IconDelivery,
   IconDesign,
@@ -12,16 +7,21 @@ import {
   IconIdeation,
   IconInitialExchange,
 } from '@/components/ui/Icons';
-import clsx from 'clsx';
 import { useLanguage } from '@/providers/language.provider';
-import Image from 'next/image';
-import FloatingHalo from '@/components/shared/FloatingHalo';
+import { useGSAP } from '@gsap/react';
+import clsx from 'clsx';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useRef, useState } from 'react';
+import Divider from './timeline/Divider';
+import Event from './timeline/Event';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Process = () => {
   const sectionRef = useRef(null);
   const horizontalRef = useRef<HTMLDivElement>(null);
+  const wrapperLineRef = useRef(null);
   const lineRef = useRef(null);
   const titleRef = useRef(null);
   const progressBarRef = useRef(null);
@@ -47,21 +47,51 @@ const Process = () => {
       },
     });
 
+    gsap.set(wrapperLineRef.current, {
+      xPercent: -7,
+    });
+
+    gsap.set(lineRef.current, {
+      opacity: 0,
+    });
+
     gsap
       .timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
           start: 'top top',
-          end: () => `+=${scrollDistance - window.innerWidth}`,
+          end: () => `+=${scrollDistance}`,
           scrub: true,
+          onUpdate: (self) => {
+            const { progress } = self;
+            let opacity = 0;
+
+            if (progress >= 0.2 && progress <= 0.8) {
+              opacity = 1;
+            } else if (progress < 0.2) {
+              opacity = progress / 0.2;
+            } else if (progress > 0.8) {
+              opacity = 1 - (progress - 0.8) / 0.2;
+            }
+
+            gsap.to(lineRef.current, {
+              opacity: opacity,
+              ease: 'none',
+              duration: 0,
+            });
+          },
         },
       })
-      .to(progressBarRef.current, {
-        width: '100%',
-        ease: 'none',
-      })
       .to(
-        lineRef.current,
+        progressBarRef.current,
+        {
+          width: '100%',
+          ease: 'none',
+        },
+        '<',
+      )
+      .to(
+        wrapperLineRef.current,
         {
           xPercent: 100,
           ease: 'none',
@@ -104,7 +134,7 @@ const Process = () => {
             </div>
           </div>
           <div className="gap-x-x-default pr-x-default grid grid-cols-[60vw_1fr] md:grid-cols-[40vw_1fr]">
-            <p className="p2 pr-x-default row-span-8 text-white">
+            <p className="p2 pr-x-default text-white-70 z-50 row-span-8">
               Notre méthodologie est structurée pour garantir rigueur, clarté et excellence à chaque
               étape du projet.
               <br />
@@ -160,10 +190,10 @@ const Process = () => {
               </div>
               <div className="relative z-10 grid h-fit grid-cols-[62px_288px_288px_288px_288px_288px_288px_62px_288px_288px] grid-rows-[repeat(8,62px)] gap-0.5 text-white">
                 <div
-                  ref={lineRef}
-                  className="pointer-events-none absolute bottom-3 z-50 h-[calc(100%+100px)] w-full -translate-x-full bg-black/30"
+                  ref={wrapperLineRef}
+                  className="pointer-events-none absolute bottom-3 z-50 hidden h-[calc(100%+100px)] w-full -translate-x-full bg-black/50 md:block"
                 >
-                  <div className="bg-yellow absolute top-0 right-0 z-10 h-full w-0.5">
+                  <div ref={lineRef} className="bg-yellow absolute top-0 right-0 z-10 h-full w-0.5">
                     <svg
                       className="absolute -top-3 -right-[3px]"
                       fill="none"
@@ -286,7 +316,7 @@ const Process = () => {
             </div>
           </div>
         </div>
-        <div className="h-screen w-screen">
+        {/* <div className="h-screen w-screen">
           <Image
             alt=""
             className="h-full w-full object-cover"
@@ -294,7 +324,7 @@ const Process = () => {
             src="/images/matteo-and-jerome.png"
             width={1920}
           />
-        </div>
+        </div> */}
       </div>
     </section>
   );
