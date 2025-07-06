@@ -161,7 +161,7 @@ const Philosophy = () => {
         />
         <AnimatedText
           ref={titleRef}
-          className="h2 relative mr-auto md:w-2/3"
+          className="h2 relative mr-auto w-full md:w-2/3"
           duration={1.2}
           stagger={0.02}
           start="top+=300px 80%"

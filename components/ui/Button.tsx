@@ -1,5 +1,4 @@
 import { useMagnet, useResetMagnet } from '@/hooks/useMagnet';
-import { useLanguage } from '@/providers/language.provider';
 import { COLORS } from '@/types';
 import { useGSAP } from '@gsap/react';
 import { clsx } from 'clsx';
@@ -25,6 +24,7 @@ interface BaseButtonProps {
   color?: 'primary' | 'secondary' | 'tertiary';
   isDark?: boolean;
   disabled?: boolean;
+  isResizable?: boolean;
 }
 
 type DivButtonProps = BaseButtonProps &
@@ -71,6 +71,7 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
       isDark = false,
       className,
       disabled = false,
+      isResizable = false,
       ...props
     },
     ref,
@@ -85,12 +86,11 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
     const timelineHoverRef = useRef<gsap.core.Timeline | null>(null);
 
     const { contextSafe } = useGSAP();
-    const { isFrench } = useLanguage();
 
     const [currentChild, setCurrentChild] = useState(children);
 
     useGSAP(() => {
-      if (currentChild === children) return;
+      if (!isResizable || currentChild === children) return;
 
       const widthHiddenButton = hiddenButtonRef.current?.getBoundingClientRect();
 
@@ -128,7 +128,7 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
           },
           '<',
         );
-    }, [currentChild, isFrench]);
+    }, [children, isResizable]);
 
     useGSAP(() => {
       if (disabled) return;
@@ -167,7 +167,7 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
     }, [currentChild]);
 
     useGSAP(() => {
-      if (!ref) return;
+      if (!ref || !isResizable) return;
       gsap.set(wrapperButtonRef.current, {
         width: 30,
         scale: 0,
@@ -177,9 +177,14 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
         opacity: 0,
         scale: 0.5,
       });
-    }, []);
+    }, [ref, isResizable]);
 
     const openButton = contextSafe(() => {
+      const widthHiddenButton = isResizable
+        ? hiddenButtonRef.current?.getBoundingClientRect()?.width
+        : null;
+      const finalWidth = isResizable && widthHiddenButton ? widthHiddenButton : 'auto';
+
       return gsap
         .timeline()
         .set(wrapperButtonRef.current, {
@@ -219,7 +224,7 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
         .to(
           wrapperButtonRef.current,
           {
-            width: 'auto',
+            width: finalWidth,
             duration: 1.4,
             ease: 'elastic.out',
           },
@@ -339,19 +344,21 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
               ref={textRef}
               className="relative flex w-fit items-center justify-center px-6 whitespace-nowrap"
             >
-              <span ref={currentChildRef}>{currentChild}</span>
+              <span ref={currentChildRef}>{isResizable ? currentChild : children}</span>
               <span ref={absoluteChildRef} className="absolute">
-                {currentChild}
+                {isResizable ? currentChild : children}
               </span>
             </div>
           </div>
         </DynamicElement>
-        <div
-          ref={hiddenButtonRef}
-          className="label pointer-events-none invisible fixed top-0 left-0 -z-10 h-full w-fit items-center justify-center px-6 whitespace-nowrap uppercase opacity-0"
-        >
-          {children}
-        </div>
+        {isResizable && (
+          <div
+            ref={hiddenButtonRef}
+            className="label pointer-events-none invisible fixed top-0 left-0 -z-10 h-full w-fit items-center justify-center px-6 whitespace-nowrap uppercase opacity-0"
+          >
+            {children}
+          </div>
+        )}
       </>
     );
   },

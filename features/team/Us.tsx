@@ -120,7 +120,7 @@ const Us = ({ isPageTeam = false }: { isPageTeam?: boolean }) => {
         {isFrench ? <span>NOS FONDATEURS</span> : <span>OUR FOUNDERS</span>}
         <IconCross className="absolute -right-10 bottom-0 hidden md:block" color={COLORS.BLACK} />
       </h1>
-      <div className="lg:px-x-default relative flex flex-col gap-5 pb-[200px] md:flex-row">
+      <div className="lg:px-x-default relative flex flex-col gap-5 md:flex-row md:pb-[200px]">
         <IconCross
           className="left-x-default absolute -bottom-20 hidden md:block"
           color={COLORS.BLUE}

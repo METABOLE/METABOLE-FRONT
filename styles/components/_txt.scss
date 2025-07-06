@@ -21,15 +21,15 @@ a {
 
 .h1,
 h1 {
-  font-size: clamp(30px, 5vw, 70px);
-  line-height: clamp(30px, 5vw, 70px);
+  font-size: clamp(38px, 5vw, 70px);
+  line-height: clamp(38px, 5vw, 70px);
   // font-family: var(--font-safiro-medium);
 }
 
 .h2,
 h2 {
-  font-size: 48px;
-  line-height: 48px;
+  font-size: clamp(26px, 5vw, 48px);
+  line-height: clamp(26px, 5vw, 48px);
 }
 
 .h3,
@@ -40,8 +40,8 @@ h3 {
 
 // PARAGRAPHS
 .p1 {
-  font-size: 30px;
-  line-height: 30px;
+  font-size: clamp(26px, 5vw, 30px);
+  line-height: clamp(26px, 5vw, 30px);
 }
 
 .p2 {

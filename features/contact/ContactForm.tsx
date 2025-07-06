@@ -140,7 +140,6 @@ const ContactForm = ({ className }: { className?: string }) => {
       <Input
         errorMessage={errors.name}
         isDark={true}
-        // label={isFrench ? 'Nom complet *' : 'Full name *'}
         name="contact-name"
         placeholder="John Doe"
         type="text"
@@ -166,7 +165,6 @@ const ContactForm = ({ className }: { className?: string }) => {
       <Input
         errorMessage={errors.email}
         isDark={true}
-        // label={isFrench ? 'Email *' : 'Email *'}
         name="contact-email"
         placeholder="john@company.com"
         type="email"
@@ -193,7 +191,6 @@ const ContactForm = ({ className }: { className?: string }) => {
 
       <Input
         isDark={true}
-        // label={isFrench ? 'Téléphone' : 'Phone'}
         name="contact-phone"
         placeholder="+33 6 12 34 56 78"
         type="tel"
@@ -204,7 +201,6 @@ const ContactForm = ({ className }: { className?: string }) => {
       <Input
         errorMessage={errors.type}
         isDark={true}
-        // label={isFrench ? 'Type de demande' : 'Request type'}
         name="contact-type"
         type="select"
         value={formData.type}
@@ -254,7 +250,6 @@ const ContactForm = ({ className }: { className?: string }) => {
 
       <Input
         isDark={true}
-        // label={isFrench ? 'Message' : 'Message'}
         name="contact-message"
         placeholder={isFrench ? 'Un message à nous transmettre ?' : 'A message to send us?'}
         type="textarea"
@@ -279,8 +274,9 @@ const ContactForm = ({ className }: { className?: string }) => {
         <Button
           color="primary"
           disabled={formStatus === FORM_STATUS.SUCCESS || formStatus === FORM_STATUS.PENDING}
+          isResizable={true}
         >
-          <span>{getButtonText()}</span>
+          {getButtonText()}
         </Button>
       </div>
     </form>

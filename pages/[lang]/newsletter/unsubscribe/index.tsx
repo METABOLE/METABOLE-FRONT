@@ -125,6 +125,7 @@ const UnsubscribePage: NextPageWithLayout = () => {
             className="mt-12"
             color="tertiary"
             disabled={formStatus === FORM_STATUS.PENDING || formStatus === FORM_STATUS.SUCCESS}
+            isResizable={true}
           >
             <span>{getButtonText()}</span>
           </Button>
