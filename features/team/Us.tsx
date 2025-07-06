@@ -107,11 +107,7 @@ const Us = () => {
       return;
     }
 
-    const timer = setTimeout(() => {
-      scrollAnimation();
-    }, 100);
-
-    return () => clearTimeout(timer);
+    scrollAnimation();
   }, [isMobile]);
 
   return (
@@ -120,7 +116,7 @@ const Us = () => {
       className="px-x-default py-y-double-default gap-y-y-default flex flex-col items-center"
     >
       <h1 ref={titleRef} className="relative w-fit text-center">
-        {isFrench ? 'NOS FONDATEURS' : 'OUR FOUNDERS'}
+        {isFrench ? <span>NOS FONDATEURS</span> : <span>OUR FOUNDERS</span>}
         <IconCross className="absolute -right-10 bottom-0 hidden md:block" color={COLORS.BLACK} />
       </h1>
       <div className="lg:px-x-default relative flex flex-col gap-5 md:flex-row">
@@ -147,7 +143,7 @@ const Us = () => {
             <Image
               ref={imagesRefs[index]}
               alt={member.alt}
-              className="h-[calc(100%+100px)] object-cover group-hover/image:scale-105"
+              className="h-[calc(100%+200px)] object-cover group-hover/image:scale-105"
               height={1920}
               src={member.image}
               width={1080}

@@ -2,8 +2,8 @@ export const TEAM_MEMBERS = [
   {
     name: 'Matteo COURQUIN',
     role: {
-      fr: 'Co-fondateur & Directeur technique',
-      en: 'Co-founder & Technical Director',
+      fr: 'Co-fondateur & CTO',
+      en: 'Co-founder & CTO',
     },
     image: '/images/matteo.jpg',
     website: 'https://matteocourquin.com',
@@ -12,7 +12,7 @@ export const TEAM_MEMBERS = [
   {
     name: 'Jérôme BEZEAU',
     role: {
-      fr: 'Co-fondateur & Directeur artistique',
+      fr: 'Co-fondateur & Directeur Artistique',
       en: 'Co-founder & Creative Director',
     },
     image: '/images/jerome.jpg',

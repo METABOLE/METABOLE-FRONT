@@ -5,6 +5,10 @@ export const useMatchMedia = (breakpoint: BREAKPOINTS) => {
   const [matches, setMatches] = useState(false);
 
   useEffect(() => {
+    setMatches(window.matchMedia(`(max-width: ${breakpoint}px)`).matches);
+  }, []);
+
+  useEffect(() => {
     const mediaQuery = window.matchMedia(`(max-width: ${breakpoint}px)`);
 
     setMatches(mediaQuery.matches);

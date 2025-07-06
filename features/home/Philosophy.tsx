@@ -102,6 +102,7 @@ const Philosophy = () => {
     if (isMobile) {
       gsap.set(titleRef.current, { x: 0 });
       gsap.set(descriptionRef.current, { x: 0 });
+      gsap.set(imageRef.current, { scale: 1 });
       return;
     }
 
@@ -111,10 +112,10 @@ const Philosophy = () => {
   return (
     <section
       ref={sectionRef}
-      className="px-x-double-default gap-y-y-default-double pb-y-double-default flex flex-col items-center"
+      className="px-x-default md:px-x-double-default gap-y-y-default md:gap-y-y-default-double pb-y-double-default flex flex-col items-center"
     >
       <ScrollButton />
-      <div className="group/image md:w-ful relative aspect-video w-full">
+      <div className="group/image relative aspect-video w-full">
         <IconCross
           className="ease-power4-in-out absolute -top-6 -left-6 hidden transition-transform duration-500 group-hover/image:-translate-4 md:block"
           color={COLORS.BLUE}

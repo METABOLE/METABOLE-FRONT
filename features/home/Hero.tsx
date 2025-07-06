@@ -110,16 +110,14 @@ const Hero = () => {
   });
 
   useGSAP(() => {
-    setTimeout(() => {
-      scrollAnimation();
-      revealAnimation();
-    }, 100);
+    scrollAnimation();
+    revealAnimation();
   }, [isFrench]);
 
   return (
     <section
       ref={sectionRef}
-      className="px-x-default pb-y-default flex min-h-[70vh] flex-col justify-evenly pt-[calc(var(--y-default)*3)]"
+      className="px-x-default pb-y-default flex flex-col justify-evenly pt-[calc(var(--y-default)*3)] md:min-h-[70vh]"
     >
       <h1 className="h0 uppercase">
         {isFrench ? (
@@ -231,10 +229,10 @@ const Hero = () => {
         )}
       </h1>
       <div className="pt-y-default flex gap-4">
-        <Button color="secondary" href={getInternalPath('/contact')}>
+        <Button color="secondary" href={getInternalPath('/contact')} scroll={false}>
           {isFrench ? 'CONTACT' : 'CONTACT'}
         </Button>
-        <Button color="primary" href={getInternalPath('/pricing')}>
+        <Button color="primary" href={getInternalPath('/pricing')} scroll={false}>
           {isFrench ? 'TARIFS' : 'PRICING'}
         </Button>
       </div>

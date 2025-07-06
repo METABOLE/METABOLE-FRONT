@@ -1,3 +1,4 @@
+import { useLanguage } from '@/providers/language.provider';
 import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -30,8 +31,10 @@ const AnimatedText = forwardRef<HTMLElement, AnimatedTextProps>(
     },
     ref,
   ) => {
-    const textRef = useRef<HTMLElement>(null);
+    const textRef = useRef(null);
     const elementRef = ref || textRef;
+
+    const { isFrench } = useLanguage();
 
     const { contextSafe } = useGSAP();
 
@@ -65,14 +68,8 @@ const AnimatedText = forwardRef<HTMLElement, AnimatedTextProps>(
     });
 
     useGSAP(() => {
-      const timeoutId = setTimeout(() => {
-        requestAnimationFrame(animateText);
-      }, 100);
-
-      return () => {
-        clearTimeout(timeoutId);
-      };
-    }, [children]);
+      animateText();
+    }, [isFrench]);
 
     const Tag = variant;
 

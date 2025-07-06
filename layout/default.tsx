@@ -16,13 +16,14 @@ gsap.registerPlugin(ScrollTrigger, SplitText);
 const Layout = ({ projects, children }: { projects: ProjectType[]; children: ReactNode }) => {
   const { isFrench } = useLanguage();
   const isTablet = useMatchMedia(BREAKPOINTS.MD);
+  const isMobile = useMatchMedia(BREAKPOINTS.SM);
 
   return (
     <>
       <SEO isFrench={isFrench} />
       {isTablet ? <Burger /> : <Menu projects={projects} />}
       <main className="min-h-screen md:pb-[300px]">{children}</main>
-      <ScrollBar />
+      {!isMobile && <ScrollBar />}
       <Footer />
       <Background />
     </>

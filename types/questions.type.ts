@@ -4,4 +4,8 @@ export type QuestionType = {
   id: number;
   question: Language;
   answer: Language;
+  link?: {
+    url: string;
+    text: Language;
+  };
 };

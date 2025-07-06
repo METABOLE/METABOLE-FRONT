@@ -43,8 +43,8 @@ export default function ScrollBar() {
           width="8"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <path d="M0 4L8 4" stroke-width="2" />
-          <path d="M4 0L4 8" stroke-width="2" />
+          <path d="M0 4L8 4" strokeWidth="2" />
+          <path d="M4 0L4 8" strokeWidth="2" />
         </svg>
       </div>
     </div>

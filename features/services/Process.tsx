@@ -135,8 +135,8 @@ const Process = () => {
                   width="8"
                   xmlns="http://www.w3.org/2000/svg"
                 >
-                  <path d="M0 4L8 4" stroke="#CAEE17" stroke-width="2" />
-                  <path d="M4 0L4 8" stroke="#CAEE17" stroke-width="2" />
+                  <path d="M0 4L8 4" stroke="#CAEE17" strokeWidth="2" />
+                  <path d="M4 0L4 8" stroke="#CAEE17" strokeWidth="2" />
                 </svg>
               </div>
             </div>
@@ -210,8 +210,8 @@ const Process = () => {
                       width="8"
                       xmlns="http://www.w3.org/2000/svg"
                     >
-                      <path d="M0 4L8 4" stroke="#CAEE17" stroke-width="2" />
-                      <path d="M4 0L4 8" stroke="#CAEE17" stroke-width="2" />
+                      <path d="M0 4L8 4" stroke="#CAEE17" strokeWidth="2" />
+                      <path d="M4 0L4 8" stroke="#CAEE17" strokeWidth="2" />
                     </svg>
                   </div>
                 </div>

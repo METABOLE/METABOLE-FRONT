@@ -46,7 +46,7 @@ const Expertise = ({ isPageServices = false }: { isPageServices?: boolean }) => 
 
   useGSAP(() => {
     revealAnimation();
-  }, []);
+  }, [isFrench]);
 
   return (
     <section className="px-x-default py-y-double-default relative flex flex-col overflow-hidden bg-black">
@@ -56,7 +56,7 @@ const Expertise = ({ isPageServices = false }: { isPageServices?: boolean }) => 
         to="#14141800"
       />
       <h1 ref={titleRef} className="relative w-fit text-white">
-        {isFrench ? 'NOS EXPERTISES' : 'OUR EXPERTISES'}
+        {isFrench ? <span>NOS EXPERTISES</span> : <span>OUR EXPERTISES</span>}
         <IconCross className="absolute -right-10 bottom-0 hidden md:block" color={COLORS.WHITE} />
       </h1>
       <div className="py-y-default overflow-hidden">

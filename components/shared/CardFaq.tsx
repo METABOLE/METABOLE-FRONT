@@ -6,6 +6,7 @@ import gsap from 'gsap';
 import { SplitText } from 'gsap/SplitText';
 import { useRef } from 'react';
 import { IconArrow } from '../ui/Icons';
+import Button from '../ui/Button';
 
 gsap.registerPlugin(SplitText);
 
@@ -26,13 +27,14 @@ const CardFaq = ({
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
 }) => {
-  const { isFrench } = useLanguage();
-  const { question: questionText, answer, id } = question;
+  const { isFrench, getInternalPath } = useLanguage();
+  const { question: questionText, answer, id, link } = question;
 
   const answerRef = useRef(null);
   const textAnswerRef = useRef(null);
   const arrowRef = useRef(null);
   const cardRef = useRef(null);
+  const buttonWrapperRef = useRef(null);
   const timelineRef = useRef(gsap.timeline({ paused: true }));
 
   useGSAP(() => {
@@ -48,6 +50,9 @@ const CardFaq = ({
     gsap.set(answerRef.current, { height: 0 });
     gsap.set(splitText.words, { y: 20, opacity: 0, filter: 'blur(10px)' });
     gsap.set(arrowRef.current, { rotation: 135 });
+    if (buttonWrapperRef.current) {
+      gsap.set(buttonWrapperRef.current, { scale: 0 });
+    }
 
     tl.to(answerRef.current, {
       height: 'auto',
@@ -74,10 +79,19 @@ const CardFaq = ({
           ease: 'power4.out',
         },
         '-=0.5',
+      )
+      .to(
+        buttonWrapperRef.current,
+        {
+          scale: 1,
+          duration: 0.8,
+          ease: 'power4.out',
+        },
+        '-=0.8',
       );
 
     timelineRef.current = tl;
-  }, []);
+  }, [isFrench]);
 
   useGSAP(() => {
     if (!timelineRef.current) return;
@@ -121,6 +135,13 @@ const CardFaq = ({
           <p ref={textAnswerRef} className="p3 text-blue-70">
             {isFrench ? answer.fr : answer.en}
           </p>
+          {link && (
+            <div ref={buttonWrapperRef} className="mt-6 origin-left">
+              <Button href={getInternalPath(link.url)}>
+                {isFrench ? link.text.fr : link.text.en}
+              </Button>
+            </div>
+          )}
         </div>
         <div ref={arrowRef} className="ml-auto">
           <IconArrow color={COLORS.BLUE} />
