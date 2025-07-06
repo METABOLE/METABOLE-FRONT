@@ -17,8 +17,9 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useRef, useState } from 'react';
 import Divider from './timeline/Divider';
 import Event from './timeline/Event';
+import { SplitText } from 'gsap/SplitText';
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, SplitText);
 
 const Process = () => {
   const sectionRef = useRef(null);
@@ -26,11 +27,14 @@ const Process = () => {
   const wrapperLineRef = useRef(null);
   const lineRef = useRef(null);
   const progressBarRef = useRef(null);
+  const titleRef = useRef(null);
+  const descriptionRef = useRef(null);
 
   const { isFrench } = useLanguage();
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const { contextSafe } = useGSAP();
 
-  useGSAP(() => {
+  const scrubAnimation = contextSafe(() => {
     if (!sectionRef.current || !horizontalRef.current || !progressBarRef.current) return;
 
     const scrollDistance = horizontalRef.current.scrollWidth - window.innerWidth;
@@ -99,6 +103,62 @@ const Process = () => {
         },
         '<',
       );
+  });
+
+  const revealAnimation = contextSafe(() => {
+    const splitTitle = new SplitText(titleRef.current, {
+      type: 'chars',
+      mask: 'chars',
+    });
+    const splitDescription = new SplitText(descriptionRef.current, {
+      type: 'words',
+    });
+
+    gsap.set(splitTitle.chars, {
+      yPercent: 100,
+    });
+
+    gsap.set(splitDescription.words, {
+      yPercent: 100,
+      opacity: 0,
+      filter: 'blur(10px)',
+    });
+
+    gsap
+      .timeline({
+        scrollTrigger: {
+          trigger: titleRef.current,
+          start: 'top 75%',
+          end: 'bottom 40%',
+          toggleActions: 'play none none reverse',
+        },
+      })
+      .to(splitTitle.chars, {
+        yPercent: 0,
+        duration: 1,
+        stagger: 0.01,
+        ease: 'power4.out',
+      })
+      .to(
+        splitDescription.words,
+        {
+          yPercent: 0,
+          opacity: 1,
+          filter: 'blur(0px)',
+          duration: 1,
+          stagger: 0.005,
+          ease: 'power4.out',
+        },
+        '-=0.8',
+      );
+  });
+
+  useGSAP(() => {
+    revealAnimation();
+  }, [isFrench]);
+
+  useGSAP(() => {
+    scrubAnimation();
   }, []);
 
   return (
@@ -108,7 +168,7 @@ const Process = () => {
       id="process"
     >
       <div className="gap-x-x-default pb-y-default pt-y-double-default flex items-center">
-        <h1 className="relative w-fit text-white">
+        <h1 ref={titleRef} className="relative w-fit text-white">
           {isFrench ? 'PROCESSUS' : 'PROCESS'}
           <IconCross className="absolute -right-10 bottom-0 hidden md:block" color={COLORS.WHITE} />
         </h1>
@@ -131,7 +191,7 @@ const Process = () => {
       <div ref={horizontalRef} className="flex h-full w-fit flex-row items-end">
         <div className="py-y-default flex flex-col justify-between bg-black">
           <div className="gap-x-x-default pr-x-default grid grid-cols-[60vw_1fr] md:grid-cols-[40vw_1fr]">
-            <p className="p2 pr-x-default text-white-70 z-50 row-span-8">
+            <p ref={descriptionRef} className="p2 pr-x-default text-white-70 z-50 row-span-8">
               {isFrench ? (
                 <>
                   <span>

@@ -1,5 +1,4 @@
 import { CONTACT, LINKS, SOCIALS } from '@/constants';
-import { useIsScreenLoader } from '@/hooks/useIsScreenLoader';
 import { useShortcut } from '@/hooks/useShortcut';
 import { useLanguage } from '@/providers/language.provider';
 import { COLORS, ProjectType, TAG_TYPE } from '@/types';
@@ -9,23 +8,27 @@ import gsap from 'gsap';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useRef, useState } from 'react';
-import CutoutWrapper, { AnimatedCutoutWrapperRef } from './CutoutWrapper';
-import Button, { AnimatedButtonRef } from '../ui/Button';
-import Tag, { AnimatedTagRef } from '../ui/Tag';
+import Language from '../shared/Language';
 import NewsletterForm, { AnimatedNewsletterFormRef } from '../shared/NewsletterForm';
-import { LogoFull } from '../ui/Icons';
 import Sound from '../shared/Sound';
 import Time from '../shared/Time';
-import Language from '../shared/Language';
+import Button, { AnimatedButtonRef } from '../ui/Button';
 import Hint from '../ui/Hint';
+import { LogoFull } from '../ui/Icons';
+import Tag, { AnimatedTagRef } from '../ui/Tag';
+import CutoutWrapper, { AnimatedCutoutWrapperRef } from './CutoutWrapper';
 
 const Menu = ({ projects }: { projects: ProjectType[] }) => {
   const SLICED_PROJECTS = projects.slice(0, 6);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const menuRef = useRef(null);
+  const logoRef = useRef(null);
+  const soundRef = useRef(null);
   const headerRef = useRef<HTMLElement>(null);
+  const menuRef = useRef(null);
   const wrapperButtonRef = useRef(null);
+  const contactMenuRefWrapper = useRef(null);
+  const buttonMenuRefWrapper = useRef(null);
   const cutoutRef = useRef<AnimatedCutoutWrapperRef>(null);
   const contactMenuRef = useRef<AnimatedButtonRef>(null);
   const buttonMenuRef = useRef<AnimatedButtonRef>(null);
@@ -38,10 +41,52 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
 
   const timelineRef = useRef<gsap.core.Timeline>(gsap.timeline());
 
-  const isScreenLoader = useIsScreenLoader();
   const pathname = usePathname();
   const { isFrench, getInternalPath } = useLanguage();
   const { contextSafe } = useGSAP();
+
+  const revealAnimation = contextSafe(() => {
+    if (
+      !logoRef.current ||
+      !soundRef.current ||
+      !contactMenuRefWrapper.current ||
+      !buttonMenuRefWrapper.current
+    )
+      return;
+
+    gsap.set(
+      [
+        logoRef.current,
+        soundRef.current,
+        contactMenuRefWrapper.current,
+        buttonMenuRefWrapper.current,
+      ],
+      {
+        y: -100,
+        scale: 0.7,
+      },
+    );
+
+    gsap
+      .timeline({
+        delay: 1.2,
+      })
+      .to(
+        [
+          logoRef.current,
+          soundRef.current,
+          contactMenuRefWrapper.current,
+          buttonMenuRefWrapper.current,
+        ],
+        {
+          duration: 1.2,
+          ease: 'power4.out',
+          stagger: 0.05,
+          y: 0,
+          scale: 1,
+        },
+      );
+  });
 
   const openMenu = contextSafe(() => {
     if (
@@ -284,17 +329,8 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
   useGSAP(() => {
     buttonMenuRef.current?.play();
     contactMenuRef.current?.play();
+    revealAnimation();
   }, []);
-
-  useGSAP(() => {
-    gsap.to(headerRef.current, {
-      delay: isScreenLoader ? 4 : 0.85,
-      duration: 2,
-      ease: 'power4.out',
-      y: 0,
-      scale: 1,
-    });
-  }, [isScreenLoader]);
 
   return (
     <>
@@ -310,31 +346,32 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
           </p>
         )}
       </Hint>
-      <header
-        ref={headerRef}
-        className="px-x-default fixed z-[900] w-full -translate-y-full scale-125"
-      >
+      <header ref={headerRef} className="px-x-default fixed z-[900] w-full">
         <div className="flex items-center justify-between py-8">
-          <Link href={getInternalPath('/')} scroll={false}>
+          <Link ref={logoRef} href={getInternalPath('/')} scroll={false}>
             <LogoFull />
           </Link>
           <div ref={wrapperButtonRef} className="flex gap-4">
-            <Sound className="shrink-0" isDark={true} />
-            <Button
-              ref={contactMenuRef}
-              href={getInternalPath('/contact')}
-              scroll={false}
-              transformOrigin="right"
-            >
-              CONTACT
-            </Button>
-            <Button
-              ref={buttonMenuRef}
-              transformOrigin="right"
-              onClick={isMenuOpen ? closeMenu : openMenu}
-            >
-              {isMenuOpen ? <span>CLOSE</span> : <span>MENU</span>}
-            </Button>
+            <Sound ref={soundRef} className="shrink-0" isDark={true} />
+            <div ref={contactMenuRefWrapper}>
+              <Button
+                ref={contactMenuRef}
+                href={getInternalPath('/contact')}
+                scroll={false}
+                transformOrigin="right"
+              >
+                CONTACT
+              </Button>
+            </div>
+            <div ref={buttonMenuRefWrapper}>
+              <Button
+                ref={buttonMenuRef}
+                transformOrigin="right"
+                onClick={isMenuOpen ? closeMenu : openMenu}
+              >
+                {isMenuOpen ? <span>CLOSE</span> : <span>MENU</span>}
+              </Button>
+            </div>
           </div>
         </div>
       </header>
