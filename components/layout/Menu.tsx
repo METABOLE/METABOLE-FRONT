@@ -12,7 +12,7 @@ import Language from '../shared/Language';
 import NewsletterForm, { AnimatedNewsletterFormRef } from '../shared/NewsletterForm';
 import Sound from '../shared/Sound';
 import Time from '../shared/Time';
-import Button, { AnimatedButtonRef } from '../ui/Button';
+import Button from '../ui/Button';
 import Hint from '../ui/Hint';
 import { LogoFull } from '../ui/Icons';
 import Tag, { AnimatedTagRef } from '../ui/Tag';
@@ -27,11 +27,9 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
   const headerRef = useRef<HTMLElement>(null);
   const menuRef = useRef(null);
   const wrapperButtonRef = useRef(null);
-  const contactMenuRefWrapper = useRef(null);
-  const buttonMenuRefWrapper = useRef(null);
+  const contactMenuRef = useRef(null);
+  const buttonMenuRef = useRef(null);
   const cutoutRef = useRef<AnimatedCutoutWrapperRef>(null);
-  const contactMenuRef = useRef<AnimatedButtonRef>(null);
-  const buttonMenuRef = useRef<AnimatedButtonRef>(null);
   const linksRef = useRef<HTMLUListElement>(null);
   const titleProjectsRef = useRef(null);
   const projectTagsRefs = useRef<AnimatedTagRef[]>([]);
@@ -46,46 +44,25 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
   const { contextSafe } = useGSAP();
 
   const revealAnimation = contextSafe(() => {
-    if (
-      !logoRef.current ||
-      !soundRef.current ||
-      !contactMenuRefWrapper.current ||
-      !buttonMenuRefWrapper.current
-    )
+    if (!logoRef.current || !soundRef.current || !contactMenuRef.current || !buttonMenuRef.current)
       return;
 
-    gsap.set(
-      [
-        logoRef.current,
-        soundRef.current,
-        contactMenuRefWrapper.current,
-        buttonMenuRefWrapper.current,
-      ],
-      {
-        y: -100,
-        scale: 0.7,
-      },
-    );
+    gsap.set([logoRef.current, soundRef.current, contactMenuRef.current, buttonMenuRef.current], {
+      y: -100,
+      scale: 0.7,
+    });
 
     gsap
       .timeline({
         delay: 1.2,
       })
-      .to(
-        [
-          logoRef.current,
-          soundRef.current,
-          contactMenuRefWrapper.current,
-          buttonMenuRefWrapper.current,
-        ],
-        {
-          duration: 1.2,
-          ease: 'power4.out',
-          stagger: 0.05,
-          y: 0,
-          scale: 1,
-        },
-      );
+      .to([logoRef.current, soundRef.current, contactMenuRef.current, buttonMenuRef.current], {
+        duration: 1.2,
+        ease: 'power4.out',
+        stagger: 0.05,
+        y: 0,
+        scale: 1,
+      });
   });
 
   const openMenu = contextSafe(() => {
@@ -124,8 +101,6 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
         { width: 44, gap: 0, duration: 0.4, ease: 'power2.inOut' },
         'hide-button',
       )
-      .add(() => contactMenuRef.current?.reverse(), 'hide-button')
-      .add(() => buttonMenuRef.current?.reverse(), 'hide-button+=0.15')
       .addLabel('show-mask')
       .to(
         menuRef.current,
@@ -154,6 +129,7 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
         'show-mask',
       )
       // .addLabel('show-menu')
+      .add(() => setIsMenuOpen(true))
       .to(
         linksRef.current.children,
         {
@@ -165,13 +141,11 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
         },
         '-=0.3',
       )
-      .add(() => setIsMenuOpen(true))
       .to(
         wrapperButtonRef.current,
         { width: 'auto', gap: 16, duration: 0.3, ease: 'power2.inOut' },
         '-=0.4',
       )
-      .add(() => buttonMenuRef.current?.play())
       // .addLabel('show-projects')
       .to(
         titleProjectsRef.current,
@@ -230,10 +204,6 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
         overflow: 'hidden',
       })
       .addLabel('hide-button')
-      .add(() => {
-        buttonMenuRef.current?.reverse();
-        contactMenuRef.current?.reverse();
-      }, 'hide-button')
       .to(wrapperButtonRef.current, { width: 44, duration: 0.4 }, 'hide-button')
       .to(
         linksRef.current.children,
@@ -313,22 +283,18 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
         },
         '<',
       )
-      .to(wrapperButtonRef.current, { width: 'auto', gap: 16, duration: 0.6 }, '<')
-      .addLabel('show-button')
-      .add(() => {
-        buttonMenuRef.current?.play();
-      }, 'show-button')
-      .add(() => {
-        contactMenuRef.current?.play();
-      }, 'show-button')
-      .add(() => setIsMenuOpen(false), '<');
+      .add(() => setIsMenuOpen(false), '<')
+      .to(wrapperButtonRef.current, {
+        width: 'auto',
+        gap: 16,
+        duration: 0.4,
+        ease: 'power2.inOut',
+      });
   });
 
   useShortcut('Escape', () => isMenuOpen && closeMenu());
 
   useGSAP(() => {
-    buttonMenuRef.current?.play();
-    contactMenuRef.current?.play();
     revealAnimation();
   }, []);
 
@@ -353,25 +319,21 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
           </Link>
           <div ref={wrapperButtonRef} className="flex gap-4">
             <Sound ref={soundRef} className="shrink-0" isDark={true} />
-            <div ref={contactMenuRefWrapper}>
-              <Button
-                ref={contactMenuRef}
-                href={getInternalPath('/contact')}
-                scroll={false}
-                transformOrigin="right"
-              >
-                CONTACT
-              </Button>
-            </div>
-            <div ref={buttonMenuRefWrapper}>
-              <Button
-                ref={buttonMenuRef}
-                transformOrigin="right"
-                onClick={isMenuOpen ? closeMenu : openMenu}
-              >
-                {isMenuOpen ? <span>CLOSE</span> : <span>MENU</span>}
-              </Button>
-            </div>
+            <Button
+              ref={contactMenuRef}
+              href={getInternalPath('/contact')}
+              scroll={false}
+              transformOrigin="right"
+            >
+              CONTACT
+            </Button>
+            <Button
+              ref={buttonMenuRef}
+              transformOrigin="right"
+              onClick={isMenuOpen ? closeMenu : openMenu}
+            >
+              {isMenuOpen ? <span>CLOSE</span> : <span>MENU</span>}
+            </Button>
           </div>
         </div>
       </header>

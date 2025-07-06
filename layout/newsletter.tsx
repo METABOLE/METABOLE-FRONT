@@ -1,11 +1,11 @@
 import FloatingHalo from '@/components/shared/FloatingHalo';
-import Image from 'next/image';
+import Lottie from '@/components/shared/Lottie';
+import SEO from '@/components/ui/SEO';
+import { useLanguage } from '@/providers/language.provider';
 import Link from 'next/link';
 import { ReactNode } from 'react';
 import metaboleFull from '../public/lotties/metabole-full-yellow.json';
-import { useLanguage } from '@/providers/language.provider';
-import SEO from '@/components/ui/SEO';
-import Lottie from '@/components/shared/Lottie';
+import Background from '@/components/layout/Background';
 
 interface NewsletterLayoutProps {
   children: ReactNode;
@@ -23,18 +23,12 @@ export default function NewsletterLayout({ children }: NewsletterLayoutProps) {
           </Link>
         </header>
         <main className="flex-grow">{children}</main>
-        <Image
-          alt="background"
-          className="fixed inset-0 -z-10 h-screen w-screen object-cover"
-          height={2160}
-          src="/images/background.png"
-          width={3840}
-        />
         <FloatingHalo
           className="!fixed top-full left-full -z-10 h-[170vw] w-[170vw] opacity-30"
           from="#1b17ee"
           to="#1A1A1A00"
         />
+        <Background />
       </div>
     </>
   );

@@ -5,15 +5,7 @@ import { clsx } from 'clsx';
 import gsap from 'gsap';
 import { SplitText } from 'gsap/SplitText';
 import Link from 'next/link';
-import {
-  ComponentProps,
-  forwardRef,
-  HTMLAttributes,
-  ReactNode,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from 'react';
+import { ComponentProps, forwardRef, HTMLAttributes, ReactNode, useRef, useState } from 'react';
 
 gsap.registerPlugin(SplitText);
 
@@ -55,12 +47,7 @@ const DynamicElement = ({ href, disabled, scroll = false, ...props }: DynamicEle
   return <Component {...(props as LinkButtonProps)} {...(href && !disabled && { href, scroll })} />;
 };
 
-export interface AnimatedButtonRef {
-  play: () => void;
-  reverse: () => void;
-}
-
-const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
+const Button = forwardRef<HTMLDivElement, ButtonProps>(
   (
     {
       children,
@@ -76,20 +63,57 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
     },
     ref,
   ) => {
-    const wrapperButtonRef = useRef(null);
     const backgroudButtonRef = useRef(null);
     const buttonRef = useRef(null);
     const hiddenButtonRef = useRef<HTMLDivElement>(null);
     const textRef = useRef(null);
     const currentChildRef = useRef(null);
     const absoluteChildRef = useRef(null);
-    const timelineHoverRef = useRef<gsap.core.Timeline | null>(null);
+    const splitTextRef = useRef<SplitText | null>(null);
+    const absoluteSplitTextRef = useRef<SplitText | null>(null);
 
     const { contextSafe } = useGSAP();
 
     const [currentChild, setCurrentChild] = useState(children);
+    const [splitTextsReady, setSplitTextsReady] = useState(false);
 
-    useGSAP(() => {
+    const cleanupSplitText = contextSafe(() => {
+      if (splitTextRef.current) {
+        splitTextRef.current.revert();
+        splitTextRef.current = null;
+      }
+      if (absoluteSplitTextRef.current) {
+        absoluteSplitTextRef.current.revert();
+        absoluteSplitTextRef.current = null;
+      }
+      setSplitTextsReady(false);
+    });
+
+    const initSplitText = contextSafe(() => {
+      cleanupSplitText();
+
+      if (!currentChildRef.current || !absoluteChildRef.current) return;
+
+      try {
+        splitTextRef.current = new SplitText(currentChildRef.current, {
+          type: 'chars',
+          mask: 'chars',
+        });
+        absoluteSplitTextRef.current = new SplitText(absoluteChildRef.current, {
+          type: 'chars',
+          mask: 'chars',
+        });
+
+        gsap.set(splitTextRef.current.chars, { y: 0 });
+        gsap.set(absoluteSplitTextRef.current.chars, { y: 20 });
+
+        setSplitTextsReady(true);
+      } catch (error) {
+        console.warn('Failed to initialize SplitText:', error);
+      }
+    });
+
+    const resizeButton = contextSafe(() => {
       if (!isResizable || currentChild === children) return;
 
       const widthHiddenButton = hiddenButtonRef.current?.getBoundingClientRect();
@@ -128,125 +152,10 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
           },
           '<',
         );
-    }, [children, isResizable]);
-
-    useGSAP(() => {
-      if (disabled) return;
-      if (timelineHoverRef.current) timelineHoverRef.current.kill();
-
-      const splitText = new SplitText(currentChildRef.current, {
-        type: 'chars',
-        mask: 'chars',
-      });
-      const absoluteSplitText = new SplitText(absoluteChildRef.current, {
-        type: 'chars',
-        mask: 'chars',
-      });
-
-      gsap.set(splitText.chars, { y: 0 });
-      gsap.set(absoluteSplitText.chars, { y: 20 });
-
-      timelineHoverRef.current = gsap
-        .timeline({ paused: true })
-        .to(splitText.chars, {
-          y: -20,
-          duration: 0.2,
-          stagger: 0.015,
-          ease: 'power2.in',
-        })
-        .to(
-          absoluteSplitText.chars,
-          {
-            y: 0,
-            duration: 0.3,
-            stagger: 0.015,
-            ease: 'power2.out',
-          },
-          '<0.1',
-        );
-    }, [currentChild]);
-
-    useGSAP(() => {
-      if (!ref || !isResizable) return;
-      gsap.set(wrapperButtonRef.current, {
-        width: 30,
-        scale: 0,
-        display: 'none',
-      });
-      gsap.set(buttonRef.current, {
-        opacity: 0,
-        scale: 0.5,
-      });
-    }, [ref, isResizable]);
-
-    const openButton = contextSafe(() => {
-      const widthHiddenButton = isResizable
-        ? hiddenButtonRef.current?.getBoundingClientRect()?.width
-        : null;
-      const finalWidth = isResizable && widthHiddenButton ? widthHiddenButton : 'auto';
-
-      return gsap
-        .timeline()
-        .set(wrapperButtonRef.current, {
-          display: 'flex',
-        })
-        .set(wrapperButtonRef.current, {
-          width: 30,
-          scale: 0,
-        })
-        .set(buttonRef.current, {
-          opacity: 0,
-          scale: 0.5,
-        })
-        .to(wrapperButtonRef.current, {
-          scale: 1,
-          duration: 0.3,
-          ease: 'power2.out',
-        })
-        .to(
-          buttonRef.current,
-          {
-            opacity: 1,
-            duration: 0.3,
-            ease: 'power2.out',
-          },
-          '-=0.3',
-        )
-        .to(
-          buttonRef.current,
-          {
-            scale: 1,
-            duration: 1.2,
-            ease: 'elastic.out',
-          },
-          '<',
-        )
-        .to(
-          wrapperButtonRef.current,
-          {
-            width: finalWidth,
-            duration: 1.4,
-            ease: 'elastic.out',
-          },
-          '<',
-        );
-    });
-
-    const closeButton = contextSafe(() => {
-      return gsap
-        .timeline()
-        .to(wrapperButtonRef.current, {
-          scale: 0,
-          duration: 0.3,
-          ease: 'power2.in',
-        })
-        .set(wrapperButtonRef.current, {
-          display: 'none',
-        });
     });
 
     const showBackground = contextSafe(() => {
-      if (disabled) return;
+      if (!splitTextsReady || !splitTextRef.current || !absoluteSplitTextRef.current) return;
 
       gsap
         .timeline({
@@ -267,11 +176,31 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
             color: color === 'primary' && isDark ? COLORS.BLACK : COLORS.WHITE,
           },
           '<',
+        )
+        .to(
+          splitTextRef.current.chars,
+          {
+            y: -20,
+            duration: 0.2,
+            stagger: 0.015,
+            ease: 'power2.in',
+          },
+          '<',
+        )
+        .to(
+          absoluteSplitTextRef.current.chars,
+          {
+            y: 0,
+            duration: 0.3,
+            stagger: 0.015,
+            ease: 'power2.out',
+          },
+          '<0.1',
         );
     });
 
     const hideBackground = contextSafe(() => {
-      if (disabled) return;
+      if (!splitTextsReady || !splitTextRef.current || !absoluteSplitTextRef.current) return;
 
       gsap
         .timeline({
@@ -289,18 +218,42 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
             color: color === 'secondary' || isDark ? COLORS.WHITE : COLORS.BLACK,
           },
           '<',
+        )
+        .to(
+          splitTextRef.current.chars,
+          {
+            y: 0,
+          },
+          '<',
+        )
+        .to(
+          absoluteSplitTextRef.current.chars,
+          {
+            y: 20,
+          },
+          '<',
         );
     });
 
-    useImperativeHandle(ref, () => ({
-      play: openButton,
-      reverse: closeButton,
-    }));
+    useGSAP(() => {
+      initSplitText();
+    }, []);
+
+    useGSAP(() => {
+      if (!isResizable) return;
+      cleanupSplitText();
+      setCurrentChild(children);
+      resizeButton();
+    }, [children, isResizable]);
+
+    useGSAP(() => {
+      initSplitText();
+    }, [currentChild]);
 
     return (
       <>
         <DynamicElement
-          ref={wrapperButtonRef}
+          ref={ref}
           className={clsx(
             'label group/button inline-block h-11 w-fit cursor-pointer overflow-hidden rounded-full uppercase backdrop-blur-xl',
             color === 'primary' && 'bg-blur-glass text-black',
@@ -315,28 +268,22 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
           disabled={disabled}
           href={href}
           target={target}
+          onMouseEnter={() => !disabled && showBackground()}
+          onMouseLeave={() => !disabled && hideBackground()}
           onMouseMove={(e) => useMagnet(e, 0.8)}
           onMouseOut={(e) => useResetMagnet(e)}
-          onMouseEnter={() => {
-            showBackground();
-            timelineHoverRef.current?.play();
-          }}
-          onMouseLeave={() => {
-            hideBackground();
-            timelineHoverRef.current?.reverse();
-          }}
         >
           <div
             ref={backgroudButtonRef}
             className={clsx(
-              'absolute top-full -left-1/4 h-22 w-[150%] rounded-[100%]',
+              'absolute top-full -left-1/4 z-0 h-22 w-[150%] rounded-[100%]',
               color === 'primary' ? 'bg-blue' : 'bg-black',
               color === 'primary' && isDark && 'bg-yellow',
             )}
           />
           <div
             ref={buttonRef}
-            className="flex h-full w-full items-center"
+            className="z-20 flex h-full w-full items-center"
             onMouseMove={(e) => useMagnet(e, 0.4)}
             onMouseOut={(e) => useResetMagnet(e)}
           >

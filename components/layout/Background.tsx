@@ -1,3 +1,4 @@
+import { COLORS } from '@/types';
 import { gsap } from 'gsap';
 import { InertiaPlugin } from 'gsap/InertiaPlugin';
 import { useEffect, useRef } from 'react';
@@ -63,7 +64,7 @@ const Background = () => {
           d.style.transition = 'opacity 0.3s ease';
           d.style.zIndex = '1';
           d.style.pointerEvents = 'none';
-          d.style.color = '#1B17EE';
+          d.style.color = COLORS.BLUE;
           d.style.opacity = '0.15';
 
           const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
