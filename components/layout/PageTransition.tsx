@@ -8,10 +8,47 @@ type CustomVariants = {
 };
 
 export default function PageTransition({ children }: { children: ReactNode }) {
-  const expand = {
+  const leftBlockVariants = {
+    initial: {
+      scaleX: 1,
+    },
+    enter: {
+      scaleX: 0,
+      transition: {
+        duration: 0,
+      },
+    },
+    exit: {
+      scaleX: 1,
+      transition: {
+        duration: 0.8,
+        ease: [0.72, 0, 0.3, 0.99],
+      },
+    },
+  };
+
+  const rightBlockVariants = {
+    initial: {
+      scaleX: 1,
+    },
+    enter: {
+      scaleX: 0,
+      transition: {
+        duration: 0,
+      },
+    },
+    exit: {
+      scaleX: 1,
+      transition: {
+        duration: 0.8,
+        ease: [0.72, 0, 0.3, 0.99],
+      },
+    },
+  };
+
+  const topBlockVariants = {
     initial: {
       scaleY: 1,
-      transformOrigin: 'top',
     },
     enter: {
       scaleY: 0,
@@ -19,15 +56,30 @@ export default function PageTransition({ children }: { children: ReactNode }) {
         duration: 0.8,
         ease: [0.72, 0, 0.3, 0.99],
       },
-      transitionEnd: {
-        transformOrigin: 'bottom',
-      },
     },
     exit: {
+      scaleY: 0,
+      transition: {
+        duration: 0,
+      },
+    },
+  };
+
+  const bottomBlockVariants = {
+    initial: {
       scaleY: 1,
+    },
+    enter: {
+      scaleY: 0,
       transition: {
         duration: 0.8,
         ease: [0.72, 0, 0.3, 0.99],
+      },
+    },
+    exit: {
+      scaleY: 0,
+      transition: {
+        duration: 0,
       },
     },
   };
@@ -44,9 +96,22 @@ export default function PageTransition({ children }: { children: ReactNode }) {
   return (
     <>
       <motion.div
-        className="bg-blue pointer-events-none fixed inset-0 z-[900] h-screen w-screen"
-        {...anim(expand)}
+        className="pointer-events-none fixed top-0 left-0 z-[900] h-full w-1/2 origin-left bg-black"
+        {...anim(leftBlockVariants)}
       />
+      <motion.div
+        className="pointer-events-none fixed top-0 right-0 z-[900] h-full w-1/2 origin-right bg-black"
+        {...anim(rightBlockVariants)}
+      />
+      <motion.div
+        className="pointer-events-none fixed top-0 left-0 z-[900] h-1/2 w-full origin-top bg-black"
+        {...anim(topBlockVariants)}
+      />
+      <motion.div
+        className="pointer-events-none fixed bottom-0 left-0 z-[900] h-1/2 w-full origin-bottom bg-black"
+        {...anim(bottomBlockVariants)}
+      />
+
       {children}
     </>
   );
