@@ -56,7 +56,7 @@ const Fragement = () => {
       {images.map((src, index) => (
         <div
           key={src + index}
-          className="py-y-double-default gap-x-default grid h-screen grid-rows-2 items-center"
+          className="py-y-double-default grid h-screen grid-rows-2 items-center gap-10"
         >
           <div
             className={clsx(
@@ -91,7 +91,7 @@ const Inspiration = () => {
       <ScrollingContainer className="flex h-full shrink-0" scrollSpeed={100}>
         <Fragement />
       </ScrollingContainer>
-      <div className="px-x-default absolute inset-0 z-20 flex items-center justify-center mix-blend-difference grayscale">
+      <div className="px-x-default absolute inset-0 z-20 mx-auto flex w-full items-center justify-center mix-blend-difference grayscale md:w-2/3">
         <h1 className="text-center text-white">
           {isFrench ? (
             <span>Créer des choses qui marquent, qui inspirent et qui ont du sens.</span>

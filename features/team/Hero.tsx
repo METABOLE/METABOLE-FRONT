@@ -59,7 +59,7 @@ const Hero = () => {
       className="pt-y-double-default px-x-default pb-y-default gap-y-default relative flex min-h-screen flex-col justify-center"
     >
       <div className="relative">
-        <h1 ref={titleRefs[0]} className="text-left !text-[90px] leading-loose">
+        <h1 ref={titleRefs[0]} className="text-left text-[50px] leading-loose md:!text-[90px]">
           {isFrench ? 'INNOVER' : 'INNOVATE'}
         </h1>
         <IconCross
@@ -68,7 +68,10 @@ const Hero = () => {
         />
       </div>
       <div className="relative">
-        <h1 ref={titleRefs[1]} className="text-blue text-right !text-[90px] leading-loose">
+        <h1
+          ref={titleRefs[1]}
+          className="text-blue text-right text-[50px] leading-loose md:!text-[90px]"
+        >
           {isFrench ? 'DESIGNER' : 'DESIGNER'}
         </h1>
         <IconCross
@@ -77,7 +80,7 @@ const Hero = () => {
         />
       </div>
       <div className="relative">
-        <h1 ref={titleRefs[2]} className="pl-[15vw] !text-[90px] leading-loose">
+        <h1 ref={titleRefs[2]} className="pl-[15vw] text-[50px] leading-loose md:!text-[90px]">
           {isFrench ? 'CRÉER' : 'CREATE'}
         </h1>
         <IconCross
@@ -88,7 +91,7 @@ const Hero = () => {
       <div className="relative">
         <h1
           ref={titleRefs[3]}
-          className="text-blue pr-[25vw] text-right !text-[90px] leading-loose"
+          className="text-blue pr-[25vw] text-right text-[50px] leading-loose md:!text-[90px]"
         >
           {isFrench ? 'SUBLIMER' : 'SUBLIMATE'}
         </h1>
