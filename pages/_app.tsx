@@ -57,12 +57,12 @@ function App({ Component, pageProps, globalProps }: CustomAppProps) {
   }, []);
 
   useEffect(() => {
-    if (isScreenLoader) {
+    if (isScreenLoader && isProd) {
       lockScroll(true);
     } else {
       lockScroll(false);
     }
-  }, [isScreenLoader]);
+  }, [isScreenLoader, isProd]);
 
   return (
     <AppProvider>
