@@ -164,7 +164,6 @@ const Philosophy = () => {
           className="h2 relative mr-auto w-full md:w-2/3"
           duration={1.2}
           stagger={0.02}
-          start="top+=300px 80%"
           variant="h2"
         >
           {isFrench ? (

@@ -168,7 +168,7 @@ const Process = () => {
       id="process"
     >
       <div className="gap-x-x-default pb-y-default pt-y-double-default flex items-center">
-        <h1 ref={titleRef} className="relative w-fit text-white">
+        <h1 ref={titleRef} className="relative w-fit whitespace-nowrap text-white">
           {isFrench ? 'PROCESSUS' : 'PROCESS'}
           <IconCross className="absolute -right-10 bottom-0 hidden md:block" color={COLORS.WHITE} />
         </h1>
@@ -188,9 +188,9 @@ const Process = () => {
           </div>
         </div>
       </div>
-      <div ref={horizontalRef} className="flex h-full w-fit flex-row items-end">
+      <div ref={horizontalRef} className="flex h-full w-fit flex-row items-start md:items-end">
         <div className="py-y-default flex flex-col justify-between bg-black">
-          <div className="gap-x-x-default pr-x-default grid grid-cols-[60vw_1fr] md:grid-cols-[40vw_1fr]">
+          <div className="gap-x-x-default pr-x-default grid grid-cols-[70vw_1fr] md:grid-cols-[40vw_1fr]">
             <p ref={descriptionRef} className="p2 pr-x-default text-white-70 z-50 row-span-8">
               {isFrench ? (
                 <>
@@ -227,7 +227,13 @@ const Process = () => {
                 from="#1b17ee"
                 to="#14141800"
               />
-              <div className="absolute z-0 grid h-fit grid-cols-[62px_2px_288px_2px_288px_2px_288px_2px_288px_2px_288px_2px_288px_2px_288px_2px_288px] grid-rows-[repeat(8,62px)] text-white">
+              <div
+                className={clsx(
+                  'absolute z-0 grid h-fit text-white',
+                  'grid-cols-[42px_2px_188px_2px_188px_2px_188px_2px_188px_2px_188px_2px_188px_2px_188px_2px_188px] grid-rows-[repeat(8,42px)]',
+                  'md:grid-cols-[62px_2px_288px_2px_288px_2px_288px_2px_288px_2px_288px_2px_288px_2px_288px_2px_288px] md:grid-rows-[repeat(8,62px)]',
+                )}
+              >
                 <div className="absolute top-0 left-0 z-10 h-64 w-full bg-gradient-to-b from-black to-black/0" />
                 <div
                   className={clsx(
@@ -266,7 +272,13 @@ const Process = () => {
                   <span className="translate-y-[110%] px-2">S7</span>
                 </div>
               </div>
-              <div className="relative z-10 grid h-fit grid-cols-[62px_288px_288px_288px_288px_288px_288px_62px_288px_288px] grid-rows-[repeat(8,62px)] gap-0.5 text-white">
+              <div
+                className={clsx(
+                  'relative z-10 grid h-fit gap-0.5 text-white',
+                  'grid-cols-[42px_188px_188px_188px_188px_188px_188px_42px_188px_188px] grid-rows-[repeat(8,42px)]',
+                  'md:grid-cols-[62px_288px_288px_288px_288px_288px_288px_62px_288px_288px_288px] md:grid-rows-[repeat(8,62px)]',
+                )}
+              >
                 <div
                   ref={wrapperLineRef}
                   className="pointer-events-none absolute bottom-3 z-50 hidden h-[calc(100%+100px)] w-full -translate-x-full bg-black/50 md:block"
@@ -325,7 +337,7 @@ const Process = () => {
                   label="DESIGN"
                   className={clsx(
                     'col-start-3 col-end-6 row-start-3',
-                    'after:p2 after:absolute after:top-[3px] after:right-0 after:-z-10 after:flex after:h-14 after:w-[288px] after:translate-x-[calc(100%-14px)] after:items-center after:rounded-r-xl after:bg-[#8887B0]/30 after:pl-7 after:text-white',
+                    'after:p2 after:absolute after:top-[3px] after:right-0 after:-z-10 after:flex after:h-9 after:w-[288px] after:translate-x-[calc(100%-14px)] after:items-center after:rounded-r-xl after:bg-[#8887B0]/30 after:pl-7 after:!text-[14px] after:text-white md:after:h-14 md:after:!text-[20px]',
                     isFrench ? 'after:content-["RETOURS"]' : 'after:content-["FEEDBACKS"]',
                     'transition-opacity duration-200',
                     activeIndex === null || activeIndex === 2 ? 'opacity-100' : 'opacity-40',
@@ -378,7 +390,7 @@ const Process = () => {
                   label={isFrench ? 'ACCOMPAGNEMENT' : 'SUPPORT'}
                   className={clsx(
                     'col-start-9 col-end-10 row-start-6',
-                    'after:from-blue after:absolute after:top-[3px] after:right-0 after:h-14 after:w-[288px] after:translate-x-[calc(100%-14px)] after:bg-gradient-to-r after:to-black after:content-[""]',
+                    'after:from-blue after:absolute after:top-[3px] after:right-0 after:h-9 after:w-[288px] after:translate-x-[calc(100%-14px)] after:bg-gradient-to-r after:to-black after:content-[""] md:after:h-14',
                     'transition-opacity duration-200',
                     activeIndex === null || activeIndex === 5 ? 'opacity-100' : 'opacity-40',
                   )}

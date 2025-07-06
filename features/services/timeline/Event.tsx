@@ -79,21 +79,25 @@ const Event = ({
     >
       <div
         className={clsx(
-          'z-10 flex h-14 items-center gap-2.5 rounded-xl px-6',
-          isSquare ? 'w-14 justify-center bg-white' : 'bg-blue',
+          'z-10 flex h-9 items-center gap-2 rounded-xl px-3 md:h-14 md:gap-2.5 md:px-6',
+          isSquare ? 'w-9 justify-center bg-white md:w-14' : 'bg-blue',
         )}
       >
         {icon && <div>{icon}</div>}
 
         <p
           className={clsx(
-            'p2 row-span-8 whitespace-nowrap text-white',
+            'p2 row-span-8 !text-[14px] whitespace-nowrap text-white md:!text-[20px]',
             isSquare && 'absolute left-[calc(100%+14px)]',
           )}
         >
           {label}
         </p>
-        {duration && <span className="text-white-30 p2 whitespace-nowrap">(~{duration}.)</span>}
+        {duration && (
+          <span className="text-white-30 p2 !text-[14px] whitespace-nowrap md:!text-[20px]">
+            (~{duration}.)
+          </span>
+        )}
       </div>
 
       {description && (
