@@ -165,7 +165,7 @@ const Pricing = () => {
             : 'If you have a clear idea of your needs, use our project studio to guide us in our thinking:'}
         </p>
         <Button color="secondary" href={getInternalPath('/pricing/project-studio')} scroll={false}>
-          PROJECT STUDIO
+          <span>PROJECT STUDIO</span>
         </Button>
       </div>
     </section>

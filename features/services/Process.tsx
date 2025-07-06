@@ -111,7 +111,11 @@ const Process = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative flex h-screen w-full flex-col overflow-hidden">
+    <section
+      ref={sectionRef}
+      className="relative flex h-screen w-full flex-col overflow-hidden"
+      id="process"
+    >
       <div ref={horizontalRef} className="flex h-full w-fit flex-row">
         <div className="py-y-default px-x-default flex flex-col justify-between bg-black">
           <div

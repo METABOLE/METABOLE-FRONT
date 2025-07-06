@@ -46,11 +46,12 @@ type DynamicElementProps = {
   className?: string;
   children: ReactNode;
   disabled?: boolean;
+  scroll?: boolean;
 } & ComponentProps<'div'>;
 
-const DynamicElement = ({ href, disabled, ...props }: DynamicElementProps) => {
+const DynamicElement = ({ href, disabled, scroll = false, ...props }: DynamicElementProps) => {
   const Component = href && !disabled ? Link : 'button';
-  return <Component {...(props as LinkButtonProps)} {...(href && !disabled && { href })} />;
+  return <Component {...(props as LinkButtonProps)} {...(href && !disabled && { href, scroll })} />;
 };
 
 export interface AnimatedButtonRef {
@@ -78,8 +79,8 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
     const buttonRef = useRef(null);
     const hiddenButtonRef = useRef<HTMLDivElement>(null);
     const textRef = useRef(null);
-    const currentChildRef = useRef<HTMLSpanElement>(null);
-    const absoluteChildRef = useRef<HTMLSpanElement>(null);
+    const currentChildRef = useRef(null);
+    const absoluteChildRef = useRef(null);
     const timelineHoverRef = useRef<gsap.core.Timeline | null>(null);
 
     const { contextSafe } = useGSAP();
@@ -125,7 +126,7 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
           },
           '<',
         );
-    }, [children]);
+    }, [currentChild]);
 
     useGSAP(() => {
       if (disabled) return;

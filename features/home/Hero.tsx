@@ -230,10 +230,10 @@ const Hero = () => {
       </h1>
       <div className="pt-y-default flex gap-4">
         <Button color="secondary" href={getInternalPath('/contact')} scroll={false}>
-          {isFrench ? 'CONTACT' : 'CONTACT'}
+          {isFrench ? <span>CONTACT</span> : <span>CONTACT</span>}
         </Button>
         <Button color="primary" href={getInternalPath('/pricing')} scroll={false}>
-          {isFrench ? 'TARIFS' : 'PRICING'}
+          {isFrench ? <span>TARIFS</span> : <span>PRICING</span>}
         </Button>
       </div>
     </section>

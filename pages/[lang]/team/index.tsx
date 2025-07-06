@@ -19,7 +19,7 @@ export default function Services({ questions }: { questions: QuestionType[] }) {
       </Head>
       <Hero />
       <Inspiration />
-      <Us />
+      <Us isPageTeam />
       <Expertise />
       <Faq questions={questions} />
     </>

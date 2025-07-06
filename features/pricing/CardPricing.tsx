@@ -72,7 +72,7 @@ const CardPricing = ({
         href={getInternalPath(href)}
         scroll={false}
       >
-        {isFrench ? 'Contactez-nous' : 'Contact us'}
+        {isFrench ? <span>Contactez-nous</span> : <span>Contact us</span>}
       </Button>
       {type === OFFER_TYPE.CUSTOM && (
         <p className="text-black-70 p3">

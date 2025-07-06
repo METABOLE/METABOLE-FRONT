@@ -333,7 +333,7 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
               transformOrigin="right"
               onClick={isMenuOpen ? closeMenu : openMenu}
             >
-              {isMenuOpen ? 'CLOSE' : 'MENU'}
+              {isMenuOpen ? <span>CLOSE</span> : <span>MENU</span>}
             </Button>
           </div>
         </div>

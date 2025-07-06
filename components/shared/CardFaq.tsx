@@ -7,6 +7,7 @@ import { SplitText } from 'gsap/SplitText';
 import { useRef } from 'react';
 import { IconArrow } from '../ui/Icons';
 import Button from '../ui/Button';
+import { usePathname } from 'next/navigation';
 
 gsap.registerPlugin(SplitText);
 
@@ -27,7 +28,6 @@ const CardFaq = ({
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
 }) => {
-  const { isFrench, getInternalPath } = useLanguage();
   const { question: questionText, answer, id, link } = question;
 
   const answerRef = useRef(null);
@@ -36,6 +36,9 @@ const CardFaq = ({
   const cardRef = useRef(null);
   const buttonWrapperRef = useRef(null);
   const timelineRef = useRef(gsap.timeline({ paused: true }));
+
+  const { isFrench, getInternalPath } = useLanguage();
+  const pathname = usePathname();
 
   useGSAP(() => {
     if (!answerRef.current || !textAnswerRef.current || !arrowRef.current) return;
@@ -135,10 +138,10 @@ const CardFaq = ({
           <p ref={textAnswerRef} className="p3 text-blue-70">
             {isFrench ? answer.fr : answer.en}
           </p>
-          {link && (
+          {link && !pathname.includes(link.url) && (
             <div ref={buttonWrapperRef} className="mt-6 origin-left">
               <Button href={getInternalPath(link.url)}>
-                {isFrench ? link.text.fr : link.text.en}
+                <span>{link.text[isFrench ? 'fr' : 'en']}</span>
               </Button>
             </div>
           )}

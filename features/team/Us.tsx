@@ -1,3 +1,4 @@
+import Button from '@/components/ui/Button';
 import { IconCross, IconLink } from '@/components/ui/Icons';
 import { TEAM_MEMBERS } from '@/constants/us.constant';
 import { useMatchMedia } from '@/hooks/useCheckScreenSize';
@@ -14,13 +15,13 @@ import { useRef } from 'react';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
-const Us = () => {
+const Us = ({ isPageTeam = false }: { isPageTeam?: boolean }) => {
   const sectionRef = useRef(null);
   const wrapperImagesRefs = [useRef(null), useRef(null)];
   const imagesRefs = [useRef(null), useRef(null)];
   const titleRef = useRef(null);
 
-  const { isFrench } = useLanguage();
+  const { isFrench, getInternalPath } = useLanguage();
   const isMobile = useMatchMedia(BREAKPOINTS.MD);
   const { contextSafe } = useGSAP();
 
@@ -119,7 +120,7 @@ const Us = () => {
         {isFrench ? <span>NOS FONDATEURS</span> : <span>OUR FOUNDERS</span>}
         <IconCross className="absolute -right-10 bottom-0 hidden md:block" color={COLORS.BLACK} />
       </h1>
-      <div className="lg:px-x-default relative flex flex-col gap-5 md:flex-row">
+      <div className="lg:px-x-default relative flex flex-col gap-5 pb-[200px] md:flex-row">
         <IconCross
           className="left-x-default absolute -bottom-20 hidden md:block"
           color={COLORS.BLUE}
@@ -155,6 +156,11 @@ const Us = () => {
           </div>
         ))}
       </div>
+      {!isPageTeam && (
+        <Button href={getInternalPath('/team')}>
+          {isFrench ? <span>Notre équipe</span> : <span>Our team</span>}
+        </Button>
+      )}
     </section>
   );
 };

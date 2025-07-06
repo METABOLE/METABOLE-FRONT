@@ -9,13 +9,6 @@ const questions = [
       en: 'Creative coding combines programming with artistic expression to create unique, interactive digital experiences. We use technologies like Three.js, WebGL, and advanced animations to transform your website into an engaging, memorable experience that sets you apart from competitors.',
       fr: 'Le creative coding combine programmation et expression artistique pour créer des expériences numériques uniques et interactives. Nous utilisons des technologies comme Three.js, WebGL et des animations avancées pour transformer votre site en une expérience engageante et mémorable qui vous démarque.',
     },
-    link: {
-      url: '/services',
-      text: {
-        en: 'Our services',
-        fr: 'Nos services',
-      },
-    },
   },
   {
     id: 2,
@@ -46,7 +39,7 @@ const questions = [
       fr: 'Nous suivons un processus collaboratif en 4 phases : Découverte (comprendre votre marque et objectifs), Design (créer concepts visuels et expérience utilisateur), Développement (donner vie aux designs avec le code), et Lancement (tests et optimisation). Chaque phase inclut feedback client et itérations.',
     },
     link: {
-      url: '/services',
+      url: '/services#process',
       text: {
         en: 'Our process',
         fr: 'Notre processus',
@@ -92,13 +85,6 @@ const questions = [
       en: 'Yes, we offer maintenance packages starting at €200/month, including updates, security patches, and technical support. We also provide training for your team to manage content updates. For creative coding projects, we recommend regular maintenance to ensure optimal performance.',
       fr: 'Oui, nous proposons des forfaits maintenance à partir de 200€/mois, incluant mises à jour, correctifs de sécurité et support technique. Nous fournissons aussi une formation pour votre équipe. Pour les projets creative coding, nous recommandons une maintenance régulière pour garantir les performances optimales.',
     },
-    link: {
-      url: '/services',
-      text: {
-        en: 'Maintenance',
-        fr: 'Maintenance',
-      },
-    },
   },
   {
     id: 7,
@@ -120,13 +106,6 @@ const questions = [
     answer: {
       en: 'We use modern web technologies including React/Next.js, Three.js for 3D graphics, WebGL for advanced animations, GSAP for smooth animations, and custom shaders. We also integrate with headless CMS like Strapi or Sanity for easy content management while maintaining creative freedom.',
       fr: 'Nous utilisons des technologies web modernes incluant React/Next.js, Three.js pour graphiques 3D, WebGL pour animations avancées, GSAP pour animations fluides, et shaders personnalisés. Nous intégrons aussi des CMS headless comme Strapi ou Sanity pour une gestion de contenu facile tout en préservant la liberté créative.',
-    },
-    link: {
-      url: '/services',
-      text: {
-        en: 'Our tech',
-        fr: 'Notre tech',
-      },
     },
   },
   {

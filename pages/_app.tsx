@@ -35,6 +35,20 @@ function App({ Component, pageProps, globalProps }: CustomAppProps) {
   const getLayout =
     Component.getLayout || ((page) => <Layout projects={globalProps.projects}>{page}</Layout>);
 
+  const handdlePageChange = () => {
+    if (window.location.hash) {
+      setTimeout(() => {
+        const hash = window.location.hash.substring(1);
+        const element = document.getElementById(hash);
+        if (element) {
+          element.scrollIntoView();
+        }
+      }, 300);
+    } else {
+      window.scrollTo(0, 0);
+    }
+  };
+
   useEffect(() => {
     if (typeof window !== 'undefined' && !('attachInternals' in HTMLElement.prototype)) {
       import('element-internals-polyfill');
@@ -57,7 +71,7 @@ function App({ Component, pageProps, globalProps }: CustomAppProps) {
           <AnimatePresence
             mode="wait"
             onExitComplete={() => {
-              window.scrollTo(0, 0);
+              handdlePageChange();
               setTimeout(() => {
                 ScrollTrigger.refresh();
               }, 100);

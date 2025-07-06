@@ -280,7 +280,7 @@ const ContactForm = ({ className }: { className?: string }) => {
           color="primary"
           disabled={formStatus === FORM_STATUS.SUCCESS || formStatus === FORM_STATUS.PENDING}
         >
-          {getButtonText()}
+          <span>{getButtonText()}</span>
         </Button>
       </div>
     </form>

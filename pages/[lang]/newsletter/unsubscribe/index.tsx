@@ -126,7 +126,7 @@ const UnsubscribePage: NextPageWithLayout = () => {
             color="tertiary"
             disabled={formStatus === FORM_STATUS.PENDING || formStatus === FORM_STATUS.SUCCESS}
           >
-            {getButtonText()}
+            <span>{getButtonText()}</span>
           </Button>
         </form>
         <Link

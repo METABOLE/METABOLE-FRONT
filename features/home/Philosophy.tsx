@@ -232,7 +232,7 @@ const Philosophy = () => {
       </div>
 
       <Button href={getInternalPath('/services')} scroll={false}>
-        {isFrench ? 'NOS SERVICES' : 'OUR SERVICES'}
+        {isFrench ? <span>NOS SERVICES</span> : <span>OUR SERVICES</span>}
       </Button>
     </section>
   );
