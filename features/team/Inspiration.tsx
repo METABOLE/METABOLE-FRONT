@@ -1,5 +1,6 @@
 import FloatingHalo from '@/components/shared/FloatingHalo';
 import ScrollingContainer from '@/components/ui/ScrollingContainer';
+import { useLanguage } from '@/providers/language.provider';
 import Image from 'next/image';
 
 const images = [
@@ -31,6 +32,8 @@ const ImageCard = ({ src }: { src: string }) => (
 );
 
 const Inspiration = () => {
+  const { isFrench } = useLanguage();
+
   return (
     <section className="px-x-default py-y-double-default relative flex h-screen flex-col items-center justify-center overflow-hidden bg-black text-center">
       <FloatingHalo
@@ -48,10 +51,18 @@ const Inspiration = () => {
         </ScrollingContainer>
       </div>
       <p className="p3 text-white-70 top-y-default absolute z-20">
-        Metabole est né d'une envie simple :
+        {isFrench ? (
+          <span>Metabole est né d'une envie simple :</span>
+        ) : (
+          <span>Metabole was born from a simple desire:</span>
+        )}
       </p>
       <h1 className="relative z-20 text-white">
-        Créer des choses qui marquent, qui inspirent et qui ont du sens.
+        {isFrench ? (
+          <span>Créer des choses qui marquent, qui inspirent et qui ont du sens.</span>
+        ) : (
+          <span>Create things that mark, inspire and have meaning.</span>
+        )}
       </h1>
     </section>
   );

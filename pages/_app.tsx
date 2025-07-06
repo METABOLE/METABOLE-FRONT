@@ -10,7 +10,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import { usePathname } from 'next/navigation';
-import { useEffect, useMemo, type ReactElement, type ReactNode } from 'react';
+import { useEffect, type ReactElement, type ReactNode } from 'react';
 
 export type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -28,9 +28,9 @@ function App({ Component, pageProps, globalProps }: CustomAppProps) {
   // const isScreenLoader = useIsScreenLoader();
   // const { lockScroll } = useScrollLock();
 
-  const transitionKey = useMemo(() => {
-    return pathname.replace(/^\/(fr|en)/, '') || '/';
-  }, [pathname]);
+  // const transitionKey = useMemo(() => {
+  //   return pathname.replace(/^\/(fr|en)/, '') || '/';
+  // }, [pathname]);
 
   const getLayout =
     Component.getLayout || ((page) => <Layout projects={globalProps.projects}>{page}</Layout>);
@@ -77,7 +77,7 @@ function App({ Component, pageProps, globalProps }: CustomAppProps) {
               }, 100);
             }}
           >
-            <PageTransition key={transitionKey}>
+            <PageTransition key={pathname}>
               <Component {...pageProps} />
             </PageTransition>
           </AnimatePresence>

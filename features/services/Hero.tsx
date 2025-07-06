@@ -2,6 +2,7 @@ import { IconCross } from '@/components/ui/Icons';
 import ScrollButton from '@/components/ui/ScrollButton';
 import ScrollingContainer from '@/components/ui/ScrollingContainer';
 import { useMatchMedia } from '@/hooks/useCheckScreenSize';
+import { useLanguage } from '@/providers/language.provider';
 import { BREAKPOINTS, COLORS } from '@/types';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
@@ -17,6 +18,7 @@ const Hero = () => {
   const descriptionRef = useRef(null);
 
   const { contextSafe } = useGSAP();
+  const { isFrench } = useLanguage();
   const isMobile = useMatchMedia(BREAKPOINTS.MD);
 
   const revealAnimation = contextSafe(() => {
@@ -111,7 +113,7 @@ const Hero = () => {
       return;
     }
     scrollAnimation();
-  }, [isMobile]);
+  }, [isMobile, isFrench]);
 
   return (
     <section
@@ -149,13 +151,27 @@ const Hero = () => {
               className="absolute top-1/2 -left-10 hidden -translate-y-1/2 md:block"
               color={COLORS.BLUE}
             />
-            <span>Metabole est un </span>
-            <span className="text-blue">studio créatif</span>
-            <span> qui conçoit des </span>
-            <span className="text-blue">expériences intéractives</span>
-            <span> et </span>
-            <span className="text-blue">performantes</span>
-            <span>.</span>
+            {isFrench ? (
+              <>
+                <span>Metabole est un </span>
+                <span className="text-blue">studio créatif</span>
+                <span> qui conçoit des </span>
+                <span className="text-blue">expériences intéractives</span>
+                <span> et </span>
+                <span className="text-blue">performantes</span>
+                <span>.</span>
+              </>
+            ) : (
+              <>
+                <span>Metabole is a </span>
+                <span className="text-blue">creative studio</span>
+                <span> that designs </span>
+                <span className="text-blue">interactive experiences</span>
+                <span> and </span>
+                <span className="text-blue">performant</span>
+                <span>.</span>
+              </>
+            )}
           </h2>
         </div>
       </div>
@@ -166,15 +182,31 @@ const Hero = () => {
               className="absolute top-1/2 -left-10 hidden -translate-y-1/2 md:block"
               color={COLORS.BLUE}
             />
-            <span>En mettant l’accent sur </span>
-            <span className="text-blue">l’esthétique</span>
-            <span> et </span>
-            <span className="text-blue">l’accessibilité</span>
-            <span>, nous imaginons des interfaces fluides et </span>
-            <span className="text-blue">innovantes</span>
-            <span>, pensées pour </span>
-            <span className="text-blue">évoluer</span>
-            <span> avec les besoins de demain.</span>
+            {isFrench ? (
+              <>
+                <span>En mettant l’accent sur </span>
+                <span className="text-blue">l’esthétique</span>
+                <span> et </span>
+                <span className="text-blue">l’accessibilité</span>
+                <span>, nous imaginons des interfaces fluides et </span>
+                <span className="text-blue">innovantes</span>
+                <span>, pensées pour </span>
+                <span className="text-blue">évoluer</span>
+                <span> avec les besoins de demain.</span>
+              </>
+            ) : (
+              <>
+                <span>By focusing on </span>
+                <span className="text-blue">aesthetics</span>
+                <span> and </span>
+                <span className="text-blue">accessibility</span>
+                <span>, we imagine fluid and </span>
+                <span className="text-blue">innovative</span>
+                <span> interfaces, designed to </span>
+                <span className="text-blue">evolve</span>
+                <span> with tomorrow's needs.</span>
+              </>
+            )}
           </p>
         </div>
       </div>

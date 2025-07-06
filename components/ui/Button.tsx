@@ -1,4 +1,5 @@
 import { useMagnet, useResetMagnet } from '@/hooks/useMagnet';
+import { useLanguage } from '@/providers/language.provider';
 import { COLORS } from '@/types';
 import { useGSAP } from '@gsap/react';
 import { clsx } from 'clsx';
@@ -84,6 +85,7 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
     const timelineHoverRef = useRef<gsap.core.Timeline | null>(null);
 
     const { contextSafe } = useGSAP();
+    const { isFrench } = useLanguage();
 
     const [currentChild, setCurrentChild] = useState(children);
 
@@ -126,7 +128,7 @@ const Button = forwardRef<AnimatedButtonRef, ButtonProps>(
           },
           '<',
         );
-    }, [currentChild]);
+    }, [currentChild, isFrench]);
 
     useGSAP(() => {
       if (disabled) return;

@@ -9,6 +9,7 @@ import {
   IconInitialExchange,
 } from '@/components/ui/Icons';
 import { useLanguage } from '@/providers/language.provider';
+import { COLORS } from '@/types';
 import { useGSAP } from '@gsap/react';
 import clsx from 'clsx';
 import gsap from 'gsap';
@@ -16,7 +17,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useRef, useState } from 'react';
 import Divider from './timeline/Divider';
 import Event from './timeline/Event';
-import { COLORS } from '@/types';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -25,7 +25,6 @@ const Process = () => {
   const horizontalRef = useRef<HTMLDivElement>(null);
   const wrapperLineRef = useRef(null);
   const lineRef = useRef(null);
-  const titleRef = useRef(null);
   const progressBarRef = useRef(null);
 
   const { isFrench } = useLanguage();
@@ -99,60 +98,67 @@ const Process = () => {
           ease: 'none',
         },
         '<',
-      )
-      .to(
-        titleRef.current,
-        {
-          xPercent: 100,
-          ease: 'none',
-        },
-        '<',
       );
   }, []);
 
   return (
     <section
       ref={sectionRef}
-      className="relative flex h-screen w-full flex-col overflow-hidden"
+      className="px-x-default relative flex h-screen w-full flex-col overflow-hidden bg-black"
       id="process"
     >
-      <div ref={horizontalRef} className="flex h-full w-fit flex-row">
-        <div className="py-y-default px-x-default flex flex-col justify-between bg-black">
-          <div
-            ref={titleRef}
-            className="gap-x-x-default pb-y-default pt-y-default flex w-[calc(100%+calc(var(--x-default)*2)-100vw)] items-center"
-          >
-            <h1 className="relative w-fit text-white">
-              {isFrench ? 'PROCESSUS' : 'PROCESS'}
-              <IconCross
-                className="absolute -right-10 bottom-0 hidden md:block"
-                color={COLORS.WHITE}
-              />
-            </h1>
-            <div className="relative h-0.5 w-[35vw] max-w-[489px] bg-[#C5C4FF]/30">
-              <div ref={progressBarRef} className="bg-yellow absolute h-0.5 w-0">
-                <svg
-                  className="absolute -top-[3px] -right-3"
-                  fill="none"
-                  height="8"
-                  viewBox="0 0 8 8"
-                  width="8"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M0 4L8 4" stroke="#CAEE17" strokeWidth="2" />
-                  <path d="M4 0L4 8" stroke="#CAEE17" strokeWidth="2" />
-                </svg>
-              </div>
-            </div>
+      <div className="gap-x-x-default pb-y-default pt-y-double-default flex items-center">
+        <h1 className="relative w-fit text-white">
+          {isFrench ? 'PROCESSUS' : 'PROCESS'}
+          <IconCross className="absolute -right-10 bottom-0 hidden md:block" color={COLORS.WHITE} />
+        </h1>
+        <div className="relative h-0.5 w-[35vw] max-w-[489px] bg-[#C5C4FF]/30">
+          <div ref={progressBarRef} className="bg-yellow absolute h-0.5 w-0">
+            <svg
+              className="absolute -top-[3px] -right-3"
+              fill="none"
+              height="8"
+              viewBox="0 0 8 8"
+              width="8"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M0 4L8 4" stroke="#CAEE17" strokeWidth="2" />
+              <path d="M4 0L4 8" stroke="#CAEE17" strokeWidth="2" />
+            </svg>
           </div>
+        </div>
+      </div>
+      <div ref={horizontalRef} className="flex h-full w-fit flex-row items-end">
+        <div className="py-y-default flex flex-col justify-between bg-black">
           <div className="gap-x-x-default pr-x-default grid grid-cols-[60vw_1fr] md:grid-cols-[40vw_1fr]">
             <p className="p2 pr-x-default text-white-70 z-50 row-span-8">
-              Notre méthodologie est structurée pour garantir rigueur, clarté et excellence à chaque
-              étape du projet.
-              <br />
-              <br />
-              Elle articule conception, design et développement sur-mesure autour d'un cadre
-              collaboratif précis et maîtrisé.
+              {isFrench ? (
+                <>
+                  <span>
+                    Notre méthodologie est structurée pour garantir rigueur, clarté et excellence à
+                    chaque étape du projet.
+                  </span>
+                  <br />
+                  <br />
+                  <span>
+                    Elle articule conception, design et développement sur-mesure autour d'un cadre
+                    collaboratif précis et maîtrisé.
+                  </span>
+                </>
+              ) : (
+                <>
+                  <span>
+                    Our methodology is structured to ensure rigor, clarity and excellence at each
+                    stage of the project.
+                  </span>
+                  <br />
+                  <br />
+                  <span>
+                    It articulates design, design and custom development around a precise and
+                    mastered collaborative framework.
+                  </span>
+                </>
+              )}
             </p>
 
             <div className="relative">
@@ -221,7 +227,7 @@ const Process = () => {
                 </div>
                 <Event
                   icon={<IconInitialExchange />}
-                  label="ECHANGE INITIAL / KICK OFF"
+                  label={isFrench ? 'ECHANGE INITIAL / KICK OFF' : 'INITIAL EXCHANGE / KICK OFF'}
                   className={clsx(
                     'col-start-1 col-end-2 row-start-1 transition-opacity duration-200',
                     activeIndex === null || activeIndex === 0 ? 'opacity-100' : 'opacity-40',
@@ -239,7 +245,7 @@ const Process = () => {
                 <Event
                   duration="1 sem"
                   icon={<IconIdeation />}
-                  label={isFrench ? 'IDEATION' : 'IDEATION'}
+                  label="IDEATION"
                   className={clsx(
                     'col-start-2 col-end-3 row-start-2 transition-opacity duration-200',
                     activeIndex === null || activeIndex === 1 ? 'opacity-100' : 'opacity-40',
@@ -292,7 +298,7 @@ const Process = () => {
                 <div />
                 <Event
                   icon={<IconDelivery />}
-                  label="VALIDATION & LIVRAISON"
+                  label={isFrench ? 'VALIDATION & LIVRAISON' : 'VALIDATION & DELIVERY'}
                   className={clsx(
                     'col-start-8 col-end-9 row-start-5 transition-opacity duration-200',
                     activeIndex === null || activeIndex === 4 ? 'opacity-100' : 'opacity-40',
@@ -328,15 +334,6 @@ const Process = () => {
             </div>
           </div>
         </div>
-        {/* <div className="h-screen w-screen">
-          <Image
-            alt=""
-            className="h-full w-full object-cover"
-            height={1080}
-            src="/images/matteo-and-jerome.png"
-            width={1920}
-          />
-        </div> */}
       </div>
     </section>
   );

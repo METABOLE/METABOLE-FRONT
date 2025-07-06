@@ -43,7 +43,6 @@ const Faq = ({ questions }: { questions: QuestionType[] }) => {
       });
   }, []);
 
-  // Organize questions into 3 columns
   const columns: Array<Array<{ question: QuestionType; originalIndex: number }>> = [[], [], []];
   questions.forEach((question, index) => {
     columns[index % 3].push({ question, originalIndex: index });
@@ -56,7 +55,7 @@ const Faq = ({ questions }: { questions: QuestionType[] }) => {
           ref={titleRef}
           className="absolute top-0 flex h-full w-full items-center justify-center"
         >
-          <h1 className="text-blue h-full text-center !text-[70px]">FAQ</h1>
+          <h1 className="text-blue h-full text-center !text-[70px]">F.A.Q</h1>
         </div>
         <div ref={sectionRef} className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
           {columns.map((column, columnIndex) => (
