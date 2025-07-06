@@ -1,5 +1,6 @@
 import { useTouchDevice } from '@/hooks/useTouchDevice';
 import { useGSAP } from '@gsap/react';
+import clsx from 'clsx';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/dist/ScrollTrigger';
 import { ReactNode, RefObject, useRef } from 'react';
@@ -66,17 +67,17 @@ const ScrollingContainer = ({
   }, []);
 
   return (
-    <div className="overflow-hidden">
+    <div className={clsx('overflow-hidden', className)}>
       <div
         ref={scrollContainer}
-        className={`flex w-screen flex-row items-center justify-center ${className}`}
+        className="flex w-screen flex-row items-center justify-center"
         onMouseLeave={() => controlScroll('play')}
         onMouseOver={() => controlScroll('pause')}
       >
         {Array(4)
           .fill(null)
           .map((_, index) => (
-            <div key={index} className="shrink-0">
+            <div key={index} className="flex h-full">
               {children}
             </div>
           ))}
