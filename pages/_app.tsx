@@ -1,4 +1,8 @@
 import PageTransition from '@/components/layout/PageTransition';
+import ScreenLoader from '@/components/layout/ScreenLoader';
+import { useEnvironment } from '@/hooks/useEnvironment';
+import { useIsScreenLoader } from '@/hooks/useIsScreenLoader';
+import { useScrollLock } from '@/hooks/useToggleScroll';
 import Layout from '@/layout/default';
 import { AppProvider } from '@/providers/root';
 import { fetchProjects } from '@/services/projects.service';
@@ -25,12 +29,9 @@ interface CustomAppProps extends AppProps {
 
 function App({ Component, pageProps, globalProps }: CustomAppProps) {
   const pathname = usePathname();
-  // const isScreenLoader = useIsScreenLoader();
-  // const { lockScroll } = useScrollLock();
-
-  // const transitionKey = useMemo(() => {
-  //   return pathname.replace(/^\/(fr|en)/, '') || '/';
-  // }, [pathname]);
+  const isScreenLoader = useIsScreenLoader();
+  const { isProd } = useEnvironment();
+  const { lockScroll } = useScrollLock();
 
   const getLayout =
     Component.getLayout || ((page) => <Layout projects={globalProps.projects}>{page}</Layout>);
@@ -55,19 +56,19 @@ function App({ Component, pageProps, globalProps }: CustomAppProps) {
     }
   }, []);
 
-  // useEffect(() => {
-  //   if (isScreenLoader) {
-  //     lockScroll(true);
-  //   } else {
-  //     lockScroll(false);
-  //   }
-  // }, [isScreenLoader]);
+  useEffect(() => {
+    if (isScreenLoader) {
+      lockScroll(true);
+    } else {
+      lockScroll(false);
+    }
+  }, [isScreenLoader]);
 
   return (
     <AppProvider>
       {getLayout(
         <>
-          {/* {isScreenLoader && <ScreenLoader />} */}
+          {isScreenLoader && isProd && <ScreenLoader />}
           <AnimatePresence
             mode="wait"
             onExitComplete={() => {
