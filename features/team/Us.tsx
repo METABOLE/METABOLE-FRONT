@@ -1,17 +1,15 @@
 import Button from '@/components/ui/Button';
-import { IconCross, IconLink } from '@/components/ui/Icons';
+import { IconCross } from '@/components/ui/Icons';
 import { TEAM_MEMBERS } from '@/constants/us.constant';
 import { useMatchMedia } from '@/hooks/useCheckScreenSize';
 import { useLanguage } from '@/providers/language.provider';
 import { BREAKPOINTS, COLORS } from '@/types';
 import { useGSAP } from '@gsap/react';
-import clsx from 'clsx';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
-import Image from 'next/image';
-import Link from 'next/link';
 import { useRef } from 'react';
+import CardUs from './CardUs';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -126,34 +124,13 @@ const Us = ({ isPageTeam = false }: { isPageTeam?: boolean }) => {
           color={COLORS.BLUE}
         />
         {TEAM_MEMBERS.map((member, index) => (
-          <div
+          <CardUs
             key={member.name}
-            ref={wrapperImagesRefs[index]}
-            className={clsx(
-              'group/image relative flex-1 overflow-hidden rounded-3xl',
-              index === 1 && 'md:translate-y-[var(--y-default)]',
-            )}
-          >
-            <Link
-              className="ease-power4-in-out absolute top-3.5 right-3.5 z-40 flex h-12 w-12 cursor-pointer items-center justify-center rounded-2xl bg-white transition-transform duration-300 hover:scale-90"
-              href={member.website}
-              target="_blank"
-            >
-              <IconLink />
-            </Link>
-            <Image
-              ref={imagesRefs[index]}
-              alt={member.alt}
-              className="h-[calc(100%+200px)] object-cover group-hover/image:scale-105"
-              height={1920}
-              src={member.image}
-              width={1080}
-            />
-            <div className="absolute right-3.5 bottom-3.5 left-3.5 flex h-[77px] flex-col justify-between rounded-2xl bg-white p-4">
-              <h2 className="text-blue p2">{member.name}</h2>
-              <p className="p3 text-black">{isFrench ? member.role.fr : member.role.en}</p>
-            </div>
-          </div>
+            imagesRefs={imagesRefs[index]}
+            index={index}
+            member={member}
+            wrapperImagesRefs={wrapperImagesRefs[index]}
+          />
         ))}
       </div>
       {!isPageTeam && (
