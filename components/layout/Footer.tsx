@@ -140,9 +140,9 @@ const Footer = () => {
           />
           <div ref={sectionRef} className="pt-y-default h-full w-full" id="footer">
             <div className="gap-y-y-default mx-auto flex w-[calc(100vw-(var(--x-default)*2))] flex-col">
-              <div className="grid h-full grid-cols-2 gap-5 md:grid-cols-6">
+              <div className="gap-y-y-default grid h-full grid-cols-1 gap-x-5 sm:grid-cols-2 md:grid-cols-6">
                 <Link
-                  className="pb-y-half-default col-span-2 h-fit w-fit md:col-span-1"
+                  className="pb-y-half-default col-span-1 h-fit w-fit sm:col-span-2 md:col-span-1"
                   href={getInternalPath('/')}
                   scroll={false}
                   onMouseMove={(e) => useMagnet(e, 0.8)}
@@ -183,8 +183,8 @@ const Footer = () => {
                     ))}
                   </ul>
                 </nav>
-                <div />
-                <div className="gap-y-default col-span-2 flex flex-col">
+                <div className="hidden md:block" />
+                <div className="gap-y-default col-span-1 flex flex-col sm:col-span-2">
                   <NewsletterForm animate={false} hintId="hint-newsletter-footer" isDark={false} />
                   <Language className="md:ml-auto" isDark={true} />
                 </div>

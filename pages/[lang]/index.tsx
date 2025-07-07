@@ -1,3 +1,4 @@
+import FloatingHalo from '@/components/shared/FloatingHalo';
 import Expertise from '@/features/home/expertise/Expertise';
 import Faq from '@/features/home/Faq';
 import Hero from '@/features/home/Hero';
@@ -13,7 +14,12 @@ export default function Home({ questions }: { questions: QuestionType[] }) {
   const { asPath } = useRouter();
 
   return (
-    <>
+    <div className="relative overflow-hidden">
+      <FloatingHalo
+        className="pointer-events-none absolute top-0 left-full -z-10 h-[150vw] w-[150vw] opacity-40"
+        from="#1b17ee"
+        to="#f1f2ff00"
+      />
       <Head>
         <link key="canonical" href={'https://metabole.studio' + asPath} rel="canonical" />
       </Head>
@@ -22,7 +28,7 @@ export default function Home({ questions }: { questions: QuestionType[] }) {
       <Expertise />
       <Us />
       <Faq questions={questions} />
-    </>
+    </div>
   );
 }
 

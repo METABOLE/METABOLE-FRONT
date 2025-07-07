@@ -116,7 +116,7 @@ const Us = ({ isPageTeam = false }: { isPageTeam?: boolean }) => {
       className="px-x-default py-y-double-default gap-y-y-default relative flex flex-col items-center overflow-hidden"
     >
       <FloatingHalo
-        className="pointer-events-none absolute top-1/2 left-full -z-10 h-[150vw] w-[150vw] opacity-40"
+        className="pointer-events-none absolute top-1/2 left-full -z-10 h-[100vw] w-[100vw] opacity-40"
         from="#1b17ee"
         to="#f1f2ff00"
       />

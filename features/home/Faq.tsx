@@ -1,9 +1,10 @@
 import CardFaq from '@/components/shared/CardFaq';
-import { QuestionType } from '@/types';
+import { useMatchMedia } from '@/hooks/useCheckScreenSize';
+import { BREAKPOINTS, QuestionType } from '@/types';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -12,6 +13,9 @@ const Faq = ({ questions }: { questions: QuestionType[] }) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | undefined>(undefined);
   const sectionRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLDivElement>(null);
+
+  const isMobile = useMatchMedia(BREAKPOINTS.MD);
+  const isTablet = useMatchMedia(BREAKPOINTS.LG);
 
   const handleToggle = (index: number) => {
     setActiveIndex(activeIndex === index ? null : index);
@@ -24,6 +28,29 @@ const Faq = ({ questions }: { questions: QuestionType[] }) => {
   const handleMouseLeave = () => {
     setHoveredIndex(undefined);
   };
+
+  const numColumns = useMemo(() => {
+    if (isMobile) {
+      return 1;
+    } else if (isTablet) {
+      return 2;
+    } else {
+      return 3;
+    }
+  }, [isMobile, isTablet]);
+
+  const columns = useMemo(() => {
+    const newColumns: Array<Array<{ question: QuestionType; originalIndex: number }>> = Array.from(
+      { length: numColumns },
+      () => [],
+    );
+
+    questions.forEach((question, index) => {
+      newColumns[index % numColumns].push({ question, originalIndex: index });
+    });
+
+    return newColumns;
+  }, [questions, numColumns]);
 
   useGSAP(() => {
     gsap.set(titleRef.current, { yPercent: 0 });
@@ -42,11 +69,6 @@ const Faq = ({ questions }: { questions: QuestionType[] }) => {
         ease: 'none',
       });
   }, []);
-
-  const columns: Array<Array<{ question: QuestionType; originalIndex: number }>> = [[], [], []];
-  questions.forEach((question, index) => {
-    columns[index % 3].push({ question, originalIndex: index });
-  });
 
   return (
     <section className="px-x-default pt-y-default relative overflow-hidden">

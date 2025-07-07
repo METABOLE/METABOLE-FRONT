@@ -1,4 +1,3 @@
-import FloatingHalo from '@/components/shared/FloatingHalo';
 import Button from '@/components/ui/Button';
 import { IconCross } from '@/components/ui/Icons';
 import { TIMELINE } from '@/constants/timeline.constant';
@@ -129,13 +128,6 @@ const Hero = () => {
       ref={sectionRef}
       className="px-x-default pb-y-default flex w-screen flex-col justify-evenly overflow-hidden pt-[calc(var(--y-default)*3)] md:min-h-[70vh]"
     >
-      <div className="absolute inset-0 overflow-hidden">
-        <FloatingHalo
-          className="pointer-events-none absolute top-0 right-0 -z-10 h-[150vw] w-[150vw] translate-x-full opacity-40"
-          from="#1b17ee"
-          to="#f1f2ff00"
-        />
-      </div>
       <h1 className="h0 uppercase">
         {isFrench ? (
           <span ref={mobileTitleRef} className="block md:hidden">
