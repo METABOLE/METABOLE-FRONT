@@ -140,9 +140,7 @@ const CardFaq = ({
           </p>
           {link && !pathname.includes(link.url) && (
             <div ref={buttonWrapperRef} className="mt-6 origin-left">
-              <Button href={getInternalPath(link.url)}>
-                <span>{link.text[isFrench ? 'fr' : 'en']}</span>
-              </Button>
+              <Button href={getInternalPath(link.url)}>{link.text[isFrench ? 'fr' : 'en']}</Button>
             </div>
           )}
         </div>

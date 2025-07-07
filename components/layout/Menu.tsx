@@ -54,7 +54,7 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
 
     gsap
       .timeline({
-        delay: 1.2,
+        delay: 1.4,
       })
       .to([logoRef.current, soundRef.current, contactMenuRef.current, buttonMenuRef.current], {
         duration: 1.2,
@@ -324,6 +324,7 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
               href={getInternalPath('/contact')}
               scroll={false}
               transformOrigin="right"
+              onClick={closeMenu}
             >
               CONTACT
             </Button>
@@ -433,15 +434,15 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
           </div>
           <div
             ref={infosRef}
-            className="grid w-full grid-cols-6 items-center gap-5 overflow-y-hidden whitespace-nowrap"
+            className="flex w-full items-center justify-between gap-5 overflow-y-hidden whitespace-nowrap xl:grid xl:grid-cols-6"
           >
             <p>Metabole® 2025</p>
-            <p>{CONTACT.ADDRESS}</p>
+            <p className="hidden lg:block">{CONTACT.ADDRESS}</p>
             <Time isDark={false} />
             <a className="col-span-2" href={'mailto:' + CONTACT.EMAIL}>
               {CONTACT.EMAIL}
             </a>
-            <div className="flex w-full justify-end">
+            <div className="flex justify-end xl:w-full">
               <Language />
             </div>
           </div>

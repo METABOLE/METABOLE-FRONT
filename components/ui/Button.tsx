@@ -17,6 +17,7 @@ interface BaseButtonProps {
   isDark?: boolean;
   disabled?: boolean;
   isResizable?: boolean;
+  onClick?: () => void;
 }
 
 type DivButtonProps = BaseButtonProps &

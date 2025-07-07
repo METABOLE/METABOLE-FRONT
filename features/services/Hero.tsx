@@ -1,6 +1,7 @@
 import { IconCross } from '@/components/ui/Icons';
 import ScrollButton from '@/components/ui/ScrollButton';
 import ScrollingContainer from '@/components/ui/ScrollingContainer';
+import { TIMELINE } from '@/constants/timeline.constant';
 import { useMatchMedia } from '@/hooks/useCheckScreenSize';
 import { useLanguage } from '@/providers/language.provider';
 import { BREAKPOINTS, COLORS } from '@/types';
@@ -42,7 +43,7 @@ const Hero = () => {
 
     gsap
       .timeline({
-        delay: 0.6,
+        delay: TIMELINE.DELAY_AFTER_PAGE_TRANSITION,
       })
       .to(splitTitle.words, {
         yPercent: 0,

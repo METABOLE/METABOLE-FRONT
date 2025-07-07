@@ -70,7 +70,7 @@ const Expertise = ({ isPageServices = false }: { isPageServices?: boolean }) => 
           isDark={true}
           scroll={false}
         >
-          {isFrench ? <span>NOS SERVICES</span> : <span>OUR SERVICES</span>}
+          {isFrench ? 'NOS SERVICES' : 'OUR SERVICES'}
         </Button>
       )}
     </section>

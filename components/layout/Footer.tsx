@@ -143,7 +143,7 @@ const Footer = () => {
               <div className="grid h-full grid-cols-2 gap-5 md:grid-cols-6">
                 <Link
                   className="pb-y-half-default col-span-2 h-fit w-fit md:col-span-1"
-                  href="/"
+                  href={getInternalPath('/')}
                   scroll={false}
                   onMouseMove={(e) => useMagnet(e, 0.8)}
                   onMouseOut={(e) => useResetMagnet(e)}

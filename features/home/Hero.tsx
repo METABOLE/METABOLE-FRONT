@@ -1,7 +1,8 @@
 import Button from '@/components/ui/Button';
 import { IconCross } from '@/components/ui/Icons';
+import { TIMELINE } from '@/constants/timeline.constant';
 import { useLanguage } from '@/providers/language.provider';
-import { COLORS } from '@/types';
+import { BREAKPOINTS, COLORS } from '@/types';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -23,63 +24,71 @@ const Hero = () => {
   const { contextSafe } = useGSAP();
 
   const revealAnimation = contextSafe(() => {
-    const desktopSpans = [
-      desktopSpan1Ref.current,
-      desktopSpan2Ref.current,
-      desktopSpan3Ref.current,
-      desktopSpan4Ref.current,
-    ];
+    gsap.matchMedia().add(`(min-width: ${BREAKPOINTS.MD}px)`, () => {
+      const timeline = gsap.timeline({ delay: TIMELINE.DELAY_AFTER_PAGE_TRANSITION });
 
-    const splitTexts = desktopSpans
-      .map((span) => {
-        if (span) {
-          return new SplitText(span, {
-            type: 'words',
-            mask: 'words',
-          });
+      const desktopSpans = [
+        desktopSpan1Ref.current,
+        desktopSpan2Ref.current,
+        desktopSpan3Ref.current,
+        desktopSpan4Ref.current,
+      ];
+
+      const splitTexts = desktopSpans
+        .map((span) => {
+          if (span) {
+            return new SplitText(span, {
+              type: 'words',
+              mask: 'words',
+            });
+          }
+          return null;
+        })
+        .filter(Boolean);
+
+      splitTexts.forEach((split) => {
+        if (split) {
+          gsap.set(split.words, { yPercent: 100 });
         }
-        return null;
-      })
-      .filter(Boolean);
+      });
 
-    splitTexts.forEach((split) => {
-      if (split) {
-        gsap.set(split.words, {
-          yPercent: 100,
-        });
-      }
+      splitTexts.forEach((split, index) => {
+        if (split) {
+          timeline.to(
+            split.words,
+            {
+              yPercent: 0,
+              duration: 1.8,
+              stagger: 0.03,
+              ease: 'power4.out',
+            },
+            index * 0.1,
+          );
+        }
+      });
     });
 
-    splitTexts.forEach((split, index) => {
-      if (split) {
-        gsap.to(split.words, {
-          yPercent: 0,
-          duration: 1.8,
-          stagger: 0.03,
-          ease: 'power4.out',
-          delay: 0.2 + index * 0.1,
-        });
-      }
-    });
+    gsap.matchMedia().add(`(max-width: ${BREAKPOINTS.MD}px)`, () => {
+      const timeline = gsap.timeline({ delay: TIMELINE.DELAY_AFTER_PAGE_TRANSITION });
 
-    const split = new SplitText(mobileTitleRef.current, {
-      type: 'words',
-    });
+      const split = new SplitText(mobileTitleRef.current, {
+        type: 'words',
+      });
 
-    gsap.set(split.words, {
-      opacity: 0,
-      yPercent: 100,
-      filter: 'blur(10px)',
-    });
+      gsap.set(split.words, {
+        opacity: 0,
+        yPercent: 100,
+        filter: 'blur(10px)',
+      });
 
-    gsap.to(split.words, {
-      opacity: 1,
-      yPercent: 0,
-      filter: 'blur(0px)',
-      duration: 1.2,
-      stagger: 0.02,
-      ease: 'power4.out',
-      delay: 0.5,
+      timeline.to(split.words, {
+        opacity: 1,
+        yPercent: 0,
+        filter: 'blur(0px)',
+        duration: 1.2,
+        stagger: 0.02,
+        ease: 'power4.out',
+      });
     });
   });
 

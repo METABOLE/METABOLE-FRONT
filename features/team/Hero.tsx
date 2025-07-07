@@ -1,13 +1,15 @@
 import { IconCross } from '@/components/ui/Icons';
+import { TIMELINE } from '@/constants/timeline.constant';
 import { useLanguage } from '@/providers/language.provider';
 import { COLORS } from '@/types';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { SplitText } from 'gsap/SplitText';
 import Image from 'next/image';
 import { useRef } from 'react';
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, SplitText);
 
 const Hero = () => {
   const sectionRef = useRef(null);
@@ -16,7 +18,50 @@ const Hero = () => {
 
   const { isFrench } = useLanguage();
 
-  useGSAP(() => {
+  const { contextSafe } = useGSAP();
+
+  const revealAnimation = contextSafe(() => {
+    const splitTexts = titleRefs
+      .map((ref) => {
+        if (ref.current) {
+          return new SplitText(ref.current, {
+            type: 'chars',
+            mask: 'chars',
+          });
+        }
+        return null;
+      })
+      .filter(Boolean);
+
+    splitTexts.forEach((split) => {
+      if (split) {
+        gsap.set(split.chars, {
+          yPercent: 100,
+        });
+      }
+    });
+
+    const timeline = gsap.timeline({
+      delay: TIMELINE.DELAY_AFTER_PAGE_TRANSITION,
+    });
+
+    splitTexts.forEach((split, index) => {
+      if (split) {
+        timeline.to(
+          split.chars,
+          {
+            yPercent: 0,
+            duration: 1,
+            stagger: 0.01,
+            ease: 'power4.out',
+          },
+          index * 0.1,
+        );
+      }
+    });
+  });
+
+  const scrollAnimation = contextSafe(() => {
     if (!sectionRef.current) return;
 
     const tl = gsap.timeline({
@@ -51,12 +96,20 @@ const Hero = () => {
       },
       '-=1.7',
     );
+  });
+
+  useGSAP(() => {
+    revealAnimation();
+  }, [isFrench]);
+
+  useGSAP(() => {
+    scrollAnimation();
   }, []);
 
   return (
     <section
       ref={sectionRef}
-      className="pt-y-double-default px-x-default pb-y-default gap-y-default relative flex min-h-screen flex-col justify-center"
+      className="pt-y-double-default px-x-default pb-y-default gap-y-default relative flex min-h-screen flex-col justify-center overflow-hidden"
     >
       <div className="relative">
         <h1 ref={titleRefs[0]} className="text-left text-[50px] leading-loose md:!text-[90px]">
