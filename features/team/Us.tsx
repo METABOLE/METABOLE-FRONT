@@ -97,8 +97,6 @@ const Us = ({ isPageTeam = false }: { isPageTeam?: boolean }) => {
   useGSAP(() => {
     ScrollTrigger.getById('team-parallax')?.kill();
 
-    revealAnimation();
-
     if (isMobile) {
       gsap.set(wrapperImagesRefs[0].current, { y: 0 });
       gsap.set(wrapperImagesRefs[1].current, { y: 0 });
@@ -109,6 +107,10 @@ const Us = ({ isPageTeam = false }: { isPageTeam?: boolean }) => {
 
     scrollAnimation();
   }, [isMobile]);
+
+  useGSAP(() => {
+    revealAnimation();
+  }, [isFrench]);
 
   return (
     <section
