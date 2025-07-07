@@ -64,7 +64,7 @@ const ScrollingContainer = ({
     animateInfinite(scrollContainer);
     if (useTouchDevice()) return;
     animateScroll();
-  }, []);
+  }, [scrollSpeed]);
 
   return (
     <div className={clsx('overflow-hidden', className)}>

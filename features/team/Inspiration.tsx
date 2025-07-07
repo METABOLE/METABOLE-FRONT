@@ -1,7 +1,8 @@
 import { IconCross } from '@/components/ui/Icons';
 import ScrollingContainer from '@/components/ui/ScrollingContainer';
+import { useMatchMedia } from '@/hooks/useCheckScreenSize';
 import { useLanguage } from '@/providers/language.provider';
-import { COLORS } from '@/types';
+import { BREAKPOINTS, COLORS } from '@/types';
 import { useGSAP } from '@gsap/react';
 import clsx from 'clsx';
 import gsap from 'gsap';
@@ -85,10 +86,11 @@ const Fragement = () => {
 
 const Inspiration = () => {
   const { isFrench } = useLanguage();
+  const isTablet = useMatchMedia(BREAKPOINTS.MD);
 
   return (
     <section className="relative flex overflow-hidden">
-      <ScrollingContainer className="flex h-full shrink-0" scrollSpeed={100}>
+      <ScrollingContainer className="flex h-full shrink-0" scrollSpeed={isTablet ? 10 : 100}>
         <Fragement />
       </ScrollingContainer>
       <div className="px-x-default absolute inset-0 z-20 mx-auto flex w-full items-center justify-center mix-blend-difference grayscale md:w-2/3">

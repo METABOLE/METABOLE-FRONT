@@ -186,7 +186,10 @@ const Hero = () => {
       </div>
       <div className="px-x-default">
         <div className="md:pr-[5vw]">
-          <p ref={descriptionRef} className="p2 relative ml-auto w-[60vw] md:w-[40vw]">
+          <p
+            ref={descriptionRef}
+            className="p2 relative ml-auto w-[60vw] text-right md:w-[40vw] md:text-left"
+          >
             <IconCross
               className="absolute top-1/2 -left-10 hidden -translate-y-1/2 md:block"
               color={COLORS.BLUE}

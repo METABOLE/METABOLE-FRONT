@@ -202,7 +202,7 @@ const Philosophy = () => {
         />
         <AnimatedText
           ref={descriptionRef}
-          className="p2 relative ml-auto md:w-1/2"
+          className="p2 relative ml-auto w-3/4 text-right md:w-1/2 md:text-left"
           duration={0.8}
           stagger={0.005}
         >
