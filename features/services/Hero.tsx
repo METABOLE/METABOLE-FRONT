@@ -122,11 +122,13 @@ const Hero = () => {
       ref={sectionRef}
       className="pt-y-double-default gap-y-y-default pb-y-default relative flex min-h-screen w-screen flex-col justify-between"
     >
-      <FloatingHalo
-        className="pointer-events-none absolute top-0 -left-1/3 -z-10 h-[150vw] w-[150vw] opacity-40"
-        from="#1b17ee"
-        to="#f1f2ff00"
-      />
+      <div className="absolute inset-0 overflow-hidden">
+        <FloatingHalo
+          className="pointer-events-none absolute top-0 -left-1/3 -z-10 h-[150vw] w-[150vw] opacity-40"
+          from="#1b17ee"
+          to="#f1f2ff00"
+        />
+      </div>
       <ScrollingContainer scrollSpeed={15}>
         <div className="flex shrink-0 flex-row gap-x-7 pl-7">
           <h1 className="text-blue !text-[70px] !leading-normal md:!text-[120px]">SERVICES</h1>
@@ -191,10 +193,10 @@ const Hero = () => {
             />
             {isFrench ? (
               <>
-                <span>En mettant l’accent sur </span>
-                <span className="text-blue">l’esthétique</span>
+                <span>En mettant l'accent sur </span>
+                <span className="text-blue">l'esthétique</span>
                 <span> et </span>
-                <span className="text-blue">l’accessibilité</span>
+                <span className="text-blue">l'accessibilité</span>
                 <span>, nous imaginons des interfaces fluides et </span>
                 <span className="text-blue">innovantes</span>
                 <span>, pensées pour </span>

@@ -127,13 +127,15 @@ const Hero = () => {
   return (
     <section
       ref={sectionRef}
-      className="px-x-default pb-y-default flex flex-col justify-evenly pt-[calc(var(--y-default)*3)] md:min-h-[70vh]"
+      className="px-x-default pb-y-default flex w-screen flex-col justify-evenly overflow-hidden pt-[calc(var(--y-default)*3)] md:min-h-[70vh]"
     >
-      <FloatingHalo
-        className="pointer-events-none absolute top-0 left-full -z-10 h-[150vw] w-[150vw] opacity-40"
-        from="#1b17ee"
-        to="#f1f2ff00"
-      />
+      <div className="absolute inset-0 overflow-hidden">
+        <FloatingHalo
+          className="pointer-events-none absolute top-0 right-0 -z-10 h-[150vw] w-[150vw] translate-x-full opacity-40"
+          from="#1b17ee"
+          to="#f1f2ff00"
+        />
+      </div>
       <h1 className="h0 uppercase">
         {isFrench ? (
           <span ref={mobileTitleRef} className="block md:hidden">

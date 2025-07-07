@@ -113,7 +113,7 @@ const Philosophy = () => {
   return (
     <section
       ref={sectionRef}
-      className="px-x-default md:px-x-double-default gap-y-y-default md:gap-y-y-default-double pb-y-double-default relative flex flex-col items-center"
+      className="px-x-default md:px-x-double-default gap-y-y-default md:gap-y-y-default-double pb-y-double-default relative flex flex-col items-center overflow-hidden"
     >
       <FloatingHalo
         className="pointer-events-none absolute -bottom-full left-0 -z-10 h-[150vw] w-[150vw] opacity-50"
@@ -237,7 +237,7 @@ const Philosophy = () => {
       </div>
 
       <Button href={getInternalPath('/services')} scroll={false}>
-        {isFrench ? <span>NOS SERVICES</span> : <span>OUR SERVICES</span>}
+        {isFrench ? 'NOS SERVICES' : 'OUR SERVICES'}
       </Button>
     </section>
   );

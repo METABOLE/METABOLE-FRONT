@@ -113,7 +113,7 @@ const Us = ({ isPageTeam = false }: { isPageTeam?: boolean }) => {
   return (
     <section
       ref={sectionRef}
-      className="px-x-default py-y-double-default gap-y-y-default relative flex flex-col items-center"
+      className="px-x-default py-y-double-default gap-y-y-default relative flex flex-col items-center overflow-hidden"
     >
       <FloatingHalo
         className="pointer-events-none absolute top-1/2 left-full -z-10 h-[150vw] w-[150vw] opacity-40"
