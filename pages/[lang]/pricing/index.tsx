@@ -9,6 +9,7 @@ import { BREAKPOINTS, OFFER_TYPE } from '@/types';
 import { useGSAP } from '@gsap/react';
 import clsx from 'clsx';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 import { useRef, useState } from 'react';
 
@@ -85,6 +86,7 @@ const Pricing = () => {
       );
       return;
     }
+
     gsap.set(`#offer-card-${OFFER_TYPE.CUSTOM}`, {
       transformOrigin: 'left center',
     });
@@ -119,6 +121,10 @@ const Pricing = () => {
   });
 
   const scrollAnimation = contextSafe(() => {
+    ScrollTrigger.getById('pricing-parallax')?.kill();
+
+    if (isTablet) return;
+
     gsap
       .timeline({
         scrollTrigger: {
@@ -191,7 +197,7 @@ const Pricing = () => {
 
   return (
     <section className="py-y-default flex flex-col text-center">
-      <div className="pt-y-default mx-auto md:w-2/3">
+      <div className="pt-y-default px-x-default mx-auto md:w-2/3">
         <h1 ref={titleRef} className="text-blue h1 pb-2.5 uppercase">
           {isFrench ? 'Tarification' : 'Pricing'}
         </h1>
@@ -208,7 +214,7 @@ const Pricing = () => {
       >
         {OFFERS.map(renderCard)}
       </div>
-      <div className="mx-auto md:w-2/3">
+      <div className="px-x-default mx-auto md:w-2/3">
         <p className="p1 pb-9">
           {isFrench
             ? 'Si vous avez une idée précise de votre besoin, utilisez notre project studio pour nous orienter dans la réflexion :'
