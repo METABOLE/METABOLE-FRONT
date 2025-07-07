@@ -10,6 +10,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 import { useRef } from 'react';
 import CardUs from './CardUs';
+import FloatingHalo from '@/components/shared/FloatingHalo';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -112,8 +113,13 @@ const Us = ({ isPageTeam = false }: { isPageTeam?: boolean }) => {
   return (
     <section
       ref={sectionRef}
-      className="px-x-default py-y-double-default gap-y-y-default flex flex-col items-center"
+      className="px-x-default py-y-double-default gap-y-y-default relative flex flex-col items-center"
     >
+      <FloatingHalo
+        className="pointer-events-none absolute top-1/2 left-full -z-10 h-[150vw] w-[150vw] opacity-40"
+        from="#1b17ee"
+        to="#f1f2ff00"
+      />
       <h1 ref={titleRef} className="relative w-fit text-center">
         {isFrench ? <span>NOS FONDATEURS</span> : <span>OUR FOUNDERS</span>}
         <IconCross className="absolute -right-10 bottom-0 hidden md:block" color={COLORS.BLACK} />

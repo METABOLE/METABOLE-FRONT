@@ -1,4 +1,5 @@
 import AnimatedText from '@/components/shared/AnimatedText';
+import FloatingHalo from '@/components/shared/FloatingHalo';
 import Button from '@/components/ui/Button';
 import { IconCross } from '@/components/ui/Icons';
 import ScrollButton from '@/components/ui/ScrollButton';
@@ -112,8 +113,13 @@ const Philosophy = () => {
   return (
     <section
       ref={sectionRef}
-      className="px-x-default md:px-x-double-default gap-y-y-default md:gap-y-y-default-double pb-y-double-default flex flex-col items-center"
+      className="px-x-default md:px-x-double-default gap-y-y-default md:gap-y-y-default-double pb-y-double-default relative flex flex-col items-center"
     >
+      <FloatingHalo
+        className="pointer-events-none absolute -bottom-full left-0 -z-10 h-[150vw] w-[150vw] opacity-50"
+        from="#1b17ee"
+        to="#f1f2ff00"
+      />
       <ScrollButton />
       <div className="group/image relative aspect-video w-full">
         <IconCross

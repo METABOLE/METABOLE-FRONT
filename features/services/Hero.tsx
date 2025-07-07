@@ -1,3 +1,4 @@
+import FloatingHalo from '@/components/shared/FloatingHalo';
 import { IconCross } from '@/components/ui/Icons';
 import ScrollButton from '@/components/ui/ScrollButton';
 import ScrollingContainer from '@/components/ui/ScrollingContainer';
@@ -119,8 +120,13 @@ const Hero = () => {
   return (
     <section
       ref={sectionRef}
-      className="pt-y-double-default gap-y-y-default pb-y-default flex min-h-screen w-screen flex-col justify-between"
+      className="pt-y-double-default gap-y-y-default pb-y-default relative flex min-h-screen w-screen flex-col justify-between"
     >
+      <FloatingHalo
+        className="pointer-events-none absolute top-0 -left-1/3 -z-10 h-[150vw] w-[150vw] opacity-40"
+        from="#1b17ee"
+        to="#f1f2ff00"
+      />
       <ScrollingContainer scrollSpeed={15}>
         <div className="flex shrink-0 flex-row gap-x-7 pl-7">
           <h1 className="text-blue !text-[70px] !leading-normal md:!text-[120px]">SERVICES</h1>
