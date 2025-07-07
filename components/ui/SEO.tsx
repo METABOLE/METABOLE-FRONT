@@ -9,6 +9,8 @@ interface SEOProps {
   image?: string;
   url?: string;
   type?: string;
+  isHomePage?: boolean;
+  noindex?: boolean;
 }
 
 const SEO = ({
@@ -19,6 +21,8 @@ const SEO = ({
   image = '/og-image.png',
   url = 'https://metabole.studio',
   type = 'website',
+  isHomePage = false,
+  noindex = false,
 }: SEOProps) => {
   const { asPath } = useRouter();
   const description = isFrench ? descriptionFr : descriptionEn;
@@ -36,7 +40,7 @@ const SEO = ({
       <meta content="default" name="referrer" />
 
       {/* Indexation contrôlée */}
-      <meta content="index, follow" name="robots" />
+      <meta content={noindex ? 'noindex, nofollow' : 'index, follow'} name="robots" />
 
       {/* Canonical link */}
       <link key="canonical" href={'https://metabole.studio' + asPath} rel="canonical" />
@@ -68,11 +72,20 @@ const SEO = ({
       {/* Favicon */}
       <link href="/favicon.ico" rel="icon" />
 
-      <link
-        href={`${url}${isFrench ? '/fr' : '/en'}`}
-        hrefLang={isFrench ? 'fr' : 'en'}
-        rel="alternate"
-      />
+      {/* Hreflang - Gestion spéciale pour la page d'accueil */}
+      {isHomePage ? (
+        <>
+          <link href="https://metabole.studio/fr" hrefLang="fr" rel="alternate" />
+          <link href="https://metabole.studio/en" hrefLang="en" rel="alternate" />
+          <link href="https://metabole.studio" hrefLang="x-default" rel="alternate" />
+        </>
+      ) : (
+        <link
+          href={`${url}${isFrench ? '/fr' : '/en'}`}
+          hrefLang={isFrench ? 'fr' : 'en'}
+          rel="alternate"
+        />
+      )}
     </Head>
   );
 };

@@ -77,7 +77,7 @@ const ScrollingContainer = ({
         {Array(4)
           .fill(null)
           .map((_, index) => (
-            <div key={index} className="flex h-full">
+            <div key={index} className="flex h-full shrink-0">
               {children}
             </div>
           ))}
