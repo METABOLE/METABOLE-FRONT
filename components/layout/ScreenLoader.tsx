@@ -97,6 +97,7 @@ const ScreenLoader = () => {
         barRefs.vertical.current,
         {
           opacity: 0,
+          duration: 0.3,
         },
         'disappear',
       )

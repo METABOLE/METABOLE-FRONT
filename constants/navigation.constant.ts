@@ -4,16 +4,16 @@ export const LINKS = [
     text: { en: 'Home', fr: 'Accueil' },
   },
   {
-    href: '/pricing',
-    text: { en: 'Pricing', fr: 'Tarifs' },
-  },
-  {
     href: '/services',
     text: { en: 'Services', fr: 'Services' },
   },
   {
     href: '/team',
     text: { en: 'Team', fr: 'Équipe' },
+  },
+  {
+    href: '/pricing',
+    text: { en: 'Pricing', fr: 'Tarifs' },
   },
   {
     href: '/contact',

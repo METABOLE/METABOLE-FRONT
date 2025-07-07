@@ -328,13 +328,15 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
             >
               CONTACT
             </Button>
-            <Button
-              ref={buttonMenuRef}
-              transformOrigin="right"
-              onClick={isMenuOpen ? closeMenu : openMenu}
-            >
-              {isMenuOpen ? <span>CLOSE</span> : <span>MENU</span>}
-            </Button>
+            {isMenuOpen ? (
+              <Button ref={buttonMenuRef} transformOrigin="right" onClick={closeMenu}>
+                CLOSE
+              </Button>
+            ) : (
+              <Button transformOrigin="right" onClick={openMenu}>
+                {isFrench ? 'MENU' : 'MENU'}
+              </Button>
+            )}
           </div>
         </div>
       </header>
