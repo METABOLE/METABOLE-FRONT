@@ -1,13 +1,13 @@
 import { IconLink } from '@/components/ui/Icons';
 import { useLanguage } from '@/providers/language.provider';
 import { TeamMember } from '@/types/us.type';
+import { useGSAP } from '@gsap/react';
 import clsx from 'clsx';
+import gsap from 'gsap';
+import { SplitText } from 'gsap/SplitText';
 import Image from 'next/image';
 import Link from 'next/link';
 import { RefObject, useRef } from 'react';
-import { useGSAP } from '@gsap/react';
-import gsap from 'gsap';
-import { SplitText } from 'gsap/SplitText';
 
 gsap.registerPlugin(SplitText);
 
@@ -75,7 +75,7 @@ const CardUs = ({ member, index, wrapperImagesRefs, imagesRefs }: CardUsProps) =
     <div
       ref={wrapperImagesRefs}
       className={clsx(
-        'group/image relative flex-1 overflow-hidden rounded-3xl',
+        'group/image relative h-[70vh] flex-1 overflow-hidden rounded-3xl lg:h-[80vh]',
         index === 1 && 'md:translate-y-[var(--y-default)]',
       )}
       onMouseEnter={handleMouseEnter}
