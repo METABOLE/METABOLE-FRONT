@@ -8,6 +8,7 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
+import { useRouter } from 'next/router';
 import { useRef } from 'react';
 import CardUs from './CardUs';
 
@@ -20,6 +21,7 @@ const Us = ({ isPageTeam = false }: { isPageTeam?: boolean }) => {
   const titleRef = useRef(null);
 
   const { isFrench, getInternalPath } = useLanguage();
+  const { locale } = useRouter();
   const isMobile = useMatchMedia(BREAKPOINTS.MD);
   const { contextSafe } = useGSAP();
 
@@ -117,8 +119,8 @@ const Us = ({ isPageTeam = false }: { isPageTeam?: boolean }) => {
       ref={sectionRef}
       className="px-x-default py-y-double-default gap-y-y-default relative flex flex-col items-center overflow-hidden"
     >
-      <h1 ref={titleRef} className="relative w-fit text-center">
-        {isFrench ? <span>NOS FONDATEURS</span> : <span>OUR FOUNDERS</span>}
+      <h1 ref={titleRef} className="relative w-fit text-center whitespace-nowrap">
+        {locale && (isFrench ? <span>NOS FONDATEURS</span> : <span>OUR FOUNDERS</span>)}
         <IconCross className="absolute -right-10 bottom-0 hidden md:block" color={COLORS.BLACK} />
       </h1>
       <div className="lg:px-x-default relative flex flex-col gap-5 md:flex-row md:pb-[200px]">
