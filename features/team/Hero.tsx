@@ -134,7 +134,7 @@ const Hero = () => {
       </Hint>
       <section
         ref={sectionRef}
-        className="pt-y-double-default px-x-default pb-y-default relative flex min-h-screen flex-col justify-evenly overflow-hidden"
+        className="pt-y-double-default px-x-default pb-y-default relative flex min-h-screen flex-col justify-evenly"
       >
         <FloatingHalo
           className="pointer-events-none absolute top-0 left-0 -z-10 h-[200vh] w-[200vh] opacity-40"

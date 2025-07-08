@@ -112,7 +112,7 @@ const Philosophy = () => {
   return (
     <section
       ref={sectionRef}
-      className="px-x-default md:px-x-double-default gap-y-y-default md:gap-y-y-default-double pb-y-double-default relative flex flex-col items-center overflow-hidden"
+      className="px-x-default md:px-x-double-default gap-y-y-default md:gap-y-y-default-double pb-y-double-default relative flex flex-col items-center"
     >
       <FloatingHalo
         className="pointer-events-none absolute -bottom-full left-0 -z-10 h-[150vw] w-[150vw] opacity-50"

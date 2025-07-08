@@ -22,7 +22,7 @@ const Layout = ({ projects, children }: { projects: ProjectType[]; children: Rea
     <>
       <SEO isFrench={isFrench} />
       {isTablet ? <Burger /> : <Menu projects={projects} />}
-      <main className="min-h-screen md:pb-[300px]">{children}</main>
+      <main className="min-h-screen w-screen overflow-hidden md:pb-[300px]">{children}</main>
       {!isMobile && <ScrollBar />}
       <Footer />
       <Background />

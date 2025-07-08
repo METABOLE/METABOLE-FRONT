@@ -126,7 +126,7 @@ const Hero = () => {
   return (
     <section
       ref={sectionRef}
-      className="px-x-default pb-y-default flex w-screen flex-col justify-evenly overflow-hidden pt-[calc(var(--y-default)*3)] md:min-h-[70vh]"
+      className="px-x-default pb-y-default flex w-screen flex-col justify-evenly pt-[calc(var(--y-default)*3)] md:min-h-[70vh]"
     >
       <h1 className="h0 uppercase">
         {isFrench ? (
