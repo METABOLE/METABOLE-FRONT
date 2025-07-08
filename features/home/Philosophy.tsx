@@ -9,7 +9,6 @@ import { BREAKPOINTS, COLORS } from '@/types';
 import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Image from 'next/image';
 import { useRef } from 'react';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -17,8 +16,8 @@ gsap.registerPlugin(ScrollTrigger);
 const Philosophy = () => {
   const { isFrench, getInternalPath } = useLanguage();
 
-  // const wrapperImageRef = useRef(null);
-  const imageRef = useRef(null);
+  const wrapperVideoRef = useRef(null);
+  const videoRef = useRef(null);
   const sectionRef = useRef(null);
   const titleRef = useRef(null);
   const descriptionRef = useRef(null);
@@ -37,40 +36,40 @@ const Philosophy = () => {
           id: 'philosophy-scroll',
         },
       })
+      // .fromTo(
+      //   videoRef.current,
+      //   {
+      //     scale: 0.8,
+      //   },
+      //   {
+      //     scale: 1,
+      //     duration: 1,
+      //     ease: 'none',
+      //   },
+      // )
       .fromTo(
-        imageRef.current,
+        videoRef.current,
+        {
+          scale: 1,
+        },
         {
           scale: 0.8,
+          duration: 1,
+          ease: 'none',
+        },
+      )
+      .fromTo(
+        wrapperVideoRef.current,
+        {
+          scale: 0.7,
         },
         {
           scale: 1,
           duration: 1,
           ease: 'none',
         },
+        '<',
       )
-      // .fromTo(
-      //   imageRef.current,
-      //   {
-      //     scale: 1,
-      //   },
-      //   {
-      //     scale: 0.8,
-      //     duration: 1,
-      //     ease: 'none',
-      //   },
-      // )
-      // .fromTo(
-      //   wrapperImageRef.current,
-      //   {
-      //     scale: 0.8,
-      //   },
-      //   {
-      //     scale: 1,
-      //     duration: 1,
-      //     ease: 'none',
-      //   },
-      //   '<',
-      // )
       .fromTo(
         titleRef.current,
         {
@@ -103,7 +102,7 @@ const Philosophy = () => {
     if (isMobile) {
       gsap.set(titleRef.current, { x: 0 });
       gsap.set(descriptionRef.current, { x: 0 });
-      gsap.set(imageRef.current, { scale: 1 });
+      gsap.set(videoRef.current, { scale: 1 });
       return;
     }
 
@@ -138,27 +137,27 @@ const Philosophy = () => {
           className="ease-power4-in-out absolute -bottom-6 -left-6 hidden transition-transform duration-500 group-hover/image:-translate-x-4 group-hover/image:translate-y-4 md:block"
           color={COLORS.BLUE}
         />
-        <Image
-          ref={imageRef}
-          alt="Philosophy"
+        {/* <video
+          ref={videoRef}
           className="h-full w-full rounded-3xl object-cover object-top"
-          height={1920}
-          src="/images/matteo-and-jerome.png"
-          width={1080}
-          priority
-        />
-        {/* <div ref={wrapperImageRef} className="overflow-hidden rounded-3xl">
-            <div ref={imageRef} className="relative">
-              <Image
-                alt="Philosophy"
-                className="h-full w-full scale-130 object-cover object-top"
-                height={1920}
-                src="/images/matteo-and-jerome.png"
-                width={1080}
-                priority
-              />
-            </div>
-          </div> */}
+          src="/videos/showreel.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+        /> */}
+        <div ref={wrapperVideoRef} className="overflow-hidden rounded-3xl">
+          <div ref={videoRef} className="relative">
+            <video
+              className="h-full w-full scale-130 rounded-3xl object-cover object-top"
+              src="/videos/showreel.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
+            />
+          </div>
+        </div>
       </div>
       <div className="relative">
         <IconCross
