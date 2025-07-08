@@ -138,7 +138,7 @@ const NewsletterForm = forwardRef<AnimatedNewsletterFormRef, LeadFormProps>(
 
     return (
       <div className={className}>
-        <div className="flex items-center gap-5 pb-3">
+        <div className="flex items-center justify-between gap-5 pb-3 md:justify-start">
           <Typography
             ref={typographyRef}
             animate={animate}

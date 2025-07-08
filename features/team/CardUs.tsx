@@ -75,7 +75,7 @@ const CardUs = ({ member, index, wrapperImagesRefs, imagesRefs }: CardUsProps) =
     <div
       ref={wrapperImagesRefs}
       className={clsx(
-        'group/image relative h-[70vh] flex-1 overflow-hidden rounded-3xl lg:h-[80vh]',
+        'relative h-[50vh] flex-1 overflow-hidden rounded-3xl lg:h-[80vh]',
         index === 1 && 'md:translate-y-[var(--y-default)]',
       )}
       onMouseEnter={handleMouseEnter}
@@ -91,7 +91,7 @@ const CardUs = ({ member, index, wrapperImagesRefs, imagesRefs }: CardUsProps) =
       <Image
         ref={imagesRefs}
         alt={member.alt}
-        className="h-[calc(100%+200px)] object-cover group-hover/image:scale-105"
+        className="h-[calc(100%+200px)] object-cover"
         height={1920}
         src={member.image}
         width={1080}

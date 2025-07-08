@@ -18,6 +18,17 @@ import { LogoFull } from '../ui/Icons';
 import Tag, { AnimatedTagRef } from '../ui/Tag';
 import CutoutWrapper, { AnimatedCutoutWrapperRef } from './CutoutWrapper';
 
+const TEXT_BUTTON = {
+  fr: {
+    open: 'MENU',
+    close: 'FERMER',
+  },
+  en: {
+    open: 'MENU',
+    close: 'CLOSE',
+  },
+};
+
 const Menu = ({ projects }: { projects: ProjectType[] }) => {
   const SLICED_PROJECTS = projects.slice(0, 6);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -328,15 +339,14 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
             >
               CONTACT
             </Button>
-            {isMenuOpen ? (
-              <Button ref={buttonMenuRef} transformOrigin="right" onClick={closeMenu}>
-                CLOSE
-              </Button>
-            ) : (
-              <Button transformOrigin="right" onClick={openMenu}>
-                {isFrench ? 'MENU' : 'MENU'}
-              </Button>
-            )}
+            <Button
+              ref={buttonMenuRef}
+              isResizable={true}
+              transformOrigin="right"
+              onClick={isMenuOpen ? closeMenu : openMenu}
+            >
+              {TEXT_BUTTON[isFrench ? 'fr' : 'en'][isMenuOpen ? 'close' : 'open']}
+            </Button>
           </div>
         </div>
       </header>
