@@ -216,7 +216,7 @@ const Burger = () => {
       </header>
       <div
         ref={menuRef}
-        className="px-x-default gap-y-default bg-menu/0 fixed z-[800] flex h-full w-full flex-col justify-between pt-[140px] pb-[calc(32px+var(--y-double-default))]"
+        className="px-x-default gap-y-default bg-menu/0 fixed z-[800] flex h-full w-full flex-col justify-between pt-[140px] pb-[calc(32px+var(--y-default))]"
       >
         <nav className="col-span-4">
           <ul ref={linksRef} className="flex flex-col gap-5">
@@ -256,7 +256,7 @@ const Burger = () => {
           </ul>
         </nav>
 
-        <div className="flex w-full items-end whitespace-nowrap">
+        <div className="hide-on-small-height flex w-full items-end whitespace-nowrap">
           <div ref={infosRef} className="flex w-full flex-col gap-5 overflow-hidden">
             <a className="text-blue" href={'mailto:' + CONTACT.EMAIL}>
               {CONTACT.EMAIL}
