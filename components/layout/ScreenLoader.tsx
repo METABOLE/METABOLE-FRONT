@@ -130,7 +130,7 @@ const ScreenLoader = () => {
         },
         'disappear',
       )
-      .add(() => lockScroll(false))
+      .add(() => lockScroll(false), 'disappear+=0.5')
       .set(screenLoaderRef.current, {
         display: 'none',
       });
