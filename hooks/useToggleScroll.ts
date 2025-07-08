@@ -1,7 +1,6 @@
 import ScrollTrigger from 'gsap/dist/ScrollTrigger';
 import { useCallback, useState, useEffect } from 'react';
 
-// Singleton pour partager l'état entre tous les composants
 let globalIsLocked = false;
 const listeners: Set<(isLocked: boolean) => void> = new Set();
 

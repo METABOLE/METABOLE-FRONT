@@ -20,7 +20,7 @@ export default function ScrollBar() {
       ease: 'none',
       scrollTrigger: {
         scrub: true,
-        onUpdate: (self) => setPercent(self.progress * 1.05),
+        onUpdate: (self) => setPercent(self.progress),
       },
     });
   });
