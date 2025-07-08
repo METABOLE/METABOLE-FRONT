@@ -27,6 +27,10 @@ export default function ScrollBar() {
 
   useGSAP(() => {
     requestAnimationFrame(() => scrollAnim());
+  }, []);
+
+  useGSAP(() => {
+    scrollAnim();
   }, [isLocked]);
 
   return (
