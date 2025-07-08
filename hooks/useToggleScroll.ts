@@ -1,5 +1,13 @@
 import ScrollTrigger from 'gsap/dist/ScrollTrigger';
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useEffect } from 'react';
+
+// Singleton pour partager l'état entre tous les composants
+let globalIsLocked = false;
+const listeners: Set<(isLocked: boolean) => void> = new Set();
+
+const notifyListeners = (isLocked: boolean) => {
+  listeners.forEach((listener) => listener(isLocked));
+};
 
 const setElementStyles = (element: HTMLElement, styles: Partial<CSSStyleDeclaration>) => {
   Object.assign(element.style, styles);
@@ -30,7 +38,19 @@ const defaultStyles = {
 };
 
 export const useScrollLock = () => {
-  const [isLocked, setIsLocked] = useState(false);
+  const [isLocked, setIsLocked] = useState(globalIsLocked);
+
+  useEffect(() => {
+    const listener = (locked: boolean) => {
+      setIsLocked(locked);
+    };
+
+    listeners.add(listener);
+
+    return () => {
+      listeners.delete(listener);
+    };
+  }, []);
 
   const lockScroll = useCallback((shouldLock: boolean) => {
     if (shouldLock) {
@@ -45,7 +65,9 @@ export const useScrollLock = () => {
       setElementStyles(document.documentElement, defaultStyles);
       setElementStyles(document.body, defaultStyles);
     }
-    setIsLocked(shouldLock);
+
+    globalIsLocked = shouldLock;
+    notifyListeners(shouldLock);
   }, []);
 
   return { isLocked, lockScroll };
