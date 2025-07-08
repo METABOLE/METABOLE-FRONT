@@ -1,4 +1,5 @@
 import FloatingHalo from '@/components/shared/FloatingHalo';
+import Hint from '@/components/ui/Hint';
 import { IconCross } from '@/components/ui/Icons';
 import { TIMELINE } from '@/constants/timeline.constant';
 import { useLanguage } from '@/providers/language.provider';
@@ -108,67 +109,95 @@ const Hero = () => {
   }, []);
 
   return (
-    <section
-      ref={sectionRef}
-      className="pt-y-double-default px-x-default pb-y-default relative flex min-h-screen flex-col justify-evenly overflow-hidden"
-    >
-      <FloatingHalo
-        className="pointer-events-none absolute top-0 left-0 -z-10 h-[200vh] w-[200vh] opacity-40"
-        from="#1b17ee"
-        to="#f1f2ff00"
-      />
-      <div className="relative">
-        <h1 ref={titleRefs[0]} className="text-left text-[50px] !leading-normal md:!text-[90px]">
-          {isFrench ? 'INNOVER' : 'INNOVATE'}
-        </h1>
-        <IconCross
-          className="absolute -top-10 -right-10 hidden -translate-y-1/2 md:block"
-          color={COLORS.BLUE}
-        />
-      </div>
-      <div className="relative">
-        <h1
-          ref={titleRefs[1]}
-          className="text-blue text-right text-[50px] !leading-normal md:!text-[90px]"
-        >
-          {isFrench ? 'DESIGNER' : 'DESIGNER'}
-        </h1>
-        <IconCross
-          className="absolute top-1/2 -left-10 hidden -translate-y-1/2 md:block"
-          color={COLORS.BLACK}
-        />
-      </div>
-      <div className="relative">
-        <h1 ref={titleRefs[2]} className="pl-[15vw] text-[50px] !leading-normal md:!text-[90px]">
-          {isFrench ? 'CRÉER' : 'CREATE'}
-        </h1>
-        <IconCross
-          className="absolute top-1/2 right-1/4 hidden -translate-y-1/2 md:block"
-          color={COLORS.BLUE}
-        />
-      </div>
-      <div className="relative">
-        <h1
-          ref={titleRefs[3]}
-          className="text-blue pr-[25vw] text-right text-[50px] !leading-normal md:!text-[90px]"
-        >
-          {isFrench ? 'SUBLIMER' : 'SUBLIMATE'}
-        </h1>
-        <IconCross className="absolute -right-10 -bottom-10 hidden md:block" color={COLORS.BLACK} />
-      </div>
-      <div
-        ref={imageRef}
-        className="px-x-default pt-y-double-default pb-y-default absolute top-0 left-0 h-screen w-screen scale-0"
+    <>
+      <Hint containerId="hint-team-hero" isDark={true} isLeft={true}>
+        {isFrench ? (
+          <p>
+            Nous sommes deux créatifs, unis par le souci du détail et le goût des belles choses.
+            C'est la parfaite symbiose de nos compétences qui a donné naissance à Metabole.
+            <br />
+            <br />
+            Notre objectif est de pouvoir créer des produits qui répondent aux problématiques de
+            l’écosystème web actuel et futur, tout en garantissant une qualité de livrable
+            exceptionnelle.
+          </p>
+        ) : (
+          <p>
+            We are two creatives, united by the desire for detail and the taste for beautiful
+            things. It is the perfect synergy of our skills that has given birth to Metabole.
+            <br />
+            <br />
+            Our goal is to be able to create products that respond to the problems of the current
+            and future web ecosystem, while ensuring exceptional quality of delivery.
+          </p>
+        )}
+      </Hint>
+      <section
+        ref={sectionRef}
+        className="pt-y-double-default px-x-default pb-y-default relative flex min-h-screen flex-col justify-evenly overflow-hidden"
       >
-        <Image
-          alt="Matteo and Jerome"
-          className="h-full w-full rounded-3xl object-cover object-top"
-          height={1920}
-          src="/images/matteo-and-jerome.png"
-          width={1080}
+        <FloatingHalo
+          className="pointer-events-none absolute top-0 left-0 -z-10 h-[200vh] w-[200vh] opacity-40"
+          from="#1b17ee"
+          to="#f1f2ff00"
         />
-      </div>
-    </section>
+        <div className="relative">
+          <h1 ref={titleRefs[0]} className="text-left text-[50px] !leading-normal md:!text-[90px]">
+            {isFrench ? 'INNOVER' : 'INNOVATE'}
+          </h1>
+          <IconCross
+            className="absolute -top-10 -right-10 hidden -translate-y-1/2 md:block"
+            color={COLORS.BLUE}
+          />
+        </div>
+        <div className="relative">
+          <h1
+            ref={titleRefs[1]}
+            className="text-blue text-right text-[50px] !leading-normal md:!text-[90px]"
+          >
+            {isFrench ? 'DESIGNER' : 'DESIGNER'}
+          </h1>
+          <IconCross
+            className="absolute top-1/2 -left-10 hidden -translate-y-1/2 md:block"
+            color={COLORS.BLACK}
+          />
+        </div>
+        <div className="relative">
+          <h1 ref={titleRefs[2]} className="pl-[15vw] text-[50px] !leading-normal md:!text-[90px]">
+            {isFrench ? 'CRÉER' : 'CREATE'}
+          </h1>
+          <IconCross
+            className="absolute top-1/2 right-1/4 hidden -translate-y-1/2 md:block"
+            color={COLORS.BLUE}
+          />
+        </div>
+        <div className="relative">
+          <h1
+            ref={titleRefs[3]}
+            className="text-blue pr-[25vw] text-right text-[50px] !leading-normal md:!text-[90px]"
+          >
+            {isFrench ? 'SUBLIMER' : 'SUBLIMATE'}
+          </h1>
+          <IconCross
+            className="absolute -right-10 -bottom-10 hidden md:block"
+            color={COLORS.BLACK}
+          />
+        </div>
+        <div
+          ref={imageRef}
+          className="px-x-default pt-y-double-default pb-y-default absolute top-0 left-0 h-screen w-screen scale-0"
+        >
+          <Image
+            alt="Matteo and Jerome"
+            className="h-full w-full rounded-3xl object-cover object-top"
+            height={1920}
+            id="hint-team-hero"
+            src="/images/matteo-and-jerome.png"
+            width={1080}
+          />
+        </div>
+      </section>
+    </>
   );
 };
 
