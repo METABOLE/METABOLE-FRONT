@@ -108,6 +108,7 @@ const Us = ({ isPageTeam = false }: { isPageTeam?: boolean }) => {
   }, [isMobile]);
 
   useGSAP(() => {
+    if (titleRef.current) gsap.killTweensOf(titleRef.current);
     revealAnimation();
   }, [isFrench]);
 
