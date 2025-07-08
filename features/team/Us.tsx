@@ -117,7 +117,7 @@ const Us = ({ isPageTeam = false }: { isPageTeam?: boolean }) => {
       className="px-x-default py-y-double-default gap-y-y-default relative flex flex-col items-center overflow-hidden"
     >
       <h1 ref={titleRef} className="relative w-fit text-center">
-        {isFrench ? 'NOS FONDATEURS' : 'OUR FOUNDERS'}
+        {isFrench ? <span>NOS FONDATEURS</span> : <span>OUR FOUNDERS</span>}
         <IconCross className="absolute -right-10 bottom-0 hidden md:block" color={COLORS.BLACK} />
       </h1>
       <div className="lg:px-x-default relative flex flex-col gap-5 md:flex-row md:pb-[200px]">
