@@ -1,5 +1,6 @@
 import PageTransition from '@/components/layout/PageTransition';
 import ScreenLoader from '@/components/layout/ScreenLoader';
+import { useEnvironment } from '@/hooks/useEnvironment';
 import { useIsScreenLoader } from '@/hooks/useIsScreenLoader';
 import { useScrollLock } from '@/hooks/useToggleScroll';
 import Layout from '@/layout/default';
@@ -13,7 +14,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import { usePathname } from 'next/navigation';
-import { useEffect, useMemo, type ReactElement, type ReactNode } from 'react';
+import { useEffect, type ReactElement, type ReactNode } from 'react';
 
 export type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -29,14 +30,25 @@ interface CustomAppProps extends AppProps {
 function App({ Component, pageProps, globalProps }: CustomAppProps) {
   const pathname = usePathname();
   const isScreenLoader = useIsScreenLoader();
+  const { isProd } = useEnvironment();
   const { lockScroll } = useScrollLock();
-
-  const transitionKey = useMemo(() => {
-    return pathname.replace(/^\/(fr|en)/, '') || '/';
-  }, [pathname]);
 
   const getLayout =
     Component.getLayout || ((page) => <Layout projects={globalProps.projects}>{page}</Layout>);
+
+  const handdlePageChange = () => {
+    if (window.location.hash) {
+      setTimeout(() => {
+        const hash = window.location.hash.substring(1);
+        const element = document.getElementById(hash);
+        if (element) {
+          element.scrollIntoView();
+        }
+      }, 300);
+    } else {
+      window.scrollTo(0, 0);
+    }
+  };
 
   useEffect(() => {
     if (typeof window !== 'undefined' && !('attachInternals' in HTMLElement.prototype)) {
@@ -45,28 +57,28 @@ function App({ Component, pageProps, globalProps }: CustomAppProps) {
   }, []);
 
   useEffect(() => {
-    if (isScreenLoader) {
+    if (isScreenLoader && isProd) {
       lockScroll(true);
     } else {
       lockScroll(false);
     }
-  }, [isScreenLoader]);
+  }, [isScreenLoader, isProd]);
 
   return (
     <AppProvider>
       {getLayout(
         <>
-          {isScreenLoader && <ScreenLoader />}
+          {isScreenLoader && isProd && <ScreenLoader />}
           <AnimatePresence
             mode="wait"
             onExitComplete={() => {
-              window.scrollTo(0, 0);
+              handdlePageChange();
               setTimeout(() => {
                 ScrollTrigger.refresh();
               }, 100);
             }}
           >
-            <PageTransition key={transitionKey}>
+            <PageTransition key={pathname}>
               <Component {...pageProps} />
             </PageTransition>
           </AnimatePresence>

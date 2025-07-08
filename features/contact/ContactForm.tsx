@@ -1,22 +1,36 @@
 import Button from '@/components/ui/Button';
 import Checkbox from '@/components/ui/Checkbox';
-import Input from '@/components/ui/Input';
+import Input, { AnimatedInputRef } from '@/components/ui/Input';
+import { TIMELINE } from '@/constants/timeline.constant';
 import { useAudio } from '@/hooks/useAudio';
 import { useLanguage } from '@/providers/language.provider';
 import { postContactForm } from '@/services/contact.service';
 import { CONTACT_TYPE_VALUES, FORM_STATUS } from '@/types';
 import { ContactFormData, ContactFormState, ContactType } from '@/types/contact.type';
 import { isEmail } from '@/utils/validation.utils';
+import { useGSAP } from '@gsap/react';
 import { useMutation } from '@tanstack/react-query';
 import clsx from 'clsx';
+import gsap from 'gsap';
 import { useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 const ContactForm = ({ className }: { className?: string }) => {
   const searchParams = useSearchParams();
   const type = searchParams.get('type');
   const { play: playError } = useAudio('/sounds/error.mp3');
   const { play: playSuccess } = useAudio('/sounds/sent.mp3');
+
+  const formRef = useRef<HTMLFormElement>(null);
+  const nameInputRef = useRef<AnimatedInputRef>(null);
+  const emailInputRef = useRef<AnimatedInputRef>(null);
+  const phoneInputRef = useRef<AnimatedInputRef>(null);
+  const typeInputRef = useRef<AnimatedInputRef>(null);
+  const messageInputRef = useRef<AnimatedInputRef>(null);
+  const checkboxRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLDivElement>(null);
+
+  const { contextSafe } = useGSAP();
 
   const [formData, setFormData] = useState<ContactFormState>({
     name: '',
@@ -35,6 +49,37 @@ const ContactForm = ({ className }: { className?: string }) => {
 
   const [formStatus, setFormStatus] = useState(FORM_STATUS.DEFAULT);
   const { isFrench } = useLanguage();
+
+  const revealAnimation = contextSafe(() => {
+    nameInputRef.current?.reset();
+    emailInputRef.current?.reset();
+    phoneInputRef.current?.reset();
+    typeInputRef.current?.reset();
+    messageInputRef.current?.reset();
+
+    gsap.set(checkboxRef.current, { y: 30, opacity: 0 });
+    gsap.set(buttonRef.current, { filter: 'blur(10px)', opacity: 0 });
+
+    gsap
+      .timeline({
+        delay: TIMELINE.DELAY_AFTER_PAGE_TRANSITION,
+      })
+      .add(() => nameInputRef.current?.play())
+      .add(() => emailInputRef.current?.play(), '+=0.1')
+      .add(() => phoneInputRef.current?.play(), '+=0.1')
+      .add(() => typeInputRef.current?.play(), '+=0.1')
+      .add(() => messageInputRef.current?.play(), '+=0.1')
+      .to(checkboxRef.current, { y: 0, opacity: 1, duration: 0.6, ease: 'power2.inOut' })
+      .to(
+        buttonRef.current,
+        { filter: 'blur(0px)', opacity: 1, duration: 0.6, ease: 'power2.inOut' },
+        '+=0.1',
+      );
+  });
+
+  useGSAP(() => {
+    revealAnimation();
+  }, []);
 
   const sendContact = useMutation({
     mutationFn: ({ name, email, phone, message, type, consentMarketing, lang }: ContactFormData) =>
@@ -131,6 +176,7 @@ const ContactForm = ({ className }: { className?: string }) => {
 
   return (
     <form
+      ref={formRef}
       className={clsx(
         'border-blue-30 bg-blur-glass flex flex-col gap-6 rounded-3xl border-[1px] p-9 backdrop-blur-xl',
         className,
@@ -138,9 +184,9 @@ const ContactForm = ({ className }: { className?: string }) => {
       onSubmit={handleSubmit}
     >
       <Input
+        ref={nameInputRef}
         errorMessage={errors.name}
         isDark={true}
-        // label={isFrench ? 'Nom complet *' : 'Full name *'}
         name="contact-name"
         placeholder="John Doe"
         type="text"
@@ -164,9 +210,9 @@ const ContactForm = ({ className }: { className?: string }) => {
       />
 
       <Input
+        ref={emailInputRef}
         errorMessage={errors.email}
         isDark={true}
-        // label={isFrench ? 'Email *' : 'Email *'}
         name="contact-email"
         placeholder="john@company.com"
         type="email"
@@ -192,8 +238,8 @@ const ContactForm = ({ className }: { className?: string }) => {
       />
 
       <Input
+        ref={phoneInputRef}
         isDark={true}
-        // label={isFrench ? 'Téléphone' : 'Phone'}
         name="contact-phone"
         placeholder="+33 6 12 34 56 78"
         type="tel"
@@ -202,9 +248,9 @@ const ContactForm = ({ className }: { className?: string }) => {
       />
 
       <Input
+        ref={typeInputRef}
         errorMessage={errors.type}
         isDark={true}
-        // label={isFrench ? 'Type de demande' : 'Request type'}
         name="contact-type"
         type="select"
         value={formData.type}
@@ -253,8 +299,8 @@ const ContactForm = ({ className }: { className?: string }) => {
       </Input>
 
       <Input
+        ref={messageInputRef}
         isDark={true}
-        // label={isFrench ? 'Message' : 'Message'}
         name="contact-message"
         placeholder={isFrench ? 'Un message à nous transmettre ?' : 'A message to send us?'}
         type="textarea"
@@ -262,23 +308,28 @@ const ContactForm = ({ className }: { className?: string }) => {
         onChange={(e) => setFormData((prev) => ({ ...prev, message: e.target.value }))}
       />
 
-      <Checkbox
-        checked={formData.consentMarketing}
-        id="contact-consentMarketing"
-        isDisclaimer={true}
-        name="contact-consentMarketing"
-        label={
-          isFrench
-            ? 'Je veux recevoir la newsletter (promis, c’est 1 mail tous les 3 mois, pas plus).'
-            : 'I want to receive the newsletter (we promise, it’s 1 email every 3 months, no more).'
-        }
-        onChange={(checked) => setFormData((prev) => ({ ...prev, consentMarketing: checked }))}
-      />
+      <div className="overflow-hidden">
+        <div ref={checkboxRef}>
+          <Checkbox
+            checked={formData.consentMarketing}
+            id="contact-consentMarketing"
+            isDisclaimer={true}
+            name="contact-consentMarketing"
+            label={
+              isFrench
+                ? "Je veux recevoir la newsletter (promis, c'est 1 mail tous les 3 mois, pas plus)."
+                : "I want to receive the newsletter (we promise, it's 1 email every 3 months, no more)."
+            }
+            onChange={(checked) => setFormData((prev) => ({ ...prev, consentMarketing: checked }))}
+          />
+        </div>
+      </div>
 
-      <div className="pt-4">
+      <div ref={buttonRef} className="origin-left pt-4">
         <Button
           color="primary"
           disabled={formStatus === FORM_STATUS.SUCCESS || formStatus === FORM_STATUS.PENDING}
+          isResizable={true}
         >
           {getButtonText()}
         </Button>

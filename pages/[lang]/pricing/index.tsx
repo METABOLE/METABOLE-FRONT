@@ -1,6 +1,7 @@
 import Div3D from '@/components/shared/Div3D';
 import Button from '@/components/ui/Button';
 import { OFFERS } from '@/constants/offer.constant';
+import { TIMELINE } from '@/constants/timeline.constant';
 import CardPricing from '@/features/pricing/CardPricing';
 import { useMatchMedia } from '@/hooks/useCheckScreenSize';
 import { useLanguage } from '@/providers/language.provider';
@@ -8,72 +9,122 @@ import { BREAKPOINTS, OFFER_TYPE } from '@/types';
 import { useGSAP } from '@gsap/react';
 import clsx from 'clsx';
 import gsap from 'gsap';
-import { useState } from 'react';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { SplitText } from 'gsap/SplitText';
+import { useRef, useState } from 'react';
+
+gsap.registerPlugin(SplitText);
 
 const Pricing = () => {
+  const titleRef = useRef(null);
+  const subtitleRef = useRef(null);
+
   const { isFrench, getInternalPath } = useLanguage();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const isTablet = useMatchMedia(BREAKPOINTS.LG);
 
-  useGSAP(() => {
+  const { contextSafe } = useGSAP();
+
+  const revealAnimation = contextSafe(() => {
+    if (!titleRef.current || !subtitleRef.current) return;
+
+    const splitTitle = new SplitText(titleRef.current, {
+      type: 'chars',
+      mask: 'chars',
+    });
+    const splitSubtitle = new SplitText(subtitleRef.current, {
+      type: 'words',
+    });
+
+    gsap.set(splitTitle.chars, {
+      yPercent: 100,
+    });
+
+    gsap.set(splitSubtitle.words, {
+      yPercent: 100,
+      opacity: 0,
+      filter: 'blur(10px)',
+    });
+
+    const timeline = gsap
+      .timeline({
+        delay: TIMELINE.DELAY_AFTER_PAGE_TRANSITION,
+      })
+      .to(splitTitle.chars, {
+        yPercent: 0,
+        duration: 1,
+        stagger: 0.01,
+        ease: 'power4.out',
+      })
+      .to(
+        splitSubtitle.words,
+        {
+          yPercent: 0,
+          opacity: 1,
+          duration: 1,
+          filter: 'blur(0px)',
+          stagger: 0.01,
+          ease: 'power4.out',
+        },
+        '<',
+      );
+
     if (isTablet) {
-      gsap
-        .timeline()
-        .to(
-          [
-            `#offer-card-${OFFERS[0].type}`,
-            `#offer-card-${OFFERS[1].type}`,
-            `#offer-card-${OFFERS[2].type}`,
-          ],
-          {
-            opacity: 1,
-            y: 0,
-            stagger: 0.2,
-            duration: 0.8,
-            ease: 'power2.out',
-          },
-        );
+      timeline.to(
+        [
+          `#offer-card-${OFFERS[0].type}`,
+          `#offer-card-${OFFERS[1].type}`,
+          `#offer-card-${OFFERS[2].type}`,
+        ],
+        {
+          opacity: 1,
+          y: 0,
+          stagger: 0.2,
+          duration: 0.8,
+          ease: 'power2.out',
+        },
+      );
       return;
     }
+
     gsap.set(`#offer-card-${OFFER_TYPE.CUSTOM}`, {
       transformOrigin: 'left center',
     });
     gsap.set(`#offer-card-${OFFER_TYPE.LANDING}`, {
       transformOrigin: 'right center',
     });
-    gsap
-      .timeline()
-      .to([`#offer-card-${OFFERS[0].type}`, `#offer-card-${OFFERS[2].type}`], {
-        x: 0,
-        opacity: 1,
-        stagger: 0.1,
-        duration: 1,
-        ease: 'power4.inOut',
-      })
+
+    timeline
       .to(
-        `#offer-card-${OFFER_TYPE.CUSTOM}`,
+        [`#offer-card-${OFFERS[0].type}`, `#offer-card-${OFFERS[2].type}`],
         {
-          rotationY: -5,
-          rotationZ: 2,
-          z: 20,
-          transformPerspective: 1000,
-          duration: 1.2,
-          ease: 'power3.out',
+          x: 0,
+          opacity: 1,
+          stagger: 0.1,
+          duration: 1,
+          ease: 'power4.inOut',
         },
         '<',
       )
       .to(
-        `#offer-card-${OFFER_TYPE.LANDING}`,
+        [`#offer-card-${OFFER_TYPE.CUSTOM}`, `#offer-card-${OFFER_TYPE.LANDING}`],
         {
-          rotationY: 5,
-          rotationZ: -2,
+          rotationY: (index) => (index % 2 === 0 ? -5 : 5),
+          rotationZ: (index) => (index % 2 === 0 ? 2 : -2),
           z: 20,
           transformPerspective: 1000,
-          duration: 1.2,
-          ease: 'power3.out',
+          duration: 2,
+          ease: 'power4.out',
         },
         '<',
       );
+  });
+
+  const scrollAnimation = contextSafe(() => {
+    ScrollTrigger.getById('pricing-parallax')?.kill();
+
+    if (isTablet) return;
+
     gsap
       .timeline({
         scrollTrigger: {
@@ -86,9 +137,8 @@ const Pricing = () => {
         {
           x: -100,
           rotationZ: -3,
-          opacity: 1,
-          duration: 1,
-          ease: 'none',
+          duration: 1.2,
+          ease: 'power4.out',
         },
         '<',
       )
@@ -97,13 +147,17 @@ const Pricing = () => {
         {
           x: 100,
           rotationZ: 3,
-          opacity: 1,
-          duration: 1,
-          ease: 'none',
+          duration: 1.2,
+          ease: 'power4.out',
         },
         '<',
       );
-  }, [isTablet]);
+  });
+
+  useGSAP(() => {
+    revealAnimation();
+    scrollAnimation();
+  }, [isTablet, isFrench]);
 
   const renderCard = (offer: (typeof OFFERS)[0]) => {
     const cardElement = (
@@ -143,9 +197,11 @@ const Pricing = () => {
 
   return (
     <section className="py-y-default flex flex-col text-center">
-      <div className="pt-y-default mx-auto md:w-2/3">
-        <h1 className="text-blue h1 pb-2.5">{isFrench ? 'Tarification' : 'Pricing'}</h1>
-        <p className="p1">
+      <div className="pt-y-default px-x-default mx-auto md:w-2/3">
+        <h1 ref={titleRef} className="text-blue h1 pb-2.5 uppercase">
+          {isFrench ? 'Tarification' : 'Pricing'}
+        </h1>
+        <p ref={subtitleRef} className="p1">
           {isFrench
             ? 'Nous mettrons toutes nos compétences en oeuvre pour la réalisation de vos projets.'
             : 'We will put all our skills to work for the realization of your projects.'}
@@ -158,14 +214,14 @@ const Pricing = () => {
       >
         {OFFERS.map(renderCard)}
       </div>
-      <div className="mx-auto md:w-2/3">
+      <div className="px-x-default mx-auto md:w-2/3">
         <p className="p1 pb-9">
           {isFrench
             ? 'Si vous avez une idée précise de votre besoin, utilisez notre project studio pour nous orienter dans la réflexion :'
             : 'If you have a clear idea of your needs, use our project studio to guide us in our thinking:'}
         </p>
         <Button color="secondary" href={getInternalPath('/pricing/project-studio')} scroll={false}>
-          PROJECT STUDIO
+          <span>PROJECT STUDIO</span>
         </Button>
       </div>
     </section>

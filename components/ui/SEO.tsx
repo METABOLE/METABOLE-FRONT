@@ -9,16 +9,20 @@ interface SEOProps {
   image?: string;
   url?: string;
   type?: string;
+  isHomePage?: boolean;
+  noindex?: boolean;
 }
 
 const SEO = ({
-  title = 'Metabole STUDIO',
+  title = 'Metabole - Creative Studio Paris | Metabole STUDIO',
   isFrench = false,
-  descriptionEn = 'Metabole STUDIO is a creative studio based in Paris, France, founded by Matteo COURQUIN and Jérôme BEZEAU. We create unique web experiences for brands and agencies.',
-  descriptionFr = 'Metabole STUDIO est un studio créatif basé à Paris, France, fondé par Matteo COURQUIN et Jérôme BEZEAU. Nous créons des expériences web uniques pour les marques et les agences.',
+  descriptionEn = 'Metabole is a creative studio based in Paris, France, founded by Matteo COURQUIN and Jérôme BEZEAU. Metabole STUDIO creates unique web experiences for brands and agencies.',
+  descriptionFr = 'Metabole est un studio créatif basé à Paris, France, fondé par Matteo COURQUIN et Jérôme BEZEAU. Metabole STUDIO crée des expériences web uniques pour les marques et les agences.',
   image = '/og-image.png',
   url = 'https://metabole.studio',
   type = 'website',
+  isHomePage = false,
+  noindex = false,
 }: SEOProps) => {
   const { asPath } = useRouter();
   const description = isFrench ? descriptionFr : descriptionEn;
@@ -36,7 +40,7 @@ const SEO = ({
       <meta content="default" name="referrer" />
 
       {/* Indexation contrôlée */}
-      <meta content="index, follow" name="robots" />
+      <meta content={noindex ? 'noindex, nofollow' : 'index, follow'} name="robots" />
 
       {/* Canonical link */}
       <link key="canonical" href={'https://metabole.studio' + asPath} rel="canonical" />
@@ -59,20 +63,29 @@ const SEO = ({
       {/* Google verification - Uncomment when ready */}
       <meta content="XyGSPQ3t1FMXH4Xl-yEoWbFEElAi0d2FaE5MN8t4UhU" name="google-site-verification" />
 
-      {/* Keywords */}
+      {/* Keywords - Optimisé pour "metabole" et "metabole studio" */}
       <meta
-        content="Metabole STUDIO, Matteo COURQUIN, Jérôme BEZEAU, creative studio, Paris, France, websites, sites, web, web experiences, design, development, animation, 3D, nextjs, gsap, threejs, unique, brands, agencies"
+        content="metabole, Metabole, METABOLE, metabole studio, Metabole STUDIO, studio metabole, creative studio, Paris, France, Matteo COURQUIN, Jérôme BEZEAU, websites, sites, web, web experiences, design, development, animation, 3D, nextjs, gsap, threejs, unique, brands, agencies, studio créatif, expériences web"
         name="keywords"
       />
 
       {/* Favicon */}
       <link href="/favicon.ico" rel="icon" />
 
-      <link
-        href={`${url}${isFrench ? '/fr' : '/en'}`}
-        hrefLang={isFrench ? 'fr' : 'en'}
-        rel="alternate"
-      />
+      {/* Hreflang - Gestion spéciale pour la page d'accueil */}
+      {isHomePage ? (
+        <>
+          <link href="https://metabole.studio/fr" hrefLang="fr" rel="alternate" />
+          <link href="https://metabole.studio/en" hrefLang="en" rel="alternate" />
+          <link href="https://metabole.studio" hrefLang="x-default" rel="alternate" />
+        </>
+      ) : (
+        <link
+          href={`${url}${isFrench ? '/fr' : '/en'}`}
+          hrefLang={isFrench ? 'fr' : 'en'}
+          rel="alternate"
+        />
+      )}
     </Head>
   );
 };

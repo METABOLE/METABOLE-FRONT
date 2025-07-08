@@ -5,12 +5,14 @@ interface LanguageContextType {
   isFrench: boolean;
   setIsFrench: (isFrench: boolean) => void;
   getInternalPath: (path: string) => string;
+  getChangeLanguagePath: (isFrench: boolean) => string;
 }
 
 const LanguageContext = createContext<LanguageContextType>({
   isFrench: true,
   setIsFrench: () => {},
   getInternalPath: (path) => path,
+  getChangeLanguagePath: () => '',
 });
 
 export const useLanguage = () => useContext(LanguageContext);
@@ -20,13 +22,11 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   const [isFrench, _setIsFrench] = useState(true);
 
   const setIsFrench = (isFrench: boolean) => {
-    _setIsFrench(isFrench);
-    const newPath = isFrench ? '/fr' : '/en';
+    const pathWithoutLang = router.asPath.replace(/^\/(fr|en)/, '');
 
-    const { pathname, asPath, query } = router;
-    router.push({ pathname, query }, asPath.replace(/^\/(fr|en)/, `${newPath}`), {
-      shallow: true,
-    });
+    const newFullPath = `/${isFrench ? 'fr' : 'en'}${pathWithoutLang}`;
+
+    router.push(newFullPath, undefined, { shallow: false });
   };
 
   const getInternalPath = (path: string): string => {
@@ -39,12 +39,19 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     return `/${locale}${path.startsWith('/') ? path : `/${path}`}`;
   };
 
+  const getChangeLanguagePath = (isFrench: boolean): string => {
+    const pathWithoutLang = router.asPath.replace(/^\/(fr|en)/, '');
+    return `/${isFrench ? 'fr' : 'en'}${pathWithoutLang}`;
+  };
+
   useEffect(() => {
     _setIsFrench(router.query.lang === 'fr');
   }, [router.query.lang]);
 
   return (
-    <LanguageContext.Provider value={{ isFrench, setIsFrench, getInternalPath }}>
+    <LanguageContext.Provider
+      value={{ isFrench, setIsFrench, getInternalPath, getChangeLanguagePath }}
+    >
       {children}
     </LanguageContext.Provider>
   );

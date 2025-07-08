@@ -1,15 +1,18 @@
-import { usePathname } from 'next/navigation';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import SEO from '@/components/ui/SEO';
+import Hero from '@/features/index/Hero';
 
 export default function Home() {
-  const pathname = usePathname();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (pathname === '/')
-      router.push(navigator.language.includes('fr') ? 'fr' : 'en', undefined, { shallow: true });
-  }, []);
-
-  return null;
+  return (
+    <>
+      <SEO
+        descriptionEn="Metabole Studio is a creative agency specialized in design and web development. We create unique and innovative digital experiences."
+        descriptionFr="Metabole Studio est une agence créative spécialisée dans le design et le développement web. Nous créons des expériences digitales uniques et innovantes."
+        isHomePage={true}
+        noindex={true}
+        title="Metabole Studio - Agence de Design et Développement Web"
+        url="https://metabole.studio"
+      />
+      <Hero />
+    </>
+  );
 }

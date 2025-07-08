@@ -15,6 +15,7 @@ import Hint from '../ui/Hint';
 import { IconArrow, LogoSmall } from '../ui/Icons';
 import { useMatchMedia } from '@/hooks/useCheckScreenSize';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useSmoothScroll } from '@/hooks/useSmoothScroll';
 
 const Footer = () => {
   const animatedTitleRef = useRef<SVGSVGElement>(null);
@@ -26,6 +27,7 @@ const Footer = () => {
   const isMobile = useMatchMedia(BREAKPOINTS.MD);
   const { isFrench, getInternalPath } = useLanguage();
   const { x, y } = useMousePosition(wrapperRef);
+  const { smoothScrollTo } = useSmoothScroll();
   const { contextSafe } = useGSAP();
 
   const trainAnimPlay = contextSafe(() => {
@@ -138,10 +140,10 @@ const Footer = () => {
           />
           <div ref={sectionRef} className="pt-y-default h-full w-full" id="footer">
             <div className="gap-y-y-default mx-auto flex w-[calc(100vw-(var(--x-default)*2))] flex-col">
-              <div className="grid h-full grid-cols-2 gap-5 md:grid-cols-6">
+              <div className="gap-y-y-default grid h-full grid-cols-1 gap-x-5 sm:grid-cols-2 md:grid-cols-6">
                 <Link
-                  className="pb-y-half-default col-span-2 h-fit w-fit md:col-span-1"
-                  href="/"
+                  className="pb-y-half-default col-span-1 h-fit w-fit sm:col-span-2 md:col-span-1"
+                  href={getInternalPath('/')}
                   scroll={false}
                   onMouseMove={(e) => useMagnet(e, 0.8)}
                   onMouseOut={(e) => useResetMagnet(e)}
@@ -181,8 +183,8 @@ const Footer = () => {
                     ))}
                   </ul>
                 </nav>
-                <div />
-                <div className="gap-y-default col-span-2 flex flex-col">
+                <div className="hidden md:block" />
+                <div className="gap-y-default col-span-1 flex flex-col sm:col-span-2">
                   <NewsletterForm animate={false} hintId="hint-newsletter-footer" isDark={false} />
                   <Language className="md:ml-auto" isDark={true} />
                 </div>
@@ -194,12 +196,7 @@ const Footer = () => {
                 <a href={'mailto:' + CONTACT.EMAIL}>{CONTACT.EMAIL}</a>
                 <button
                   className="flex w-fit cursor-pointer items-center justify-end gap-2 text-right lg:col-span-2 lg:ml-auto"
-                  onClick={() =>
-                    window.scrollTo({
-                      top: 0,
-                      behavior: 'smooth',
-                    })
-                  }
+                  onClick={() => smoothScrollTo(0, 1800)}
                 >
                   <IconArrow />
                   <p>Back to top</p>

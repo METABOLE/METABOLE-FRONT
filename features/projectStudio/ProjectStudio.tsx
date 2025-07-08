@@ -279,7 +279,7 @@ const ProjectStudio = () => {
                       }
                     }}
                   >
-                    {step.button.reset[isFrench ? 'fr' : 'en']}
+                    <span>{step.button.reset[isFrench ? 'fr' : 'en']}</span>
                   </Button>
                   <Button
                     className="shrink-0"
@@ -290,7 +290,7 @@ const ProjectStudio = () => {
                       isMobile && scrollToStep(index + 1);
                     }}
                   >
-                    {step.button.next[isFrench ? 'fr' : 'en']}
+                    <span>{step.button.next[isFrench ? 'fr' : 'en']}</span>
                   </Button>
                 </div>
               </div>

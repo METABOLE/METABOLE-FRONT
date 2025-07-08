@@ -4,6 +4,14 @@ export const LINKS = [
     text: { en: 'Home', fr: 'Accueil' },
   },
   {
+    href: '/services',
+    text: { en: 'Services', fr: 'Services' },
+  },
+  {
+    href: '/team',
+    text: { en: 'Team', fr: 'Équipe' },
+  },
+  {
     href: '/pricing',
     text: { en: 'Pricing', fr: 'Tarifs' },
   },
@@ -12,14 +20,6 @@ export const LINKS = [
     text: { en: 'Contact', fr: 'Contact' },
   },
   // {
-  //   href: '/about',
-  //   text: { en: 'About', fr: 'À propos' },
-  // },
-  // {
-  //   href: '/services',
-  //   text: { en: 'Services', fr: 'Services' },
-  // },
-  // {
   //   href: '/works',
   //   text: { en: 'Works', fr: 'Réalisations' },
   // },
@@ -27,7 +27,7 @@ export const LINKS = [
 
 export const SOCIALS = [
   {
-    href: 'https://bento.me/metabolestudio',
+    href: 'https://bento.me/metabole-studio',
     text: 'Bento',
   },
   {

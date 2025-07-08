@@ -73,6 +73,8 @@
   /* GAP */
   --gap-x-default: var(--x-default);
   --gap-y-default: var(--y-default);
+  --gap-y-default-double: var(--y-double-default);
+  --gap-y-default-half: var(--y-half-default);
 
   /* WIDTH */
   --width-x-default: var(--x-default);
@@ -91,6 +93,7 @@
   /* INSET */
   --inset-x-default: var(--x-default);
   --inset-y-default: var(--y-default);
+
 
   /* BREAKPOINTS */
   --breakpoint-xs: 380px;
@@ -128,4 +131,8 @@
 }
 .origin-right {
   @apply origin-right;
+}
+
+.align-tracks-start {
+  align-tracks: start;
 }

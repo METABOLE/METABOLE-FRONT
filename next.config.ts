@@ -7,6 +7,27 @@ const nextConfig: NextConfig = {
   // experimental: {
   //   esmExternals: 'loose',
   // },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/fr',
+        permanent: false,
+        has: [
+          {
+            type: 'header',
+            key: 'accept-language',
+            value: '(.*fr.*)',
+          },
+        ],
+      },
+      {
+        source: '/',
+        destination: '/en',
+        permanent: false,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

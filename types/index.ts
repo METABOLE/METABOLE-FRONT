@@ -8,3 +8,4 @@ export * from './projects.type';
 export * from './tags.type';
 export * from './quote.type';
 export * from './offer.type';
+export * from './questions.type';

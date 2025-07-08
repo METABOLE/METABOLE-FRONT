@@ -1,64 +1,172 @@
-import { useEnvironment } from '@/hooks/useEnvironment';
 import { useScrollLock } from '@/hooks/useToggleScroll';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
-import { useRef } from 'react';
-import metaboleFull from '../../public/lotties/metabole-full-loader.json';
-import Lottie from '../shared/Lottie';
-import { useIsScreenLoader } from '@/hooks/useIsScreenLoader';
+import { useRef, useState } from 'react';
+import SafeNumberFlow from '../shared/SafeNumberFlow';
 
 const ScreenLoader = () => {
-  const lottieRef = useRef(null);
   const screenLoaderRef = useRef(null);
+  const maskRef = {
+    topLeft: useRef(null),
+    topRight: useRef(null),
+    bottomLeft: useRef(null),
+    bottomRight: useRef(null),
+  };
+  const barRefs = {
+    vertical: useRef(null),
+    horizontalRight: useRef(null),
+    horizontalLeft: useRef(null),
+  };
+  const progressWrapperRef = useRef(null);
+  const [progress, setProgress] = useState(0);
+  const progressRef = useRef({ value: 0 });
 
-  const isScreenLoader = useIsScreenLoader();
-  const { isProd } = useEnvironment();
   const { contextSafe } = useGSAP();
   const { lockScroll } = useScrollLock();
 
-  useGSAP(() => {
-    isScreenLoader && lockScroll(true);
-    gsap.set(screenLoaderRef.current, {
-      delay: 1.8,
-      display: 'none',
-    });
-  }, [isScreenLoader]);
+  const revealAnimation = contextSafe(() => {
+    if (
+      !barRefs.vertical.current ||
+      !barRefs.horizontalRight.current ||
+      !barRefs.horizontalLeft.current
+    )
+      return;
 
-  const handdleEndLottie = contextSafe(() => {
     gsap
-      .timeline()
-      .to(
-        lottieRef.current,
-        {
-          scaleY: 0,
-          duration: 0.1,
-          ease: 'power2.out',
+      .timeline({
+        delay: 0.5,
+        defaults: {
+          duration: 1.2,
+          ease: 'power4.inOut',
         },
-        '-=0.6',
-      )
-      .set([lottieRef.current, screenLoaderRef.current], {
-        display: 'none',
       })
-      .add(() => lockScroll(false), '+=0.1');
+      .to(progressWrapperRef.current, {
+        scale: 1,
+        duration: 0.5,
+      })
+      .to(
+        barRefs.vertical.current,
+        {
+          scaleY: 1,
+          duration: 0.5,
+        },
+        '<',
+      )
+      .to(
+        [barRefs.horizontalRight.current, barRefs.horizontalLeft.current],
+        {
+          scaleX: 1,
+          duration: 0.5,
+        },
+        '<',
+      )
+      .to({}, { duration: 0.5 })
+      .addLabel('progress')
+      .to(
+        progressRef.current,
+        {
+          value: 100,
+          duration: 2,
+          ease: 'power4.inOut',
+          onUpdate: function () {
+            setProgress(Math.round(progressRef.current.value));
+          },
+        },
+        'progress',
+      )
+      .to(
+        [barRefs.horizontalRight.current, barRefs.horizontalLeft.current],
+        {
+          duration: 2,
+          width: '50vw',
+        },
+        'progress+=0.2',
+      )
+      .to(
+        barRefs.vertical.current,
+        {
+          duration: 2,
+          height: '100vh',
+        },
+        'progress+=0.2',
+      )
+
+      .to({}, { duration: 1 })
+      .addLabel('disappear')
+      .to(
+        barRefs.vertical.current,
+        {
+          opacity: 0,
+          duration: 0.3,
+        },
+        'disappear',
+      )
+      .set(
+        [barRefs.horizontalRight.current, barRefs.horizontalLeft.current],
+        {
+          transformOrigin: (i) => (i === 0 ? 'left' : 'right'),
+        },
+        'disappear',
+      )
+      .to(
+        progressWrapperRef.current,
+        {
+          x: 200,
+          duration: 1,
+        },
+        'disappear',
+      )
+      .to(
+        [
+          maskRef.topLeft.current,
+          maskRef.bottomLeft.current,
+          maskRef.topRight.current,
+          maskRef.bottomRight.current,
+          barRefs.horizontalRight.current,
+          barRefs.horizontalLeft.current,
+        ],
+        {
+          scaleX: 0,
+        },
+        'disappear',
+      )
+      .add(() => lockScroll(false))
+      .set(screenLoaderRef.current, {
+        display: 'none',
+      });
   });
 
+  useGSAP(() => {
+    revealAnimation();
+  }, []);
+
   return (
-    <>
-      <div ref={screenLoaderRef} className="fixed inset-0 z-[950] bg-white"></div>
-      {isProd && (
-        <div
-          ref={lottieRef}
-          className="fixed top-1/2 left-1/2 z-[970] -translate-x-1/2 -translate-y-1/2"
-        >
-          <Lottie
-            animationData={metaboleFull}
-            className="h-48"
-            loop={false}
-            onComplete={handdleEndLottie}
+    <div ref={screenLoaderRef} className="fixed inset-0 z-[950] grid grid-cols-2 grid-rows-2">
+      <div ref={maskRef.topLeft} className="h-full w-full origin-left bg-black" />
+      <div ref={maskRef.topRight} className="h-full w-full origin-right bg-black" />
+      <div ref={maskRef.bottomLeft} className="h-full w-full origin-left bg-black" />
+      <div ref={maskRef.bottomRight} className="h-full w-full origin-right bg-black" />
+      <div className="absolute bottom-1/2 left-1/2 overflow-hidden p-4">
+        <div ref={progressWrapperRef} className="origin-bottom-left scale-0 text-white">
+          <SafeNumberFlow
+            format={{ minimumIntegerDigits: 3, useGrouping: false }}
+            value={progress}
           />
         </div>
-      )}
-    </>
+      </div>
+      <div
+        ref={barRefs.vertical}
+        className="absolute top-1/2 left-1/2 h-2 w-0.5 -translate-x-1/2 -translate-y-1/2 scale-y-0 bg-white"
+      />
+      <div
+        ref={barRefs.horizontalRight}
+        className="absolute top-1/2 right-1/2 h-0.5 w-1 origin-right -translate-y-1/2 scale-x-0 bg-white"
+      />
+      <div
+        ref={barRefs.horizontalLeft}
+        className="absolute top-1/2 left-1/2 h-0.5 w-1 origin-left -translate-y-1/2 scale-x-0 bg-white"
+      />
+    </div>
   );
 };
 
