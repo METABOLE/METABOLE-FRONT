@@ -194,6 +194,7 @@ const Hero = () => {
             id="hint-team-hero"
             src="/images/matteo-and-jerome.png"
             width={1080}
+            priority
           />
         </div>
       </section>
