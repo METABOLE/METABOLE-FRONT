@@ -1,7 +1,8 @@
 import { useScrollLock } from '@/hooks/useToggleScroll';
+import usePerformance from '@/hooks/usePerformance';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import SafeNumberFlow from '../shared/SafeNumberFlow';
 
 const ScreenLoader = () => {
@@ -20,15 +21,25 @@ const ScreenLoader = () => {
   const progressWrapperRef = useRef(null);
   const [progress, setProgress] = useState(0);
   const progressRef = useRef({ value: 0 });
+  const [shouldStartAnimation, setShouldStartAnimation] = useState(false);
 
   const { contextSafe } = useGSAP();
   const { lockScroll } = useScrollLock();
+  const { isLoading } = usePerformance();
+
+  // Attendre que le test de performance soit terminé
+  useEffect(() => {
+    if (!isLoading) {
+      setShouldStartAnimation(true);
+    }
+  }, [isLoading]);
 
   const revealAnimation = contextSafe(() => {
     if (
       !barRefs.vertical.current ||
       !barRefs.horizontalRight.current ||
-      !barRefs.horizontalLeft.current
+      !barRefs.horizontalLeft.current ||
+      !shouldStartAnimation
     )
       return;
 
@@ -137,8 +148,10 @@ const ScreenLoader = () => {
   });
 
   useGSAP(() => {
-    revealAnimation();
-  }, []);
+    if (shouldStartAnimation) {
+      revealAnimation();
+    }
+  }, [shouldStartAnimation]);
 
   return (
     <div ref={screenLoaderRef} className="fixed inset-0 z-[950] grid grid-cols-2 grid-rows-2">

@@ -1,13 +1,14 @@
 import Button from '@/components/ui/Button';
 import { IconCross } from '@/components/ui/Icons';
 import { TIMELINE } from '@/constants/timeline.constant';
+import usePerformance from '@/hooks/usePerformance';
 import { useLanguage } from '@/providers/language.provider';
 import { BREAKPOINTS, COLORS } from '@/types';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 gsap.registerPlugin(SplitText, ScrollTrigger);
 
@@ -21,6 +22,7 @@ const Hero = () => {
   const desktopSpan4Ref = useRef<HTMLSpanElement>(null);
   const mobileTitleRef = useRef<HTMLSpanElement>(null);
 
+  const { isLoading, performanceLevel } = usePerformance();
   const { contextSafe } = useGSAP();
 
   const revealAnimation = contextSafe(() => {
@@ -122,6 +124,10 @@ const Hero = () => {
     scrollAnimation();
     revealAnimation();
   }, [isFrench]);
+
+  useEffect(() => {
+    console.log(performanceLevel);
+  }, [isLoading]);
 
   return (
     <section
