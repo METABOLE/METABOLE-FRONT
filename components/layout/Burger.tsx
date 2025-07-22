@@ -29,11 +29,10 @@ const Burger = () => {
 
   const pathname = usePathname();
   const { isFrench, getInternalPath } = useLanguage();
-  const { isLoading, isAtLeast } = usePerformance();
+  const { isAtLeast } = usePerformance();
   const { contextSafe } = useGSAP();
 
   useGSAP(() => {
-    if (isLoading) return;
     if (!socialsRef.current || !infosRef.current) return;
     gsap.set([infosRef.current.children, socialsRef.current.children], {
       xPercent: -100,
