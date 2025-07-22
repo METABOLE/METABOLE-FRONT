@@ -44,7 +44,7 @@ const CardFaq = ({
   const pathname = usePathname();
 
   useGSAP(() => {
-    if (!answerRef.current || !textAnswerRef.current || !arrowRef.current || isLoading) return;
+    if (!answerRef.current || !textAnswerRef.current || !arrowRef.current) return;
 
     const splitText = new SplitText(textAnswerRef.current, {
       type: 'words',

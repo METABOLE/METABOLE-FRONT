@@ -94,6 +94,7 @@ const Footer = () => {
           start: 'top-=300 bottom',
           end: 'bottom bottom',
           scrub: true,
+          id: 'footer-scrub',
         },
         defaults: { ease: 'none' },
       })
