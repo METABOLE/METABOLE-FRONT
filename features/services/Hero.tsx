@@ -4,6 +4,7 @@ import ScrollButton from '@/components/ui/ScrollButton';
 import ScrollingContainer from '@/components/ui/ScrollingContainer';
 import { TIMELINE } from '@/constants/timeline.constant';
 import { useMatchMedia } from '@/hooks/useCheckScreenSize';
+import usePerformance, { PERFORMANCE_LEVEL } from '@/hooks/usePerformance';
 import { useLanguage } from '@/providers/language.provider';
 import { BREAKPOINTS, COLORS } from '@/types';
 import { useGSAP } from '@gsap/react';
@@ -22,6 +23,7 @@ const Hero = () => {
   const { contextSafe } = useGSAP();
   const { isFrench } = useLanguage();
   const isMobile = useMatchMedia(BREAKPOINTS.MD);
+  const { isLoading, isAtLeast } = usePerformance();
 
   const revealAnimation = contextSafe(() => {
     const splitTitle = new SplitText(titleRef.current, {
@@ -34,12 +36,16 @@ const Hero = () => {
     gsap.set(splitTitle.words, {
       yPercent: 100,
       opacity: 0,
-      filter: 'blur(10px)',
+      ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+        filter: 'blur(10px)',
+      }),
     });
     gsap.set(splitDescription.words, {
       yPercent: 100,
       opacity: 0,
-      filter: 'blur(10px)',
+      ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+        filter: 'blur(10px)',
+      }),
     });
 
     gsap
@@ -50,7 +56,9 @@ const Hero = () => {
         yPercent: 0,
         opacity: 1,
         duration: 1,
-        filter: 'blur(0px)',
+        ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+          filter: 'blur(0px)',
+        }),
         stagger: 0.02,
         ease: 'power4.out',
       })
@@ -60,7 +68,9 @@ const Hero = () => {
           yPercent: 0,
           opacity: 1,
           duration: 1,
-          filter: 'blur(0px)',
+          ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+            filter: 'blur(0px)',
+          }),
           stagger: 0.02,
           ease: 'power4.out',
         },
@@ -69,6 +79,14 @@ const Hero = () => {
   });
 
   const scrollAnimation = contextSafe(() => {
+    ScrollTrigger.getById('services-scroll')?.kill();
+
+    if (isMobile) {
+      gsap.set(titleRef.current, { x: 0 });
+      gsap.set(descriptionRef.current, { x: 0 });
+      return;
+    }
+
     gsap
       .timeline({
         scrollTrigger: {
@@ -106,16 +124,10 @@ const Hero = () => {
   });
 
   useGSAP(() => {
-    revealAnimation();
-    ScrollTrigger.getById('services-scroll')?.kill();
-
-    if (isMobile) {
-      gsap.set(titleRef.current, { x: 0 });
-      gsap.set(descriptionRef.current, { x: 0 });
-      return;
-    }
     scrollAnimation();
-  }, [isMobile, isFrench]);
+    if (isLoading) return;
+    revealAnimation();
+  }, [isMobile, isFrench, isLoading]);
 
   return (
     <section

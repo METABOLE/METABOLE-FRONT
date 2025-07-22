@@ -2,7 +2,7 @@ import { useScrollLock } from '@/hooks/useToggleScroll';
 import usePerformance from '@/hooks/usePerformance';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 import SafeNumberFlow from '../shared/SafeNumberFlow';
 
 const ScreenLoader = () => {
@@ -21,25 +21,16 @@ const ScreenLoader = () => {
   const progressWrapperRef = useRef(null);
   const [progress, setProgress] = useState(0);
   const progressRef = useRef({ value: 0 });
-  const [shouldStartAnimation, setShouldStartAnimation] = useState(false);
 
   const { contextSafe } = useGSAP();
   const { lockScroll } = useScrollLock();
   const { isLoading } = usePerformance();
 
-  // Attendre que le test de performance soit terminé
-  useEffect(() => {
-    if (!isLoading) {
-      setShouldStartAnimation(true);
-    }
-  }, [isLoading]);
-
   const revealAnimation = contextSafe(() => {
     if (
       !barRefs.vertical.current ||
       !barRefs.horizontalRight.current ||
-      !barRefs.horizontalLeft.current ||
-      !shouldStartAnimation
+      !barRefs.horizontalLeft.current
     )
       return;
 
@@ -101,8 +92,19 @@ const ScreenLoader = () => {
         },
         'progress+=0.2',
       )
+      .to({}, { duration: 1 });
+  });
 
-      .to({}, { duration: 1 })
+  const disappearAnimation = contextSafe(() => {
+    if (
+      !barRefs.vertical.current ||
+      !barRefs.horizontalRight.current ||
+      !barRefs.horizontalLeft.current
+    )
+      return;
+
+    gsap
+      .timeline()
       .addLabel('disappear')
       .to(
         barRefs.vertical.current,
@@ -148,10 +150,13 @@ const ScreenLoader = () => {
   });
 
   useGSAP(() => {
-    if (shouldStartAnimation) {
-      revealAnimation();
-    }
-  }, [shouldStartAnimation]);
+    revealAnimation();
+  }, []);
+
+  useGSAP(() => {
+    if (isLoading) return;
+    disappearAnimation();
+  }, [isLoading]);
 
   return (
     <div ref={screenLoaderRef} className="fixed inset-0 z-[950] grid grid-cols-2 grid-rows-2">

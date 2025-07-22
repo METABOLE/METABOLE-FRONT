@@ -3,7 +3,7 @@ import Button from '@/components/ui/Button';
 import { IconCross } from '@/components/ui/Icons';
 import ScrollButton from '@/components/ui/ScrollButton';
 import { useMatchMedia } from '@/hooks/useCheckScreenSize';
-import usePerformance from '@/hooks/usePerformance';
+import usePerformance, { PERFORMANCE_LEVEL } from '@/hooks/usePerformance';
 import { useLanguage } from '@/providers/language.provider';
 import { BREAKPOINTS, COLORS } from '@/types';
 import { useGSAP } from '@gsap/react';
@@ -15,19 +15,27 @@ import { useRef } from 'react';
 gsap.registerPlugin(ScrollTrigger);
 
 const Philosophy = () => {
-  const { isFrench, getInternalPath } = useLanguage();
-
   const wrapperVideoRef = useRef(null);
   const videoRef = useRef(null);
   const sectionRef = useRef(null);
   const titleRef = useRef(null);
   const descriptionRef = useRef(null);
 
+  const { isFrench, getInternalPath } = useLanguage();
+  const { isLoading, isAtLeast } = usePerformance();
   const { contextSafe } = useGSAP();
   const isMobile = useMatchMedia(BREAKPOINTS.MD);
-  const metrics = usePerformance();
 
   const scrollAnimation = contextSafe(() => {
+    ScrollTrigger.getById('philosophy-scroll')?.kill();
+
+    if (isMobile) {
+      gsap.set(titleRef.current, { x: 0 });
+      gsap.set(descriptionRef.current, { x: 0 });
+      gsap.set(videoRef.current, { scale: 1 });
+      return;
+    }
+
     const timeline = gsap.timeline({
       scrollTrigger: {
         trigger: sectionRef.current,
@@ -38,21 +46,7 @@ const Philosophy = () => {
       },
     });
 
-    if (metrics.performanceLevel === 'low') {
-      timeline.fromTo(
-        wrapperVideoRef.current,
-        {
-          scale: 0.8,
-          opacity: 0,
-        },
-        {
-          scale: 1,
-          opacity: 1,
-          duration: 1,
-          ease: 'none',
-        },
-      );
-    } else {
+    if (isAtLeast(PERFORMANCE_LEVEL.HIGH)) {
       timeline
         .fromTo(
           videoRef.current,
@@ -77,6 +71,18 @@ const Philosophy = () => {
           },
           '<',
         );
+    } else {
+      timeline.fromTo(
+        wrapperVideoRef.current,
+        {
+          scale: 0.8,
+        },
+        {
+          scale: 1,
+          duration: 1,
+          ease: 'none',
+        },
+      );
     }
     timeline
       .fromTo(
@@ -106,28 +112,15 @@ const Philosophy = () => {
   });
 
   useGSAP(() => {
-    ScrollTrigger.getById('philosophy-scroll')?.kill();
-
-    if (isMobile) {
-      gsap.set(titleRef.current, { x: 0 });
-      gsap.set(descriptionRef.current, { x: 0 });
-      gsap.set(videoRef.current, { scale: 1 });
-      return;
-    }
-
+    if (isLoading) return;
     scrollAnimation();
-  }, [isMobile, metrics.performanceLevel]);
+  }, [isMobile, isLoading]);
 
   return (
     <section
       ref={sectionRef}
       className="px-x-default md:px-x-double-default gap-y-y-default md:gap-y-y-default-double pb-y-double-default relative flex flex-col items-center"
     >
-      {/* <FloatingHalo
-        className="pointer-events-none absolute -bottom-full left-0 -z-10 h-full w-full opacity-50"
-        from="#1b17ee"
-        to="#f1f2ff00"
-      /> */}
       <ScrollButton />
       <div className="group/image relative aspect-video w-full">
         <IconCross
@@ -152,7 +145,7 @@ const Philosophy = () => {
               src="/videos/showreel.mp4"
               className={clsx(
                 'h-full w-full rounded-3xl object-cover object-top',
-                metrics.performanceLevel !== 'low' && 'scale-130',
+                !isAtLeast(PERFORMANCE_LEVEL.HIGH) && 'scale-130',
               )}
               autoPlay
               loop

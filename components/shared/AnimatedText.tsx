@@ -1,3 +1,4 @@
+import usePerformance, { PERFORMANCE_LEVEL } from '@/hooks/usePerformance';
 import { useLanguage } from '@/providers/language.provider';
 import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
@@ -35,7 +36,7 @@ const AnimatedText = forwardRef<HTMLElement, AnimatedTextProps>(
     const elementRef = ref || textRef;
 
     const { isFrench } = useLanguage();
-
+    const { isLoading, isAtLeast } = usePerformance();
     const { contextSafe } = useGSAP();
 
     const animateText = contextSafe(() => {
@@ -49,14 +50,18 @@ const AnimatedText = forwardRef<HTMLElement, AnimatedTextProps>(
       gsap.set(split.words, {
         yPercent: 100,
         opacity: 0,
-        filter: 'blur(10px)',
+        ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+          filter: 'blur(10px)',
+        }),
       });
 
       gsap.to(split.words, {
         yPercent: 0,
         opacity: 1,
         duration,
-        filter: 'blur(0px)',
+        ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+          filter: 'blur(0px)',
+        }),
         stagger,
         ease: 'power4.out',
         scrollTrigger: {
@@ -68,8 +73,9 @@ const AnimatedText = forwardRef<HTMLElement, AnimatedTextProps>(
     });
 
     useGSAP(() => {
+      if (isLoading) return;
       animateText();
-    }, [isFrench]);
+    }, [isFrench, isLoading]);
 
     const Tag = variant;
 

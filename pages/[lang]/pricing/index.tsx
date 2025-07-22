@@ -4,6 +4,8 @@ import { OFFERS } from '@/constants/offer.constant';
 import { TIMELINE } from '@/constants/timeline.constant';
 import CardPricing from '@/features/pricing/CardPricing';
 import { useMatchMedia } from '@/hooks/useCheckScreenSize';
+import usePerformance from '@/hooks/usePerformance';
+import { PERFORMANCE_LEVEL } from '@/hooks/usePerformance';
 import { useLanguage } from '@/providers/language.provider';
 import { BREAKPOINTS, OFFER_TYPE } from '@/types';
 import { useGSAP } from '@gsap/react';
@@ -19,11 +21,12 @@ const Pricing = () => {
   const titleRef = useRef(null);
   const subtitleRef = useRef(null);
 
-  const { isFrench, getInternalPath } = useLanguage();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const isTablet = useMatchMedia(BREAKPOINTS.LG);
 
+  const { isFrench, getInternalPath } = useLanguage();
+  const isTablet = useMatchMedia(BREAKPOINTS.LG);
   const { contextSafe } = useGSAP();
+  const { isLoading, isAtLeast } = usePerformance();
 
   const revealAnimation = contextSafe(() => {
     if (!titleRef.current || !subtitleRef.current) return;
@@ -43,7 +46,9 @@ const Pricing = () => {
     gsap.set(splitSubtitle.words, {
       yPercent: 100,
       opacity: 0,
-      filter: 'blur(10px)',
+      ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+        filter: 'blur(10px)',
+      }),
     });
 
     const timeline = gsap
@@ -62,7 +67,9 @@ const Pricing = () => {
           yPercent: 0,
           opacity: 1,
           duration: 1,
-          filter: 'blur(0px)',
+          ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+            filter: 'blur(0px)',
+          }),
           stagger: 0.01,
           ease: 'power4.out',
         },
@@ -155,9 +162,10 @@ const Pricing = () => {
   });
 
   useGSAP(() => {
-    revealAnimation();
     scrollAnimation();
-  }, [isTablet, isFrench]);
+    if (isLoading) return;
+    revealAnimation();
+  }, [isTablet, isFrench, isLoading]);
 
   const renderCard = (offer: (typeof OFFERS)[0]) => {
     const cardElement = (

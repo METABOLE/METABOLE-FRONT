@@ -18,6 +18,7 @@ import { useRef, useState } from 'react';
 import Divider from './timeline/Divider';
 import Event from './timeline/Event';
 import { SplitText } from 'gsap/SplitText';
+import usePerformance, { PERFORMANCE_LEVEL } from '@/hooks/usePerformance';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -30,9 +31,11 @@ const Process = () => {
   const titleRef = useRef(null);
   const descriptionRef = useRef(null);
 
-  const { isFrench } = useLanguage();
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
+  const { isFrench } = useLanguage();
   const { contextSafe } = useGSAP();
+  const { isLoading, isAtLeast } = usePerformance();
 
   const scrubAnimation = contextSafe(() => {
     if (!sectionRef.current || !horizontalRef.current || !progressBarRef.current) return;
@@ -121,7 +124,9 @@ const Process = () => {
     gsap.set(splitDescription.words, {
       yPercent: 100,
       opacity: 0,
-      filter: 'blur(10px)',
+      ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+        filter: 'blur(10px)',
+      }),
     });
 
     gsap
@@ -144,7 +149,9 @@ const Process = () => {
         {
           yPercent: 0,
           opacity: 1,
-          filter: 'blur(0px)',
+          ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+            filter: 'blur(0px)',
+          }),
           duration: 1,
           stagger: 0.005,
           ease: 'power4.out',
@@ -154,8 +161,9 @@ const Process = () => {
   });
 
   useGSAP(() => {
+    if (isLoading) return;
     revealAnimation();
-  }, [isFrench]);
+  }, [isFrench, isLoading]);
 
   useGSAP(() => {
     scrubAnimation();

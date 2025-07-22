@@ -1,30 +1,70 @@
 import { useEffect, useState } from 'react';
 
-type PerformanceLevel = 'high' | 'medium' | 'low';
+export enum PERFORMANCE_LEVEL {
+  HIGH = 'high',
+  MEDIUM = 'medium',
+  LOW = 'low',
+}
 type DeviceType = 'iphone' | 'ipad' | 'mac' | 'android' | 'windows' | 'linux' | 'unknown';
 
 interface PerformanceMetrics {
-  performanceLevel: PerformanceLevel;
+  performanceLevel: PERFORMANCE_LEVEL;
   performanceScore: number;
   deviceType: DeviceType;
   executionTime: number;
   isLoading: boolean;
 }
 
-const usePerformance = (): PerformanceMetrics => {
+interface NavigatorWithOptionalProps extends Navigator {
+  deviceMemory?: number;
+  connection?: {
+    effectiveType?: 'slow-2g' | '2g' | '3g' | '4g';
+  };
+}
+
+const PERFORMANCE_LEVEL_VALUES = {
+  [PERFORMANCE_LEVEL.LOW]: 1,
+  [PERFORMANCE_LEVEL.MEDIUM]: 2,
+  [PERFORMANCE_LEVEL.HIGH]: 3,
+} as const;
+
+interface PerformanceUtils {
+  isAtLeast: (level: PERFORMANCE_LEVEL) => boolean;
+  isAtMost: (level: PERFORMANCE_LEVEL) => boolean;
+  isExactly: (level: PERFORMANCE_LEVEL) => boolean;
+  getConditionalProps: <T>(props: Record<PERFORMANCE_LEVEL, T>) => T | undefined;
+}
+
+const usePerformance = (): PerformanceMetrics & PerformanceUtils => {
   const [metrics, setMetrics] = useState<PerformanceMetrics>({
-    performanceLevel: 'high',
+    performanceLevel: PERFORMANCE_LEVEL.HIGH,
     performanceScore: 100,
     deviceType: 'unknown',
     executionTime: 0,
     isLoading: true,
   });
 
+  const isAtLeast = (level: PERFORMANCE_LEVEL): boolean => {
+    return PERFORMANCE_LEVEL_VALUES[metrics.performanceLevel] >= PERFORMANCE_LEVEL_VALUES[level];
+  };
+
+  const isAtMost = (level: PERFORMANCE_LEVEL): boolean => {
+    return PERFORMANCE_LEVEL_VALUES[metrics.performanceLevel] <= PERFORMANCE_LEVEL_VALUES[level];
+  };
+
+  const isExactly = (level: PERFORMANCE_LEVEL): boolean => {
+    return metrics.performanceLevel === level;
+  };
+
+  const getConditionalProps = <T>(props: Record<PERFORMANCE_LEVEL, T>): T | undefined => {
+    return props[metrics.performanceLevel];
+  };
+
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const detectPerformance = async () => {
         const { hardwareConcurrency = 1, userAgent } = navigator;
-        const { deviceMemory = 4, connection } = navigator as any;
+        const { deviceMemory = 4, connection } = navigator as NavigatorWithOptionalProps;
         const userAgentLower = userAgent.toLowerCase();
 
         let deviceType: DeviceType = 'unknown';
@@ -65,6 +105,7 @@ const usePerformance = (): PerformanceMetrics => {
           let result = 0;
           for (let i = 0; i < 10000000; i++) {
             result += i;
+            void result;
           }
 
           const end = performance.now();
@@ -87,35 +128,57 @@ const usePerformance = (): PerformanceMetrics => {
           };
         };
 
-        const performanceTest = runSimplePerformanceTest();
+        let performanceTest: { executionTime: number; score: number };
+        let isTimeout = false;
+
+        try {
+          performanceTest = await Promise.race([
+            new Promise<{ executionTime: number; score: number }>((resolve) => {
+              resolve(runSimplePerformanceTest());
+            }),
+            new Promise<never>((_, reject) => {
+              setTimeout(() => {
+                isTimeout = true;
+                reject(new Error('Performance test timeout'));
+              }, 2000);
+            }),
+          ]);
+        } catch (error) {
+          console.warn('Performance test timeout after 2s, forcing LOW performance level');
+          performanceTest = { executionTime: 2000, score: 20 };
+        }
 
         let performanceScore = performanceTest.score;
 
-        if (connection) {
-          if (connection.effectiveType === 'slow-2g') performanceScore -= 30;
-          else if (connection.effectiveType === '2g') performanceScore -= 25;
-          else if (connection.effectiveType === '3g') performanceScore -= 15;
-          else if (connection.effectiveType === '4g') performanceScore -= 8;
-        }
+        if (isTimeout) {
+          performanceScore = 20;
+        } else {
+          if (connection) {
+            if (connection.effectiveType === 'slow-2g') performanceScore -= 30;
+            else if (connection.effectiveType === '2g') performanceScore -= 25;
+            else if (connection.effectiveType === '3g') performanceScore -= 15;
+            else if (connection.effectiveType === '4g') performanceScore -= 8;
+          }
 
-        const isOldBrowser =
-          /msie|trident|edge 1[2-7]|chrome 5[0-9]|chrome [1-4][0-9]|firefox 5[0-9]|firefox [1-4][0-9]/i.test(
-            userAgentLower,
-          );
-        if (isOldBrowser) performanceScore -= 25;
+          const isOldBrowser =
+            /msie|trident|edge 1[2-7]|chrome 5[0-9]|chrome [1-4][0-9]|firefox 5[0-9]|firefox [1-4][0-9]/i.test(
+              userAgentLower,
+            );
+          if (isOldBrowser) performanceScore -= 25;
+        }
 
         performanceScore = Math.max(0, Math.min(100, performanceScore));
 
-        let performanceLevel: PerformanceLevel;
-        if (performanceScore >= 80) {
-          performanceLevel = 'high';
-        } else if (performanceScore >= 50) {
-          performanceLevel = 'medium';
+        let performanceLevel: PERFORMANCE_LEVEL;
+        if (isTimeout || performanceScore < 50) {
+          performanceLevel = PERFORMANCE_LEVEL.LOW;
+        } else if (performanceScore >= 80) {
+          performanceLevel = PERFORMANCE_LEVEL.HIGH;
         } else {
-          performanceLevel = 'low';
+          performanceLevel = PERFORMANCE_LEVEL.MEDIUM;
         }
 
-        console.log('Simple Performance detection:', {
+        console.info('Simple Performance detection:', {
           deviceType,
           hardwareConcurrency,
           deviceMemory,
@@ -125,15 +188,12 @@ const usePerformance = (): PerformanceMetrics => {
           isDesktop,
           performanceScore,
           performanceLevel,
+          isTimeout,
           userAgent: userAgentLower.substring(0, 100) + '...',
         });
 
-        // Garantir un délai minimum de 2 secondes
-        const minDelay = 2000;
-        const actualDelay = Math.max(minDelay, performanceTest.executionTime);
-
-        // Attendre le délai minimum ou le temps d'exécution réel
-        await new Promise((resolve) => setTimeout(resolve, actualDelay));
+        const delay = isTimeout ? 2000 : performanceTest.executionTime;
+        await new Promise((resolve) => setTimeout(resolve, delay));
 
         setMetrics({
           performanceLevel,
@@ -148,7 +208,7 @@ const usePerformance = (): PerformanceMetrics => {
     }
   }, []);
 
-  return metrics;
+  return { ...metrics, isAtLeast, isAtMost, isExactly, getConditionalProps };
 };
 
 export default usePerformance;

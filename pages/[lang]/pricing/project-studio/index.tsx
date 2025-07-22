@@ -1,5 +1,6 @@
 import { TIMELINE } from '@/constants/timeline.constant';
 import ProjectStudio from '@/features/projectStudio/ProjectStudio';
+import usePerformance, { PERFORMANCE_LEVEL } from '@/hooks/usePerformance';
 import { useLanguage } from '@/providers/language.provider';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
@@ -12,8 +13,8 @@ const Pricing = () => {
   const descriptionRef = useRef(null);
 
   const { isFrench } = useLanguage();
-
   const { contextSafe } = useGSAP();
+  const { isLoading, isAtLeast } = usePerformance();
 
   const revealAnimation = contextSafe(() => {
     if (!titleRef.current || !subtitleRef.current || !descriptionRef.current) return;
@@ -35,12 +36,16 @@ const Pricing = () => {
     gsap.set(splitSubtitle.words, {
       yPercent: 100,
       opacity: 0,
-      filter: 'blur(10px)',
+      ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+        filter: 'blur(10px)',
+      }),
     });
     gsap.set(splitDescription.words, {
       yPercent: 100,
       opacity: 0,
-      filter: 'blur(10px)',
+      ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+        filter: 'blur(10px)',
+      }),
     });
 
     gsap
@@ -59,7 +64,9 @@ const Pricing = () => {
           yPercent: 0,
           opacity: 1,
           duration: 1,
-          filter: 'blur(0px)',
+          ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+            filter: 'blur(0px)',
+          }),
           stagger: 0.01,
           ease: 'power4.out',
         },
@@ -71,7 +78,9 @@ const Pricing = () => {
           yPercent: 0,
           opacity: 1,
           duration: 1,
-          filter: 'blur(0px)',
+          ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+            filter: 'blur(0px)',
+          }),
           stagger: 0.01,
           ease: 'power4.out',
         },
@@ -80,8 +89,9 @@ const Pricing = () => {
   });
 
   useGSAP(() => {
+    if (isLoading) return;
     revealAnimation();
-  }, [isFrench]);
+  }, [isFrench, isLoading]);
 
   return (
     <section className="px-x-default py-y-default">

@@ -1,14 +1,14 @@
 import Button from '@/components/ui/Button';
 import { IconCross } from '@/components/ui/Icons';
 import { TIMELINE } from '@/constants/timeline.constant';
-import usePerformance from '@/hooks/usePerformance';
+import usePerformance, { PERFORMANCE_LEVEL } from '@/hooks/usePerformance';
 import { useLanguage } from '@/providers/language.provider';
 import { BREAKPOINTS, COLORS } from '@/types';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 
 gsap.registerPlugin(SplitText, ScrollTrigger);
 
@@ -22,7 +22,7 @@ const Hero = () => {
   const desktopSpan4Ref = useRef<HTMLSpanElement>(null);
   const mobileTitleRef = useRef<HTMLSpanElement>(null);
 
-  const { isLoading, performanceLevel } = usePerformance();
+  const { isLoading, isAtLeast } = usePerformance();
   const { contextSafe } = useGSAP();
 
   const revealAnimation = contextSafe(() => {
@@ -80,13 +80,17 @@ const Hero = () => {
       gsap.set(split.words, {
         opacity: 0,
         yPercent: 100,
-        filter: 'blur(10px)',
+        ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+          filter: 'blur(10px)',
+        }),
       });
 
       timeline.to(split.words, {
         opacity: 1,
         yPercent: 0,
-        filter: 'blur(0px)',
+        ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+          filter: 'blur(0px)',
+        }),
         duration: 1.2,
         stagger: 0.02,
         ease: 'power4.out',
@@ -121,13 +125,10 @@ const Hero = () => {
   });
 
   useGSAP(() => {
+    if (isLoading) return;
     scrollAnimation();
     revealAnimation();
-  }, [isFrench]);
-
-  useEffect(() => {
-    console.log(performanceLevel);
-  }, [isLoading]);
+  }, [isFrench, isLoading]);
 
   return (
     <section

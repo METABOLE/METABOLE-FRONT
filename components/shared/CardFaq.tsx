@@ -8,6 +8,7 @@ import { useRef } from 'react';
 import { IconArrow } from '../ui/Icons';
 import Button from '../ui/Button';
 import { usePathname } from 'next/navigation';
+import usePerformance, { PERFORMANCE_LEVEL } from '@/hooks/usePerformance';
 
 gsap.registerPlugin(SplitText);
 
@@ -38,10 +39,11 @@ const CardFaq = ({
   const timelineRef = useRef(gsap.timeline({ paused: true }));
 
   const { isFrench, getInternalPath } = useLanguage();
+  const { isLoading, isAtLeast } = usePerformance();
   const pathname = usePathname();
 
   useGSAP(() => {
-    if (!answerRef.current || !textAnswerRef.current || !arrowRef.current) return;
+    if (!answerRef.current || !textAnswerRef.current || !arrowRef.current || isLoading) return;
 
     const splitText = new SplitText(textAnswerRef.current, {
       type: 'words',
@@ -51,7 +53,13 @@ const CardFaq = ({
     const tl = gsap.timeline({ paused: true });
 
     gsap.set(answerRef.current, { height: 0 });
-    gsap.set(splitText.words, { y: 20, opacity: 0, filter: 'blur(10px)' });
+    gsap.set(splitText.words, {
+      y: 20,
+      opacity: 0,
+      ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+        filter: 'blur(10px)',
+      }),
+    });
     gsap.set(arrowRef.current, { rotation: 135 });
     if (buttonWrapperRef.current) {
       gsap.set(buttonWrapperRef.current, { scale: 0 });
@@ -76,7 +84,9 @@ const CardFaq = ({
         {
           y: 0,
           opacity: 1,
-          filter: 'blur(0px)',
+          ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+            filter: 'blur(0px)',
+          }),
           stagger: 0.008,
           duration: 0.8,
           ease: 'power4.out',
@@ -94,7 +104,7 @@ const CardFaq = ({
       );
 
     timelineRef.current = tl;
-  }, [isFrench]);
+  }, [isFrench, isLoading]);
 
   useGSAP(() => {
     if (!timelineRef.current) return;
