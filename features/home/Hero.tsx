@@ -1,8 +1,9 @@
 import Button from '@/components/ui/Button';
 import { IconCross } from '@/components/ui/Icons';
 import { TIMELINE } from '@/constants/timeline.constant';
-import usePerformance, { PERFORMANCE_LEVEL } from '@/hooks/usePerformance';
+import { PERFORMANCE_LEVEL } from '@/hooks/usePerformance';
 import { useLanguage } from '@/providers/language.provider';
+import { usePerformance } from '@/providers/performance.provider';
 import { BREAKPOINTS, COLORS } from '@/types';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';

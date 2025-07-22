@@ -1,7 +1,7 @@
 import { CONTACT, LINKS, SOCIALS } from '@/constants';
-import usePerformance, { PERFORMANCE_LEVEL } from '@/hooks/usePerformance';
 import { useShortcut } from '@/hooks/useShortcut';
 import { useLanguage } from '@/providers/language.provider';
+import { usePerformance } from '@/providers/performance.provider';
 import { COLORS } from '@/types';
 import { useGSAP } from '@gsap/react';
 import clsx from 'clsx';
@@ -13,6 +13,7 @@ import Language from '../shared/Language';
 import Sound from '../shared/Sound';
 import Time from '../shared/Time';
 import { LogoSmall } from '../ui/Icons';
+import { PERFORMANCE_LEVEL } from '@/hooks/usePerformance';
 
 const Burger = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

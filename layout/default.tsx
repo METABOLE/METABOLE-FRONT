@@ -3,7 +3,6 @@ import Burger from '@/components/layout/Burger';
 import Footer from '@/components/layout/Footer';
 import Menu from '@/components/layout/Menu';
 import ScrollBar from '@/components/layout/ScrollBar';
-import PerformanceIndicator from '@/components/ui/PerformanceIndicator';
 import SEO from '@/components/ui/SEO';
 import { useMatchMedia } from '@/hooks/useCheckScreenSize';
 import { useLanguage } from '@/providers/language.provider';
@@ -27,7 +26,7 @@ const Layout = ({ projects, children }: { projects: ProjectType[]; children: Rea
       {!isMobile && <ScrollBar />}
       <Footer />
       <Background />
-      <PerformanceIndicator />
+      {/* <PerformanceIndicator /> */}
     </>
   );
 };

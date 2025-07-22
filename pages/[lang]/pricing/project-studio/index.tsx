@@ -1,7 +1,8 @@
 import { TIMELINE } from '@/constants/timeline.constant';
 import ProjectStudio from '@/features/projectStudio/ProjectStudio';
-import usePerformance, { PERFORMANCE_LEVEL } from '@/hooks/usePerformance';
+import { PERFORMANCE_LEVEL } from '@/hooks/usePerformance';
 import { useLanguage } from '@/providers/language.provider';
+import { usePerformance } from '@/providers/performance.provider';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { SplitText } from 'gsap/SplitText';

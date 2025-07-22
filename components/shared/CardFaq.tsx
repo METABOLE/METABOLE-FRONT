@@ -1,14 +1,15 @@
+import { PERFORMANCE_LEVEL } from '@/hooks/usePerformance';
 import { useLanguage } from '@/providers/language.provider';
+import { usePerformance } from '@/providers/performance.provider';
 import { COLORS, QuestionType } from '@/types';
 import { useGSAP } from '@gsap/react';
 import clsx from 'clsx';
 import gsap from 'gsap';
 import { SplitText } from 'gsap/SplitText';
-import { useRef } from 'react';
-import { IconArrow } from '../ui/Icons';
-import Button from '../ui/Button';
 import { usePathname } from 'next/navigation';
-import usePerformance, { PERFORMANCE_LEVEL } from '@/hooks/usePerformance';
+import { useRef } from 'react';
+import Button from '../ui/Button';
+import { IconArrow } from '../ui/Icons';
 
 gsap.registerPlugin(SplitText);
 

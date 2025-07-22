@@ -1,6 +1,7 @@
 import { IconLink } from '@/components/ui/Icons';
-import usePerformance, { PERFORMANCE_LEVEL } from '@/hooks/usePerformance';
+import { PERFORMANCE_LEVEL } from '@/hooks/usePerformance';
 import { useLanguage } from '@/providers/language.provider';
+import { usePerformance } from '@/providers/performance.provider';
 import { TeamMember } from '@/types/us.type';
 import { useGSAP } from '@gsap/react';
 import clsx from 'clsx';

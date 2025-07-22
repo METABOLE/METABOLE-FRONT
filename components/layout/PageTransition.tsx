@@ -1,6 +1,6 @@
+import { usePerformance } from '@/providers/performance.provider';
 import { motion, TargetAndTransition } from 'framer-motion';
 import { ReactNode } from 'react';
-import usePerformance from '@/hooks/usePerformance';
 
 type CustomVariants = {
   initial?: TargetAndTransition;

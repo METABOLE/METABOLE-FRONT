@@ -4,7 +4,7 @@ import { OFFERS } from '@/constants/offer.constant';
 import { TIMELINE } from '@/constants/timeline.constant';
 import CardPricing from '@/features/pricing/CardPricing';
 import { useMatchMedia } from '@/hooks/useCheckScreenSize';
-import usePerformance from '@/hooks/usePerformance';
+import { usePerformance } from '@/providers/performance.provider';
 import { PERFORMANCE_LEVEL } from '@/hooks/usePerformance';
 import { useLanguage } from '@/providers/language.provider';
 import { BREAKPOINTS, OFFER_TYPE } from '@/types';

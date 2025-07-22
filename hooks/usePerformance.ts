@@ -35,7 +35,7 @@ interface PerformanceUtils {
   getConditionalProps: <T>(props: Record<PERFORMANCE_LEVEL, T>) => T | undefined;
 }
 
-const usePerformance = (): PerformanceMetrics & PerformanceUtils => {
+const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
   const [metrics, setMetrics] = useState<PerformanceMetrics>({
     performanceLevel: PERFORMANCE_LEVEL.HIGH,
     performanceScore: 100,
@@ -211,4 +211,4 @@ const usePerformance = (): PerformanceMetrics & PerformanceUtils => {
   return { ...metrics, isAtLeast, isAtMost, isExactly, getConditionalProps };
 };
 
-export default usePerformance;
+export default usePerformanceHook;

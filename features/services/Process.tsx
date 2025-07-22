@@ -8,17 +8,18 @@ import {
   IconIdeation,
   IconInitialExchange,
 } from '@/components/ui/Icons';
+import { PERFORMANCE_LEVEL } from '@/hooks/usePerformance';
 import { useLanguage } from '@/providers/language.provider';
+import { usePerformance } from '@/providers/performance.provider';
 import { COLORS } from '@/types';
 import { useGSAP } from '@gsap/react';
 import clsx from 'clsx';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { SplitText } from 'gsap/SplitText';
 import { useRef, useState } from 'react';
 import Divider from './timeline/Divider';
 import Event from './timeline/Event';
-import { SplitText } from 'gsap/SplitText';
-import usePerformance, { PERFORMANCE_LEVEL } from '@/hooks/usePerformance';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 

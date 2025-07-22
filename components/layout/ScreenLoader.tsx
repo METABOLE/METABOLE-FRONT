@@ -1,5 +1,5 @@
 import { useScrollLock } from '@/hooks/useToggleScroll';
-import usePerformance from '@/hooks/usePerformance';
+import { usePerformance } from '@/providers/performance.provider';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { useRef, useState } from 'react';

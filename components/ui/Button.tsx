@@ -1,5 +1,6 @@
 import { useMagnet, useResetMagnet } from '@/hooks/useMagnet';
-import usePerformance, { PERFORMANCE_LEVEL } from '@/hooks/usePerformance';
+import { PERFORMANCE_LEVEL } from '@/hooks/usePerformance';
+import { usePerformance } from '@/providers/performance.provider';
 import { COLORS } from '@/types';
 import { useGSAP } from '@gsap/react';
 import { clsx } from 'clsx';
