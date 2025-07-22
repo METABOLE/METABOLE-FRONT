@@ -325,7 +325,7 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
       </Hint>
       <header ref={headerRef} className="px-x-default fixed z-[900] w-full">
         <div className="flex items-center justify-between py-8">
-          <Link ref={logoRef} href={getInternalPath('/')} scroll={false}>
+          <Link ref={logoRef} href={getInternalPath('/')} scroll={false} onClick={closeMenu}>
             <LogoFull />
           </Link>
           <div ref={wrapperButtonRef} className="flex gap-4">

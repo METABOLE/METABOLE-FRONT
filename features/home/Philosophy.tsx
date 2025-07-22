@@ -172,7 +172,7 @@ const Philosophy = () => {
               <span>Metabole est un </span>
               <span className="text-blue">studio créatif</span>
               <span> qui conçoit des </span>
-              <span className="text-blue">expériences intéractives</span>
+              <span className="text-blue">expériences interactives</span>
               <span> et </span>
               <span className="text-blue">performantes</span>
               <span>.</span>
@@ -231,7 +231,7 @@ const Philosophy = () => {
         </AnimatedText>
       </div>
 
-      <Button href={getInternalPath('/services')} scroll={false}>
+      <Button color="secondary" href={getInternalPath('/services')} scroll={false}>
         {isFrench ? 'NOS SERVICES' : 'OUR SERVICES'}
       </Button>
     </section>

@@ -145,7 +145,9 @@ const Us = ({ isPageTeam = false }: { isPageTeam?: boolean }) => {
         ))}
       </div>
       {!isPageTeam && (
-        <Button href={getInternalPath('/team')}>{isFrench ? 'Notre équipe' : 'Our team'}</Button>
+        <Button color="secondary" href={getInternalPath('/team')}>
+          {isFrench ? 'Notre équipe' : 'Our team'}
+        </Button>
       )}
     </section>
   );
