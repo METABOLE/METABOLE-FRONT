@@ -24,12 +24,16 @@ const Layout = ({ projects, children }: { projects: ProjectType[]; children: Rea
   const isMobile = useMatchMedia(BREAKPOINTS.SM);
   const { isAtLeast } = usePerformance();
   const { isProd } = useEnvironment();
+  const { isLoading } = usePerformance();
 
   return (
     <>
       <SEO isFrench={isFrench} />
       {isTablet ? <Burger /> : <Menu projects={projects} />}
-      <main className="min-h-screen w-screen overflow-hidden md:pb-[300px]">{children}</main>
+
+      <main className="min-h-screen w-screen overflow-hidden md:pb-[300px]">
+        {isLoading ? <div className="fixed z-[9999] h-screen w-screen bg-black" /> : children}
+      </main>
       {!isMobile && <ScrollBar />}
       <Footer />
       {isAtLeast(PERFORMANCE_LEVEL.HIGH) ? <BackgroundInteractive /> : <BackgroundStatic />}

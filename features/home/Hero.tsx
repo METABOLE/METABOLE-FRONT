@@ -23,7 +23,7 @@ const Hero = () => {
   const desktopSpan4Ref = useRef<HTMLSpanElement>(null);
   const mobileTitleRef = useRef<HTMLSpanElement>(null);
 
-  const { isLoading, isAtLeast } = usePerformance();
+  const { isAtLeast } = usePerformance();
   const { contextSafe } = useGSAP();
 
   const revealAnimation = contextSafe(() => {
@@ -126,10 +126,9 @@ const Hero = () => {
   });
 
   useGSAP(() => {
-    if (isLoading) return;
     scrollAnimation();
     revealAnimation();
-  }, [isFrench, isLoading]);
+  }, [isFrench]);
 
   return (
     <section

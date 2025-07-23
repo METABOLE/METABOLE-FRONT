@@ -15,7 +15,7 @@ const Pricing = () => {
 
   const { isFrench } = useLanguage();
   const { contextSafe } = useGSAP();
-  const { isLoading, isAtLeast } = usePerformance();
+  const { isAtLeast } = usePerformance();
 
   const revealAnimation = contextSafe(() => {
     if (!titleRef.current || !subtitleRef.current || !descriptionRef.current) return;
@@ -90,9 +90,8 @@ const Pricing = () => {
   });
 
   useGSAP(() => {
-    if (isLoading) return;
     revealAnimation();
-  }, [isFrench, isLoading]);
+  }, [isFrench]);
 
   return (
     <section className="px-x-default py-y-default">

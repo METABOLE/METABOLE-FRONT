@@ -23,7 +23,7 @@ const Philosophy = () => {
   const descriptionRef = useRef(null);
 
   const { isFrench, getInternalPath } = useLanguage();
-  const { isLoading, isAtLeast } = usePerformance();
+  const { isAtLeast } = usePerformance();
   const { contextSafe } = useGSAP();
   const isMobile = useMatchMedia(BREAKPOINTS.MD);
 
@@ -113,9 +113,8 @@ const Philosophy = () => {
   });
 
   useGSAP(() => {
-    if (isLoading) return;
     scrollAnimation();
-  }, [isMobile, isLoading]);
+  }, [isMobile]);
 
   return (
     <section

@@ -18,7 +18,7 @@ const ContactPage = () => {
 
   const { isFrench } = useLanguage();
   const { contextSafe } = useGSAP();
-  const { isLoading, isAtLeast } = usePerformance();
+  const { isAtLeast } = usePerformance();
 
   const revealAnimation = contextSafe(() => {
     const splitTitle = new SplitText(titleRef.current, {
@@ -67,9 +67,8 @@ const ContactPage = () => {
   });
 
   useGSAP(() => {
-    if (isLoading) return;
     revealAnimation();
-  }, [isFrench, isLoading]);
+  }, [isFrench]);
 
   return (
     <div className="px-x-default py-y-double-default gap-x-x-default gap-y-default grid md:grid-cols-2 md:grid-rows-2 md:gap-y-0">

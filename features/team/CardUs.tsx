@@ -26,9 +26,11 @@ const CardUs = ({ member, index, wrapperImagesRefs, imagesRefs }: CardUsProps) =
   const timelineRef = useRef(gsap.timeline({ paused: true }));
 
   const { isFrench } = useLanguage();
-  const { isLoading, isAtLeast } = usePerformance();
-  useGSAP(() => {
-    if (!descriptionRef.current || !textDescriptionRef.current || isLoading) return;
+  const { isAtLeast } = usePerformance();
+  const { contextSafe } = useGSAP();
+
+  const setUpTimeline = contextSafe(() => {
+    if (!descriptionRef.current || !textDescriptionRef.current) return;
 
     const splitText = new SplitText(textDescriptionRef.current, {
       type: 'words',
@@ -67,7 +69,11 @@ const CardUs = ({ member, index, wrapperImagesRefs, imagesRefs }: CardUsProps) =
     );
 
     timelineRef.current = tl;
-  }, [isFrench, isLoading]);
+  });
+
+  useGSAP(() => {
+    setUpTimeline();
+  }, [isFrench]);
 
   const handleMouseEnter = () => {
     if (timelineRef.current) {

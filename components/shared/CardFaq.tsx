@@ -40,12 +40,13 @@ const CardFaq = ({
   const buttonWrapperRef = useRef(null);
   const timelineRef = useRef(gsap.timeline({ paused: true }));
 
+  const { contextSafe } = useGSAP();
   const { isFrench, getInternalPath } = useLanguage();
-  const { isLoading, isAtLeast } = usePerformance();
+  const { isAtLeast } = usePerformance();
   const pathname = usePathname();
 
-  useGSAP(() => {
-    if (!answerRef.current || !textAnswerRef.current || !arrowRef.current || !isLoading) return;
+  const setUpTimeline = contextSafe(() => {
+    if (!answerRef.current || !textAnswerRef.current || !arrowRef.current) return;
 
     ScrollTrigger.refresh();
 
@@ -108,7 +109,11 @@ const CardFaq = ({
       );
 
     timelineRef.current = tl;
-  }, [isFrench, isLoading]);
+  });
+
+  useGSAP(() => {
+    setUpTimeline();
+  }, [isFrench]);
 
   useGSAP(() => {
     if (!timelineRef.current) return;
