@@ -10,9 +10,7 @@ export const useEnvironment = () => {
       window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
     const isProd =
       window.location.hostname === 'metabole.studio' ||
-      window.location.hostname === 'www.metabole.studio' ||
-      window.location.hostname ===
-        'metabole-studio-git-develop-metabole-studios-projects.vercel.app';
+      window.location.hostname === 'www.metabole.studio';
 
     setIsDev(isLocalhost);
     setIsProd(isProd);

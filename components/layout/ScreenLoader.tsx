@@ -127,7 +127,7 @@ const ScreenLoader = () => {
         progressWrapperRef.current,
         {
           x: 200,
-          duration: 1,
+          duration: 0.4,
           ease: 'power4.in',
         },
         'disappear',
