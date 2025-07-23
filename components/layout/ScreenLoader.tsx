@@ -20,6 +20,7 @@ const ScreenLoader = () => {
   };
   const progressWrapperRef = useRef(null);
   const [progress, setProgress] = useState(0);
+  const [isRevealed, setIsRevealed] = useState(false);
   const progressRef = useRef({ value: 0 });
 
   const { contextSafe } = useGSAP();
@@ -92,7 +93,8 @@ const ScreenLoader = () => {
         },
         'progress+=0.2',
       )
-      .to({}, { duration: 1 });
+      .to({}, { duration: 1 })
+      .add(() => setIsRevealed(true));
   });
 
   const disappearAnimation = contextSafe(() => {
@@ -126,6 +128,7 @@ const ScreenLoader = () => {
         {
           x: 200,
           duration: 1,
+          ease: 'power4.in',
         },
         'disappear',
       )
@@ -140,6 +143,8 @@ const ScreenLoader = () => {
         ],
         {
           scaleX: 0,
+          duration: 1,
+          ease: 'power4.inOut',
         },
         'disappear',
       )
@@ -154,9 +159,9 @@ const ScreenLoader = () => {
   }, []);
 
   useGSAP(() => {
-    if (isLoading) return;
+    if (isLoading || !isRevealed) return;
     disappearAnimation();
-  }, [isLoading]);
+  }, [isLoading, isRevealed]);
 
   return (
     <div ref={screenLoaderRef} className="fixed inset-0 z-[950] grid grid-cols-2 grid-rows-2">
