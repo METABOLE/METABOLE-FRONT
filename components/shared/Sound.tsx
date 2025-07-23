@@ -13,27 +13,17 @@ const Sound = forwardRef<HTMLDivElement, { className?: string; isDark?: boolean 
     const isTouchDevice = useTouchDevice();
 
     useEffect(() => {
-      if (isSoundOn) {
-        animatedWaveRef.current?.play();
-      } else {
-        animatedWaveRef.current?.pause();
+      animatedWaveRef.current?.[isSoundOn ? 'play' : 'pause']();
+
+      if (!isTouchDevice) {
+        const handleFirstClick = () => {
+          initializeAudio();
+          document.removeEventListener('click', handleFirstClick);
+        };
+        document.addEventListener('click', handleFirstClick);
+        return () => document.removeEventListener('click', handleFirstClick);
       }
     }, [isSoundOn]);
-
-    useEffect(() => {
-      const handleFirstPageClick = () => {
-        if (isTouchDevice) return;
-
-        initializeAudio();
-        document.removeEventListener('click', handleFirstPageClick);
-      };
-
-      document.addEventListener('click', handleFirstPageClick);
-
-      return () => {
-        document.removeEventListener('click', handleFirstPageClick);
-      };
-    }, [initializeAudio, isTouchDevice]);
 
     return (
       <div
