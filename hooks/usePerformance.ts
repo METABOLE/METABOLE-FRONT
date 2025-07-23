@@ -5,21 +5,11 @@ export enum PERFORMANCE_LEVEL {
   MEDIUM = 'medium',
   LOW = 'low',
 }
-type DeviceType = 'iphone' | 'ipad' | 'mac' | 'android' | 'windows' | 'linux' | 'unknown';
 
 interface PerformanceMetrics {
   performanceLevel: PERFORMANCE_LEVEL;
-  performanceScore: number;
-  deviceType: DeviceType;
   executionTime: number;
   isLoading: boolean;
-}
-
-interface NavigatorWithOptionalProps extends Navigator {
-  deviceMemory?: number;
-  connection?: {
-    effectiveType?: 'slow-2g' | '2g' | '3g' | '4g';
-  };
 }
 
 const PERFORMANCE_LEVEL_VALUES = {
@@ -38,8 +28,6 @@ interface PerformanceUtils {
 const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
   const [metrics, setMetrics] = useState<PerformanceMetrics>({
     performanceLevel: PERFORMANCE_LEVEL.HIGH,
-    performanceScore: 100,
-    deviceType: 'unknown',
     executionTime: 0,
     isLoading: true,
   });
@@ -63,42 +51,6 @@ const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const detectPerformance = async () => {
-        const { hardwareConcurrency = 1, userAgent } = navigator;
-        const { deviceMemory = 4, connection } = navigator as NavigatorWithOptionalProps;
-        const userAgentLower = userAgent.toLowerCase();
-
-        let deviceType: DeviceType = 'unknown';
-        let isMobile = false;
-        let isTablet = false;
-        let isDesktop = false;
-
-        if (/iphone/i.test(userAgentLower)) {
-          deviceType = 'iphone';
-          isMobile = true;
-        } else if (/ipad/i.test(userAgentLower)) {
-          deviceType = 'ipad';
-          isTablet = true;
-        } else if (/macintosh|mac os/i.test(userAgentLower)) {
-          deviceType = 'mac';
-          isDesktop = true;
-        } else if (/android/i.test(userAgentLower)) {
-          deviceType = 'android';
-          isMobile = true;
-          if (
-            /tablet|playbook|silk/i.test(userAgentLower) ||
-            (window.innerWidth >= 768 && window.innerHeight >= 1024)
-          ) {
-            isTablet = true;
-            isMobile = false;
-          }
-        } else if (/windows/i.test(userAgentLower)) {
-          deviceType = 'windows';
-          isDesktop = true;
-        } else if (/linux/i.test(userAgentLower)) {
-          deviceType = 'linux';
-          isDesktop = true;
-        }
-
         const runSimplePerformanceTest = () => {
           const start = performance.now();
 
@@ -109,31 +61,15 @@ const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
           }
 
           const end = performance.now();
-          const executionTime = end - start;
-
-          let score = 0;
-          if (executionTime <= 10) score = 100;
-          else if (executionTime <= 20) score = 90;
-          else if (executionTime <= 35) score = 80;
-          else if (executionTime <= 50) score = 70;
-          else if (executionTime <= 75) score = 60;
-          else if (executionTime <= 100) score = 50;
-          else if (executionTime <= 150) score = 40;
-          else if (executionTime <= 200) score = 30;
-          else score = 20;
-
-          return {
-            executionTime,
-            score,
-          };
+          return end - start;
         };
 
-        let performanceTest: { executionTime: number; score: number };
+        let executionTime: number;
         let isTimeout = false;
 
         try {
-          performanceTest = await Promise.race([
-            new Promise<{ executionTime: number; score: number }>((resolve) => {
+          executionTime = await Promise.race([
+            new Promise<number>((resolve) => {
               resolve(runSimplePerformanceTest());
             }),
             new Promise<never>((_, reject) => {
@@ -145,61 +81,31 @@ const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
           ]);
         } catch (error) {
           console.warn('Performance test timeout after 2s, forcing LOW performance level');
-          performanceTest = { executionTime: 2000, score: 20 };
+          executionTime = 2000;
         }
-
-        let performanceScore = performanceTest.score;
-
-        if (isTimeout) {
-          performanceScore = 20;
-        } else {
-          if (connection) {
-            if (connection.effectiveType === 'slow-2g') performanceScore -= 30;
-            else if (connection.effectiveType === '2g') performanceScore -= 25;
-            else if (connection.effectiveType === '3g') performanceScore -= 15;
-            else if (connection.effectiveType === '4g') performanceScore -= 8;
-          }
-
-          const isOldBrowser =
-            /msie|trident|edge 1[2-7]|chrome 5[0-9]|chrome [1-4][0-9]|firefox 5[0-9]|firefox [1-4][0-9]/i.test(
-              userAgentLower,
-            );
-          if (isOldBrowser) performanceScore -= 25;
-        }
-
-        performanceScore = Math.max(0, Math.min(100, performanceScore));
 
         let performanceLevel: PERFORMANCE_LEVEL;
-        if (isTimeout || performanceScore < 50) {
+
+        if (isTimeout || executionTime > 50) {
           performanceLevel = PERFORMANCE_LEVEL.LOW;
-        } else if (performanceScore >= 80) {
+        } else if (executionTime <= 20) {
           performanceLevel = PERFORMANCE_LEVEL.HIGH;
         } else {
           performanceLevel = PERFORMANCE_LEVEL.MEDIUM;
         }
 
-        console.info('Simple Performance detection:', {
-          deviceType,
-          hardwareConcurrency,
-          deviceMemory,
-          performanceTest,
-          isMobile,
-          isTablet,
-          isDesktop,
-          performanceScore,
+        console.info('Performance detection based on execution time:', {
+          executionTime: `${executionTime.toFixed(2)}ms`,
           performanceLevel,
           isTimeout,
-          userAgent: userAgentLower.substring(0, 100) + '...',
         });
 
-        const delay = isTimeout ? 2000 : performanceTest.executionTime;
+        const delay = isTimeout ? 2000 : executionTime;
         await new Promise((resolve) => setTimeout(resolve, delay));
 
         setMetrics({
           performanceLevel,
-          performanceScore,
-          deviceType,
-          executionTime: performanceTest.executionTime,
+          executionTime,
           isLoading: false,
         });
       };

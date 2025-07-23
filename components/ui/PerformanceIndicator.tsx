@@ -2,7 +2,7 @@ import usePerformance from '@/hooks/usePerformance';
 import clsx from 'clsx';
 
 const PerformanceIndicator = () => {
-  const { performanceLevel, performanceScore, executionTime } = usePerformance();
+  const { performanceLevel, executionTime } = usePerformance();
 
   const getLevelColor = (level: string) => {
     switch (level) {
@@ -41,7 +41,6 @@ const PerformanceIndicator = () => {
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-2">
             <span className="text-xs opacity-90">{getLevelText(performanceLevel)}</span>
-            <span className="text-xs font-bold">({performanceScore})</span>
           </div>
           <div className="text-xs opacity-75">Temps: {executionTime.toFixed(1)}ms</div>
         </div>
