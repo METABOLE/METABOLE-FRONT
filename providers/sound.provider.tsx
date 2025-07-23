@@ -1,20 +1,16 @@
-import { createContext, ReactNode, useContext, useState } from 'react';
+import { createContext, ReactNode, useContext } from 'react';
+import { useSound as useSoundHook } from '@/hooks/useSound';
 
 const SoundContext = createContext({
   isSoundOn: false,
-  setIsSoundOn: (_: boolean) => {},
+  toggleSound: () => {},
+  initializeAudio: () => {},
 });
 
 export const useSound = () => useContext(SoundContext);
 
 export const SoundProvider = ({ children }: { children: ReactNode }) => {
-  const [isSoundOn, _setIsSoundOn] = useState(false);
+  const soundHook = useSoundHook();
 
-  const setIsSoundOn = (isSoundOn: boolean) => {
-    _setIsSoundOn(isSoundOn);
-  };
-
-  return (
-    <SoundContext.Provider value={{ isSoundOn, setIsSoundOn }}>{children}</SoundContext.Provider>
-  );
+  return <SoundContext.Provider value={soundHook}>{children}</SoundContext.Provider>;
 };
