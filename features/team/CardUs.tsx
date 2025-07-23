@@ -92,6 +92,7 @@ const CardUs = ({ member, index, wrapperImagesRefs, imagesRefs }: CardUsProps) =
       onMouseLeave={handleMouseLeave}
     >
       <Link
+        aria-label="Link"
         className="ease-power4-in-out absolute top-3.5 right-3.5 z-40 flex h-12 w-12 cursor-pointer items-center justify-center rounded-2xl bg-white transition-transform duration-300 hover:scale-90"
         href={member.website}
         target="_blank"

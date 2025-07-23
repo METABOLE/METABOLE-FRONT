@@ -147,7 +147,7 @@ const NewsletterForm = forwardRef<AnimatedNewsletterFormRef, LeadFormProps>(
           >
             {isFrench ? 'Rejoignez notre newsletter ' : 'Join our newsletter '}
           </Typography>
-          <button ref={buttonQuestionMarkRef} className="cursor-help" id={hintId}>
+          <button ref={buttonQuestionMarkRef} aria-label="Hint" className="cursor-help" id={hintId}>
             <IconQuestionMark color={isDark ? COLORS.BLUE : COLORS.YELLOW} />
           </button>
         </div>
