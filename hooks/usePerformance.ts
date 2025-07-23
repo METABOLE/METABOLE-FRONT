@@ -55,7 +55,6 @@ const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
           return new Promise<number>((resolve) => {
             const start = performance.now();
 
-            // Créer un élément de test pour l'animation
             const testElement = document.createElement('div');
             testElement.style.cssText = `
               position: fixed;
@@ -71,14 +70,13 @@ const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
 
             document.body.appendChild(testElement);
 
-            // Animation de blur simple de 0px à 10px
             let frameCount = 0;
-            const totalFrames = 30; // 0.5 seconde à 60fps
+            const totalFrames = 30;
             let blurValue = 0;
 
             const animate = () => {
               frameCount++;
-              blurValue = (frameCount / totalFrames) * 10; // 0px à 10px linéairement
+              blurValue = (frameCount / totalFrames) * 10;
 
               testElement.style.filter = `blur(${blurValue}px)`;
 
@@ -123,11 +121,7 @@ const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
           performanceLevel = PERFORMANCE_LEVEL.MEDIUM;
         }
 
-        console.info('Performance detection based on execution time:', {
-          executionTime: `${executionTime.toFixed(2)}ms`,
-          performanceLevel,
-          isTimeout,
-        });
+        console.table({ executionTime, performanceLevel });
 
         const delay = isTimeout ? 2000 : executionTime;
         await new Promise((resolve) => setTimeout(resolve, delay));
