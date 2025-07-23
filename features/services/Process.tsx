@@ -36,7 +36,7 @@ const Process = () => {
 
   const { isFrench } = useLanguage();
   const { contextSafe } = useGSAP();
-  const { isLoading, isAtLeast } = usePerformance();
+  const { isAtLeast } = usePerformance();
 
   const scrubAnimation = contextSafe(() => {
     if (!sectionRef.current || !horizontalRef.current || !progressBarRef.current) return;
@@ -162,9 +162,8 @@ const Process = () => {
   });
 
   useGSAP(() => {
-    if (isLoading) return;
     revealAnimation();
-  }, [isFrench, isLoading]);
+  }, [isFrench]);
 
   useGSAP(() => {
     scrubAnimation();

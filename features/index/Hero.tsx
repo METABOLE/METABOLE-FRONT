@@ -28,7 +28,7 @@ const Hero = () => {
   const { contextSafe } = useGSAP();
   const { isFrench } = useLanguage();
   const isMobile = useMatchMedia(BREAKPOINTS.MD);
-  const { isLoading, isAtLeast } = usePerformance();
+  const { isAtLeast } = usePerformance();
 
   const revealAnimation = contextSafe(() => {
     const splitTitle = new SplitText(titleRef.current, {
@@ -130,9 +130,8 @@ const Hero = () => {
 
   useGSAP(() => {
     scrollAnimation();
-    if (isLoading) return;
     revealAnimation();
-  }, [isMobile, isFrench, isLoading]);
+  }, [isMobile, isFrench]);
 
   return (
     <section

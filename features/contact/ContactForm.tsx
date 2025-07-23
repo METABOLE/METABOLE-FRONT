@@ -33,7 +33,7 @@ const ContactForm = ({ className }: { className?: string }) => {
   const buttonRef = useRef<HTMLDivElement>(null);
 
   const { contextSafe } = useGSAP();
-  const { isLoading, isAtLeast } = usePerformance();
+  const { isAtLeast } = usePerformance();
 
   const [formData, setFormData] = useState<ContactFormState>({
     name: '',
@@ -93,9 +93,8 @@ const ContactForm = ({ className }: { className?: string }) => {
   });
 
   useGSAP(() => {
-    if (isLoading) return;
     revealAnimation();
-  }, [isLoading]);
+  }, []);
 
   const sendContact = useMutation({
     mutationFn: ({ name, email, phone, message, type, consentMarketing, lang }: ContactFormData) =>

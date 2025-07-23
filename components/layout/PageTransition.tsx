@@ -57,7 +57,6 @@ export default function PageTransition({ children }: { children: ReactNode }) {
       scaleY: 0,
       transition: {
         duration: 1,
-        delay: 0.4,
         ease: [0.72, 0, 0.3, 0.99],
       },
     },
@@ -77,7 +76,6 @@ export default function PageTransition({ children }: { children: ReactNode }) {
       scaleY: 0,
       transition: {
         duration: 1,
-        delay: 0.4,
         ease: [0.72, 0, 0.3, 0.99],
       },
     },

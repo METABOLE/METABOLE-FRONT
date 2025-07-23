@@ -4,9 +4,9 @@ import { OFFERS } from '@/constants/offer.constant';
 import { TIMELINE } from '@/constants/timeline.constant';
 import CardPricing from '@/features/pricing/CardPricing';
 import { useMatchMedia } from '@/hooks/useCheckScreenSize';
-import { usePerformance } from '@/providers/performance.provider';
 import { PERFORMANCE_LEVEL } from '@/hooks/usePerformance';
 import { useLanguage } from '@/providers/language.provider';
+import { usePerformance } from '@/providers/performance.provider';
 import { BREAKPOINTS, OFFER_TYPE } from '@/types';
 import { useGSAP } from '@gsap/react';
 import clsx from 'clsx';
@@ -26,7 +26,7 @@ const Pricing = () => {
   const { isFrench, getInternalPath } = useLanguage();
   const isTablet = useMatchMedia(BREAKPOINTS.LG);
   const { contextSafe } = useGSAP();
-  const { isLoading, isAtLeast } = usePerformance();
+  const { isAtLeast } = usePerformance();
 
   const revealAnimation = contextSafe(() => {
     if (!titleRef.current || !subtitleRef.current) return;
@@ -163,9 +163,8 @@ const Pricing = () => {
 
   useGSAP(() => {
     scrollAnimation();
-    if (isLoading) return;
     revealAnimation();
-  }, [isTablet, isFrench, isLoading]);
+  }, [isTablet, isFrench]);
 
   const renderCard = (offer: (typeof OFFERS)[0]) => {
     const cardElement = (

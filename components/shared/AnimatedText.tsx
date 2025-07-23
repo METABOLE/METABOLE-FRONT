@@ -37,7 +37,7 @@ const AnimatedText = forwardRef<HTMLElement, AnimatedTextProps>(
     const elementRef = ref || textRef;
 
     const { isFrench } = useLanguage();
-    const { isLoading, isAtLeast } = usePerformance();
+    const { isAtLeast } = usePerformance();
     const { contextSafe } = useGSAP();
 
     const animateText = contextSafe(() => {
@@ -74,9 +74,8 @@ const AnimatedText = forwardRef<HTMLElement, AnimatedTextProps>(
     });
 
     useGSAP(() => {
-      if (isLoading) return;
       animateText();
-    }, [isFrench, isLoading]);
+    }, [isFrench]);
 
     const Tag = variant;
 
