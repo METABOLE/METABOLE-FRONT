@@ -71,28 +71,14 @@ const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
 
             document.body.appendChild(testElement);
 
-            // Animation de blur de 0px à 15px et retour
+            // Animation de blur simple de 0px à 10px
             let frameCount = 0;
-            const totalFrames = 60; // 1 seconde à 60fps
+            const totalFrames = 30; // 0.5 seconde à 60fps
             let blurValue = 0;
-            let increasing = true;
 
             const animate = () => {
               frameCount++;
-
-              if (increasing) {
-                blurValue += 15 / 30; // 15px sur 0.5 seconde
-                if (blurValue >= 15) {
-                  blurValue = 15;
-                  increasing = false;
-                }
-              } else {
-                blurValue -= 15 / 30; // 15px sur 0.5 seconde
-                if (blurValue <= 0) {
-                  blurValue = 0;
-                  increasing = true;
-                }
-              }
+              blurValue = (frameCount / totalFrames) * 10; // 0px à 10px linéairement
 
               testElement.style.filter = `blur(${blurValue}px)`;
 
@@ -119,19 +105,19 @@ const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
               setTimeout(() => {
                 isTimeout = true;
                 reject(new Error('Performance test timeout'));
-              }, 1500);
+              }, 2000);
             }),
           ]);
         } catch (error) {
-          console.warn('Performance test timeout after 1.5s, forcing LOW performance level');
-          executionTime = 1500;
+          console.warn('Performance test timeout after 2s, forcing LOW performance level');
+          executionTime = 2000;
         }
 
         let performanceLevel: PERFORMANCE_LEVEL;
 
-        if (isTimeout || executionTime > 1200) {
+        if (isTimeout || executionTime > 800) {
           performanceLevel = PERFORMANCE_LEVEL.LOW;
-        } else if (executionTime <= 1100) {
+        } else if (executionTime <= 600) {
           performanceLevel = PERFORMANCE_LEVEL.HIGH;
         } else {
           performanceLevel = PERFORMANCE_LEVEL.MEDIUM;
