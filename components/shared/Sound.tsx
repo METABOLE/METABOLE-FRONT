@@ -1,5 +1,5 @@
 import { useMagnet, useResetMagnet } from '@/hooks/useMagnet';
-import { useAudio } from '@/hooks/useAudio';
+import { useSound } from '@/providers/sound.provider';
 import clsx from 'clsx';
 import { forwardRef, useEffect, useRef } from 'react';
 import Wave, { WaveHandles } from '../ui/Wave';
@@ -9,7 +9,7 @@ import { useTouchDevice } from '@/hooks/useTouchDevice';
 const Sound = forwardRef<HTMLDivElement, { className?: string; isDark?: boolean }>(
   ({ className, isDark }, ref) => {
     const animatedWaveRef = useRef<WaveHandles>(null);
-    const { isSoundOn, toggleSound, initializeAudio } = useAudio();
+    const { isSoundOn, toggleSound, initializeAudio } = useSound();
     const isTouchDevice = useTouchDevice();
 
     useEffect(() => {
