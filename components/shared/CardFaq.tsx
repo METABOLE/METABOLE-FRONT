@@ -10,6 +10,7 @@ import { usePathname } from 'next/navigation';
 import { useRef } from 'react';
 import Button from '../ui/Button';
 import { IconArrow } from '../ui/Icons';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(SplitText);
 
@@ -44,7 +45,9 @@ const CardFaq = ({
   const pathname = usePathname();
 
   useGSAP(() => {
-    if (!answerRef.current || !textAnswerRef.current || !arrowRef.current) return;
+    if (!answerRef.current || !textAnswerRef.current || !arrowRef.current || !isLoading) return;
+
+    ScrollTrigger.refresh();
 
     const splitText = new SplitText(textAnswerRef.current, {
       type: 'words',
