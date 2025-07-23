@@ -143,6 +143,7 @@ const Footer = () => {
             <div className="gap-y-y-default mx-auto flex w-[calc(100vw-(var(--x-default)*2))] flex-col">
               <div className="gap-y-y-default grid h-full grid-cols-1 gap-x-5 sm:grid-cols-2 md:grid-cols-6">
                 <Link
+                  aria-label="Logo"
                   className="pb-y-half-default col-span-1 h-fit w-fit sm:col-span-2 md:col-span-1"
                   href={getInternalPath('/')}
                   scroll={false}
@@ -205,7 +206,7 @@ const Footer = () => {
               </div>
               <div className="h-px w-full bg-white/12" />
             </div>
-            <Link href={getInternalPath('/contact')} scroll={false}>
+            <Link aria-label="Contact" href={getInternalPath('/contact')} scroll={false}>
               <svg
                 ref={animatedTitleRef}
                 className="mx-auto h-auto w-[calc(100vw-(var(--x-default)*2))]"
