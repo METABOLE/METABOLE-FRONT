@@ -5,7 +5,7 @@ import { useLanguage } from '@/providers/language.provider';
 import Link from 'next/link';
 import { ReactNode } from 'react';
 import metaboleFull from '../public/lotties/metabole-full-yellow.json';
-import Background from '@/components/layout/Background';
+import Background from '@/components/layout/BackgroundInteractive';
 
 interface NewsletterLayoutProps {
   children: ReactNode;
