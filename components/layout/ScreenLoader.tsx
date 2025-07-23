@@ -1,4 +1,5 @@
 import { useScrollLock } from '@/hooks/useToggleScroll';
+import { usePerformance } from '@/providers/performance.provider';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { useRef, useState } from 'react';
@@ -19,10 +20,12 @@ const ScreenLoader = () => {
   };
   const progressWrapperRef = useRef(null);
   const [progress, setProgress] = useState(0);
+  const [isRevealed, setIsRevealed] = useState(false);
   const progressRef = useRef({ value: 0 });
 
   const { contextSafe } = useGSAP();
   const { lockScroll } = useScrollLock();
+  const { isLoading } = usePerformance();
 
   const revealAnimation = contextSafe(() => {
     if (
@@ -90,8 +93,20 @@ const ScreenLoader = () => {
         },
         'progress+=0.2',
       )
-
       .to({}, { duration: 1 })
+      .add(() => setIsRevealed(true));
+  });
+
+  const disappearAnimation = contextSafe(() => {
+    if (
+      !barRefs.vertical.current ||
+      !barRefs.horizontalRight.current ||
+      !barRefs.horizontalLeft.current
+    )
+      return;
+
+    gsap
+      .timeline()
       .addLabel('disappear')
       .to(
         barRefs.vertical.current,
@@ -112,7 +127,8 @@ const ScreenLoader = () => {
         progressWrapperRef.current,
         {
           x: 200,
-          duration: 1,
+          duration: 0.4,
+          ease: 'power4.in',
         },
         'disappear',
       )
@@ -127,6 +143,8 @@ const ScreenLoader = () => {
         ],
         {
           scaleX: 0,
+          duration: 1,
+          ease: 'power4.inOut',
         },
         'disappear',
       )
@@ -139,6 +157,11 @@ const ScreenLoader = () => {
   useGSAP(() => {
     revealAnimation();
   }, []);
+
+  useGSAP(() => {
+    if (isLoading || !isRevealed) return;
+    disappearAnimation();
+  }, [isLoading, isRevealed]);
 
   return (
     <div ref={screenLoaderRef} className="fixed inset-0 z-[950] grid grid-cols-2 grid-rows-2">

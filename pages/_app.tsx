@@ -30,7 +30,7 @@ interface CustomAppProps extends AppProps {
 function App({ Component, pageProps, globalProps }: CustomAppProps) {
   const pathname = usePathname();
   const isScreenLoader = useIsScreenLoader();
-  const { isProd } = useEnvironment();
+  const { isDev } = useEnvironment();
   const { lockScroll } = useScrollLock();
 
   const getLayout =
@@ -57,18 +57,18 @@ function App({ Component, pageProps, globalProps }: CustomAppProps) {
   }, []);
 
   useEffect(() => {
-    if (isScreenLoader && isProd) {
+    if (isScreenLoader && !isDev) {
       lockScroll(true);
     } else {
       lockScroll(false);
     }
-  }, [isScreenLoader, isProd]);
+  }, [isScreenLoader, isDev]);
 
   return (
     <AppProvider>
       {getLayout(
         <>
-          {isScreenLoader && isProd && <ScreenLoader />}
+          {isScreenLoader && !isDev && <ScreenLoader />}
           <AnimatePresence
             mode="wait"
             onExitComplete={() => {

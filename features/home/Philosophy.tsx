@@ -1,12 +1,13 @@
 import AnimatedText from '@/components/shared/AnimatedText';
-import FloatingHalo from '@/components/shared/FloatingHalo';
 import Button from '@/components/ui/Button';
 import { IconCross } from '@/components/ui/Icons';
 import ScrollButton from '@/components/ui/ScrollButton';
 import { useMatchMedia } from '@/hooks/useCheckScreenSize';
+import usePerformance, { PERFORMANCE_LEVEL } from '@/hooks/usePerformance';
 import { useLanguage } from '@/providers/language.provider';
 import { BREAKPOINTS, COLORS } from '@/types';
 import { useGSAP } from '@gsap/react';
+import clsx from 'clsx';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useRef } from 'react';
@@ -14,62 +15,76 @@ import { useRef } from 'react';
 gsap.registerPlugin(ScrollTrigger);
 
 const Philosophy = () => {
-  const { isFrench, getInternalPath } = useLanguage();
-
   const wrapperVideoRef = useRef(null);
   const videoRef = useRef(null);
   const sectionRef = useRef(null);
   const titleRef = useRef(null);
   const descriptionRef = useRef(null);
 
+  const { isFrench, getInternalPath } = useLanguage();
+  const { isLoading, isAtLeast } = usePerformance();
   const { contextSafe } = useGSAP();
   const isMobile = useMatchMedia(BREAKPOINTS.MD);
 
   const scrollAnimation = contextSafe(() => {
-    gsap
-      .timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: 1,
-          id: 'philosophy-scroll',
-        },
-      })
-      // .fromTo(
-      //   videoRef.current,
-      //   {
-      //     scale: 0.8,
-      //   },
-      //   {
-      //     scale: 1,
-      //     duration: 1,
-      //     ease: 'none',
-      //   },
-      // )
-      .fromTo(
-        videoRef.current,
-        {
-          scale: 1,
-        },
-        {
-          scale: 0.8,
-          duration: 1,
-          ease: 'none',
-        },
-      )
-      .fromTo(
+    ScrollTrigger.getById('philosophy-scroll')?.kill();
+
+    if (isMobile) {
+      gsap.set(titleRef.current, { x: 0 });
+      gsap.set(descriptionRef.current, { x: 0 });
+      gsap.set(videoRef.current, { scale: 1 });
+      return;
+    }
+
+    const timeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: 1,
+        id: 'philosophy-scroll',
+      },
+    });
+
+    if (isAtLeast(PERFORMANCE_LEVEL.HIGH)) {
+      timeline
+        .fromTo(
+          videoRef.current,
+          {
+            scale: 1,
+          },
+          {
+            scale: 0.8,
+            duration: 1,
+            ease: 'none',
+          },
+        )
+        .fromTo(
+          wrapperVideoRef.current,
+          {
+            scale: 0.7,
+          },
+          {
+            scale: 1,
+            duration: 1,
+            ease: 'none',
+          },
+          '<',
+        );
+    } else {
+      timeline.fromTo(
         wrapperVideoRef.current,
         {
-          scale: 0.7,
+          scale: 0.8,
         },
         {
           scale: 1,
           duration: 1,
           ease: 'none',
         },
-        '<',
-      )
+      );
+    }
+    timeline
       .fromTo(
         titleRef.current,
         {
@@ -97,28 +112,15 @@ const Philosophy = () => {
   });
 
   useGSAP(() => {
-    ScrollTrigger.getById('philosophy-scroll')?.kill();
-
-    if (isMobile) {
-      gsap.set(titleRef.current, { x: 0 });
-      gsap.set(descriptionRef.current, { x: 0 });
-      gsap.set(videoRef.current, { scale: 1 });
-      return;
-    }
-
+    if (isLoading) return;
     scrollAnimation();
-  }, [isMobile]);
+  }, [isMobile, isLoading]);
 
   return (
     <section
       ref={sectionRef}
       className="px-x-default md:px-x-double-default gap-y-y-default md:gap-y-y-default-double pb-y-double-default relative flex flex-col items-center"
     >
-      <FloatingHalo
-        className="pointer-events-none absolute -bottom-full left-0 -z-10 h-[150vw] w-[150vw] opacity-50"
-        from="#1b17ee"
-        to="#f1f2ff00"
-      />
       <ScrollButton />
       <div className="group/image relative aspect-video w-full">
         <IconCross
@@ -137,20 +139,14 @@ const Philosophy = () => {
           className="ease-power4-in-out absolute -bottom-6 -left-6 hidden transition-transform duration-500 group-hover/image:-translate-x-4 group-hover/image:translate-y-4 md:block"
           color={COLORS.BLUE}
         />
-        {/* <video
-          ref={videoRef}
-          className="h-full w-full rounded-3xl object-cover object-top"
-          src="/videos/showreel.mp4"
-          autoPlay
-          loop
-          muted
-          playsInline
-        /> */}
         <div ref={wrapperVideoRef} className="overflow-hidden rounded-3xl">
           <div ref={videoRef} className="relative">
             <video
-              className="h-full w-full scale-130 rounded-3xl object-cover object-top"
               src="/videos/showreel.mp4"
+              className={clsx(
+                'h-full w-full rounded-3xl object-cover object-top',
+                !isAtLeast(PERFORMANCE_LEVEL.HIGH) && 'scale-130',
+              )}
               autoPlay
               loop
               muted
@@ -176,7 +172,7 @@ const Philosophy = () => {
               <span>Metabole est un </span>
               <span className="text-blue">studio créatif</span>
               <span> qui conçoit des </span>
-              <span className="text-blue">expériences intéractives</span>
+              <span className="text-blue">expériences interactives</span>
               <span> et </span>
               <span className="text-blue">performantes</span>
               <span>.</span>
@@ -235,7 +231,7 @@ const Philosophy = () => {
         </AnimatedText>
       </div>
 
-      <Button href={getInternalPath('/services')} scroll={false}>
+      <Button color="secondary" href={getInternalPath('/services')} scroll={false}>
         {isFrench ? 'NOS SERVICES' : 'OUR SERVICES'}
       </Button>
     </section>

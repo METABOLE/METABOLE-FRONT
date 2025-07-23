@@ -2,7 +2,9 @@ import Button from '@/components/ui/Button';
 import { IconCross } from '@/components/ui/Icons';
 import ScrollingContainer from '@/components/ui/ScrollingContainer';
 import { useMatchMedia } from '@/hooks/useCheckScreenSize';
+import { PERFORMANCE_LEVEL } from '@/hooks/usePerformance';
 import { useLanguage } from '@/providers/language.provider';
+import { usePerformance } from '@/providers/performance.provider';
 import { BREAKPOINTS, COLORS } from '@/types';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
@@ -26,6 +28,7 @@ const Hero = () => {
   const { contextSafe } = useGSAP();
   const { isFrench } = useLanguage();
   const isMobile = useMatchMedia(BREAKPOINTS.MD);
+  const { isLoading, isAtLeast } = usePerformance();
 
   const revealAnimation = contextSafe(() => {
     const splitTitle = new SplitText(titleRef.current, {
@@ -38,12 +41,16 @@ const Hero = () => {
     gsap.set(splitTitle.words, {
       yPercent: 100,
       opacity: 0,
-      filter: 'blur(10px)',
+      ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+        filter: 'blur(10px)',
+      }),
     });
     gsap.set(splitDescription.words, {
       yPercent: 100,
       opacity: 0,
-      filter: 'blur(10px)',
+      ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+        filter: 'blur(10px)',
+      }),
     });
 
     gsap
@@ -54,7 +61,9 @@ const Hero = () => {
         yPercent: 0,
         opacity: 1,
         duration: 1,
-        filter: 'blur(0px)',
+        ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+          filter: 'blur(0px)',
+        }),
         stagger: 0.02,
         ease: 'power4.out',
       })
@@ -64,7 +73,9 @@ const Hero = () => {
           yPercent: 0,
           opacity: 1,
           duration: 1,
-          filter: 'blur(0px)',
+          ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+            filter: 'blur(0px)',
+          }),
           stagger: 0.02,
           ease: 'power4.out',
         },
@@ -73,6 +84,14 @@ const Hero = () => {
   });
 
   const scrollAnimation = contextSafe(() => {
+    ScrollTrigger.getById('index-scroll')?.kill();
+
+    if (isMobile) {
+      gsap.set(titleRef.current, { x: 0 });
+      gsap.set(descriptionRef.current, { x: 0 });
+      return;
+    }
+
     gsap
       .timeline({
         scrollTrigger: {
@@ -110,16 +129,10 @@ const Hero = () => {
   });
 
   useGSAP(() => {
-    revealAnimation();
-    ScrollTrigger.getById('index-scroll')?.kill();
-
-    if (isMobile) {
-      gsap.set(titleRef.current, { x: 0 });
-      gsap.set(descriptionRef.current, { x: 0 });
-      return;
-    }
     scrollAnimation();
-  }, [isMobile, isFrench]);
+    if (isLoading) return;
+    revealAnimation();
+  }, [isMobile, isFrench, isLoading]);
 
   return (
     <section
@@ -162,7 +175,7 @@ const Hero = () => {
                 <span>Metabole est un </span>
                 <span className="text-blue">studio créatif</span>
                 <span> qui conçoit des </span>
-                <span className="text-blue">expériences intéractives</span>
+                <span className="text-blue">expériences interactives</span>
                 <span> et </span>
                 <span className="text-blue">performantes</span>
                 <span>.</span>

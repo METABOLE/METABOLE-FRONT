@@ -1,3 +1,4 @@
+import { usePerformance } from '@/providers/performance.provider';
 import { motion, TargetAndTransition } from 'framer-motion';
 import { ReactNode } from 'react';
 
@@ -8,6 +9,8 @@ type CustomVariants = {
 };
 
 export default function PageTransition({ children }: { children: ReactNode }) {
+  const { isLoading } = usePerformance();
+
   const leftBlockVariants = {
     initial: {
       scaleX: 1,
@@ -89,7 +92,7 @@ export default function PageTransition({ children }: { children: ReactNode }) {
   const anim = (variants: CustomVariants) => {
     return {
       initial: 'initial',
-      animate: 'enter',
+      animate: isLoading ? 'initial' : 'enter',
       exit: 'exit',
       variants,
     };

@@ -1,5 +1,7 @@
 import { IconLink } from '@/components/ui/Icons';
+import { PERFORMANCE_LEVEL } from '@/hooks/usePerformance';
 import { useLanguage } from '@/providers/language.provider';
+import { usePerformance } from '@/providers/performance.provider';
 import { TeamMember } from '@/types/us.type';
 import { useGSAP } from '@gsap/react';
 import clsx from 'clsx';
@@ -19,14 +21,14 @@ interface CardUsProps {
 }
 
 const CardUs = ({ member, index, wrapperImagesRefs, imagesRefs }: CardUsProps) => {
-  const { isFrench } = useLanguage();
-
-  const descriptionRef = useRef<HTMLDivElement>(null);
-  const textDescriptionRef = useRef<HTMLParagraphElement>(null);
+  const descriptionRef = useRef(null);
+  const textDescriptionRef = useRef(null);
   const timelineRef = useRef(gsap.timeline({ paused: true }));
 
+  const { isFrench } = useLanguage();
+  const { isLoading, isAtLeast } = usePerformance();
   useGSAP(() => {
-    if (!descriptionRef.current || !textDescriptionRef.current) return;
+    if (!descriptionRef.current || !textDescriptionRef.current || isLoading) return;
 
     const splitText = new SplitText(textDescriptionRef.current, {
       type: 'words',
@@ -36,7 +38,13 @@ const CardUs = ({ member, index, wrapperImagesRefs, imagesRefs }: CardUsProps) =
     const tl = gsap.timeline({ paused: true });
 
     gsap.set(descriptionRef.current, { height: 0 });
-    gsap.set(splitText.words, { y: 20, opacity: 0, filter: 'blur(10px)' });
+    gsap.set(splitText.words, {
+      y: 20,
+      opacity: 0,
+      ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+        filter: 'blur(10px)',
+      }),
+    });
 
     tl.to(descriptionRef.current, {
       height: 'auto',
@@ -48,7 +56,9 @@ const CardUs = ({ member, index, wrapperImagesRefs, imagesRefs }: CardUsProps) =
       {
         y: 0,
         opacity: 1,
-        filter: 'blur(0px)',
+        ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+          filter: 'blur(0px)',
+        }),
         stagger: 0.008,
         duration: 0.6,
         ease: 'power4.out',
@@ -57,7 +67,7 @@ const CardUs = ({ member, index, wrapperImagesRefs, imagesRefs }: CardUsProps) =
     );
 
     timelineRef.current = tl;
-  }, [isFrench]);
+  }, [isFrench, isLoading]);
 
   const handleMouseEnter = () => {
     if (timelineRef.current) {

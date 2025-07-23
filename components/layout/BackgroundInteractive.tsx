@@ -15,7 +15,7 @@ interface DotCenter {
   el: DotElement;
 }
 
-const Background = () => {
+const BackgroundInteractive = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const dotsRef = useRef<DotElement[]>([]);
 
@@ -221,4 +221,4 @@ const Background = () => {
   );
 };
 
-export default Background;
+export default BackgroundInteractive;

@@ -3,7 +3,9 @@ import Checkbox from '@/components/ui/Checkbox';
 import Input, { AnimatedInputRef } from '@/components/ui/Input';
 import { TIMELINE } from '@/constants/timeline.constant';
 import { useAudio } from '@/hooks/useAudio';
+import { PERFORMANCE_LEVEL } from '@/hooks/usePerformance';
 import { useLanguage } from '@/providers/language.provider';
+import { usePerformance } from '@/providers/performance.provider';
 import { postContactForm } from '@/services/contact.service';
 import { CONTACT_TYPE_VALUES, FORM_STATUS } from '@/types';
 import { ContactFormData, ContactFormState, ContactType } from '@/types/contact.type';
@@ -31,6 +33,7 @@ const ContactForm = ({ className }: { className?: string }) => {
   const buttonRef = useRef<HTMLDivElement>(null);
 
   const { contextSafe } = useGSAP();
+  const { isLoading, isAtLeast } = usePerformance();
 
   const [formData, setFormData] = useState<ContactFormState>({
     name: '',
@@ -58,7 +61,12 @@ const ContactForm = ({ className }: { className?: string }) => {
     messageInputRef.current?.reset();
 
     gsap.set(checkboxRef.current, { y: 30, opacity: 0 });
-    gsap.set(buttonRef.current, { filter: 'blur(10px)', opacity: 0 });
+    gsap.set(buttonRef.current, {
+      ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+        filter: 'blur(10px)',
+      }),
+      opacity: 0,
+    });
 
     gsap
       .timeline({
@@ -72,14 +80,22 @@ const ContactForm = ({ className }: { className?: string }) => {
       .to(checkboxRef.current, { y: 0, opacity: 1, duration: 0.6, ease: 'power2.inOut' })
       .to(
         buttonRef.current,
-        { filter: 'blur(0px)', opacity: 1, duration: 0.6, ease: 'power2.inOut' },
+        {
+          ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+            filter: 'blur(0px)',
+          }),
+          opacity: 1,
+          duration: 0.6,
+          ease: 'power2.inOut',
+        },
         '+=0.1',
       );
   });
 
   useGSAP(() => {
+    if (isLoading) return;
     revealAnimation();
-  }, []);
+  }, [isLoading]);
 
   const sendContact = useMutation({
     mutationFn: ({ name, email, phone, message, type, consentMarketing, lang }: ContactFormData) =>

@@ -1,11 +1,16 @@
-import Background from '@/components/layout/Background';
+import BackgroundInteractive from '@/components/layout/BackgroundInteractive';
+import BackgroundStatic from '@/components/layout/BackgroundStatic';
 import Burger from '@/components/layout/Burger';
 import Footer from '@/components/layout/Footer';
 import Menu from '@/components/layout/Menu';
 import ScrollBar from '@/components/layout/ScrollBar';
+import PerformanceIndicator from '@/components/ui/PerformanceIndicator';
 import SEO from '@/components/ui/SEO';
 import { useMatchMedia } from '@/hooks/useCheckScreenSize';
+import { useEnvironment } from '@/hooks/useEnvironment';
+import { PERFORMANCE_LEVEL } from '@/hooks/usePerformance';
 import { useLanguage } from '@/providers/language.provider';
+import { usePerformance } from '@/providers/performance.provider';
 import { BREAKPOINTS, ProjectType } from '@/types';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -17,6 +22,8 @@ const Layout = ({ projects, children }: { projects: ProjectType[]; children: Rea
   const { isFrench } = useLanguage();
   const isTablet = useMatchMedia(BREAKPOINTS.MD);
   const isMobile = useMatchMedia(BREAKPOINTS.SM);
+  const { isAtLeast } = usePerformance();
+  const { isProd } = useEnvironment();
 
   return (
     <>
@@ -25,7 +32,8 @@ const Layout = ({ projects, children }: { projects: ProjectType[]; children: Rea
       <main className="min-h-screen w-screen overflow-hidden md:pb-[300px]">{children}</main>
       {!isMobile && <ScrollBar />}
       <Footer />
-      <Background />
+      {isAtLeast(PERFORMANCE_LEVEL.HIGH) ? <BackgroundInteractive /> : <BackgroundStatic />}
+      {!isProd && <PerformanceIndicator />}
     </>
   );
 };

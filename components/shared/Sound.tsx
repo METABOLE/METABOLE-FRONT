@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { forwardRef, useEffect, useRef } from 'react';
 import Wave, { WaveHandles } from '../ui/Wave';
 import { COLORS } from '@/types';
+import { useTouchDevice } from '@/hooks/useTouchDevice';
 
 const FADE_DURATION = 0.5;
 const SOUND_STORAGE_KEY = 'metabole-sound-enabled';
@@ -16,11 +17,13 @@ type AudioResources = {
 
 const Sound = forwardRef<HTMLDivElement, { className?: string; isDark?: boolean }>(
   ({ className, isDark }, ref) => {
-    const { isSoundOn, setIsSoundOn } = useSound();
     const animatedWaveRef = useRef<WaveHandles>(null);
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const audioResourcesRef = useRef<AudioResources | null>(null);
     const isInitializedRef = useRef(false);
+
+    const { isSoundOn, setIsSoundOn } = useSound();
+    const isTouchDevice = useTouchDevice();
 
     const setupAudio = () => {
       if (isInitializedRef.current) return;
@@ -89,7 +92,7 @@ const Sound = forwardRef<HTMLDivElement, { className?: string; isDark?: boolean 
 
     useEffect(() => {
       const handleFirstPageClick = () => {
-        if (isInitializedRef.current) return;
+        if (isInitializedRef.current || isTouchDevice) return;
 
         setupAudio();
 

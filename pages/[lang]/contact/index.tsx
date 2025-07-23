@@ -1,12 +1,14 @@
-import ContactForm from '@/features/contact/ContactForm';
-import { CONTACT } from '@/constants';
-import { useLanguage } from '@/providers/language.provider';
 import CopyButton from '@/components/ui/CopyButton';
-import { useGSAP } from '@gsap/react';
-import { useRef } from 'react';
+import { CONTACT } from '@/constants';
 import { TIMELINE } from '@/constants/timeline.constant';
-import { SplitText } from 'gsap/SplitText';
+import ContactForm from '@/features/contact/ContactForm';
+import { PERFORMANCE_LEVEL } from '@/hooks/usePerformance';
+import { useLanguage } from '@/providers/language.provider';
+import { usePerformance } from '@/providers/performance.provider';
+import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
+import { SplitText } from 'gsap/SplitText';
+import { useRef } from 'react';
 
 gsap.registerPlugin(SplitText);
 
@@ -16,6 +18,7 @@ const ContactPage = () => {
 
   const { isFrench } = useLanguage();
   const { contextSafe } = useGSAP();
+  const { isLoading, isAtLeast } = usePerformance();
 
   const revealAnimation = contextSafe(() => {
     const splitTitle = new SplitText(titleRef.current, {
@@ -31,7 +34,9 @@ const ContactPage = () => {
     });
     gsap.set(splitDescription.words, {
       yPercent: 100,
-      filter: 'blur(10px)',
+      ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+        filter: 'blur(10px)',
+      }),
       opacity: 0,
     });
 
@@ -51,7 +56,9 @@ const ContactPage = () => {
           yPercent: 0,
           duration: 1,
           opacity: 1,
-          filter: 'blur(0px)',
+          ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+            filter: 'blur(0px)',
+          }),
           stagger: 0.02,
           ease: 'power4.out',
         },
@@ -60,8 +67,9 @@ const ContactPage = () => {
   });
 
   useGSAP(() => {
+    if (isLoading) return;
     revealAnimation();
-  }, [isFrench]);
+  }, [isFrench, isLoading]);
 
   return (
     <div className="px-x-default py-y-double-default gap-x-x-default gap-y-default grid md:grid-cols-2 md:grid-rows-2 md:gap-y-0">

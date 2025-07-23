@@ -1,4 +1,6 @@
 import { useMagnet, useResetMagnet } from '@/hooks/useMagnet';
+import { PERFORMANCE_LEVEL } from '@/hooks/usePerformance';
+import { usePerformance } from '@/providers/performance.provider';
 import { COLORS } from '@/types';
 import { useGSAP } from '@gsap/react';
 import { clsx } from 'clsx';
@@ -64,6 +66,8 @@ const Button = forwardRef<HTMLDivElement, ButtonProps>(
     },
     ref,
   ) => {
+    const { contextSafe } = useGSAP();
+    const { isLoading, performanceLevel } = usePerformance();
     const backgroudButtonRef = useRef(null);
     const buttonRef = useRef(null);
     const hiddenButtonRef = useRef<HTMLDivElement>(null);
@@ -72,9 +76,6 @@ const Button = forwardRef<HTMLDivElement, ButtonProps>(
     const absoluteChildRef = useRef(null);
     const splitTextRef = useRef<SplitText | null>(null);
     const absoluteSplitTextRef = useRef<SplitText | null>(null);
-
-    const { contextSafe } = useGSAP();
-
     const [currentChild, setCurrentChild] = useState(children);
     const [splitTextsReady, setSplitTextsReady] = useState(false);
 
@@ -237,19 +238,43 @@ const Button = forwardRef<HTMLDivElement, ButtonProps>(
     });
 
     useGSAP(() => {
-      initSplitText();
-    }, []);
-
-    useGSAP(() => {
-      if (!isResizable) return;
+      if (!isResizable || isLoading) return;
       cleanupSplitText();
       setCurrentChild(children);
       resizeButton();
-    }, [children, isResizable]);
+    }, [children, isResizable, isLoading]);
 
     useGSAP(() => {
+      if (isLoading) return;
+      cleanupSplitText();
       initSplitText();
-    }, [currentChild]);
+    }, [currentChild, isLoading]);
+
+    if (performanceLevel === PERFORMANCE_LEVEL.LOW) {
+      return (
+        <DynamicElement
+          ref={ref}
+          className={clsx(
+            'label inline-block h-11 w-fit cursor-pointer overflow-hidden rounded-full uppercase transition-colors duration-200',
+            color === 'primary' && 'bg-menu hover:bg-blue text-black hover:text-white',
+            color === 'primary' && isDark && 'text-black hover:text-white',
+            color === 'secondary' && 'bg-blue text-white hover:bg-black hover:text-white',
+            color === 'tertiary' && 'bg-yellow text-black hover:bg-black hover:text-white',
+            `origin-${transformOrigin}`,
+            disabled ? 'cursor-default! opacity-70' : 'cursor-pointer',
+            className,
+          )}
+          {...props}
+          disabled={disabled}
+          href={href}
+          target={target}
+        >
+          <div className="flex h-full w-full items-center justify-center px-6 whitespace-nowrap">
+            {children}
+          </div>
+        </DynamicElement>
+      );
+    }
 
     return (
       <>

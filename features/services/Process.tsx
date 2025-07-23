@@ -8,16 +8,18 @@ import {
   IconIdeation,
   IconInitialExchange,
 } from '@/components/ui/Icons';
+import { PERFORMANCE_LEVEL } from '@/hooks/usePerformance';
 import { useLanguage } from '@/providers/language.provider';
+import { usePerformance } from '@/providers/performance.provider';
 import { COLORS } from '@/types';
 import { useGSAP } from '@gsap/react';
 import clsx from 'clsx';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { SplitText } from 'gsap/SplitText';
 import { useRef, useState } from 'react';
 import Divider from './timeline/Divider';
 import Event from './timeline/Event';
-import { SplitText } from 'gsap/SplitText';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -30,9 +32,11 @@ const Process = () => {
   const titleRef = useRef(null);
   const descriptionRef = useRef(null);
 
-  const { isFrench } = useLanguage();
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
+  const { isFrench } = useLanguage();
   const { contextSafe } = useGSAP();
+  const { isLoading, isAtLeast } = usePerformance();
 
   const scrubAnimation = contextSafe(() => {
     if (!sectionRef.current || !horizontalRef.current || !progressBarRef.current) return;
@@ -121,7 +125,9 @@ const Process = () => {
     gsap.set(splitDescription.words, {
       yPercent: 100,
       opacity: 0,
-      filter: 'blur(10px)',
+      ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+        filter: 'blur(10px)',
+      }),
     });
 
     gsap
@@ -144,7 +150,9 @@ const Process = () => {
         {
           yPercent: 0,
           opacity: 1,
-          filter: 'blur(0px)',
+          ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+            filter: 'blur(0px)',
+          }),
           duration: 1,
           stagger: 0.005,
           ease: 'power4.out',
@@ -154,8 +162,9 @@ const Process = () => {
   });
 
   useGSAP(() => {
+    if (isLoading) return;
     revealAnimation();
-  }, [isFrench]);
+  }, [isFrench, isLoading]);
 
   useGSAP(() => {
     scrubAnimation();

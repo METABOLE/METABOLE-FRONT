@@ -1,6 +1,7 @@
 import { CONTACT, LINKS, SOCIALS } from '@/constants';
 import { useShortcut } from '@/hooks/useShortcut';
 import { useLanguage } from '@/providers/language.provider';
+import { usePerformance } from '@/providers/performance.provider';
 import { COLORS } from '@/types';
 import { useGSAP } from '@gsap/react';
 import clsx from 'clsx';
@@ -8,10 +9,11 @@ import gsap from 'gsap';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useRef, useState } from 'react';
-import { LogoSmall } from '../ui/Icons';
+import Language from '../shared/Language';
 import Sound from '../shared/Sound';
 import Time from '../shared/Time';
-import Language from '../shared/Language';
+import { LogoSmall } from '../ui/Icons';
+import { PERFORMANCE_LEVEL } from '@/hooks/usePerformance';
 
 const Burger = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -28,6 +30,7 @@ const Burger = () => {
 
   const pathname = usePathname();
   const { isFrench, getInternalPath } = useLanguage();
+  const { isAtLeast } = usePerformance();
   const { contextSafe } = useGSAP();
 
   useGSAP(() => {
@@ -68,7 +71,13 @@ const Burger = () => {
       .addLabel('show-mask')
       .to(
         menuRef.current,
-        { backdropFilter: 'blur(10px)', backgroundColor: COLORS.MENU, duration: 0.8 },
+        {
+          ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+            backdropFilter: 'blur(10px)',
+          }),
+          backgroundColor: COLORS.MENU,
+          duration: 0.8,
+        },
         'hide-button',
       )
       .to(soundRef.current, { backgroundColor: COLORS.WHITE }, 'hide-button')
@@ -173,7 +182,13 @@ const Burger = () => {
       .to(soundRef.current, { backgroundColor: COLORS.MENU }, '<')
       .to(
         menuRef.current,
-        { backdropFilter: 'blur(0px)', backgroundColor: COLORS.MENU_00, duration: 0.8 },
+        {
+          backgroundColor: COLORS.MENU_00,
+          duration: 0.8,
+          ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+            backdropFilter: 'blur(0px)',
+          }),
+        },
         '-=0.2',
       )
       .set(menuRef.current, { display: 'none' })
@@ -216,7 +231,7 @@ const Burger = () => {
       </header>
       <div
         ref={menuRef}
-        className="px-x-default gap-y-default bg-menu/0 fixed z-[800] flex h-full w-full flex-col justify-between pt-[140px] pb-[calc(32px+var(--y-default))]"
+        className="px-x-default gap-y-default bg-menu/0 fixed z-[800] flex h-lvh w-full flex-col justify-between pt-[140px] pb-[calc(32px+var(--y-default))]"
       >
         <nav className="col-span-4">
           <ul ref={linksRef} className="flex flex-col gap-5">
