@@ -10,6 +10,17 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: '/:path*',
+        destination: 'https://metabole.studio/:path*',
+        permanent: true,
+        has: [
+          {
+            type: 'host',
+            value: 'www.metabole.studio',
+          },
+        ],
+      },
+      {
         source: '/',
         destination: '/fr',
         permanent: false,

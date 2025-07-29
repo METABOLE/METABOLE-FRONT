@@ -8,12 +8,8 @@ import Us from '@/features/team/Us';
 import { fetchProjects } from '@/services/projects.service';
 import { fetchQuestions } from '@/services/questions.service';
 import { QuestionType } from '@/types';
-import Head from 'next/head';
-import { useRouter } from 'next/router';
 
 export default function Home({ questions }: { questions: QuestionType[] }) {
-  const { asPath } = useRouter();
-
   return (
     <div className="relative overflow-hidden">
       <FloatingHalo
@@ -21,9 +17,6 @@ export default function Home({ questions }: { questions: QuestionType[] }) {
         from="#1b17ee"
         to="#f1f2ff00"
       />
-      <Head>
-        <link key="canonical" href={'https://metabole.studio' + asPath} rel="canonical" />
-      </Head>
       <Hero />
       <Philosophy />
       <Expertise />
