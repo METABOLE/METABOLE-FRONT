@@ -17,3 +17,6 @@ Crawl-delay: 1
 
 # Sitemap
 Sitemap: https://metabole.studio/sitemap.xml
+
+# Directive pour éviter les conflits de canonique
+# Forcer l'utilisation de metabole.studio (sans www) comme version canonique
