@@ -16,6 +16,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 import { ReactNode } from 'react';
+
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
 const Layout = ({ projects, children }: { projects: ProjectType[]; children: ReactNode }) => {

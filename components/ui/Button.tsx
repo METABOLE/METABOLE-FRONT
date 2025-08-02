@@ -318,7 +318,7 @@ const Button = forwardRef<HTMLDivElement, ButtonProps>(
               className="relative flex w-fit items-center justify-center px-6 whitespace-nowrap"
             >
               <span ref={currentChildRef}>{isResizable ? currentChild : children}</span>
-              <span ref={absoluteChildRef} className="absolute">
+              <span ref={absoluteChildRef} aria-hidden={true} className="absolute">
                 {isResizable ? currentChild : children}
               </span>
             </div>

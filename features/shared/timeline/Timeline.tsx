@@ -18,12 +18,12 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 import { useRef, useState } from 'react';
-import Divider from './timeline/Divider';
-import Event from './timeline/Event';
+import Divider from './Divider';
+import Event from './Event';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
-const Process = () => {
+const Timeline = () => {
   const sectionRef = useRef(null);
   const horizontalRef = useRef<HTMLDivElement>(null);
   const wrapperLineRef = useRef(null);
@@ -419,4 +419,4 @@ const Process = () => {
   );
 };
 
-export default Process;
+export default Timeline;

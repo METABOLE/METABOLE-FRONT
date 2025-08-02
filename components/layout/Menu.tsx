@@ -3,15 +3,14 @@ import { useShortcut } from '@/hooks/useShortcut';
 import { useLanguage } from '@/providers/language.provider';
 import { COLORS, ProjectType, TAG_TYPE } from '@/types';
 import { useGSAP } from '@gsap/react';
-import clsx from 'clsx';
 import gsap from 'gsap';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { useRef, useState } from 'react';
 import Language from '../shared/Language';
 import NewsletterForm, { AnimatedNewsletterFormRef } from '../shared/NewsletterForm';
 import Sound from '../shared/Sound';
 import Time from '../shared/Time';
+import AnimatedLink from '../ui/AnimatedLink';
 import Button from '../ui/Button';
 import Hint from '../ui/Hint';
 import { LogoFull } from '../ui/Icons';
@@ -50,7 +49,6 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
 
   const timelineRef = useRef<gsap.core.Timeline>(gsap.timeline());
 
-  const pathname = usePathname();
   const { isFrench, getInternalPath } = useLanguage();
   const { contextSafe } = useGSAP();
 
@@ -367,19 +365,14 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
               <ul ref={linksRef} className="flex flex-col gap-5">
                 {LINKS.map((link, index) => (
                   <li key={link.href + index} className="translate-y-10 scale-y-0">
-                    <Link
+                    <AnimatedLink
+                      className="h2 link text-black-70 hover:text-blue"
                       href={getInternalPath(link.href)}
                       scroll={false}
-                      className={clsx(
-                        'h2 link before:bg-blue ease-power4-in-out relative inline-block overflow-hidden pb-1 transition-colors duration-300 before:absolute before:inset-0 before:origin-left before:scale-x-0 before:transition-transform before:duration-500 before:ease-out hover:text-white hover:before:scale-x-100',
-                        pathname === getInternalPath(link.href) ? 'text-blue' : 'text-black-70',
-                      )}
                       onClick={closeMenu}
                     >
-                      <span className="relative z-10">
-                        {isFrench ? link.text.fr : link.text.en}
-                      </span>
-                    </Link>
+                      {isFrench ? link.text.fr : link.text.en}
+                    </AnimatedLink>
                   </li>
                 ))}
               </ul>
