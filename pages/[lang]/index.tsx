@@ -1,9 +1,9 @@
 import FloatingHalo from '@/components/shared/FloatingHalo';
-import Expertise from '@/features/home/expertise/Expertise';
-import Faq from '@/features/home/Faq';
+import Expertise from '@/features/shared/expertise/Expertise';
+import Faq from '@/features/shared/Faq';
 import Hero from '@/features/home/Hero';
 import Philosophy from '@/features/home/Philosophy';
-import Process from '@/features/services/Process';
+import Timeline from '@/features/shared/timeline/Timeline';
 import Us from '@/features/team/Us';
 import { fetchProjects } from '@/services/projects.service';
 import { fetchQuestions } from '@/services/questions.service';
@@ -20,7 +20,7 @@ export default function Home({ questions }: { questions: QuestionType[] }) {
       <Hero />
       <Philosophy />
       <Expertise />
-      <Process />
+      <Timeline />
       <Us />
       <Faq questions={questions} />
     </div>

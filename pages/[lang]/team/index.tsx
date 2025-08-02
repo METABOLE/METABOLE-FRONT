@@ -1,5 +1,5 @@
-import Expertise from '@/features/home/expertise/Expertise';
-import Faq from '@/features/home/Faq';
+import Expertise from '@/features/shared/expertise/Expertise';
+import Faq from '@/features/shared/Faq';
 import Hero from '@/features/team/Hero';
 import Inspiration from '@/features/team/Inspiration';
 import Us from '@/features/team/Us';

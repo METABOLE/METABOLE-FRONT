@@ -2,8 +2,8 @@
 
 :root {
   /* SPACINGS */
-  --x-double-default: clamp(40px, 16vw, 200px);
-  --y-double-default: clamp(40px, 16vh, 200px);
+  --x-double-default: calc(var(--x-default) * 2);
+  --y-double-default: calc(var(--y-default) * 2);
   --x-default: clamp(20px, 8vw, 100px);
   --y-default: clamp(20px, 8vh, 100px);
   --x-half-default: calc(var(--x-default) / 2);
@@ -78,11 +78,11 @@
 
   /* WIDTH */
   --width-x-default: var(--x-default);
-  --width-screen-padded: calc(100vw - (var(--x-default) * 4));
+  --width-screen-padded: calc(100vw - (var(--x-double-default) * 2));
 
   /* HEIGHT */
   --height-y-default: var(--y-default);
-  --height-screen-padded: calc(100vh - (var(--y-default) * 4));
+  --height-screen-padded: calc(100vh - (var(--y-double-default) * 2));
 
   /* GRID TEMPLATE COLUMNS */
   --grid-template-columns-menu: var(--x-default) 1fr var(--x-default);
@@ -93,7 +93,6 @@
   /* INSET */
   --inset-x-default: var(--x-default);
   --inset-y-default: var(--y-default);
-
 
   /* BREAKPOINTS */
   --breakpoint-xs: 380px;
