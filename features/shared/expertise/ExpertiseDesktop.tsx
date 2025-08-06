@@ -73,7 +73,7 @@ const ExpertiseDesktop = () => {
       );
   });
 
-  useGSAP(() => {
+  const scrollAnimation = contextSafe(() => {
     gsap.set(wrapperLineRef.current, { yPercent: 0 });
     gsap.set(imageRef.current, { yPercent: -10 });
 
@@ -105,8 +105,11 @@ const ExpertiseDesktop = () => {
         },
         '<',
       );
+  });
 
+  useGSAP(() => {
     revealAnimation();
+    scrollAnimation();
   }, []);
 
   const getLeftActiveIndex = (activeIdx: number) => {
