@@ -1,27 +1,20 @@
 import Expertise from '@/features/shared/expertise/Expertise';
 import Faq from '@/features/shared/Faq';
-import TrustedBy from '@/features/shared/TrustedBy';
 import Hero from '@/features/team/Hero';
 import Inspiration from '@/features/team/Inspiration';
 import Us from '@/features/team/Us';
 import { fetchClients } from '@/services/clients.service';
 import { fetchProjects } from '@/services/projects.service';
 import { fetchQuestions } from '@/services/questions.service';
-import { ClientType, QuestionType } from '@/types';
+import { QuestionType } from '@/types';
 
-export default function Services({
-  questions,
-  clients,
-}: {
-  questions: QuestionType[];
-  clients: ClientType[];
-}) {
+export default function Services({ questions }: { questions: QuestionType[] }) {
   return (
     <>
       <Hero />
       <Inspiration />
       <Us isPageTeam />
-      <TrustedBy clients={clients} />
+      {/* <TrustedBy clients={clients} /> */}
       <Expertise />
       <Faq questions={questions} />
     </>
