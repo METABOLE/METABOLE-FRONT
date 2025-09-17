@@ -20,7 +20,6 @@ const TrustedBy = ({ clients }: { clients: ClientType[] }) => {
           trigger: sectionRef.current,
           start: 'top bottom',
           end: 'bottom top',
-          markers: true,
           scrub: true,
         },
       })
