@@ -363,15 +363,15 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
           <div className="grid grid-cols-10 gap-5">
             <nav className="col-span-4">
               <ul ref={linksRef} className="flex flex-col gap-5">
-                {LINKS.map((link, index) => (
-                  <li key={link.href + index} className="translate-y-10 scale-y-0">
+                {LINKS.map((link) => (
+                  <li key={link.href} className="translate-y-10 scale-y-0">
                     <AnimatedLink
                       className="h2 link text-black-70 hover:text-blue"
                       href={getInternalPath(link.href)}
                       scroll={false}
                       onClick={closeMenu}
                     >
-                      {isFrench ? link.text.fr : link.text.en}
+                      {link.text[isFrench ? 'fr' : 'en']}
                     </AnimatedLink>
                   </li>
                 ))}

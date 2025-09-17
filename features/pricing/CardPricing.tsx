@@ -18,7 +18,7 @@ const CardPricing = ({
   hoveredIndex: number | null;
   setHoveredIndex: (index: number | null) => void;
 }) => {
-  const { type, title, startingPrice, options, delivery, href } = offer;
+  const { type, title, options, delivery, href } = offer;
   const { isFrench } = useLanguage();
   const { getInternalPath } = useLanguage();
   return (
@@ -34,16 +34,7 @@ const CardPricing = ({
         backfaceVisibility: 'hidden',
       }}
     >
-      <h2 className="p2 uppercase">{title[isFrench ? 'fr' : 'en']}</h2>
-      <div className="flex flex-col">
-        <p className="p3 inline-block pb-2">
-          {type !== OFFER_TYPE.CUSTOM && (isFrench ? 'À partir de' : 'Starting from')}
-        </p>
-        <span className="text-blue h1 font-bold">
-          {startingPrice}
-          {type !== OFFER_TYPE.CUSTOM && ' €'}
-        </span>
-      </div>
+      <h2 className="p1 text-blue uppercase">{title[isFrench ? 'fr' : 'en']}</h2>
       <div>
         <ul className="flex flex-col">
           {options.map((option, index) => (

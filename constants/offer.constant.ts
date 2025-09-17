@@ -7,7 +7,6 @@ export const OFFERS = [
       en: 'PREMIUM LANDING PAGE',
       fr: 'LANDING PAGE PREMIUM',
     },
-    startingPrice: '4500',
     options: [
       {
         title: {
@@ -64,7 +63,6 @@ export const OFFERS = [
       en: 'SIGNATURE WEBSITE',
       fr: 'SITE SIGNATURE',
     },
-    startingPrice: '6500',
     options: [
       {
         title: {
@@ -121,7 +119,6 @@ export const OFFERS = [
       en: 'CUSTOM WEBSITE',
       fr: 'SITE SUR-MESURE',
     },
-    startingPrice: 'Custom',
     options: [
       {
         title: {

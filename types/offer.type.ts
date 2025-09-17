@@ -10,7 +10,6 @@ export type Offer = {
     en: string;
     fr: string;
   };
-  startingPrice: string;
   options: {
     title: {
       en: string;
