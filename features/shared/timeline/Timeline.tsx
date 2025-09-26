@@ -235,13 +235,7 @@ const Timeline = () => {
                 from="#1b17ee"
                 to="#14141800"
               />
-              <div
-                className={clsx(
-                  'absolute z-0 grid h-fit text-white',
-                  'grid-cols-[42px_2px_188px_2px_188px_2px_188px_2px_188px_2px_188px_2px_188px_2px_188px_2px_188px] grid-rows-[repeat(8,42px)]',
-                  'md:grid-cols-[62px_2px_288px_2px_288px_2px_288px_2px_288px_2px_288px_2px_288px_2px_288px_2px_288px] md:grid-rows-[repeat(8,62px)]',
-                )}
-              >
+              <div className="timeline-grid-spacer absolute z-0 grid h-fit text-white">
                 <div className="absolute top-0 left-0 z-10 h-64 w-full bg-gradient-to-b from-black to-black/0" />
                 <div
                   className={clsx(
@@ -280,13 +274,7 @@ const Timeline = () => {
                   <span className="translate-y-[110%] px-2">S7</span>
                 </div>
               </div>
-              <div
-                className={clsx(
-                  'relative z-10 grid h-fit gap-0.5 text-white',
-                  'grid-cols-[42px_188px_188px_188px_188px_188px_188px_42px_188px_188px] grid-rows-[repeat(8,42px)]',
-                  'md:grid-cols-[62px_288px_288px_288px_288px_288px_288px_62px_288px_288px_288px] md:grid-rows-[repeat(8,62px)]',
-                )}
-              >
+              <div className="timeline-grid relative z-10 grid h-fit gap-0.5 text-white">
                 <div
                   ref={wrapperLineRef}
                   className="pointer-events-none absolute bottom-3 z-50 hidden h-[calc(100%+100px)] w-full -translate-x-full bg-black/50 md:block"
@@ -345,7 +333,7 @@ const Timeline = () => {
                   label="DESIGN"
                   className={clsx(
                     'col-start-3 col-end-6 row-start-3',
-                    'after:p2 after:absolute after:top-[3px] after:right-0 after:-z-10 after:flex after:h-9 after:w-[288px] after:translate-x-[calc(100%-14px)] after:items-center after:rounded-r-xl after:bg-[#8887B0]/30 after:pl-7 after:!text-[14px] after:text-white md:after:h-14 md:after:!text-[20px]',
+                    'after:p2 h-item after:absolute after:top-[3px] after:right-0 after:-z-10 after:flex after:w-[288px] after:translate-x-[calc(100%-14px)] after:items-center after:rounded-r-xl after:bg-[#8887B0]/30 after:pl-7 after:!text-[14px] after:text-white md:after:!text-[20px]',
                     isFrench ? 'after:content-["RETOURS"]' : 'after:content-["FEEDBACKS"]',
                     'transition-opacity duration-200',
                     activeIndex === null || activeIndex === 2 ? 'opacity-100' : 'opacity-40',
@@ -398,7 +386,7 @@ const Timeline = () => {
                   label={isFrench ? 'ACCOMPAGNEMENT' : 'SUPPORT'}
                   className={clsx(
                     'col-start-9 col-end-10 row-start-6',
-                    'after:from-blue after:absolute after:top-[3px] after:right-0 after:h-9 after:w-[288px] after:translate-x-[calc(100%-14px)] after:bg-gradient-to-r after:to-black after:content-[""] md:after:h-14',
+                    'after:from-blue h-item after:content-[""]s after:absolute after:top-[3px] after:right-0 after:w-[288px] after:translate-x-[calc(100%-14px)] after:bg-gradient-to-r after:to-black',
                     'transition-opacity duration-200',
                     activeIndex === null || activeIndex === 5 ? 'opacity-100' : 'opacity-40',
                   )}
