@@ -1,6 +1,6 @@
 /* ABSTRACTS */
-@use 'abstracts/_mixins.scss';
-@use 'abstracts/_keyframes.scss';
+@use 'abstracts/mixins';
+@use 'abstracts/keyframes';
 
 /* BASE */
 @use 'base/reset';
@@ -11,4 +11,4 @@
 @use 'components/images';
 @use 'components/smoother';
 @use 'components/txt';
-
+@use 'components/grid';

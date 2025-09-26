@@ -79,8 +79,8 @@ const Event = ({
     >
       <div
         className={clsx(
-          'z-10 flex h-9 items-center gap-2 rounded-xl px-3 md:h-14 md:gap-2.5 md:px-6',
-          isSquare ? 'w-9 justify-center bg-white md:w-14' : 'bg-blue',
+          'h-item z-10 flex items-center gap-2 rounded-xl px-3 md:gap-2.5 md:px-6',
+          isSquare ? 'w-item justify-center bg-white' : 'bg-blue',
         )}
       >
         {icon && <div>{icon}</div>}

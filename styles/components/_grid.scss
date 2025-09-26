@@ -1,0 +1,51 @@
+.timeline-grid {
+  grid-template-rows: repeat(8, 42px);
+  grid-template-columns: 42px 188px 188px 188px 188px 188px 188px 42px 188px 188px;
+
+  @media (width >= 48rem) and (height >= 900px) {
+    grid-template-rows: repeat(8, 62px);
+    grid-template-columns: 62px 288px 288px 288px 288px 288px 288px 62px 288px 288px 288px;
+  }
+}
+
+.timeline-grid-spacer {
+  grid-template-rows: repeat(8, 42px);
+  grid-template-columns: 42px 2px 188px 2px 188px 2px 188px 2px 188px 2px 188px 2px 188px 2px 188px 2px 188px;
+
+  @media (width >= 48rem) and (height >= 900px) {
+    grid-template-rows: repeat(8, 62px);
+    grid-template-columns: 62px 2px 288px 2px 288px 2px 288px 2px 288px 2px 288px 2px 288px 2px 288px 2px 288px;
+  }
+}
+
+.h-item {
+  height: 36px;
+
+  &::after {
+    height: 36px;
+  }
+
+  @media (width >= 48rem) and (height >= 900px) {
+    height: 56px;
+
+    &::after {
+      height: 56px;
+    }
+  }
+}
+
+.w-item {
+  width: 36px;
+
+  &::after {
+    width: 36ox;
+  }
+
+  @media (width >= 48rem) and (height >= 900px) {
+    width: 56px;
+
+    &::after {
+      height: 56px;
+    }
+  }
+}
