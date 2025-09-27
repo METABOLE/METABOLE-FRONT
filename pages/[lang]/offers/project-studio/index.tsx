@@ -8,7 +8,7 @@ import gsap from 'gsap';
 import { SplitText } from 'gsap/SplitText';
 import { useRef } from 'react';
 
-const Pricing = () => {
+const ProjectStudioPage = () => {
   const titleRef = useRef(null);
   const subtitleRef = useRef(null);
   const descriptionRef = useRef(null);
@@ -127,4 +127,4 @@ const Pricing = () => {
   );
 };
 
-export default Pricing;
+export default ProjectStudioPage;

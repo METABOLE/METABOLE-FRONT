@@ -248,8 +248,8 @@ const Hero = () => {
         <Button color="secondary" href={getInternalPath('/contact')} scroll={false}>
           {isFrench ? <span>CONTACT</span> : <span>CONTACT</span>}
         </Button>
-        <Button color="primary" href={getInternalPath('/pricing')} scroll={false}>
-          {isFrench ? <span>TARIFS</span> : <span>PRICING</span>}
+        <Button color="primary" href={getInternalPath('/offers')} scroll={false}>
+          {isFrench ? <span>OFFRES</span> : <span>OFFERS</span>}
         </Button>
       </div>
     </section>

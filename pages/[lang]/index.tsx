@@ -1,15 +1,13 @@
 import FloatingHalo from '@/components/shared/FloatingHalo';
-import Expertise from '@/features/shared/expertise/Expertise';
-import Faq from '@/features/shared/Faq';
 import Hero from '@/features/home/Hero';
 import Philosophy from '@/features/home/Philosophy';
+import Expertise from '@/features/shared/expertise/Expertise';
+import Faq from '@/features/shared/Faq';
 import Timeline from '@/features/shared/timeline/Timeline';
 import Us from '@/features/team/Us';
-import { fetchProjects } from '@/services/projects.service';
-import { fetchQuestions } from '@/services/questions.service';
-import { QuestionType } from '@/types';
+// import { fetchQuestions } from '@/services/questions.service';
 
-export default function Home({ questions }: { questions: QuestionType[] }) {
+export default function Home() {
   return (
     <div className="relative overflow-hidden">
       <FloatingHalo
@@ -22,7 +20,7 @@ export default function Home({ questions }: { questions: QuestionType[] }) {
       <Expertise />
       <Timeline />
       <Us />
-      <Faq questions={questions} />
+      <Faq />
     </div>
   );
 }
@@ -35,13 +33,11 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps() {
-  const projects = await fetchProjects();
-  const questions = await fetchQuestions();
+  // const questions = await fetchQuestions();
 
   return {
     props: {
-      projects,
-      questions,
+      // questions,
     },
   };
 }
