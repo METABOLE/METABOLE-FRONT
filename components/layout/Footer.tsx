@@ -70,21 +70,7 @@ const Footer = () => {
     });
   });
 
-  useGSAP(() => {
-    ScrollTrigger.getAll().forEach((trigger) => {
-      if (trigger.trigger === wrapperRef.current) {
-        trigger.kill();
-      }
-    });
-
-    if (isMobile) {
-      gsap.set(containerSectionRef.current, { y: 0, borderRadius: '0px' });
-      gsap.set(wrapperRef.current, { paddingInline: '', clearProps: 'paddingInline' });
-      return;
-    }
-
-    if (isMobile) return;
-
+  const scrubAnimation = contextSafe(() => {
     gsap.set(containerSectionRef.current, { y: -300 });
 
     gsap
@@ -109,6 +95,25 @@ const Footer = () => {
         },
         '<',
       );
+  });
+
+  const resetScrubAnimation = contextSafe(() => {
+    ScrollTrigger.getById('footer-scrub')?.kill();
+
+    if (isMobile) {
+      gsap.set(containerSectionRef.current, { y: 0, borderRadius: '0px' });
+      gsap.set(wrapperRef.current, { paddingInline: '', clearProps: 'paddingInline' });
+      return;
+    }
+  });
+
+  useGSAP(() => {
+    resetScrubAnimation();
+    if (!isMobile) {
+      setTimeout(() => {
+        scrubAnimation();
+      }, 1000);
+    }
   }, [isMobile]);
 
   return (
