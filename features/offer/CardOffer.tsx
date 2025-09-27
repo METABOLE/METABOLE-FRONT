@@ -5,7 +5,7 @@ import { Offer, OFFER_TYPE } from '@/types';
 import clsx from 'clsx';
 import Link from 'next/link';
 
-const CardPricing = ({
+const CardOffer = ({
   offer,
   id,
   className,
@@ -70,7 +70,7 @@ const CardPricing = ({
           ou configurez votre site avec notre{' '}
           <Link
             className="underline"
-            href={getInternalPath('/pricing/project-studio')}
+            href={getInternalPath('/offers/project-studio')}
             scroll={false}
           >
             project studio
@@ -81,4 +81,4 @@ const CardPricing = ({
   );
 };
 
-export default CardPricing;
+export default CardOffer;

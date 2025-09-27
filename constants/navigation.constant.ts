@@ -12,8 +12,8 @@ export const LINKS = [
     text: { en: 'Team', fr: 'Équipe' },
   },
   {
-    href: '/pricing',
-    text: { en: 'Pricing', fr: 'Tarifs' },
+    href: '/offers',
+    text: { en: 'Offers', fr: 'Offres' },
   },
   {
     href: '/contact',

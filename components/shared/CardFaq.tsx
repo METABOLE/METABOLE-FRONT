@@ -154,12 +154,14 @@ const CardFaq = ({
         <h2 className="text-blue mb-4">{id}.</h2>
         <p className="p2">{isFrench ? questionText.fr : questionText.en}</p>
         <div ref={answerRef}>
-          <p ref={textAnswerRef} className="p3 text-blue-70">
+          <div ref={textAnswerRef} className="p3 text-black-70">
             {isFrench ? answer.fr : answer.en}
-          </p>
+          </div>
           {link && !pathname.includes(link.url) && (
             <div ref={buttonWrapperRef} className="mt-6 origin-left">
-              <Button href={getInternalPath(link.url)}>{link.text[isFrench ? 'fr' : 'en']}</Button>
+              <Button href={getInternalPath(link.url)} scroll={false}>
+                {link.text[isFrench ? 'fr' : 'en']}
+              </Button>
             </div>
           )}
         </div>

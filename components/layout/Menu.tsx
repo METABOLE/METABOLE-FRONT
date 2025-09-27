@@ -454,7 +454,7 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
               {CONTACT.EMAIL}
             </a>
             <div className="flex justify-end xl:w-full">
-              <Language />
+              <Language onClick={closeMenu} />
             </div>
           </div>
         </div>

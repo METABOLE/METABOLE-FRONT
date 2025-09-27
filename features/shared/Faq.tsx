@@ -1,5 +1,6 @@
 import CardFaq from '@/components/shared/CardFaq';
 import { useMatchMedia } from '@/hooks/useCheckScreenSize';
+import { QUESTIONS } from '@/services/questions.service';
 import { BREAKPOINTS, QuestionType } from '@/types';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
@@ -8,7 +9,7 @@ import { useMemo, useRef, useState } from 'react';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const Faq = ({ questions }: { questions: QuestionType[] }) => {
+const Faq = () => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | undefined>(undefined);
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -45,12 +46,12 @@ const Faq = ({ questions }: { questions: QuestionType[] }) => {
       () => [],
     );
 
-    questions.forEach((question, index) => {
+    QUESTIONS.forEach((question, index) => {
       newColumns[index % numColumns].push({ question, originalIndex: index });
     });
 
     return newColumns;
-  }, [questions, numColumns]);
+  }, [numColumns]);
 
   useGSAP(() => {
     gsap.set(titleRef.current, { yPercent: 0 });

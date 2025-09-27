@@ -3,35 +3,38 @@ import clsx from 'clsx';
 import { forwardRef } from 'react';
 import Link from 'next/link';
 
-const Language = forwardRef<HTMLDivElement, { isDark?: boolean; className?: string }>(
-  ({ isDark, className }, ref) => {
-    const { isFrench, getChangeLanguagePath } = useLanguage();
+const Language = forwardRef<
+  HTMLDivElement,
+  { isDark?: boolean; className?: string; onClick?: () => void }
+>(({ isDark, className, onClick }, ref) => {
+  const { isFrench, getChangeLanguagePath } = useLanguage();
 
-    const frenchPath = getChangeLanguagePath(true);
-    const englishPath = getChangeLanguagePath(false);
+  const frenchPath = getChangeLanguagePath(true);
+  const englishPath = getChangeLanguagePath(false);
 
-    return (
-      <div
-        ref={ref}
-        className={clsx('p3 flex gap-2', isDark ? 'text-white-30' : 'text-black-30', className)}
+  return (
+    <div
+      ref={ref}
+      className={clsx('p3 flex gap-2', isDark ? 'text-white-30' : 'text-black-30', className)}
+    >
+      <Link
+        className={clsx('cursor-pointer', isFrench && (isDark ? 'text-yellow' : 'text-blue'))}
+        href={frenchPath}
+        scroll={false}
+        onClick={onClick}
       >
-        <Link
-          className={clsx('cursor-pointer', isFrench && (isDark ? 'text-yellow' : 'text-blue'))}
-          href={frenchPath}
-          scroll={false}
-        >
-          FR
-        </Link>
-        <Link
-          className={clsx('cursor-pointer', !isFrench && (isDark ? 'text-yellow' : 'text-blue'))}
-          href={englishPath}
-          scroll={false}
-        >
-          EN
-        </Link>
-      </div>
-    );
-  },
-);
+        FR
+      </Link>
+      <Link
+        className={clsx('cursor-pointer', !isFrench && (isDark ? 'text-yellow' : 'text-blue'))}
+        href={englishPath}
+        scroll={false}
+        onClick={onClick}
+      >
+        EN
+      </Link>
+    </div>
+  );
+});
 
 export default Language;

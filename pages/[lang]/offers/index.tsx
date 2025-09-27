@@ -2,7 +2,7 @@ import Div3D from '@/components/shared/Div3D';
 import Button from '@/components/ui/Button';
 import { OFFERS } from '@/constants/offer.constant';
 import { TIMELINE } from '@/constants/timeline.constant';
-import CardPricing from '@/features/pricing/CardPricing';
+import CardOffer from '@/features/offer/CardOffer';
 import { useMatchMedia } from '@/hooks/useCheckScreenSize';
 import { PERFORMANCE_LEVEL } from '@/hooks/usePerformance';
 import { useLanguage } from '@/providers/language.provider';
@@ -11,13 +11,12 @@ import { BREAKPOINTS, OFFER_TYPE } from '@/types';
 import { useGSAP } from '@gsap/react';
 import clsx from 'clsx';
 import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 import { useRef, useState } from 'react';
 
 gsap.registerPlugin(SplitText);
 
-const Pricing = () => {
+const Offers = () => {
   const titleRef = useRef(null);
   const subtitleRef = useRef(null);
 
@@ -128,8 +127,6 @@ const Pricing = () => {
   });
 
   const scrollAnimation = contextSafe(() => {
-    ScrollTrigger.getById('pricing-parallax')?.kill();
-
     if (isTablet) return;
 
     gsap
@@ -168,7 +165,7 @@ const Pricing = () => {
 
   const renderCard = (offer: (typeof OFFERS)[0]) => {
     const cardElement = (
-      <CardPricing
+      <CardOffer
         hoveredIndex={hoveredIndex}
         id={`offer-card-${offer.type}`}
         offer={offer}
@@ -206,7 +203,7 @@ const Pricing = () => {
     <section className="py-y-default flex flex-col text-center">
       <div className="pt-y-default px-x-default mx-auto md:w-2/3">
         <h1 ref={titleRef} className="text-blue h1 pb-2.5 uppercase">
-          {isFrench ? 'Tarification' : 'Pricing'}
+          {isFrench ? 'Offres' : 'Offers'}
         </h1>
         <p ref={subtitleRef} className="p1">
           {isFrench
@@ -227,7 +224,7 @@ const Pricing = () => {
             ? 'Si vous avez une idée précise de votre besoin, utilisez notre project studio pour nous orienter dans la réflexion :'
             : 'If you have a clear idea of your needs, use our project studio to guide us in our thinking:'}
         </p>
-        <Button color="secondary" href={getInternalPath('/pricing/project-studio')} scroll={false}>
+        <Button color="secondary" href={getInternalPath('/offers/project-studio')} scroll={false}>
           <span>PROJECT STUDIO</span>
         </Button>
       </div>
@@ -235,4 +232,4 @@ const Pricing = () => {
   );
 };
 
-export default Pricing;
+export default Offers;
