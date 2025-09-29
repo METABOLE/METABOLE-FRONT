@@ -51,6 +51,29 @@ const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const detectPerformance = async () => {
+        const waitForStableState = async (): Promise<void> => {
+          return new Promise((resolve) => {
+            if (document.readyState !== 'complete') {
+              window.addEventListener('load', () => resolve(), { once: true });
+            } else {
+              setTimeout(resolve, 500);
+            }
+          });
+        };
+
+        const isBrowserBusy = (): boolean => {
+          if ('performance' in window && 'getEntriesByType' in performance) {
+            const navigationEntries = performance.getEntriesByType(
+              'navigation',
+            ) as PerformanceNavigationTiming[];
+            if (navigationEntries.length > 0) {
+              const [nav] = navigationEntries;
+              return Date.now() - nav.loadEventEnd < 2000;
+            }
+          }
+          return false;
+        };
+
         const runAnimationPerformanceTest = () => {
           return new Promise<number>((resolve) => {
             const start = performance.now();
@@ -92,6 +115,13 @@ const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
             requestAnimationFrame(animate);
           });
         };
+
+        await waitForStableState();
+
+        if (isBrowserBusy()) {
+          console.info('Browser still busy, waiting additional 2s...');
+          await new Promise((resolve) => setTimeout(resolve, 2000));
+        }
 
         let executionTime: number;
         let isTimeout = false;

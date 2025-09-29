@@ -3,7 +3,6 @@ import Faq from '@/features/shared/Faq';
 import Hero from '@/features/team/Hero';
 import Inspiration from '@/features/team/Inspiration';
 import Us from '@/features/team/Us';
-import { fetchClients } from '@/services/clients.service';
 import { fetchProjects } from '@/services/projects.service';
 
 export default function Services() {
@@ -12,7 +11,6 @@ export default function Services() {
       <Hero />
       <Inspiration />
       <Us isPageTeam />
-      {/* <TrustedBy clients={clients} /> */}
       <Expertise />
       <Faq />
     </>
@@ -28,12 +26,10 @@ export async function getStaticPaths() {
 
 export async function getStaticProps() {
   const projects = await fetchProjects();
-  const clients = await fetchClients();
 
   return {
     props: {
       projects,
-      clients,
     },
   };
 }
