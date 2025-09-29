@@ -12,7 +12,6 @@ export default function Page() {
       opacity: 0,
     });
     gsap.to(textRef.current, {
-      delay: 3.1,
       scale: 1,
       opacity: 1,
       duration: 2.2,

@@ -45,8 +45,13 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
+    if (router.query.lang !== 'en' && router.query.lang !== 'fr') {
+      router.push('/404');
+      return;
+    }
+
     _setIsFrench(router.query.lang === 'fr');
-  }, [router.query.lang]);
+  }, []);
 
   return (
     <LanguageContext.Provider
