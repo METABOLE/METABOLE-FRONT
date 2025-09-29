@@ -12,7 +12,6 @@ export default function Services() {
       <Hero />
       <Inspiration />
       <Us isPageTeam />
-      {/* <TrustedBy clients={clients} /> */}
       <Expertise />
       <Faq />
     </>
