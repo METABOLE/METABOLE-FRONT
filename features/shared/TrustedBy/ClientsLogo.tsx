@@ -7,14 +7,14 @@ export const LogoMomArchitecture = () => (
     width="204"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <circle cx="55.6406" cy="55" r="46.3571" stroke="black" stroke-width="17.2857" />
-    <circle cx="55.6406" cy="165" r="46.3571" stroke="black" stroke-width="17.2857" />
+    <circle cx="55.6406" cy="55" r="46.3571" stroke="black" strokeWidth="17.2857" />
+    <circle cx="55.6406" cy="165" r="46.3571" stroke="black" strokeWidth="17.2857" />
     <circle
       cx="148.359"
       cy="55"
       r="46.3571"
       stroke="black"
-      stroke-width="17.2857"
+      strokeWidth="17.2857"
       transform="rotate(90 148.359 55)"
     />
     <circle
@@ -22,11 +22,11 @@ export const LogoMomArchitecture = () => (
       cy="165"
       r="46.3571"
       stroke="black"
-      stroke-width="17.2857"
+      strokeWidth="17.2857"
       transform="rotate(90 148.359 165)"
     />
-    <circle cx="102" cy="110" fill="#F8EEE6" r="46.3571" stroke="black" stroke-width="17.2857" />
-    <circle cx="102.001" cy="110.001" r="63.6429" stroke="#F8EEE6" stroke-width="17.2857" />
+    <circle cx="102" cy="110" fill="#F8EEE6" r="46.3571" stroke="black" strokeWidth="17.2857" />
+    <circle cx="102.001" cy="110.001" r="63.6429" stroke="#F8EEE6" strokeWidth="17.2857" />
   </svg>
 );
 
@@ -39,7 +39,7 @@ export const LogoTechunt = () => (
     width="168"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <g clip-path="url(#clip0_3492_6169)">
+    <g clipPath="url(#clip0_3492_6169)">
       <path
         d="M76.3267 14.7454V58.6058H90.7124V14.7214C98.0811 15.4167 105.282 17.1989 112.187 20.0601L117.694 6.76928C106.84 2.27774 95.3877 0 83.6554 0C71.923 0 60.4624 2.27774 49.6172 6.76928L55.1237 20.0601C61.9409 17.2389 69.0459 15.4567 76.3267 14.7454Z"
         fill="white"
@@ -175,10 +175,10 @@ export const LogoJabCoach = () => (
       fill="white"
     />
     <path
-      clip-rule="evenodd"
+      clipRule="evenodd"
       d="M258.602 170.562H309.387L246.624 0H189.132L128.524 170.562H177.393L184.58 148.284H251.416L258.602 170.562ZM197.037 108.757L209.494 69.471C210.931 64.68 213.646 55.656 217.638 42.401C218.597 46.713 221.312 55.736 225.783 69.471L238.48 108.757H197.037ZM461.566 95.342C456.296 87.677 449.269 82.247 440.485 79.052C455.338 72.185 462.764 60.288 462.764 43.359C462.764 31.062 458.133 20.761 448.87 12.457C439.607 4.152 424.595 0 403.834 0H319.032V170.562H405.51C426.751 170.562 442.721 166.17 453.421 157.387C464.281 148.603 469.711 136.226 469.711 120.256C469.711 111.313 466.996 103.008 461.566 95.342ZM366.942 37.37H400.48C406.549 36.891 410.781 39.207 413.176 44.317C415.732 49.427 415.732 54.538 413.176 59.649C410.781 64.759 406.549 67.075 400.48 66.596H366.942V37.37ZM402.875 132.952H366.942V101.81H402.875C414.374 101.81 420.123 107.001 420.123 117.381C420.123 127.762 414.374 132.952 402.875 132.952Z"
       fill="white"
-      fill-rule="evenodd"
+      fillRule="evenodd"
     />
   </svg>
 );
