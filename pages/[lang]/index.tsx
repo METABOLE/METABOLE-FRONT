@@ -4,9 +4,7 @@ import Philosophy from '@/features/home/Philosophy';
 import Expertise from '@/features/shared/expertise/Expertise';
 import Faq from '@/features/shared/Faq';
 import Timeline from '@/features/shared/timeline/Timeline';
-import TrustedBy from '@/features/shared/TrustedBy/TrustedBy';
 import Us from '@/features/team/Us';
-// import { fetchQuestions } from '@/services/questions.service';
 
 export default function Home() {
   return (
@@ -21,25 +19,8 @@ export default function Home() {
       <Expertise />
       <Timeline />
       <Us />
-      <TrustedBy />
+      {/* <TrustedBy /> */}
       <Faq />
     </div>
   );
-}
-
-export async function getStaticPaths() {
-  return {
-    paths: [{ params: { lang: 'en' } }, { params: { lang: 'fr' } }],
-    fallback: false,
-  };
-}
-
-export async function getStaticProps() {
-  // const questions = await fetchQuestions();
-
-  return {
-    props: {
-      // questions,
-    },
-  };
 }
