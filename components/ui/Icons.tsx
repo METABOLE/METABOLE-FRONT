@@ -347,3 +347,18 @@ export const IconLink = forwardRef<SVGSVGElement, IconProps>(({ ...props }, ref)
     />
   </svg>
 ));
+
+export const IconCrossSmall = forwardRef<SVGSVGElement, IconProps>(({ ...props }, ref) => (
+  <svg
+    {...props}
+    ref={ref}
+    fill="none"
+    height="9"
+    viewBox="0 0 8 9"
+    width="8"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <rect height="8" width="2" x="3" y="0.5" />
+    <rect height="8" transform="rotate(90 8 3.5)" width="2" x="8" y="3.5" />
+  </svg>
+));

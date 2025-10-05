@@ -299,16 +299,12 @@ const ContactForm = ({ className }: { className?: string }) => {
         <option value={CONTACT_TYPE_VALUES.DEFAULT}>
           {isFrench ? 'Sélectionnez un type' : 'Select a type'}
         </option>
-        <option value={CONTACT_TYPE_VALUES.LANDING}>
-          {isFrench ? 'Page de destination (1 page)' : 'Landing page (1 page)'}
-        </option>
-        <option value={CONTACT_TYPE_VALUES.SIMPLE}>
+        <option value={CONTACT_TYPE_VALUES.ONE_PAGE}>One Page (1 page)</option>
+        <option value={CONTACT_TYPE_VALUES.WEBSITE}>
           {isFrench ? 'Site web (3 à 6 pages)' : 'Website (3 to 6 pages)'}
         </option>
-        <option value={CONTACT_TYPE_VALUES.CUSTOM}>
-          {isFrench
-            ? 'Site web personnalisé (pages illimitées)'
-            : 'Custom website (unlimited pages)'}
+        <option value={CONTACT_TYPE_VALUES.WEB_EXPERIENCE}>
+          {isFrench ? 'Expérience web (pages illimitées)' : 'Web experience (unlimited pages)'}
         </option>
         <option value={CONTACT_TYPE_VALUES.OTHER}>{isFrench ? 'Autre' : 'Other'}</option>
       </Input>
