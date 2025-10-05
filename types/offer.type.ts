@@ -1,7 +1,7 @@
 export enum OFFER_TYPE {
-  LANDING = 'LANDING',
-  SIMPLE = 'SIMPLE',
-  CUSTOM = 'CUSTOM',
+  WEBSITE = 'WEBSITE',
+  ONE_PAGE = 'ONE_PAGE',
+  WEB_EXPERIENCE = 'WEB_EXPERIENCE',
 }
 
 export type Offer = {

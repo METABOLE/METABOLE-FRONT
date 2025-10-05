@@ -2,171 +2,297 @@ import { CONTACT_TYPE_VALUES, OFFER_TYPE } from '@/types';
 
 export const OFFERS = [
   {
-    type: OFFER_TYPE.LANDING,
+    type: OFFER_TYPE.ONE_PAGE,
     title: {
-      en: 'PREMIUM LANDING PAGE',
-      fr: 'LANDING PAGE PREMIUM',
+      en: 'ONE-PAGE',
+      fr: 'ONE-PAGE',
     },
-    options: [
+    description: {
+      en: 'A modern single-page website with smooth animations and responsive design. Perfect for portfolios and landing pages.',
+      fr: "Un site web moderne d'une seule page avec des animations fluides et un design responsive. Parfait pour les portfolios et pages d'atterrissage.",
+    },
+    scope: [
       {
         title: {
-          en: '1 page',
           fr: '1 page',
+          en: '1 page',
         },
       },
       {
         title: {
-          en: 'Elegant animations on every section',
-          fr: 'Animations élégantes sur chaque section',
+          fr: '8 sections',
+          en: '8 sections',
         },
       },
       {
         title: {
-          en: '100% custom design',
-          fr: 'Design 100% sur-mesure',
+          fr: 'Page contact',
+          en: 'Contact page',
         },
       },
       {
         title: {
-          en: 'Responsive design (mobile)',
-          fr: 'Responsive design (mobile)',
-        },
-      },
-      {
-        title: {
-          en: 'Technical SEO',
-          fr: 'SEO technique',
-        },
-      },
-      {
-        title: {
-          en: 'Available options: simple CMS, multilingual, etc...',
-          fr: 'Options possibles : CMS simple, multilingue, etc...',
+          fr: 'Pages légales',
+          en: 'Legal pages',
         },
       },
     ],
-    delivery: {
-      title: {
-        en: 'Fast delivery',
-        fr: 'Livraison rapide',
+    services: [
+      {
+        isIncluded: true,
+        title: {
+          fr: 'Design',
+          en: 'Design',
+        },
       },
-      description: {
-        en: '3 to 4 weeks',
-        fr: '3 à 4 semaines',
+      {
+        isIncluded: true,
+        title: {
+          fr: 'Développement',
+          en: 'Development',
+        },
       },
-    },
-    href: '/contact?type=' + CONTACT_TYPE_VALUES.LANDING,
+      {
+        isIncluded: true,
+        title: {
+          fr: 'Animations',
+          en: 'Animations',
+        },
+      },
+      {
+        isIncluded: false,
+        title: {
+          fr: 'CMS',
+          en: 'CMS',
+        },
+      },
+      {
+        isIncluded: false,
+        title: {
+          fr: 'Branding',
+          en: 'Branding',
+        },
+      },
+      {
+        isIncluded: false,
+        title: {
+          fr: 'Stratégie',
+          en: 'Strategy',
+        },
+      },
+      {
+        isIncluded: false,
+        title: {
+          fr: 'Copywriting',
+          en: 'Copywriting',
+        },
+      },
+      {
+        isIncluded: false,
+        title: {
+          fr: '3D',
+          en: '3D',
+        },
+      },
+    ],
+    timing: '4-6',
+    videoUrl: '/videos/one-page.mp4',
+    href: '/contact?type=' + CONTACT_TYPE_VALUES.ONE_PAGE,
   },
   {
-    type: OFFER_TYPE.SIMPLE,
+    type: OFFER_TYPE.WEBSITE,
     title: {
-      en: 'SIGNATURE WEBSITE',
-      fr: 'SITE SIGNATURE',
+      en: 'WEBSITE',
+      fr: 'WEBSITE',
     },
-    options: [
+    description: {
+      en: 'A complete website with multiple pages, CMS integration, and custom branding. Perfect for professional businesses.',
+      fr: 'Un site web complet avec plusieurs pages, intégration CMS et branding personnalisé. Parfait pour les entreprises professionnelles.',
+    },
+    scope: [
       {
         title: {
+          fr: '3 à 6 pages',
           en: '3 to 6 pages',
-          fr: 'De 3 à 6 pages',
         },
       },
       {
         title: {
-          en: 'Elegant animations on every page',
-          fr: 'Animations élégantes sur chaque page',
+          fr: '8 à 10 sections / pages',
+          en: '8 to 10 sections / pages',
         },
       },
       {
         title: {
-          en: '100% custom design',
-          fr: 'Design 100% sur-mesure',
+          fr: 'Page contact',
+          en: 'Contact page',
         },
       },
       {
         title: {
-          en: 'Responsive design (mobile)',
-          fr: 'Responsive design (mobile)',
-        },
-      },
-      {
-        title: {
-          en: 'Technical SEO',
-          fr: 'SEO technique',
-        },
-      },
-      {
-        title: {
-          en: 'Available options: simple CMS, multilingual, blog, etc...',
-          fr: 'Options possibles : CMS simple, multilingue, blog, etc...',
+          fr: 'Pages légales',
+          en: 'Legal pages',
         },
       },
     ],
-    delivery: {
-      title: {
-        en: 'Delivery',
-        fr: 'Livraison',
+    services: [
+      {
+        isIncluded: true,
+        title: {
+          fr: 'Design',
+          en: 'Design',
+        },
       },
-      description: {
-        en: '6 to 8 weeks',
-        fr: '6 à 8 semaines',
+      {
+        isIncluded: true,
+        title: {
+          fr: 'Développement',
+          en: 'Development',
+        },
       },
-    },
-    href: '/contact?type=' + CONTACT_TYPE_VALUES.SIMPLE,
+      {
+        isIncluded: true,
+        title: {
+          fr: 'Animations',
+          en: 'Animations',
+        },
+      },
+      {
+        isIncluded: true,
+        title: {
+          fr: 'CMS',
+          en: 'CMS',
+        },
+      },
+      {
+        isIncluded: true,
+        title: {
+          fr: 'Branding',
+          en: 'Branding',
+        },
+      },
+      {
+        isIncluded: false,
+        title: {
+          fr: 'Stratégie',
+          en: 'Strategy',
+        },
+      },
+      {
+        isIncluded: false,
+        title: {
+          fr: 'Copywriting',
+          en: 'Copywriting',
+        },
+      },
+      {
+        isIncluded: false,
+        title: {
+          fr: '3D',
+          en: '3D',
+        },
+      },
+    ],
+    timing: '6-10',
+    videoUrl: '/videos/website.mp4',
+    href: '/contact?type=' + CONTACT_TYPE_VALUES.WEBSITE,
   },
   {
-    type: OFFER_TYPE.CUSTOM,
+    type: OFFER_TYPE.WEB_EXPERIENCE,
     title: {
-      en: 'CUSTOM WEBSITE',
-      fr: 'SITE SUR-MESURE',
+      en: 'WEB EXPERIENCE',
+      fr: 'EXPÉRIENCE WEB',
     },
-    options: [
+    description: {
+      en: 'The ultimate digital experience with unlimited pages, 3D elements, strategy, and copywriting. For ambitious projects.',
+      fr: "L'expérience numérique ultime avec des pages illimitées, éléments 3D, stratégie et copywriting. Pour les projets ambitieux.",
+    },
+    scope: [
       {
         title: {
+          fr: 'Pages illimitées',
           en: 'Unlimited pages',
-          fr: 'Nombre de pages illimité',
         },
       },
       {
         title: {
-          en: 'Immersive animations',
-          fr: 'Animations immersives',
+          fr: 'Sections illimitées',
+          en: 'Unlimited sections',
         },
       },
       {
         title: {
-          en: '100% custom design',
-          fr: 'Design 100% sur-mesure',
+          fr: 'Page contact',
+          en: 'Contact page',
         },
       },
       {
         title: {
-          en: 'Responsive design (mobile)',
-          fr: 'Responsive design (mobile)',
-        },
-      },
-      {
-        title: {
-          en: 'Technical SEO',
-          fr: 'SEO technique',
-        },
-      },
-      {
-        title: {
-          en: 'Available options: simple CMS, multilingual, blog, etc...',
-          fr: 'Options possibles : CMS simple, multilingue, blog, etc...',
+          fr: 'Pages légales',
+          en: 'Legal pages',
         },
       },
     ],
-    delivery: {
-      title: {
-        en: 'Delivery',
-        fr: 'Livraison',
+    services: [
+      {
+        isIncluded: true,
+        title: {
+          fr: 'Design',
+          en: 'Design',
+        },
       },
-      description: {
-        en: '6+ weeks',
-        fr: '+ 6 semaines',
+      {
+        isIncluded: true,
+        title: {
+          fr: 'Développement',
+          en: 'Development',
+        },
       },
-    },
-    href: '/contact?type=' + CONTACT_TYPE_VALUES.CUSTOM,
+      {
+        isIncluded: true,
+        title: {
+          fr: 'Animations',
+          en: 'Animations',
+        },
+      },
+      {
+        isIncluded: true,
+        title: {
+          fr: 'CMS',
+          en: 'CMS',
+        },
+      },
+      {
+        isIncluded: true,
+        title: {
+          fr: 'Branding',
+          en: 'Branding',
+        },
+      },
+      {
+        isIncluded: true,
+        title: {
+          fr: 'Stratégie',
+          en: 'Strategy',
+        },
+      },
+      {
+        isIncluded: true,
+        title: {
+          fr: 'Copywriting',
+          en: 'Copywriting',
+        },
+      },
+      {
+        isIncluded: true,
+        title: {
+          fr: '3D',
+          en: '3D',
+        },
+      },
+    ],
+    timing: '8-12',
+    videoUrl: '/videos/web-experience.mp4',
+    href: '/contact?type=' + CONTACT_TYPE_VALUES.WEB_EXPERIENCE,
   },
 ];
