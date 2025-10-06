@@ -4,11 +4,7 @@ import { OFFERS } from '@/constants/offer.constant';
 import { useLanguage } from '@/providers/language.provider';
 import { OFFER_TYPE } from '@/types';
 import clsx from 'clsx';
-import gsap from 'gsap';
-import { SplitText } from 'gsap/SplitText';
 import { useRef } from 'react';
-
-gsap.registerPlugin(SplitText);
 
 const Offers = () => {
   const titleRef = useRef(null);
@@ -32,7 +28,7 @@ const Offers = () => {
           <div key={offer.type} className="flex flex-col gap-y-6">
             <div>
               <h2 className="p1 text-blue pb-5">{offer.title[isFrench ? 'fr' : 'en']}</h2>
-              <p className="p3">{offer.description[isFrench ? 'fr' : 'en']}</p>
+              <p className="p3 min-h-[4.5rem]">{offer.description[isFrench ? 'fr' : 'en']}</p>
             </div>
             <div className="flex items-center">
               <div className="bg-black-30 h-px w-2.5 shrink-0" />
