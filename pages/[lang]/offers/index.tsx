@@ -75,7 +75,7 @@ const Offers = () => {
                 {offer.timing} {isFrench ? 'semaines' : 'weeks'}
               </p>
             </div>
-            <div>
+            <div className="px-5">
               <Button
                 color={offer.type === OFFER_TYPE.WEB_EXPERIENCE ? 'secondary' : 'primary'}
                 href={getInternalPath(offer.href)}
