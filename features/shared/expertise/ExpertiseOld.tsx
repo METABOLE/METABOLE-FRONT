@@ -1,21 +1,22 @@
+import FloatingHalo from '@/components/shared/FloatingHalo';
 import Button from '@/components/ui/Button';
-import { IconCross } from '@/components/ui/Icons';
-import { EXPERTISES } from '@/constants/expertise.constant';
+import { useMatchMedia } from '@/hooks/useCheckScreenSize';
 import { useLanguage } from '@/providers/language.provider';
-import { COLORS } from '@/types';
+import { BREAKPOINTS, COLORS } from '@/types';
+import ExpertiseDesktop from './ExpertiseDesktop';
+import ExpertiseMobile from './ExpertiseMobile';
+import { IconCross } from '@/components/ui/Icons';
 import { useGSAP } from '@gsap/react';
-import gsap from 'gsap';
-import { SplitText } from 'gsap/SplitText';
 import { useRef } from 'react';
-import ExpertiseItem from './ExpertiseItem';
+import { SplitText } from 'gsap/SplitText';
+import gsap from 'gsap';
 
 gsap.registerPlugin(SplitText);
 
 const Expertise = ({ isPageServices = false }: { isPageServices?: boolean }) => {
   const titleRef = useRef(null);
-  const sectionRef = useRef(null);
-  const wrapperRef = useRef(null);
 
+  const isMobile = useMatchMedia(BREAKPOINTS.MD);
   const { isFrench, getInternalPath } = useLanguage();
   const { contextSafe } = useGSAP();
 
@@ -48,18 +49,27 @@ const Expertise = ({ isPageServices = false }: { isPageServices?: boolean }) => 
   }, [isFrench]);
 
   return (
-    <section ref={sectionRef} className="px-x-default py-y-double-default relative flex flex-col">
-      <h1 ref={titleRef} className="relative w-fit text-black">
+    <section className="px-x-default py-y-double-default relative flex flex-col overflow-hidden bg-black">
+      <FloatingHalo
+        className="pointer-events-none absolute bottom-0 -left-1/2 z-30 h-[200vw] w-[200vw] translate-1/3 opacity-30"
+        from="#1b17ee"
+        to="#14141800"
+      />
+      <h1 ref={titleRef} className="relative w-fit text-white">
         {isFrench ? <span>NOS EXPERTISES</span> : <span>OUR EXPERTISES</span>}
         <IconCross className="absolute -right-10 bottom-0 hidden md:block" color={COLORS.WHITE} />
       </h1>
-      <div ref={wrapperRef} className="py-y-default gap-y-y-default flex flex-col overflow-hidden">
-        {EXPERTISES.map((expertise, index) => (
-          <ExpertiseItem key={expertise.category.fr} expertise={expertise} index={index} />
-        ))}
+      <div className="py-y-default overflow-hidden">
+        {isMobile ? <ExpertiseMobile /> : <ExpertiseDesktop />}
       </div>
       {!isPageServices && (
-        <Button className="z-30" color="primary" href={getInternalPath('/services')} scroll={false}>
+        <Button
+          className="z-30"
+          color="primary"
+          href={getInternalPath('/services')}
+          isDark={true}
+          scroll={false}
+        >
           {isFrench ? 'NOS SERVICES' : 'OUR SERVICES'}
         </Button>
       )}
