@@ -20,7 +20,6 @@ const ExpertiseItem = ({ expertise, index }: { expertise: Expertise; index: numb
           start: 'top-=100px bottom',
           end: 'bottom top',
           scrub: true,
-          markers: true,
         },
       })
       .fromTo(
@@ -56,12 +55,15 @@ const ExpertiseItem = ({ expertise, index }: { expertise: Expertise; index: numb
   return (
     <div key={expertise.category.fr} ref={expertiseRef} className="flex flex-col gap-y-6">
       <div className="flex items-end gap-2">
-        {index + 1}/{EXPERTISES.length}.<h2 className="h2 text-blue">{expertise.category.fr}</h2>
+        <p className="p2">
+          {index + 1}/{EXPERTISES.length}
+        </p>
+        <h2 className="h2 text-blue">{expertise.category.fr}</h2>
       </div>
       <p className="p3 text-black-30 max-w-[400px]">{expertise.description.fr}</p>
       <ul ref={expertiseItemRefs}>
         {expertise.items.map((item) => (
-          <li key={item.fr} className="p2 w-1/2 uppercase">
+          <li key={item.fr} className="p2 w-1/2">
             {item.fr}
           </li>
         ))}

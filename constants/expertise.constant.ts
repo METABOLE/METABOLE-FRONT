@@ -6,7 +6,7 @@ export const EXPERTISES: Expertise[] = [
     category: {
       fr: 'Stratégie de marque',
       en: 'Brand strategy',
-      img: '/images/works/work-003.png',
+      img: '/images/works/work-002.png',
     },
     description: {
       fr: 'Nous définissons votre positionnement, votre architecture de marque et votre stratégie de communication pour créer une marque forte et différenciante.',
@@ -89,7 +89,7 @@ export const EXPERTISES: Expertise[] = [
     category: {
       fr: 'Web',
       en: 'Web',
-      img: '/images/works/work-003.png',
+      img: '/images/works/work-001.png',
     },
     description: {
       fr: 'Nous développons des expériences web sur-mesure, performantes et innovantes qui allient design moderne et technologies de pointe.',
