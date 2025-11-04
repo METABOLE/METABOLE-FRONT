@@ -61,6 +61,10 @@ const Expertise = ({ isPageServices = false }: { isPageServices?: boolean }) => 
     gsap.set(imageRefs.wrapper.first.current, {
       opacity: 0,
     });
+    gsap.set(imageRefs.wrapper.second.current, {
+      width: 0,
+      height: 0,
+    });
 
     const totalDuration = 100;
     const numberOfTransitions = EXPERTISES.length - 1;
@@ -92,11 +96,13 @@ const Expertise = ({ isPageServices = false }: { isPageServices?: boolean }) => 
         },
         0,
       )
-      .from(
+      .to(
         imageRefs.wrapper.second.current,
         {
-          width: 0,
-          height: 0,
+          width: '20vw',
+          height: '15vw',
+          maxWidth: '400px',
+          maxHeight: '300px',
           duration: 10,
           ease: 'power1.out',
         },
@@ -136,11 +142,11 @@ const Expertise = ({ isPageServices = false }: { isPageServices?: boolean }) => 
 
   return (
     <section ref={sectionRef} className="px-x-default py-y-double-default relative flex flex-col">
-      <h1 ref={titleRef} className="relative w-fit text-black">
+      <h1 ref={titleRef} className="pb-y-default relative w-fit text-black">
         {isFrench ? <span>NOS EXPERTISES</span> : <span>OUR EXPERTISES</span>}
         <IconCross className="absolute -right-10 bottom-0 hidden md:block" color={COLORS.WHITE} />
       </h1>
-      <div className="py-y-default gap-y-y-default relative flex flex-col">
+      <div className="gap-y-y-default relative flex flex-col">
         <div
           ref={imageRefs.wrapper.first}
           className="absolute right-0 bottom-0 hidden h-full w-fit object-right-top lg:block"
@@ -172,9 +178,16 @@ const Expertise = ({ isPageServices = false }: { isPageServices?: boolean }) => 
         ))}
       </div>
       {!isPageServices && (
-        <Button className="z-30" color="primary" href={getInternalPath('/services')} scroll={false}>
-          {isFrench ? 'NOS SERVICES' : 'OUR SERVICES'}
-        </Button>
+        <div className="pt-y-default">
+          <Button
+            className="z-30"
+            color="primary"
+            href={getInternalPath('/services')}
+            scroll={false}
+          >
+            {isFrench ? 'NOS SERVICES' : 'OUR SERVICES'}
+          </Button>
+        </div>
       )}
     </section>
   );

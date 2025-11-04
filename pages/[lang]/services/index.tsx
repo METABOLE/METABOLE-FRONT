@@ -1,5 +1,5 @@
 import Hero from '@/features/services/Hero';
-import Expertise from '@/features/shared/expertise/ExpertiseOld';
+import Expertise from '@/features/shared/expertise/Expertise';
 import Faq from '@/features/shared/Faq';
 import Timeline from '@/features/shared/timeline/Timeline';
 import Us from '@/features/team/Us';
