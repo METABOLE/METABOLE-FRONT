@@ -5,7 +5,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Image from 'next/image';
 import { useRef, useState } from 'react';
-import { EXPERTISES } from '../../../constants/expertise.constant';
+import { EXPERTISES } from '../../../constants/expertise-old.constant';
 
 gsap.registerPlugin(ScrollTrigger);
 

@@ -135,7 +135,14 @@ const Hero = () => {
       ref={sectionRef}
       className="px-x-default pb-y-default flex w-screen flex-col justify-evenly pt-[calc(var(--y-default)*3)] md:min-h-[70vh]"
     >
-      <h1 className="h0 uppercase">
+      <h1
+        className="h0 uppercase"
+        aria-label={
+          isFrench
+            ? 'Conception de sites web uniques et immersifs pour les entreprises avant-gardistes'
+            : 'Designing unique and immersive websites for forward-thinking company'
+        }
+      >
         {isFrench ? (
           <span ref={mobileTitleRef} className="block md:hidden">
             <span>Conception de </span>

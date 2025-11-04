@@ -1,6 +1,7 @@
 export * from './breakpoints.type';
 export * from './colors.type';
 export * from './contact.type';
+export * from './expertise.type';
 export * from './forms.type';
 export * from './language.type';
 export * from './newsletter.type';
