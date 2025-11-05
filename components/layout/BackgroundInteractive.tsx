@@ -13,6 +13,8 @@ interface DotElement extends HTMLDivElement {
 
 interface DotCenter {
   el: DotElement;
+  centerX: number;
+  centerY: number;
 }
 
 const BackgroundInteractive = () => {
@@ -91,7 +93,14 @@ const BackgroundInteractive = () => {
       }
 
       requestAnimationFrame(() => {
-        dotCenters = dots.map((d) => ({ el: d }));
+        dotCenters = dots.map((d) => {
+          const svgSize = 10;
+          return {
+            el: d,
+            centerX: d._baseX + svgSize / 2,
+            centerY: d._baseY + svgSize / 2,
+          };
+        });
         dotsRef.current = dots;
       });
     };
@@ -125,10 +134,8 @@ const BackgroundInteractive = () => {
       }
 
       animationFrameId = requestAnimationFrame(() => {
-        dotCenters.forEach(({ el }) => {
-          const rect = el.getBoundingClientRect();
-          const centerX = rect.left + rect.width / 2;
-          const centerY = rect.top + rect.height / 2;
+        dotCenters.forEach(({ el, centerX, centerY }) => {
+          // Use cached positions to avoid forced reflow
           const dist = Math.hypot(centerX - e.clientX, centerY - e.clientY);
           const t = Math.max(0, 1 - dist / threshold);
           const opacity = gsap.utils.interpolate(0.15, 1, t);
@@ -161,10 +168,8 @@ const BackgroundInteractive = () => {
     };
 
     const handleClick = (e: MouseEvent) => {
-      dotCenters.forEach(({ el }) => {
-        const rect = el.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
+      dotCenters.forEach(({ el, centerX, centerY }) => {
+        // Use cached positions to avoid forced reflow
         const dist = Math.hypot(centerX - e.clientX, centerY - e.clientY);
         if (dist < shockRadius && !el._inertiaApplied) {
           el._inertiaApplied = true;
