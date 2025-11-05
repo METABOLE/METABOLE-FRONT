@@ -10,7 +10,6 @@ import { usePathname } from 'next/navigation';
 import { useRef } from 'react';
 import Button from '../ui/Button';
 import { IconArrow } from '../ui/Icons';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(SplitText);
 
@@ -47,8 +46,6 @@ const CardFaq = ({
 
   const setUpTimeline = contextSafe(() => {
     if (!answerRef.current || !textAnswerRef.current || !arrowRef.current) return;
-
-    // No need for refresh here, it will be called globally after page transitions
 
     const splitText = new SplitText(textAnswerRef.current, {
       type: 'words',

@@ -1,4 +1,4 @@
-import { useScrollLock } from '@/hooks/useToggleScroll';
+import { useScroll } from '@/hooks/useScroll';
 import { usePerformance } from '@/providers/performance.provider';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
@@ -24,7 +24,7 @@ const ScreenLoader = () => {
   const progressRef = useRef({ value: 0 });
 
   const { contextSafe } = useGSAP();
-  const { lockScroll } = useScrollLock();
+  const { lockScroll } = useScroll();
   const { isLoading } = usePerformance();
 
   const revealAnimation = contextSafe(() => {

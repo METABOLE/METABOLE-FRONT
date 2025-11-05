@@ -1,3 +1,4 @@
+import { useScroll } from '@/hooks/useScroll';
 import { usePerformance } from '@/providers/performance.provider';
 import clsx from 'clsx';
 
@@ -30,8 +31,10 @@ const PerformanceIndicator = () => {
     }
   };
 
+  const { isLocked } = useScroll();
+
   return (
-    <div className="fixed bottom-4 left-4 z-50">
+    <div className="fixed bottom-4 left-4 z-[9999]">
       <div
         className={clsx(
           'rounded-lg px-3 py-2 text-sm font-medium shadow-lg',
@@ -43,6 +46,7 @@ const PerformanceIndicator = () => {
             <span className="text-xs opacity-90">{getLevelText(performanceLevel)}</span>
           </div>
           <div className="text-xs opacity-75">Temps: {executionTime.toFixed(1)}ms</div>
+          <div className="text-xs opacity-75">{isLocked ? 'Scroll bloqué' : 'Scroll débloqué'}</div>
         </div>
       </div>
     </div>

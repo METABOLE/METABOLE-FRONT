@@ -2,14 +2,12 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { useRef, useState } from 'react';
 import SafeNumberFlow from '../shared/SafeNumberFlow';
-import { useScrollLock } from '@/hooks/useToggleScroll';
 
 export default function ScrollBar() {
   const progressBarRef = useRef<HTMLDivElement>(null);
   const [percent, setPercent] = useState(0);
 
   const { contextSafe } = useGSAP();
-  const { isLocked } = useScrollLock();
 
   const scrollAnim = contextSafe(() => {
     gsap.set(progressBarRef.current, { height: 0 });
@@ -28,10 +26,6 @@ export default function ScrollBar() {
   useGSAP(() => {
     requestAnimationFrame(() => scrollAnim());
   }, []);
-
-  useGSAP(() => {
-    scrollAnim();
-  }, [isLocked]);
 
   return (
     <div className="bg-blur-glass pointer-events-none fixed top-1/2 right-10 z-[500] h-48 w-0.5 -translate-y-1/2">
