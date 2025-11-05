@@ -37,7 +37,7 @@ const ScreenLoader = () => {
 
     gsap
       .timeline({
-        delay: 0.5,
+        delay: 1,
         defaults: {
           duration: 1.2,
           ease: 'power4.inOut',
