@@ -19,8 +19,8 @@ const TrustedBy = () => {
       .timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: 'top bottom-=200px',
-          end: 'bottom top+=200px',
+          start: 'center bottom-=200px',
+          end: 'center top+=200px',
           scrub: true,
           onUpdate: (self) => {
             const newIndex = Math.floor(self.progress * CLIENTS.length);
@@ -47,8 +47,11 @@ const TrustedBy = () => {
   });
 
   return (
-    <section ref={sectionRef} className="px-x-default py-y-default grid grid-cols-3">
-      <div ref={wrapperTitleRef} className="h-full grow">
+    <section
+      ref={sectionRef}
+      className="px-x-default py-y-default gap-y-y-default gap-x-x-default grid lg:grid-cols-3"
+    >
+      <div ref={wrapperTitleRef} className="col-span-2 h-full grow lg:col-span-1">
         <h2 ref={titleRef} className="text-black">
           Ils nous font confiance
         </h2>
@@ -68,7 +71,7 @@ const TrustedBy = () => {
       </div>
       <div
         ref={wrapperImageRef}
-        className="ml-auto flex h-60 w-60 flex-col items-end gap-6 overflow-hidden rounded-3xl"
+        className="ml-auto hidden h-60 w-60 flex-col items-end gap-6 overflow-hidden rounded-3xl sm:flex"
       >
         <div ref={imageRef}>
           <div
