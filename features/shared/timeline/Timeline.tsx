@@ -63,7 +63,6 @@ const Timeline = () => {
           trigger: sectionRef.current,
           start: 'top bottom',
           end: () => `+=${scrollDistance + window.innerWidth * 0.8}px`,
-          markers: true,
           scrub: true,
         },
       },
