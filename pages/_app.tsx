@@ -68,9 +68,9 @@ function App({ Component, pageProps, globalProps }: CustomAppProps) {
 
   return (
     <AppProvider>
+      {isScreenLoader && !isDev && <ScreenLoader />}
       {getLayout(
         <>
-          {isScreenLoader && !isDev && <ScreenLoader />}
           <AnimatePresence
             mode="wait"
             onExitComplete={() => {
