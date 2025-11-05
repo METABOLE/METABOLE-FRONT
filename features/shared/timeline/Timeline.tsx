@@ -43,18 +43,31 @@ const Timeline = () => {
 
     const scrollDistance = horizontalRef.current.scrollWidth - window.innerWidth;
 
-    gsap.to(horizontalRef.current, {
-      x: () => `-${scrollDistance}px`,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: 'top top',
-        end: () => `+=${scrollDistance}`,
-        scrub: true,
-        pin: true,
-        anticipatePin: 1,
-      },
+    ScrollTrigger.create({
+      trigger: sectionRef.current,
+      start: 'top top',
+      end: () => `+=${scrollDistance}`,
+      pin: true,
+      anticipatePin: 1,
     });
+
+    gsap.fromTo(
+      horizontalRef.current,
+      {
+        x: () => `${window.innerWidth}px`,
+      },
+      {
+        x: () => `-${scrollDistance + window.innerWidth * 0.8}px`,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top bottom',
+          end: () => `+=${scrollDistance + window.innerWidth * 0.8}px`,
+          markers: true,
+          scrub: true,
+        },
+      },
+    );
 
     gsap.set(wrapperLineRef.current, {
       xPercent: -7,
