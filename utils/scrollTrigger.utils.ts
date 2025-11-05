@@ -8,7 +8,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 let refreshTimeout: ReturnType<typeof setTimeout> | null = null;
 let rafId: number | null = null;
 
-export const debouncedScrollTriggerRefresh = (delay: number = 100) => {
+export const debouncedScrollTriggerRefresh = (delay = 100) => {
   // Cancel any pending refresh
   if (refreshTimeout) {
     clearTimeout(refreshTimeout);
@@ -37,7 +37,7 @@ export const immediateScrollTriggerRefresh = () => {
   if (rafId) {
     cancelAnimationFrame(rafId);
   }
-  
+
   requestAnimationFrame(() => {
     ScrollTrigger.refresh();
   });
