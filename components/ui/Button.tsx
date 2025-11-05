@@ -118,12 +118,14 @@ const Button = forwardRef<HTMLDivElement, ButtonProps>(
     const resizeButton = contextSafe(() => {
       if (!isResizable || currentChild === children) return;
 
+      // Calculate width before animation to avoid forced reflow
       const widthHiddenButton = hiddenButtonRef.current?.getBoundingClientRect();
+      const targetWidth = widthHiddenButton?.width;
 
       gsap
         .timeline()
         .to(textRef.current, {
-          width: widthHiddenButton?.width,
+          width: targetWidth,
           duration: 0.3,
           ease: 'power2.inOut',
         })

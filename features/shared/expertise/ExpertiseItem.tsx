@@ -27,7 +27,7 @@ const ExpertiseItem = ({ expertise, index }: { expertise: Expertise; index: numb
       .fromTo(
         expertiseRef.current,
         {
-          xPercent: 100,
+          xPercent: 50,
         },
         {
           xPercent: 0,
@@ -39,7 +39,7 @@ const ExpertiseItem = ({ expertise, index }: { expertise: Expertise; index: numb
       .fromTo(
         expertiseItemRefs.current?.children || [],
         {
-          xPercent: 100,
+          xPercent: 50,
         },
         {
           xPercent: 0,

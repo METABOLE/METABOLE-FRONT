@@ -1,10 +1,13 @@
 import { CONTACT, LINKS, SOCIALS } from '@/constants';
+import { useMatchMedia } from '@/hooks/useCheckScreenSize';
 import { useMagnet, useResetMagnet } from '@/hooks/useMagnet';
 import { useMousePosition } from '@/hooks/useMousePosition';
+import { useSmoothScroll } from '@/hooks/useSmoothScroll';
 import { useLanguage } from '@/providers/language.provider';
 import { BREAKPOINTS, COLORS } from '@/types';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Link from 'next/link';
 import { useRef } from 'react';
 import FloatingHalo from '../shared/FloatingHalo';
@@ -13,9 +16,6 @@ import NewsletterForm from '../shared/NewsletterForm';
 import Time from '../shared/Time';
 import Hint from '../ui/Hint';
 import { IconArrow, LogoSmall } from '../ui/Icons';
-import { useMatchMedia } from '@/hooks/useCheckScreenSize';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useSmoothScroll } from '@/hooks/useSmoothScroll';
 
 const Footer = () => {
   const animatedTitleRef = useRef<SVGSVGElement>(null);
@@ -71,7 +71,10 @@ const Footer = () => {
   });
 
   const scrubAnimation = contextSafe(() => {
-    gsap.set(containerSectionRef.current, { y: -300 });
+    gsap.set(containerSectionRef.current, {
+      transform: 'translateY(-300px)',
+      willChange: 'transform',
+    });
 
     gsap
       .timeline({
@@ -85,7 +88,7 @@ const Footer = () => {
         defaults: { ease: 'none' },
       })
       .to(containerSectionRef.current, {
-        y: 0,
+        transform: 'translateY(0px)',
         borderRadius: '24 24 0 0',
       })
       .to(
@@ -101,7 +104,11 @@ const Footer = () => {
     ScrollTrigger.getById('footer-scrub')?.kill();
 
     if (isMobile) {
-      gsap.set(containerSectionRef.current, { y: 0, borderRadius: '0px' });
+      gsap.set(containerSectionRef.current, {
+        transform: 'translateY(0px)',
+        borderRadius: '0px',
+        clearProps: 'willChange',
+      });
       gsap.set(wrapperRef.current, { paddingInline: '', clearProps: 'paddingInline' });
       return;
     }

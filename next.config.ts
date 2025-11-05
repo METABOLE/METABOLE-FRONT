@@ -4,6 +4,7 @@ const nextConfig: NextConfig = {
   /* config options here */
   transpilePackages: ['gsap'],
   reactStrictMode: true,
+  compress: true, // Enable gzip/brotli compression for Lighthouse
   // experimental: {
   //   esmExternals: 'loose',
   // },

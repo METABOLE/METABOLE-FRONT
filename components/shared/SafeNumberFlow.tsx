@@ -12,12 +12,13 @@ const SafeNumberFlow = ({ value, className, ...props }: NumberFlowProps) => {
     setCanUseNumberFlow(isSupported);
   }, []);
 
-  if (!isClient) {
-    return <span className={className}>{value}</span>;
-  }
-
-  if (!canUseNumberFlow) {
-    return <span className={className}>{value}</span>;
+  // Always render with consistent structure to avoid layout shift
+  if (!isClient || !canUseNumberFlow) {
+    return (
+      <span className={className} style={{ contain: 'layout' }}>
+        {value}
+      </span>
+    );
   }
 
   return <NumberFlow className={className} value={value} {...props} />;

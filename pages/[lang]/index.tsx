@@ -4,6 +4,7 @@ import Philosophy from '@/features/home/Philosophy';
 import Expertise from '@/features/shared/expertise/Expertise';
 import Faq from '@/features/shared/Faq';
 import Timeline from '@/features/shared/timeline/Timeline';
+import TrustedBy from '@/features/shared/TrustedBy/TrustedBy';
 import Us from '@/features/team/Us';
 
 export default function Home() {
@@ -19,7 +20,7 @@ export default function Home() {
       <Expertise />
       <Timeline />
       <Us />
-      {/* <TrustedBy /> */}
+      <TrustedBy />
       <Faq />
     </div>
   );

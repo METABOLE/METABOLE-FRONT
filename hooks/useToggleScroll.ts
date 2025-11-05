@@ -57,12 +57,21 @@ export const useScrollLock = () => {
       setElementStyles(document.body, bodyLockStyles);
       window.scrollTo({ top: 0, behavior: 'instant' });
       document.documentElement.scrollTo({ top: 0, behavior: 'instant' });
+      // Delay refresh to avoid forced reflow during lock
       requestAnimationFrame(() => {
-        ScrollTrigger.refresh();
+        setTimeout(() => {
+          ScrollTrigger.refresh();
+        }, 100);
       });
     } else {
       setElementStyles(document.documentElement, defaultStyles);
       setElementStyles(document.body, defaultStyles);
+      // Refresh on unlock after styles are applied
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          ScrollTrigger.refresh();
+        }, 100);
+      });
     }
 
     globalIsLocked = shouldLock;

@@ -12,6 +12,20 @@ export default function Document(props: DocumentProps) {
       <Head>
         <meta content={isFrench ? descriptionFr : descriptionEn} name="description" />
         <link href="/favicon.ico" rel="icon" />
+        <link
+          as="font"
+          crossOrigin="anonymous"
+          href="/fonts/Safiro-SemiBold.otf"
+          rel="preload"
+          type="font/otf"
+        />
+        <link
+          as="font"
+          crossOrigin="anonymous"
+          href="/fonts/Safiro-Medium.otf"
+          rel="preload"
+          type="font/otf"
+        />
       </Head>
       <body className="antialiased">
         <Main />
