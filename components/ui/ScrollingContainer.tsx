@@ -60,10 +60,15 @@ const ScrollingContainer = ({
   });
 
   useGSAP(() => {
-    ScrollTrigger.refresh();
-    animateInfinite(scrollContainer);
-    if (useTouchDevice()) return;
-    animateScroll();
+    // Delay refresh to avoid forced reflow
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        ScrollTrigger.refresh();
+        animateInfinite(scrollContainer);
+        if (useTouchDevice()) return;
+        animateScroll();
+      }, 50);
+    });
   }, [scrollSpeed]);
 
   return (

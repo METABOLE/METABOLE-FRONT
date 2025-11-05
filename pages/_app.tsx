@@ -73,9 +73,12 @@ function App({ Component, pageProps, globalProps }: CustomAppProps) {
             mode="wait"
             onExitComplete={() => {
               handdlePageChange();
-              setTimeout(() => {
-                ScrollTrigger.refresh();
-              }, 100);
+              // Use requestAnimationFrame + longer delay to batch reflows
+              requestAnimationFrame(() => {
+                setTimeout(() => {
+                  ScrollTrigger.refresh();
+                }, 300);
+              });
             }}
           >
             <PageTransition key={pathname}>
