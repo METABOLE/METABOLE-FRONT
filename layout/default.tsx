@@ -2,6 +2,7 @@ import BackgroundInteractive from '@/components/layout/BackgroundInteractive';
 import BackgroundStatic from '@/components/layout/BackgroundStatic';
 import Burger from '@/components/layout/Burger';
 import Footer from '@/components/layout/Footer';
+import GradientBlur from '@/components/layout/GradientBlur';
 import Menu from '@/components/layout/Menu';
 import ScrollBar from '@/components/layout/ScrollBar';
 import PerformanceIndicator from '@/components/ui/PerformanceIndicator';
@@ -33,7 +34,15 @@ const Layout = ({ projects, children }: { projects: ProjectType[]; children: Rea
       {isTablet ? <Burger /> : <Menu projects={projects} />}
 
       <main className="min-h-screen w-screen overflow-hidden md:pb-[300px]">
-        {isLoading ? <div className="fixed z-[9999] h-screen w-screen bg-black" /> : children}
+        {isLoading ? (
+          <div className="fixed z-[9999] h-screen w-screen bg-black" />
+        ) : (
+          <>
+            {children}
+            <GradientBlur blurHeight="100px" intensity={0.2} orientation="top" />
+            <GradientBlur blurHeight="100px" intensity={0.1} orientation="bottom" />
+          </>
+        )}
       </main>
       {!isMobile && <ScrollBar />}
       <Footer />
