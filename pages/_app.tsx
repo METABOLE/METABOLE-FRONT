@@ -68,14 +68,13 @@ function App({ Component, pageProps, globalProps }: CustomAppProps) {
 
   return (
     <AppProvider>
-      {isScreenLoader && !isDev && <ScreenLoader />}
       {getLayout(
         <>
+          {isScreenLoader && !isDev && <ScreenLoader />}
           <AnimatePresence
             mode="wait"
             onExitComplete={() => {
               handdlePageChange();
-              // Use requestAnimationFrame + longer delay to batch reflows
               requestAnimationFrame(() => {
                 setTimeout(() => {
                   ScrollTrigger.refresh();
