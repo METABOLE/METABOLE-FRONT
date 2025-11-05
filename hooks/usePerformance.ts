@@ -25,6 +25,15 @@ interface PerformanceUtils {
   getConditionalProps: <T>(props: Record<PERFORMANCE_LEVEL, T>) => T | undefined;
 }
 
+const STORAGE_KEY = 'metabole_performance_metrics';
+const CACHE_DURATION = 24 * 60 * 60 * 1000;
+
+interface CachedMetrics {
+  performanceLevel: PERFORMANCE_LEVEL;
+  executionTime: number;
+  timestamp: number;
+}
+
 const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
   const [metrics, setMetrics] = useState<PerformanceMetrics>({
     performanceLevel: PERFORMANCE_LEVEL.HIGH,
@@ -51,6 +60,33 @@ const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const detectPerformance = async () => {
+        const getCachedMetrics = (): CachedMetrics | null => {
+          try {
+            const cached = localStorage.getItem(STORAGE_KEY);
+            if (cached) {
+              const parsed: CachedMetrics = JSON.parse(cached);
+              const age = Date.now() - parsed.timestamp;
+              if (age < CACHE_DURATION) {
+                return parsed;
+              }
+            }
+          } catch (error) {
+            console.warn('Error reading cached performance metrics:', error);
+          }
+          return null;
+        };
+
+        const cachedMetrics = getCachedMetrics();
+        if (cachedMetrics) {
+          console.info('Using cached performance metrics:', cachedMetrics);
+          setMetrics({
+            performanceLevel: cachedMetrics.performanceLevel,
+            executionTime: cachedMetrics.executionTime,
+            isLoading: false,
+          });
+          return;
+        }
+
         const waitForStableState = async (): Promise<void> => {
           return new Promise((resolve) => {
             if (document.readyState !== 'complete') {
@@ -59,6 +95,19 @@ const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
               setTimeout(resolve, 500);
             }
           });
+        };
+
+        const isFirstLoad = (): boolean => {
+          if ('performance' in window && 'getEntriesByType' in performance) {
+            const navigationEntries = performance.getEntriesByType(
+              'navigation',
+            ) as PerformanceNavigationTiming[];
+            if (navigationEntries.length > 0) {
+              const [nav] = navigationEntries;
+              return nav.type === 'navigate' && nav.transferSize > 0;
+            }
+          }
+          return true;
         };
 
         const isBrowserBusy = (): boolean => {
@@ -118,10 +167,17 @@ const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
 
         await waitForStableState();
 
-        if (isBrowserBusy()) {
+        const firstLoad = isFirstLoad();
+
+        if (firstLoad) {
+          console.info('First load detected, waiting for resources to fully load...');
+          await new Promise((resolve) => setTimeout(resolve, 3000));
+        } else if (isBrowserBusy()) {
           console.info('Browser still busy, waiting additional 2s...');
           await new Promise((resolve) => setTimeout(resolve, 2000));
         }
+
+        await new Promise((resolve) => requestIdleCallback(() => resolve(null), { timeout: 1000 }));
 
         let executionTime: number;
         let isTimeout = false;
@@ -133,12 +189,12 @@ const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
               setTimeout(() => {
                 isTimeout = true;
                 reject(new Error('Performance test timeout'));
-              }, 2000);
+              }, 3000);
             }),
           ]);
         } catch (error) {
-          console.warn('Performance test timeout after 2s, forcing LOW performance level');
-          executionTime = 2000;
+          console.warn('Performance test timeout after 3s, forcing LOW performance level');
+          executionTime = 3000;
         }
 
         let performanceLevel: PERFORMANCE_LEVEL;
@@ -151,9 +207,21 @@ const usePerformanceHook = (): PerformanceMetrics & PerformanceUtils => {
           performanceLevel = PERFORMANCE_LEVEL.MEDIUM;
         }
 
-        console.table({ executionTime, performanceLevel });
+        console.table({ executionTime, performanceLevel, firstLoad });
 
-        const delay = isTimeout ? 2000 : executionTime;
+        try {
+          const cacheData: CachedMetrics = {
+            performanceLevel,
+            executionTime,
+            timestamp: Date.now(),
+          };
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(cacheData));
+          console.info('Performance metrics cached for future visits');
+        } catch (error) {
+          console.warn('Error caching performance metrics:', error);
+        }
+
+        const delay = isTimeout ? 3000 : executionTime;
         await new Promise((resolve) => setTimeout(resolve, delay));
 
         setMetrics({
