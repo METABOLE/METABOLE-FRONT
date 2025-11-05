@@ -37,7 +37,7 @@ export default function ScrollBar() {
     <div className="bg-blur-glass pointer-events-none fixed top-1/2 right-10 z-[500] h-48 w-0.5 -translate-y-1/2">
       <div ref={progressBarRef} className="bg-blue absolute h-full w-0.5">
         <SafeNumberFlow
-          className="label text-blue absolute right-2 -bottom-[19px]"
+          className="label text-blue absolute right-2 -bottom-[19px] min-w-[3ch] tabular-nums"
           suffix="%"
           value={Math.min(Math.round(percent * 100), 100)}
         />
