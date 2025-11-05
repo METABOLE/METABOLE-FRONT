@@ -14,8 +14,11 @@ const FloatingHalo = forwardRef<HTMLDivElement, FloatingHaloProps>(
     return (
       <div ref={ref} {...props} className={clsx('absolute', className)}>
         <div
-          className="h-full w-full -translate-1/2"
-          style={{ background: `radial-gradient(circle, ${from} 0%, ${to} 70%)` }}
+          className="h-full w-full -translate-x-1/2 -translate-y-1/2 will-change-transform"
+          style={{
+            background: `radial-gradient(circle, ${from} 0%, ${to} 70%)`,
+            contain: 'paint',
+          }}
         />
       </div>
     );
