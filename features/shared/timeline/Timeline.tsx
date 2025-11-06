@@ -46,7 +46,7 @@ const Timeline = () => {
     ScrollTrigger.create({
       trigger: sectionRef.current,
       start: 'top top',
-      end: () => `+=${scrollDistance}`,
+      end: () => `+=${scrollDistance - window.innerWidth * 0.5}px`,
       pin: true,
       anticipatePin: 1,
     });
@@ -61,7 +61,7 @@ const Timeline = () => {
         ease: 'none',
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: 'top bottom',
+          start: 'top 30%',
           end: () => `+=${scrollDistance + window.innerWidth * 0.8}px`,
           scrub: true,
         },

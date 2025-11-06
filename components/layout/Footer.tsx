@@ -84,6 +84,7 @@ const Footer = () => {
           end: 'bottom bottom',
           scrub: true,
           id: 'footer-scrub',
+          refreshPriority: -1,
         },
         defaults: { ease: 'none' },
       })
@@ -117,9 +118,9 @@ const Footer = () => {
   useGSAP(() => {
     resetScrubAnimation();
     if (!isMobile) {
-      setTimeout(() => {
+      requestAnimationFrame(() => {
         scrubAnimation();
-      }, 1000);
+      });
     }
   }, [isMobile]);
 

@@ -39,8 +39,12 @@ const Layout = ({ projects, children }: { projects: ProjectType[]; children: Rea
         ) : (
           <>
             {children}
-            <GradientBlur blurHeight="100px" intensity={0.2} orientation="top" />
-            <GradientBlur blurHeight="100px" intensity={0.1} orientation="bottom" />
+            {isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && (
+              <>
+                <GradientBlur blurHeight="100px" intensity={0.2} orientation="top" />
+                <GradientBlur blurHeight="100px" intensity={0.1} orientation="bottom" />
+              </>
+            )}
           </>
         )}
       </main>
