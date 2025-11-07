@@ -118,7 +118,18 @@ const Hero = () => {
         },
       })
       .to(desktopSpans, {
-        xPercent: (index) => (index % 2 === 0 ? 20 : -20),
+        xPercent: (index) => {
+          if (index === 0) {
+            return 20;
+          } else if (index === 1) {
+            return -20;
+          } else if (index === 2) {
+            return 30;
+          } else if (index === 3) {
+            return -10;
+          }
+          return 0;
+        },
         display: 'inline-block',
         duration: 1.2,
         ease: 'power4.out',
