@@ -105,12 +105,16 @@ export const EXPERTISES: Expertise[] = [
         en: 'UI Design',
       },
       {
-        fr: 'Développement front-end',
-        en: 'Front-end development',
+        fr: 'Développement web',
+        en: 'Web development',
       },
       {
-        fr: 'Développement back-end',
-        en: 'Back-end development',
+        fr: 'SEO / SEA',
+        en: 'SEO / SEA',
+      },
+      {
+        fr: 'Copywriting',
+        en: 'Copywriting',
       },
       {
         fr: 'Intégration 3D',
