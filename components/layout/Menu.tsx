@@ -326,6 +326,7 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
           <Link
             ref={logoRef}
             aria-label="Logo"
+            className="cursor-pointer"
             href={getInternalPath('/')}
             scroll={false}
             onClick={closeMenu}
@@ -366,7 +367,7 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
                 {LINKS.map((link) => (
                   <li key={link.href} className="translate-y-10 scale-y-0">
                     <AnimatedLink
-                      className="h2 link text-black-70 hover:text-blue"
+                      className="h2 link text-black-70 hover:text-blue cursor-pointer"
                       href={getInternalPath(link.href)}
                       scroll={false}
                       onClick={closeMenu}
@@ -383,7 +384,7 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
                   <li className="overflow-hidden">
                     <Link
                       ref={titleProjectsRef}
-                      className="h3 text-black-70 inline-block"
+                      className="h3 text-black-70 inline-block cursor-pointer"
                       href={getInternalPath('/projects')}
                       scroll={false}
                     >
@@ -396,6 +397,7 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
                         ref={(el) => {
                           if (el) projectTagsRefs.current[index] = el;
                         }}
+                        className="cursor-pointer"
                         href={link.title}
                         type={TAG_TYPE.WHTIE}
                       >
@@ -408,6 +410,7 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
                       ref={(el) => {
                         if (el) projectTagsRefs.current[SLICED_PROJECTS.length + 1] = el;
                       }}
+                      className="cursor-pointer"
                       href="/projects"
                       type={TAG_TYPE.WHTIE}
                     >
@@ -430,7 +433,7 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
                   {SOCIALS.map((link, index) => (
                     <li key={link.href + index}>
                       <Link
-                        className="p3 text-black-30 inline-block transition-[translate,color] hover:-translate-x-2 hover:text-black"
+                        className="p3 text-black-30 inline-block cursor-pointer transition-[translate,color] hover:-translate-x-2 hover:text-black"
                         href={link.href}
                         scroll={false}
                         target="_blank"
@@ -450,7 +453,7 @@ const Menu = ({ projects }: { projects: ProjectType[] }) => {
             <p>Metabole® 2025</p>
             <p className="hidden lg:block">{CONTACT.ADDRESS}</p>
             <Time isDark={false} />
-            <a className="col-span-2" href={'mailto:' + CONTACT.EMAIL}>
+            <a className="col-span-2 cursor-pointer" href={'mailto:' + CONTACT.EMAIL}>
               {CONTACT.EMAIL}
             </a>
             <div className="flex justify-end xl:w-full">

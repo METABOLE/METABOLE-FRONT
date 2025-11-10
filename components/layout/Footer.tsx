@@ -157,7 +157,7 @@ const Footer = () => {
               <div className="gap-y-y-default grid h-full grid-cols-1 gap-x-5 sm:grid-cols-2 md:grid-cols-6">
                 <Link
                   aria-label="Logo"
-                  className="pb-y-half-default col-span-1 h-fit w-fit sm:col-span-2 md:col-span-1"
+                  className="pb-y-half-default col-span-1 h-fit w-fit cursor-pointer sm:col-span-2 md:col-span-1"
                   href={getInternalPath('/')}
                   scroll={false}
                   onMouseMove={(e) => useMagnet(e, 0.8)}
@@ -187,7 +187,7 @@ const Footer = () => {
                     {SOCIALS.map((link, index) => (
                       <li key={link.href + index}>
                         <Link
-                          className="text-white-30 inline-block transition-[translate,color] hover:translate-x-2 hover:text-white"
+                          className="text-white-30 inline-block cursor-pointer transition-[translate,color] hover:translate-x-2 hover:text-white"
                           href={link.href}
                           scroll={false}
                           target="_blank"
@@ -208,7 +208,9 @@ const Footer = () => {
                 <p>Metabole® 2025</p>
                 <p className="whitespace-nowrap">{CONTACT.ADDRESS}</p>
                 <Time className="block md:hidden lg:block" isDark={true} />
-                <a href={'mailto:' + CONTACT.EMAIL}>{CONTACT.EMAIL}</a>
+                <a className="cursor-pointer" href={'mailto:' + CONTACT.EMAIL}>
+                  {CONTACT.EMAIL}
+                </a>
                 <button
                   className="flex w-fit cursor-pointer items-center justify-end gap-2 text-right lg:col-span-2 lg:ml-auto"
                   onClick={() => smoothScrollTo(0, 1800)}
