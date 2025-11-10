@@ -1,54 +1,21 @@
-import { useScroll } from '@/hooks/useScroll';
+import { PERFORMANCE_LEVEL } from '@/hooks/usePerformance';
 import { usePerformance } from '@/providers/performance.provider';
 import clsx from 'clsx';
 
 const PerformanceIndicator = () => {
   const { performanceLevel, executionTime } = usePerformance();
 
-  const getLevelColor = (level: string) => {
-    switch (level) {
-      case 'high':
-        return 'bg-green-500 text-white';
-      case 'medium':
-        return 'bg-yellow-500 text-black';
-      case 'low':
-        return 'bg-red-500 text-white';
-      default:
-        return 'bg-gray-500 text-white';
-    }
-  };
-
-  const getLevelText = (level: string) => {
-    switch (level) {
-      case 'high':
-        return 'Très performant';
-      case 'medium':
-        return 'Moyennement performant';
-      case 'low':
-        return 'Peu performant';
-      default:
-        return 'Inconnu';
-    }
-  };
-
-  const { isLocked } = useScroll();
-
   return (
-    <div className="fixed bottom-4 left-4 z-[9999]">
+    <div className="fixed right-4 bottom-4 z-[9999] flex items-center gap-2 rounded-full border border-slate-400/30 bg-slate-300/30 px-2 py-1 text-sm font-medium shadow-lg backdrop-blur-xl">
       <div
         className={clsx(
-          'rounded-lg px-3 py-2 text-sm font-medium shadow-lg',
-          getLevelColor(performanceLevel),
+          'flex h-2 w-2 items-center gap-2 rounded-full',
+          performanceLevel === PERFORMANCE_LEVEL.HIGH && 'bg-green-500',
+          performanceLevel === PERFORMANCE_LEVEL.MEDIUM && 'bg-yellow-500',
+          performanceLevel === PERFORMANCE_LEVEL.LOW && 'bg-red-500',
         )}
-      >
-        <div className="flex flex-col gap-1">
-          <div className="flex items-center gap-2">
-            <span className="text-xs opacity-90">{getLevelText(performanceLevel)}</span>
-          </div>
-          <div className="text-xs opacity-75">Temps: {executionTime.toFixed(1)}ms</div>
-          <div className="text-xs opacity-75">{isLocked ? 'Scroll bloqué' : 'Scroll débloqué'}</div>
-        </div>
-      </div>
+      />
+      <div className="text-xs opacity-75">{executionTime.toFixed(1)}ms</div>
     </div>
   );
 };

@@ -52,22 +52,22 @@ const Philosophy = () => {
         .fromTo(
           videoRef.current,
           {
-            scale: 1,
+            scale: 1.5,
           },
           {
-            scale: 0.8,
-            duration: 1,
+            scale: 1,
+            duration: 1.3,
             ease: 'none',
           },
         )
         .fromTo(
           wrapperVideoRef.current,
           {
-            scale: 0.7,
+            scale: 0.5,
           },
           {
             scale: 1,
-            duration: 1,
+            duration: 1.3,
             ease: 'none',
           },
           '<',
@@ -76,11 +76,11 @@ const Philosophy = () => {
       timeline.fromTo(
         wrapperVideoRef.current,
         {
-          scale: 0.8,
+          scale: 0.5,
         },
         {
           scale: 1,
-          duration: 1,
+          duration: 1.3,
           ease: 'none',
         },
       );

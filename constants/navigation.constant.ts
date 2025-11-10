@@ -26,13 +26,17 @@ export const LINKS = [
 ];
 
 export const SOCIALS = [
-  {
-    href: 'https://bento.me/metabole-studio',
-    text: 'Bento',
-  },
+  // {
+  //   href: 'https://bento.me/metabole-studio',
+  //   text: 'Bento',
+  // },
   {
     href: 'https://awwwards.com/metabole-studio/',
     text: 'Awwwards',
+  },
+  {
+    href: 'https://www.cssdesignawards.com/search?search_term=metabole+studio',
+    text: 'CSS DA',
   },
   {
     href: 'https://instagram.com/metabole.studio',
