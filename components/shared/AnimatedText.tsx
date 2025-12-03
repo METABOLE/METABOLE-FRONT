@@ -37,7 +37,7 @@ const AnimatedText = forwardRef<HTMLElement, AnimatedTextProps>(
     const elementRef = ref || textRef;
 
     const { isFrench } = useLanguage();
-    const { isAtLeast } = usePerformance();
+    const { performanceLevel } = usePerformance();
     const { contextSafe } = useGSAP();
 
     const animateText = contextSafe(() => {
@@ -51,7 +51,7 @@ const AnimatedText = forwardRef<HTMLElement, AnimatedTextProps>(
       gsap.set(split.words, {
         yPercent: 100,
         opacity: 0,
-        ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+        ...(performanceLevel === PERFORMANCE_LEVEL.HIGH && {
           filter: 'blur(10px)',
         }),
       });
@@ -60,7 +60,7 @@ const AnimatedText = forwardRef<HTMLElement, AnimatedTextProps>(
         yPercent: 0,
         opacity: 1,
         duration,
-        ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+        ...(performanceLevel === PERFORMANCE_LEVEL.HIGH && {
           filter: 'blur(0px)',
         }),
         stagger,

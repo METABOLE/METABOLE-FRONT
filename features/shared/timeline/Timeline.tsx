@@ -36,7 +36,7 @@ const Timeline = () => {
 
   const { isFrench } = useLanguage();
   const { contextSafe } = useGSAP();
-  const { isAtLeast } = usePerformance();
+  const { performanceLevel } = usePerformance();
 
   const scrubAnimation = contextSafe(() => {
     if (!sectionRef.current || !horizontalRef.current || !progressBarRef.current) return;
@@ -137,7 +137,7 @@ const Timeline = () => {
     gsap.set(splitDescription.words, {
       yPercent: 100,
       opacity: 0,
-      ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+      ...(performanceLevel === PERFORMANCE_LEVEL.HIGH && {
         filter: 'blur(10px)',
       }),
     });
@@ -162,7 +162,7 @@ const Timeline = () => {
         {
           yPercent: 0,
           opacity: 1,
-          ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+          ...(performanceLevel === PERFORMANCE_LEVEL.HIGH && {
             filter: 'blur(0px)',
           }),
           duration: 1,

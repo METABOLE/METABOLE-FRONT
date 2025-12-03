@@ -41,7 +41,7 @@ const CardFaq = ({
 
   const { contextSafe } = useGSAP();
   const { isFrench, getInternalPath } = useLanguage();
-  const { isAtLeast } = usePerformance();
+  const { performanceLevel } = usePerformance();
   const pathname = usePathname();
 
   const setUpTimeline = contextSafe(() => {
@@ -58,7 +58,7 @@ const CardFaq = ({
     gsap.set(splitText.words, {
       y: 20,
       opacity: 0,
-      ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+      ...(performanceLevel === PERFORMANCE_LEVEL.HIGH && {
         filter: 'blur(10px)',
       }),
     });
@@ -86,7 +86,7 @@ const CardFaq = ({
         {
           y: 0,
           opacity: 1,
-          ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+          ...(performanceLevel === PERFORMANCE_LEVEL.HIGH && {
             filter: 'blur(0px)',
           }),
           stagger: 0.008,

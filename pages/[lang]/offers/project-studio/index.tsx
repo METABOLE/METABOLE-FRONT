@@ -15,7 +15,7 @@ const ProjectStudioPage = () => {
 
   const { isFrench } = useLanguage();
   const { contextSafe } = useGSAP();
-  const { isAtLeast } = usePerformance();
+  const { performanceLevel } = usePerformance();
 
   const revealAnimation = contextSafe(() => {
     if (!titleRef.current || !subtitleRef.current || !descriptionRef.current) return;
@@ -37,14 +37,14 @@ const ProjectStudioPage = () => {
     gsap.set(splitSubtitle.words, {
       yPercent: 100,
       opacity: 0,
-      ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+      ...(performanceLevel === PERFORMANCE_LEVEL.HIGH && {
         filter: 'blur(10px)',
       }),
     });
     gsap.set(splitDescription.words, {
       yPercent: 100,
       opacity: 0,
-      ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+      ...(performanceLevel === PERFORMANCE_LEVEL.HIGH && {
         filter: 'blur(10px)',
       }),
     });
@@ -65,7 +65,7 @@ const ProjectStudioPage = () => {
           yPercent: 0,
           opacity: 1,
           duration: 1,
-          ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+          ...(performanceLevel === PERFORMANCE_LEVEL.HIGH && {
             filter: 'blur(0px)',
           }),
           stagger: 0.01,
@@ -79,7 +79,7 @@ const ProjectStudioPage = () => {
           yPercent: 0,
           opacity: 1,
           duration: 1,
-          ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+          ...(performanceLevel === PERFORMANCE_LEVEL.HIGH && {
             filter: 'blur(0px)',
           }),
           stagger: 0.01,

@@ -33,7 +33,7 @@ const ContactForm = ({ className }: { className?: string }) => {
   const buttonRef = useRef<HTMLDivElement>(null);
 
   const { contextSafe } = useGSAP();
-  const { isAtLeast } = usePerformance();
+  const { performanceLevel } = usePerformance();
 
   const [formData, setFormData] = useState<ContactFormState>({
     name: '',
@@ -62,7 +62,7 @@ const ContactForm = ({ className }: { className?: string }) => {
 
     gsap.set(checkboxRef.current, { y: 30, opacity: 0 });
     gsap.set(buttonRef.current, {
-      ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+      ...(performanceLevel === PERFORMANCE_LEVEL.HIGH && {
         filter: 'blur(10px)',
       }),
       opacity: 0,
@@ -81,7 +81,7 @@ const ContactForm = ({ className }: { className?: string }) => {
       .to(
         buttonRef.current,
         {
-          ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+          ...(performanceLevel === PERFORMANCE_LEVEL.HIGH && {
             filter: 'blur(0px)',
           }),
           opacity: 1,

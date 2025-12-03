@@ -23,7 +23,7 @@ const Hero = () => {
   const desktopSpan4Ref = useRef<HTMLSpanElement>(null);
   const mobileTitleRef = useRef<HTMLSpanElement>(null);
 
-  const { isAtLeast } = usePerformance();
+  const { performanceLevel } = usePerformance();
   const { contextSafe } = useGSAP();
 
   const revealAnimation = contextSafe(() => {
@@ -81,7 +81,7 @@ const Hero = () => {
       gsap.set(split.words, {
         opacity: 0,
         yPercent: 100,
-        ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+        ...(performanceLevel === PERFORMANCE_LEVEL.HIGH && {
           filter: 'blur(10px)',
         }),
       });
@@ -89,7 +89,7 @@ const Hero = () => {
       timeline.to(split.words, {
         opacity: 1,
         yPercent: 0,
-        ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+        ...(performanceLevel === PERFORMANCE_LEVEL.HIGH && {
           filter: 'blur(0px)',
         }),
         duration: 1.2,
