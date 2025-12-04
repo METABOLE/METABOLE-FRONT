@@ -18,7 +18,7 @@ const ContactPage = () => {
 
   const { isFrench } = useLanguage();
   const { contextSafe } = useGSAP();
-  const { isAtLeast } = usePerformance();
+  const { performanceLevel } = usePerformance();
 
   const revealAnimation = contextSafe(() => {
     const splitTitle = new SplitText(titleRef.current, {
@@ -34,7 +34,7 @@ const ContactPage = () => {
     });
     gsap.set(splitDescription.words, {
       yPercent: 100,
-      ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+      ...(performanceLevel === PERFORMANCE_LEVEL.HIGH && {
         filter: 'blur(10px)',
       }),
       opacity: 0,
@@ -56,7 +56,7 @@ const ContactPage = () => {
           yPercent: 0,
           duration: 1,
           opacity: 1,
-          ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+          ...(performanceLevel === PERFORMANCE_LEVEL.HIGH && {
             filter: 'blur(0px)',
           }),
           stagger: 0.02,

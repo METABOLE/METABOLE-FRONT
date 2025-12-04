@@ -118,7 +118,6 @@ const Button = forwardRef<HTMLDivElement, ButtonProps>(
     const resizeButton = contextSafe(() => {
       if (!isResizable || currentChild === children) return;
 
-      // Calculate width before animation to avoid forced reflow
       const widthHiddenButton = hiddenButtonRef.current?.getBoundingClientRect();
       const targetWidth = widthHiddenButton?.width;
 

@@ -28,10 +28,7 @@ export const useScroll = () => {
   }, []);
 
   const lockScroll = (shouldLock: boolean) => {
-    if (!lenis) {
-      console.warn('Lenis is not initialized yet');
-      return;
-    }
+    if (!lenis) return;
 
     if (shouldLock) {
       lenis.scrollTo(0, { immediate: true });

@@ -23,7 +23,7 @@ const Philosophy = () => {
   const descriptionRef = useRef(null);
 
   const { isFrench, getInternalPath } = useLanguage();
-  const { isAtLeast } = usePerformance();
+  const { performanceLevel } = usePerformance();
   const { contextSafe } = useGSAP();
   const isMobile = useMatchMedia(BREAKPOINTS.MD);
 
@@ -47,7 +47,7 @@ const Philosophy = () => {
       },
     });
 
-    if (isAtLeast(PERFORMANCE_LEVEL.HIGH)) {
+    if (performanceLevel === PERFORMANCE_LEVEL.HIGH) {
       timeline
         .fromTo(
           videoRef.current,
@@ -145,7 +145,7 @@ const Philosophy = () => {
               src="/videos/showreel.mp4"
               className={clsx(
                 'h-full w-full rounded-3xl object-cover object-top',
-                !isAtLeast(PERFORMANCE_LEVEL.HIGH) && 'scale-130',
+                performanceLevel !== PERFORMANCE_LEVEL.HIGH && 'scale-130',
               )}
               autoPlay
               loop

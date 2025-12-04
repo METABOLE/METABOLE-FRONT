@@ -28,7 +28,7 @@ const Hero = () => {
   const { contextSafe } = useGSAP();
   const { isFrench } = useLanguage();
   const isMobile = useMatchMedia(BREAKPOINTS.MD);
-  const { isAtLeast } = usePerformance();
+  const { performanceLevel } = usePerformance();
 
   const revealAnimation = contextSafe(() => {
     const splitTitle = new SplitText(titleRef.current, {
@@ -41,14 +41,14 @@ const Hero = () => {
     gsap.set(splitTitle.words, {
       yPercent: 100,
       opacity: 0,
-      ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+      ...(performanceLevel === PERFORMANCE_LEVEL.HIGH && {
         filter: 'blur(10px)',
       }),
     });
     gsap.set(splitDescription.words, {
       yPercent: 100,
       opacity: 0,
-      ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+      ...(performanceLevel === PERFORMANCE_LEVEL.HIGH && {
         filter: 'blur(10px)',
       }),
     });
@@ -61,7 +61,7 @@ const Hero = () => {
         yPercent: 0,
         opacity: 1,
         duration: 1,
-        ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+        ...(performanceLevel === PERFORMANCE_LEVEL.HIGH && {
           filter: 'blur(0px)',
         }),
         stagger: 0.02,
@@ -73,7 +73,7 @@ const Hero = () => {
           yPercent: 0,
           opacity: 1,
           duration: 1,
-          ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+          ...(performanceLevel === PERFORMANCE_LEVEL.HIGH && {
             filter: 'blur(0px)',
           }),
           stagger: 0.02,

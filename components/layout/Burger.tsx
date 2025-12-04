@@ -30,7 +30,7 @@ const Burger = () => {
 
   const pathname = usePathname();
   const { isFrench, getInternalPath } = useLanguage();
-  const { isAtLeast } = usePerformance();
+  const { performanceLevel } = usePerformance();
   const { contextSafe } = useGSAP();
 
   useGSAP(() => {
@@ -72,7 +72,7 @@ const Burger = () => {
       .to(
         menuRef.current,
         {
-          ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+          ...(performanceLevel === PERFORMANCE_LEVEL.HIGH && {
             backdropFilter: 'blur(10px)',
           }),
           backgroundColor: COLORS.MENU,
@@ -185,7 +185,7 @@ const Burger = () => {
         {
           backgroundColor: COLORS.MENU_00,
           duration: 0.8,
-          ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+          ...(performanceLevel === PERFORMANCE_LEVEL.HIGH && {
             backdropFilter: 'blur(0px)',
           }),
         },

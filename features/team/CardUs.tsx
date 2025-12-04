@@ -26,7 +26,7 @@ const CardUs = ({ member, index, wrapperImagesRefs, imagesRefs }: CardUsProps) =
   const timelineRef = useRef(gsap.timeline({ paused: true }));
 
   const { isFrench } = useLanguage();
-  const { isAtLeast } = usePerformance();
+  const { performanceLevel } = usePerformance();
   const { contextSafe } = useGSAP();
 
   const setUpTimeline = contextSafe(() => {
@@ -43,7 +43,7 @@ const CardUs = ({ member, index, wrapperImagesRefs, imagesRefs }: CardUsProps) =
     gsap.set(splitText.words, {
       y: 20,
       opacity: 0,
-      ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+      ...(performanceLevel === PERFORMANCE_LEVEL.HIGH && {
         filter: 'blur(10px)',
       }),
     });
@@ -58,7 +58,7 @@ const CardUs = ({ member, index, wrapperImagesRefs, imagesRefs }: CardUsProps) =
       {
         y: 0,
         opacity: 1,
-        ...(isAtLeast(PERFORMANCE_LEVEL.MEDIUM) && {
+        ...(performanceLevel === PERFORMANCE_LEVEL.HIGH && {
           filter: 'blur(0px)',
         }),
         stagger: 0.008,

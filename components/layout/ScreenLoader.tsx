@@ -164,7 +164,7 @@ const ScreenLoader = () => {
   }, [isLoading, isRevealed]);
 
   return (
-    <div ref={screenLoaderRef} className="fixed inset-0 z-[950] grid grid-cols-2 grid-rows-2">
+    <div ref={screenLoaderRef} className="fixed inset-0 z-[9999] grid grid-cols-2 grid-rows-2">
       <div ref={maskRef.topLeft} className="h-full w-full origin-left bg-black" />
       <div ref={maskRef.topRight} className="h-full w-full origin-right bg-black" />
       <div ref={maskRef.bottomLeft} className="h-full w-full origin-left bg-black" />
