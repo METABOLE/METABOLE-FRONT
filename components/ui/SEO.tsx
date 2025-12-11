@@ -28,6 +28,9 @@ const SEO = ({
   const description = isFrench ? descriptionFr : descriptionEn;
   const lang = isFrench ? 'fr' : 'en';
 
+  // Construction du canonical URL
+  const canonicalUrl = 'https://metabole.studio' + asPath;
+
   return (
     <Head>
       <title>{title}</title>
@@ -43,7 +46,7 @@ const SEO = ({
       <meta content={noindex ? 'noindex, nofollow' : 'index, follow'} name="robots" />
 
       {/* Canonical link */}
-      <link key="canonical" href={'https://metabole.studio' + asPath} rel="canonical" />
+      <link key="canonical" href={canonicalUrl} rel="canonical" />
 
       {/* OpenGraph Tags */}
       <meta content={title} property="og:title" />
@@ -72,19 +75,22 @@ const SEO = ({
       {/* Favicon */}
       <link href="/favicon.ico" rel="icon" />
 
-      {/* Hreflang - Gestion spéciale pour la page d'accueil */}
+      {/* Hreflang */}
       {isHomePage ? (
         <>
           <link href="https://metabole.studio/fr" hrefLang="fr" rel="alternate" />
           <link href="https://metabole.studio/en" hrefLang="en" rel="alternate" />
-          <link href="https://metabole.studio" hrefLang="x-default" rel="alternate" />
+          <link href="https://metabole.studio/en" hrefLang="x-default" rel="alternate" />
         </>
       ) : (
-        <link
-          href={`${url}${isFrench ? '/fr' : '/en'}`}
-          hrefLang={isFrench ? 'fr' : 'en'}
-          rel="alternate"
-        />
+        <>
+          <link href={canonicalUrl} hrefLang={lang} rel="alternate" />
+          <link
+            href={`https://metabole.studio${asPath.replace(/^\/(fr|en)/, isFrench ? '/en' : '/fr')}`}
+            hrefLang={isFrench ? 'en' : 'fr'}
+            rel="alternate"
+          />
+        </>
       )}
     </Head>
   );

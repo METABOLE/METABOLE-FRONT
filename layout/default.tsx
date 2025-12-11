@@ -17,12 +17,14 @@ import { BREAKPOINTS, ProjectType } from '@/types';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
+import { useRouter } from 'next/router';
 import { ReactNode } from 'react';
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
 const Layout = ({ projects, children }: { projects: ProjectType[]; children: ReactNode }) => {
   const { isFrench } = useLanguage();
+  const router = useRouter();
   const isTablet = useMatchMedia(BREAKPOINTS.MD);
   const isMobile = useMatchMedia(BREAKPOINTS.SM);
   const { performanceLevel } = usePerformance();
@@ -30,9 +32,11 @@ const Layout = ({ projects, children }: { projects: ProjectType[]; children: Rea
   const { isLoading } = usePerformance();
   const isFontReady = useFontReady();
 
+  const isHomePage = router.asPath === '/en' || router.asPath === '/fr';
+
   return (
     <>
-      <SEO isFrench={isFrench} />
+      <SEO isFrench={isFrench} isHomePage={isHomePage} />
 
       <main className="min-h-screen w-screen overflow-hidden md:pb-[300px]">
         {isLoading || !isFontReady ? (
