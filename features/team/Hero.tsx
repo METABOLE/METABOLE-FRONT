@@ -166,7 +166,7 @@ const Hero = () => {
         >
           <Image
             alt="Matteo and Jerome"
-            className="h-full w-full rounded-3xl object-cover object-top"
+            className="mx-auto h-full w-full max-w-6xl rounded-3xl object-cover object-top"
             height={1920}
             src="/images/matteo-and-jerome.webp"
             width={1080}
