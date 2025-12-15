@@ -13,6 +13,9 @@ const TrustedBy = () => {
 
   const { contextSafe } = useGSAP();
   const [activeIndex, setActiveIndex] = useState(0);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+  const displayedIndex = hoveredIndex !== null ? hoveredIndex : activeIndex;
 
   const scrollAnimation = contextSafe(() => {
     gsap
@@ -56,14 +59,16 @@ const TrustedBy = () => {
           Ils nous font confiance
         </h2>
       </div>
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col">
         {CLIENTS.map((client, index) => (
           <p
-            key={client.id}
+            key={client.name}
             className={clsx(
-              'p2 uppercase transition-opacity duration-300',
-              index === activeIndex ? 'text-blue' : 'text-black',
+              'p2 cursor-pointer py-3 uppercase transition-opacity duration-300',
+              index === displayedIndex ? 'text-blue' : 'text-black',
             )}
+            onMouseEnter={() => setHoveredIndex(index)}
+            onMouseLeave={() => setHoveredIndex(null)}
           >
             {client.name}
           </p>
@@ -77,12 +82,12 @@ const TrustedBy = () => {
           <div
             className="relative h-fit transition-all"
             style={{
-              transform: `translateY(-${(activeIndex / CLIENTS.length) * 100}%)`,
-              backgroundColor: CLIENTS[activeIndex].backgroundColor,
+              transform: `translateY(-${(displayedIndex / CLIENTS.length) * 100}%)`,
+              backgroundColor: CLIENTS[displayedIndex].backgroundColor,
             }}
           >
             {CLIENTS.map((client) => (
-              <div key={client.id} className={clsx('flex h-60 w-60 items-center justify-center')}>
+              <div key={client.name} className={clsx('flex h-60 w-60 items-center justify-center')}>
                 {client.logo}
               </div>
             ))}

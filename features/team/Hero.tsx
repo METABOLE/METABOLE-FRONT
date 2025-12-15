@@ -1,5 +1,4 @@
 import FloatingHalo from '@/components/shared/FloatingHalo';
-import Hint from '@/components/ui/Hint';
 import { IconCross } from '@/components/ui/Icons';
 import { TIMELINE } from '@/constants/timeline.constant';
 import { useLanguage } from '@/providers/language.provider';
@@ -110,28 +109,6 @@ const Hero = () => {
 
   return (
     <>
-      <Hint containerId="hint-team-hero" isDark={true} isLeft={true}>
-        {isFrench ? (
-          <p>
-            Nous sommes deux créatifs, unis par le souci du détail et le goût des belles choses.
-            C'est la parfaite symbiose de nos compétences qui a donné naissance à Metabole.
-            <br />
-            <br />
-            Notre objectif est de pouvoir créer des produits qui répondent aux problématiques de
-            l’écosystème web actuel et futur, tout en garantissant une qualité de livrable
-            exceptionnelle.
-          </p>
-        ) : (
-          <p>
-            We are two creatives, united by the desire for detail and the taste for beautiful
-            things. It is the perfect synergy of our skills that has given birth to Metabole.
-            <br />
-            <br />
-            Our goal is to be able to create products that respond to the problems of the current
-            and future web ecosystem, while ensuring exceptional quality of delivery.
-          </p>
-        )}
-      </Hint>
       <section
         ref={sectionRef}
         className="pt-y-double-default px-x-default pb-y-default relative flex min-h-screen flex-col justify-evenly"
@@ -191,8 +168,7 @@ const Hero = () => {
             alt="Matteo and Jerome"
             className="h-full w-full rounded-3xl object-cover object-top"
             height={1920}
-            id="hint-team-hero"
-            src="/images/matteo-and-jerome.png"
+            src="/images/matteo-and-jerome.webp"
             width={1080}
             priority
           />
